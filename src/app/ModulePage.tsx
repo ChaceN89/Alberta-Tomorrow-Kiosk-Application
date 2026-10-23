@@ -26,6 +26,26 @@ function ExpeditionActivity({ module }: ModuleActivityProps) {
     (checkpointId: string) => completeCheckpoint(module.id, checkpointId),
     [completeCheckpoint, module.id],
   )
+  const Activity = module.component
+
+  useEffect(() => {
+    startExpedition(module.id)
+  }, [module.id, startExpedition])
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <Activity
+        key={module.id}
+        completedCheckpoints={getCompletedCheckpoints(module.id)}
+        completeCheckpoint={recordCheckpoint}
+      />
+    </Suspense>
+  )
+}
+
+function ModuleActivity({ module }: ModuleActivityProps) {
+  const { t } = useTranslation('global')
+  const { state, preloadModule, isModuleReady } = useModulePreload()
 
   useEffect(() => {
     void preloadModule(module)
