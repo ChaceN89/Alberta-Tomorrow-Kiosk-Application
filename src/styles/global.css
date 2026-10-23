@@ -63,6 +63,6 @@
   }
 
   .skip-link {
-    @apply sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10 focus:m-0 focus:h-auto focus:w-auto focus:overflow-visible focus:rounded-lg focus:bg-white focus:p-4 focus:whitespace-normal;
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10 focus:rounded-lg focus:bg-white focus:p-4;
   }
 }
