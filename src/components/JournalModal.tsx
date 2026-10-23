@@ -226,6 +226,13 @@ export function JournalModal() {
       aria-labelledby={titleId}
       className="m-auto h-[90dvh] w-[min(56rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
       onClose={handleClose}
+      onKeyDown={(event) => {
+        // The page-switcher dropdown handles its own Escape key first.
+        if (event.key === 'Escape') {
+          event.preventDefault()
+          handleClose()
+        }
+      }}
       onClick={(event) => {
         if (event.target === event.currentTarget) {
           handleClose()

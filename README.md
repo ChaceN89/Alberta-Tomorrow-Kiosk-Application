@@ -91,7 +91,8 @@ open the journal modal, which is always 90% of the viewport height. Its first
 page is a title page explaining the journal, followed by one page per started
 expedition ("Expedition 2 of 3"); the title shows the number of entries. The
 arrows and a floating dropdown switch pages. The development menu has **Reset
-journal progress**.
+journal progress** and **Reset whole site** (clears the journal and intro tour
+flag, then reloads as a first visit); both ask for a Yes/No confirmation.
 
 Journal text lives in each module's locale file under `journal.summary` and
 `journal.entries` (`id`, `title`, `summary`); generic journal labels are in

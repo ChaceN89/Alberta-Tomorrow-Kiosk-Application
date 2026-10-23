@@ -96,3 +96,11 @@ export function saveJournal(progress: JournalProgress): boolean {
     return false
   }
 }
+
+export function clearJournalStorage() {
+  try {
+    window.localStorage.removeItem(STORAGE_KEY)
+  } catch {
+    // Ignore storage failures.
+  }
+}
