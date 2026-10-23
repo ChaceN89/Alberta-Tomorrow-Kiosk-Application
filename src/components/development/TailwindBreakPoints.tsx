@@ -1,11 +1,15 @@
 /**
  * File: TailwindBreakPoints.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Toggle Tailwind breakpoint guides and their centered legend.
- * Dependencies: React state, Tailwind CSS utilities, react-i18next.
+ * Description: Render Tailwind breakpoint guides and their centered legend.
+ * Dependencies: Tailwind CSS utilities, react-i18next.
  */
-import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+
+type TailwindBreakPointsProps = {
+  visible: boolean
+  currentBreakpoint: string
+}
 
 const breakpoints = [
   {
@@ -52,15 +56,18 @@ const breakpoints = [
   },
 ]
 
-export function TailwindBreakPoints() {
-  const { t } = useTranslation('global')
-  const [showGuides, setShowGuides] = useState(false)
-  const panelId = useId()
-  const statusId = useId()
+export function TailwindBreakPoints({
+  visible,
+  currentBreakpoint,
+}: TailwindBreakPointsProps) {
+  const { t } = useTranslation('development')
 
   return (
     <>
-      {showGuides && (
+      <span className="sr-only" aria-live="polite">
+        {t('currentBreakpoint', { breakpoint: currentBreakpoint })}
+      </span>
+      {visible && (
         <>
           <div
             aria-hidden="true"
@@ -75,17 +82,24 @@ export function TailwindBreakPoints() {
             ))}
           </div>
           <section
-            id={panelId}
-            aria-label={t('development.breakpointPanel')}
+            aria-label={t('breakpointPanel')}
             className="pointer-events-none fixed inset-0 z-95 flex items-center justify-center p-4"
           >
-            <div className="max-h-[calc(100dvh-2rem)] w-full max-w-xs overflow-auto rounded-xl border border-line bg-surface/70 p-4 text-ink shadow-lg backdrop-blur-sm">
-              <h2 className="mb-1 text-base font-semibold">
-                {t('development.breakpointPanel')}
-              </h2>
-              <p className="mb-4 text-sm text-muted">
-                {t('development.breakpointLegend')}
-              </p>
+            <div className="max-h-[calc(100dvh-2rem)] w-full max-w-sm overflow-auto rounded-xl border border-line bg-surface/65 p-4 text-ink shadow-lg backdrop-blur-md">
+              <div className="mb-1 flex items-center justify-between gap-4">
+                <h2 className="text-base font-semibold">
+                  {t('breakpointPanel')}
+                </h2>
+                <span
+                  className="rounded-full bg-surface px-2 py-0.5 font-mono text-xs font-bold text-pine"
+                  aria-label={t('currentBreakpoint', {
+                    breakpoint: currentBreakpoint,
+                  })}
+                >
+                  {currentBreakpoint}
+                </span>
+              </div>
+              <p className="mb-4 text-sm text-muted">{t('breakpointLegend')}</p>
               <ul className="space-y-3">
                 {breakpoints.map((breakpoint) => (
                   <li
@@ -111,31 +125,6 @@ export function TailwindBreakPoints() {
           </section>
         </>
       )}
-      <button
-        type="button"
-        aria-label={t('development.toggleBreakpointGuides')}
-        aria-pressed={showGuides}
-        aria-expanded={showGuides}
-        aria-controls={panelId}
-        aria-describedby={statusId}
-        className="fixed top-20 right-0 z-100 m-1 flex size-10 items-center justify-center rounded-full bg-gray-700 p-1 font-mono text-xs text-white opacity-70 hover:opacity-100 xs:bg-purple-500 sm:bg-pink-500 md:bg-orange-500 lg:bg-green-500 xl:bg-blue-500 2xl:bg-black"
-        onClick={() => setShowGuides((visible) => !visible)}
-      >
-        <span className="block xs:hidden">base</span>
-        <span className="hidden xs:block sm:hidden">xs</span>
-        <span className="hidden sm:block md:hidden">sm</span>
-        <span className="hidden md:block lg:hidden">md</span>
-        <span className="hidden lg:block xl:hidden">lg</span>
-        <span className="hidden xl:block 2xl:hidden">xl</span>
-        <span className="hidden 2xl:block">2xl</span>
-      </button>
-      <span id={statusId} className="sr-only" aria-live="polite">
-        {t(
-          showGuides
-            ? 'development.breakpointGuidesVisible'
-            : 'development.breakpointGuidesHidden',
-        )}
-      </span>
     </>
   )
 }

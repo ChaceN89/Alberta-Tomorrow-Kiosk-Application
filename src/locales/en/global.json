@@ -33,16 +33,6 @@
     "en": "English",
     "fr": "Français"
   },
-  "development": {
-    "breakpoint": "Current responsive breakpoint",
-    "breakpointPanel": "Tailwind CSS breakpoints",
-    "breakpointLegend": "Vertical lines mark where each responsive size begins.",
-    "toggleBreakpointGuides": "Toggle breakpoint guides and legend",
-    "breakpointGuidesVisible": "Breakpoint guides and legend are visible",
-    "breakpointGuidesHidden": "Breakpoint guides and legend are hidden",
-    "darkMode": "Switch to dark mode",
-    "lightMode": "Switch to light mode"
-  },
   "notFound": {
     "title": "Looks like we've wandered off track.",
     "description": "This page isn't on our map. Let's get you back to Alberta.",

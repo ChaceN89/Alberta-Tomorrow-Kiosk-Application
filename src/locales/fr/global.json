@@ -33,16 +33,6 @@
     "en": "English",
     "fr": "Français"
   },
-  "development": {
-    "breakpoint": "Point de rupture actuel",
-    "breakpointPanel": "Points d'arrêt Tailwind CSS",
-    "breakpointLegend": "Les lignes verticales indiquent le seuil où commence chaque format d’écran.",
-    "toggleBreakpointGuides": "Afficher ou masquer les repères et leur légende",
-    "breakpointGuidesVisible": "Les repères et leur légende sont visibles",
-    "breakpointGuidesHidden": "Les repères et leur légende sont masqués",
-    "darkMode": "Activer le mode sombre",
-    "lightMode": "Activer le mode clair"
-  },
   "notFound": {
     "title": "On dirait que nous nous sommes égarés.",
     "description": "Cette page n'est pas sur notre carte. Retournons en Alberta.",
