@@ -66,6 +66,60 @@ html::-webkit-scrollbar {
   }
 }
 
+/* Tour popups drop in with a little weight: overshoot, then settle. */
+@keyframes tour-pop-a {
+  0% {
+    opacity: 0;
+    transform: translateY(4.5rem) scale(0.9);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translateY(-0.6rem) scale(1.02);
+  }
+
+  78% {
+    transform: translateY(0.2rem) scale(0.995);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Identical to tour-pop-a; a second name lets consecutive steps restart it. */
+@keyframes tour-pop-b {
+  0% {
+    opacity: 0;
+    transform: translateY(4.5rem) scale(0.9);
+  }
+
+  55% {
+    opacity: 1;
+    transform: translateY(-0.6rem) scale(1.02);
+  }
+
+  78% {
+    transform: translateY(0.2rem) scale(0.995);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes tour-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 .splash-screen {
   animation: splash-fade-in 350ms ease-out both;
 }
@@ -74,9 +128,26 @@ html::-webkit-scrollbar {
   animation: splash-fade-out 250ms ease-in both;
 }
 
+.tour-pop-a {
+  animation: tour-pop-a 750ms ease-out both;
+}
+
+.tour-pop-b {
+  animation: tour-pop-b 750ms ease-out both;
+}
+
+.tour-pop-a::backdrop,
+.tour-pop-b::backdrop {
+  animation: tour-backdrop-in 500ms ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .splash-screen,
-  .splash-screen--exiting {
+  .splash-screen--exiting,
+  .tour-pop-a,
+  .tour-pop-b,
+  .tour-pop-a::backdrop,
+  .tour-pop-b::backdrop {
     animation: none;
   }
 }

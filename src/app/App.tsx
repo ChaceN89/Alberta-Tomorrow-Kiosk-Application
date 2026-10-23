@@ -2,10 +2,8 @@
  * File: App.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
  * Description: Define routes beneath the shared application layout.
- * Dependencies: React Router, react-i18next, application pages.
+ * Dependencies: React Router, application pages and providers.
  */
-import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/Layout'
 import { NotFound } from '../components/NotFound'
@@ -16,15 +14,6 @@ import { JournalProvider } from '../journal/JournalProvider'
 import { IntroTourProvider } from '../tour/IntroTourProvider'
 
 export function App() {
-  const { t, i18n } = useTranslation('global')
-  const isDevelopment =
-    import.meta.env.DEV && import.meta.env.VITE_ENVIRONMENT === 'development'
-
-  useEffect(() => {
-    document.documentElement.lang = i18n.resolvedLanguage ?? 'en'
-    document.title = `${isDevelopment ? 'Dev | ' : ''}${t('app.name')}`
-  }, [t, i18n.resolvedLanguage, isDevelopment])
-
   return (
     <BrowserRouter>
       <JournalProvider>

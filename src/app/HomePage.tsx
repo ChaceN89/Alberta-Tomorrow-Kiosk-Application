@@ -65,7 +65,7 @@ export function HomePage() {
 
   return (
     <section aria-labelledby="home-title" className="space-y-8">
-      <div className="max-w-2xl space-y-3">
+      <div className="space-y-3">
         <p className="font-semibold text-pine">{t('eyebrow')}</p>
         <h1 id="home-title">{t('title')}</h1>
         <p className="text-lg text-muted">{t('description')}</p>

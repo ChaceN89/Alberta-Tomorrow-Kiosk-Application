@@ -145,7 +145,11 @@ function IntroTourDialog() {
         isCentered
           ? 'm-auto w-[min(36.4rem,calc(100vw-2rem))] backdrop:backdrop-blur-sm'
           : 'w-[min(28.6rem,calc(100vw-2rem))]'
-      } ${isMeasuring ? 'opacity-0' : ''}`}
+      } ${isMeasuring ? 'opacity-0' : ''} ${
+        // Alternating names restart the animation on every step; pointer steps
+        // wait until they are positioned so they don't animate in the wrong spot.
+        isMeasuring ? '' : stepIndex % 2 === 0 ? 'tour-pop-a' : 'tour-pop-b'
+      }`}
       onCancel={(event) => {
         event.preventDefault()
         finish()

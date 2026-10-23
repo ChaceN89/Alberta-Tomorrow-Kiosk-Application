@@ -21,7 +21,7 @@ import { tourSteps } from './steps'
 import { IntroTourContext } from './useIntroTour'
 
 // Gives the splash screen time to finish fading before the tour appears.
-const START_DELAY_MS = 600
+const START_DELAY_MS = 350
 
 type IntroTourProviderProps = {
   children: ReactNode
