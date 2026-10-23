@@ -159,10 +159,14 @@ Add theme values and custom breakpoints in that `@theme` block; the custom
 Prefer utilities and the small shared component classes. Controls have
 touch-friendly targets, visible keyboard focus, and reduced-motion support.
 
-Development-only breakpoint and dark-mode controls live in
-`src/components/development/`. They render only when Vite is in development mode
-and `VITE_ENVIRONMENT=development`; the browser tab title is prefixed with
-`Dev | `. The breakpoint badge toggles both vertical breakpoint guides and a
+Development tools (the gear menu: breakpoint guides, dark mode, module status,
+state previews, intro tour, and resets) live in `src/components/development/`.
+They render only when `VITE_ENVIRONMENT=development`, and the browser tab title
+is then prefixed with `Dev | `. The variable is read at **build time**, so
+change it in the Netlify environment settings and redeploy (clear the build
+cache if needed). Set it to anything else, or remove it, for a public production
+site. `.env.development` enables the tools for `npm run dev`. The breakpoint
+badge toggles both vertical breakpoint guides and a
 centered, translucent legend. The reusable `Dropdown` component powers the
 language selector and supports keyboard navigation.
 

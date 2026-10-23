@@ -23,8 +23,7 @@ type PendingReset = 'journal' | 'site' | null
 type BreakpointMode = 'off' | 'guides' | 'indicator'
 
 export function DisplayTesting() {
-  const isDevelopment =
-    import.meta.env.DEV && import.meta.env.VITE_ENVIRONMENT === 'development'
+  const isDevelopment = import.meta.env.VITE_ENVIRONMENT === 'development'
   const { t } = useTranslation('development')
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
