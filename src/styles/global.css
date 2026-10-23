@@ -1,0 +1,68 @@
+/*
+ * File: global.css | Author: Chace Nielson
+ * Created: 2026-10-23 | Updated: 2026-10-23
+ * Description: Tailwind entry point, centralized theme, and shared touch-friendly UI.
+ * Dependencies: Tailwind CSS v4 via @tailwindcss/vite; no legacy config needed.
+ */
+@import 'tailwindcss';
+
+@theme {
+  --color-pine: #175443;
+  --color-pine-dark: #103c30;
+  --color-canvas: #f5f7f3;
+  --color-ink: #172e29;
+  --color-muted: #4a6259;
+  --color-line: #b5c6bd;
+  --color-focus: #075ed1;
+  --font-sans: 'Segoe UI', system-ui, sans-serif;
+  --spacing: 0.25rem;
+}
+
+@layer base {
+  body {
+    @apply m-0 bg-canvas font-sans text-ink antialiased;
+  }
+
+  h1 {
+    @apply text-3xl leading-tight font-bold md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl leading-snug font-semibold;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  :focus-visible {
+    @apply outline-3 outline-offset-4 outline-focus;
+  }
+
+  button,
+  select {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-line bg-white p-6 md:p-8;
+  }
+
+  .button {
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl bg-pine px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-pine-dark motion-reduce:transition-none;
+  }
+
+  .button-secondary {
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl border-2 border-pine bg-white px-5 py-3 text-center font-semibold text-pine transition-colors hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-50 aria-pressed:bg-pine aria-pressed:text-white motion-reduce:transition-none;
+  }
+
+  .text-link {
+    @apply inline-flex min-h-12 items-center font-semibold text-pine underline decoration-2 underline-offset-4;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10 focus:rounded-lg focus:bg-white focus:p-4;
+  }
+}
