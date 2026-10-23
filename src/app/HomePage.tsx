@@ -8,31 +8,45 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { modules } from '../modules/registry'
 
+type ModuleCardProps = {
+  module: (typeof modules)[number]
+}
+
+function ModuleCard({ module }: ModuleCardProps) {
+  const { t: tModule } = useTranslation(module.translationNamespace)
+  const { t: tHome } = useTranslation('home')
+  const title = tModule('title')
+
+  return (
+    <li className="panel flex flex-col gap-4">
+      <div className="flex flex-wrap gap-3 text-sm font-semibold text-pine">
+        <span>{tModule('category')}</span>
+        <span>
+          {tHome('moduleDuration', { count: module.estimatedMinutes })}
+        </span>
+      </div>
+      <h2>{title}</h2>
+      <p className="grow text-muted">{tModule('description')}</p>
+      <Link className="button self-start" to={`/modules/${module.id}`}>
+        {tHome('exploreModule')}
+      </Link>
+    </li>
+  )
+}
+
 export function HomePage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('home')
 
   return (
     <section aria-labelledby="home-title" className="space-y-8">
       <div className="max-w-2xl space-y-3">
-        <p className="font-semibold text-pine">{t('home.eyebrow')}</p>
-        <h1 id="home-title">{t('home.title')}</h1>
-        <p className="text-lg text-muted">{t('home.description')}</p>
+        <p className="font-semibold text-pine">{t('eyebrow')}</p>
+        <h1 id="home-title">{t('title')}</h1>
+        <p className="text-lg text-muted">{t('description')}</p>
       </div>
       <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {modules.map((module) => (
-          <li key={module.id} className="panel flex flex-col gap-4">
-            <div className="flex flex-wrap gap-3 text-sm font-semibold text-pine">
-              <span>{t(`categories.${module.category}`)}</span>
-              <span>
-                {t('modules.duration', { count: module.estimatedMinutes })}
-              </span>
-            </div>
-            <h2>{t(module.titleKey)}</h2>
-            <p className="grow text-muted">{t(module.descriptionKey)}</p>
-            <Link className="button self-start" to={`/modules/${module.id}`}>
-              {t('home.startModule', { title: t(module.titleKey) })}
-            </Link>
-          </li>
+          <ModuleCard key={module.id} module={module} />
         ))}
       </ul>
     </section>

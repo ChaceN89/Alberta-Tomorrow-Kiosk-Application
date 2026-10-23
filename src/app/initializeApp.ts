@@ -1,0 +1,15 @@
+/**
+ * File: initializeApp.ts | Author: Chace Nielson
+ * Created: 2026-10-23 | Updated: 2026-10-23
+ * Description: Run app-wide startup work before the initial screen is revealed.
+ * Dependencies: Browser timers; shared data requests can be added here.
+ */
+const MINIMUM_SPLASH_DURATION_MS = 1000
+
+export async function initializeApp(): Promise<void> {
+  await new Promise<void>((resolve) => {
+    window.setTimeout(resolve, MINIMUM_SPLASH_DURATION_MS)
+  })
+
+  // Await shared app-data requests here when the application needs them.
+}

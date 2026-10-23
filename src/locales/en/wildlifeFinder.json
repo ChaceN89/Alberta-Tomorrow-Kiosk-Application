@@ -1,0 +1,20 @@
+{
+  "title": "Find a habitat",
+  "description": "Meet a woodland caribou and discover where it lives in Alberta.",
+  "overviewDescription": "Explore how habitats provide food, water, and shelter, then answer a question about where woodland caribou find lichens in Alberta.",
+  "category": "Wildlife",
+  "launch": "Start activity",
+  "backToOverview": "Back to activity details",
+  "activity": {
+    "introduction": "Animals depend on their habitats for food, water, and shelter. Let's explore a home for Alberta's woodland caribou.",
+    "question": "Which habitat is home to woodland caribou in northern Alberta?",
+    "habitats": {
+      "prairie": "Open prairie",
+      "boreal": "Boreal forest",
+      "mountains": "Rocky peaks"
+    },
+    "correct": "That's right! Northern Alberta's woodland caribou live in boreal forests and peatlands, where they find lichens to eat.",
+    "tryAgain": "Not quite. Think of a northern habitat with forests, wetlands, and lichens. Try another answer!",
+    "reset": "Start again"
+  }
+}

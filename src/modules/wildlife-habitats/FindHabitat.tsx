@@ -1,5 +1,5 @@
 /**
- * File: WildlifeHabitats.tsx | Author: Chace Nielson
+ * File: FindHabitat.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
  * Description: Match a woodland caribou to an Alberta habitat with instant feedback.
  * Dependencies: React state, React Router, react-i18next; no saved progress.
@@ -11,14 +11,14 @@ import { Link } from 'react-router-dom'
 const habitats = ['prairie', 'boreal', 'mountains'] as const
 type Habitat = (typeof habitats)[number]
 
-export default function WildlifeHabitats() {
-  const { t } = useTranslation()
+export default function FindHabitat() {
+  const { t } = useTranslation('wildlifeFinder')
   const [selected, setSelected] = useState<Habitat | null>(null)
 
   return (
     <section aria-labelledby="activity-title" className="max-w-3xl space-y-6">
-      <p className="font-semibold text-pine">{t('categories.wildlife')}</p>
-      <h1 id="activity-title">{t('modules.wildlifeHabitats.title')}</h1>
+      <p className="font-semibold text-pine">{t('category')}</p>
+      <h1 id="activity-title">{t('title')}</h1>
       <p className="text-lg text-muted">{t('activity.introduction')}</p>
       <div className="panel space-y-6">
         <fieldset>
@@ -52,8 +52,8 @@ export default function WildlifeHabitats() {
           {t('activity.reset')}
         </button>
       </div>
-      <Link to="/" className="button">
-        {t('navigation.returnHome')}
+      <Link to="/modules/wildlife-habitats" className="button">
+        {t('backToOverview')}
       </Link>
     </section>
   )

@@ -1,6 +1,17 @@
 {
+  // Use the project's Prettier config and format the entire file on save.
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
   "editor.formatOnPaste": true,
+
+  // Keep indentation consistent with the project's two-space formatting.
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+
+  // Tailwind CSS 4 uses custom at-rules such as @theme, @apply, and @custom-variant.
+  "css.lint.unknownAtRules": "ignore",
+
   "files.insertFinalNewline": true
 }

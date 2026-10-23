@@ -1,0 +1,42 @@
+{
+  "title": "Les pensionnats autochtones en Alberta",
+  "description": "Découvrez trois pensionnats autochtones de l’Alberta, leur emplacement et leurs années de fonctionnement, avec des liens vers les archives du Centre national pour la vérité et la réconciliation.",
+  "overviewDescription": "La liste présente St. Mary's, sur la réserve de la Nation Kainai (Blood), St. Albert (Youville) et Lesser Slave Lake (St. Peter's). Chaque fiche indique les années de fonctionnement consignées et renvoie au dossier d’archives correspondant pour approfondir le sujet.",
+  "category": "Histoire",
+  "launch": "Voir la liste des écoles",
+  "backToOverview": "Retour aux détails du module",
+  "activity": {
+    "heading": "Trois pensionnats autochtones en Alberta",
+    "introduction": "Les pensionnats autochtones ont séparé des enfants autochtones de leurs familles et de leurs communautés. Cette liste présente des renseignements de base sur trois pensionnats de l’Alberta et renvoie aux archives du Centre national pour la vérité et la réconciliation.",
+    "location": "Emplacement :",
+    "operatingYears": "Années de fonctionnement :",
+    "sourceLabel": "Consulter le dossier dans les archives du CNVR",
+    "sourceLink": "Consulter le dossier d’archives de {{name}} au Centre national pour la vérité et la réconciliation",
+    "schools": [
+      {
+        "id": "st-marys-blood",
+        "name": "St. Mary's Residential School (Blood)",
+        "location": "Cardston (réserve Blood), Alberta",
+        "operatingYears": "1898–1988",
+        "description": "L’école se trouvait sur la réserve Blood de la Nation Kainai, au sud-ouest de Lethbridge.",
+        "source": "https://archives.nctr.ca/index.php/St-Marys-Residential-School-Blood"
+      },
+      {
+        "id": "st-albert-youville",
+        "name": "St. Albert Residential School (Youville)",
+        "location": "St. Albert, Alberta",
+        "operatingYears": "1873–1948",
+        "description": "L’école se trouvait à St. Albert, au nord-ouest d’Edmonton, dans le territoire du Traité no 6.",
+        "source": "https://archives.nctr.ca/index.php/St-Albert-Residential-School-Youville"
+      },
+      {
+        "id": "lesser-slave-lake",
+        "name": "Lesser Slave Lake Residential School (St. Peter's)",
+        "location": "Lesser Slave Lake, Alberta",
+        "operatingYears": "1895–1932",
+        "description": "L’école se trouvait dans le nord de l’Alberta, au nord-ouest d’Edmonton, et était administrée par l’Église anglicane.",
+        "source": "https://archives.nctr.ca/index.php/Lesser-Slave-Lake-Residential-School"
+      }
+    ]
+  }
+}

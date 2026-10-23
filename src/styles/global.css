@@ -10,12 +10,68 @@
   --color-pine: #175443;
   --color-pine-dark: #103c30;
   --color-canvas: #f5f7f3;
+  --color-surface: #ffffff;
   --color-ink: #172e29;
   --color-muted: #4a6259;
   --color-line: #b5c6bd;
   --color-focus: #075ed1;
+  --breakpoint-xs: 24rem;
   --font-sans: 'Segoe UI', system-ui, sans-serif;
   --spacing: 0.25rem;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes splash-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes splash-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.splash-screen {
+  animation: splash-fade-in 350ms ease-out both;
+}
+
+.splash-screen--exiting {
+  animation: splash-fade-out 250ms ease-in both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-screen,
+  .splash-screen--exiting {
+    animation: none;
+  }
+}
+
+html.dark {
+  color-scheme: dark;
+  --color-pine: #8ac9ad;
+  --color-pine-dark: #a6dfc3;
+  --color-canvas: #14211c;
+  --color-surface: #1d3028;
+  --color-ink: #edf5ef;
+  --color-muted: #c0d2c7;
+  --color-line: #53695e;
+  --color-focus: #90c5ff;
+}
+
+html.dark .button,
+html.dark .button-secondary[aria-pressed='true'] {
+  color: #14211c;
 }
 
 @layer base {
@@ -47,15 +103,15 @@
 
 @layer components {
   .panel {
-    @apply rounded-2xl border border-line bg-white p-6 md:p-8;
+    @apply rounded-2xl border border-line bg-surface p-6 md:p-8;
   }
 
   .button {
-    @apply inline-flex min-h-12 items-center justify-center rounded-xl bg-pine px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-pine-dark motion-reduce:transition-none;
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl bg-pine px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-pine-dark disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none;
   }
 
   .button-secondary {
-    @apply inline-flex min-h-12 items-center justify-center rounded-xl border-2 border-pine bg-white px-5 py-3 text-center font-semibold text-pine transition-colors hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-50 aria-pressed:bg-pine aria-pressed:text-white motion-reduce:transition-none;
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl border-2 border-pine bg-surface px-5 py-3 text-center font-semibold text-pine transition-colors hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-50 aria-pressed:bg-pine aria-pressed:text-white motion-reduce:transition-none;
   }
 
   .text-link {
@@ -63,6 +119,6 @@
   }
 
   .skip-link {
-    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10 focus:rounded-lg focus:bg-white focus:p-4;
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10 focus:rounded-lg focus:bg-surface focus:p-4;
   }
 }

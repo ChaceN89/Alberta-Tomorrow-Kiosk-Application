@@ -1,0 +1,20 @@
+{
+  "title": "Trouver un habitat",
+  "description": "Découvrez le caribou des bois et son habitat en Alberta.",
+  "overviewDescription": "Découvrez comment les habitats fournissent nourriture, eau et abri, puis répondez à une question sur les endroits où le caribou des bois trouve des lichens en Alberta.",
+  "category": "Faune",
+  "launch": "Commencer l’activité",
+  "backToOverview": "Retour aux détails de l’activité",
+  "activity": {
+    "introduction": "Les animaux dépendent de leur habitat pour se nourrir, boire et s'abriter. Explorons l'habitat du caribou des bois en Alberta.",
+    "question": "Quel habitat abrite le caribou des bois dans le nord de l'Alberta ?",
+    "habitats": {
+      "prairie": "Prairie ouverte",
+      "boreal": "Forêt boréale",
+      "mountains": "Sommets rocheux"
+    },
+    "correct": "Bravo ! Les caribous des bois du nord de l'Alberta vivent dans les forêts boréales et les tourbières, où ils trouvent des lichens à manger.",
+    "tryAgain": "Pas tout à fait. Pensez à un habitat nordique avec des forêts, des milieux humides et des lichens. Essayez une autre réponse !",
+    "reset": "Recommencer"
+  }
+}

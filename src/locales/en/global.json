@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "Alberta Expeditions",
+    "loading": "Loading your activity…",
+    "startupLoading": "Getting things ready…",
+    "startupErrorTitle": "We couldn't start the application.",
+    "startupErrorDescription": "Please try again. If the problem continues, reload the page.",
+    "retry": "Try again"
+  },
+  "navigation": {
+    "home": "Home",
+    "returnHome": "Return home",
+    "skip": "Skip to main content",
+    "label": "Main navigation"
+  },
+  "footer": {
+    "credit": "Alberta Expeditions is part of Alberta Tomorrow's educational platform."
+  },
+  "preload": {
+    "progressLabel": "Activity loading progress",
+    "progressValue": "{{percent}}%",
+    "preparing": "Preparing this activity…",
+    "errorTitle": "We couldn't prepare this activity.",
+    "errorDescription": "Please try again. If the problem continues, reload the page.",
+    "retry": "Retry loading",
+    "toastLoading": "Preparing activity…",
+    "toastSuccess": "Activity ready: {{activityName}}.",
+    "toastCancelled": "Activity preparation stopped.",
+    "toastError": "Couldn't prepare the activity."
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "fr": "Français"
+  },
+  "development": {
+    "breakpoint": "Current responsive breakpoint",
+    "breakpointPanel": "Tailwind CSS breakpoints",
+    "breakpointLegend": "Vertical lines mark where each responsive size begins.",
+    "toggleBreakpointGuides": "Toggle breakpoint guides and legend",
+    "breakpointGuidesVisible": "Breakpoint guides and legend are visible",
+    "breakpointGuidesHidden": "Breakpoint guides and legend are hidden",
+    "darkMode": "Switch to dark mode",
+    "lightMode": "Switch to light mode"
+  },
+  "notFound": {
+    "title": "Looks like we've wandered off track.",
+    "description": "This page isn't on our map. Let's get you back to Alberta.",
+    "backToAlberta": "Take me back to Alberta"
+  },
+  "moduleNotFound": {
+    "title": "We couldn't find that activity.",
+    "description": "This module may have moved or is no longer available. Head home to choose another activity."
+  },
+  "error": {
+    "title": "Something went wrong.",
+    "description": "We couldn't open this activity. Please return home and try again. If the problem continues, check your connection and reload."
+  }
+}

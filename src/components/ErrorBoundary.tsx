@@ -8,7 +8,7 @@ import { Component, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
 function ErrorFallback() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('global')
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-14">

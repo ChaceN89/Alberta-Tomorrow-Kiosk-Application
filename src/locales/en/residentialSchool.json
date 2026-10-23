@@ -1,0 +1,42 @@
+{
+  "title": "Residential schools in Alberta",
+  "description": "Explore three Alberta residential schools, where they were located, and the years they operated, with links to records from the National Centre for Truth and Reconciliation.",
+  "overviewDescription": "The list introduces St. Mary's on the Blood (Kainai Nation) reserve, St. Albert (Youville), and Lesser Slave Lake (St. Peter's). Each entry includes the recorded operating years and links to its archival record for further learning.",
+  "category": "History",
+  "launch": "View the school list",
+  "backToOverview": "Back to module details",
+  "activity": {
+    "heading": "Three Alberta residential schools",
+    "introduction": "Residential schools separated Indigenous children from their families and communities. This list shares basic information about three Alberta schools and links to records from the National Centre for Truth and Reconciliation.",
+    "location": "Location:",
+    "operatingYears": "Operating years:",
+    "sourceLabel": "Read the NCTR archive record",
+    "sourceLink": "Read the archive record for {{name}} from the National Centre for Truth and Reconciliation",
+    "schools": [
+      {
+        "id": "st-marys-blood",
+        "name": "St. Mary's Residential School (Blood)",
+        "location": "Cardston (Blood Reserve), Alberta",
+        "operatingYears": "1898–1988",
+        "description": "The school was located on the Blood (Kainai Nation) reserve southwest of Lethbridge.",
+        "source": "https://archives.nctr.ca/index.php/St-Marys-Residential-School-Blood"
+      },
+      {
+        "id": "st-albert-youville",
+        "name": "St. Albert Residential School (Youville)",
+        "location": "St. Albert, Alberta",
+        "operatingYears": "1873–1948",
+        "description": "The school was in St. Albert, northwest of Edmonton, within Treaty 6 territory.",
+        "source": "https://archives.nctr.ca/index.php/St-Albert-Residential-School-Youville"
+      },
+      {
+        "id": "lesser-slave-lake",
+        "name": "Lesser Slave Lake Residential School (St. Peter's)",
+        "location": "Lesser Slave Lake, Alberta",
+        "operatingYears": "1895–1932",
+        "description": "The school was in northern Alberta, northwest of Edmonton, and operated under Anglican Church administration.",
+        "source": "https://archives.nctr.ca/index.php/Lesser-Slave-Lake-Residential-School"
+      }
+    ]
+  }
+}

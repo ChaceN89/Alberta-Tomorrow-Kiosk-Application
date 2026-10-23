@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "Alberta Expeditions",
+    "loading": "Chargement de votre activité…",
+    "startupLoading": "Préparation de l’application…",
+    "startupErrorTitle": "Impossible de démarrer l’application.",
+    "startupErrorDescription": "Veuillez réessayer. Si le problème persiste, rechargez la page.",
+    "retry": "Réessayer"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "returnHome": "Retour à l'accueil",
+    "skip": "Aller au contenu principal",
+    "label": "Navigation principale"
+  },
+  "footer": {
+    "credit": "Alberta Expeditions fait partie de la plateforme éducative d’Alberta Tomorrow."
+  },
+  "preload": {
+    "progressLabel": "Progression du chargement de l’activité",
+    "progressValue": "{{percent}} %",
+    "preparing": "Préparation de cette activité…",
+    "errorTitle": "Impossible de préparer cette activité.",
+    "errorDescription": "Veuillez réessayer. Si le problème persiste, rechargez la page.",
+    "retry": "Réessayer le chargement",
+    "toastLoading": "Préparation de l’activité…",
+    "toastSuccess": "Activité prête : {{activityName}}.",
+    "toastCancelled": "Préparation de l’activité interrompue.",
+    "toastError": "Impossible de préparer l’activité."
+  },
+  "language": {
+    "label": "Langue",
+    "en": "English",
+    "fr": "Français"
+  },
+  "development": {
+    "breakpoint": "Point de rupture actuel",
+    "breakpointPanel": "Points d'arrêt Tailwind CSS",
+    "breakpointLegend": "Les lignes verticales indiquent le seuil où commence chaque format d’écran.",
+    "toggleBreakpointGuides": "Afficher ou masquer les repères et leur légende",
+    "breakpointGuidesVisible": "Les repères et leur légende sont visibles",
+    "breakpointGuidesHidden": "Les repères et leur légende sont masqués",
+    "darkMode": "Activer le mode sombre",
+    "lightMode": "Activer le mode clair"
+  },
+  "notFound": {
+    "title": "On dirait que nous nous sommes égarés.",
+    "description": "Cette page n'est pas sur notre carte. Retournons en Alberta.",
+    "backToAlberta": "Retourner en Alberta"
+  },
+  "moduleNotFound": {
+    "title": "Impossible de trouver cette activité.",
+    "description": "Ce module a peut-être été déplacé ou n'est plus disponible. Retournez à l'accueil pour choisir une autre activité."
+  },
+  "error": {
+    "title": "Un problème est survenu.",
+    "description": "Impossible d'ouvrir cette activité. Retournez à l'accueil et réessayez. Si le problème persiste, vérifiez votre connexion et rechargez la page."
+  }
+}

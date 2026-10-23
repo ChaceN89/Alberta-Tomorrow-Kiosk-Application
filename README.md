@@ -1,8 +1,8 @@
-# Alberta Tomorrow
+# Alberta Expeditions
 
-A lightweight, bilingual educational app about Alberta. This starter includes a
-home page and one short wildlife habitat activity. Future independent modules can
-explore land use, geology, oil sands, climate events, and more.
+A lightweight, bilingual educational app from Alberta Tomorrow. The app currently
+includes wildlife and residential-school modules; future independent modules can
+explore land use, geology, energy, climate events, and more.
 
 ## Setup
 
@@ -17,7 +17,9 @@ npm run dev
 ```
 
 Open the local URL printed by Vite. The example is at
-`/modules/wildlife-habitats`. No environment variables or external services are needed.
+`/modules/wildlife-habitats`. The tracked `.env.development` enables development-only
+visual testing tools during `npm run dev`; do not put secrets in Vite environment
+files because `VITE_` variables are included in client code.
 Install the recommended VS Code Prettier and ESLint extensions; the committed
 settings enable Prettier formatting on save for all supported file types.
 
@@ -40,41 +42,58 @@ Commit `package-lock.json`; use `npm ci` for reproducible installs.
 ```text
 src/
   app/          Entry point, translations setup, routing, and pages
-  components/   Shared layout, loading, error, and not-found UI
+  components/   Shared UI and reusable components used across modules
   modules/      Typed registry, shared types, and individual module folders
-  locales/      en/translation.json and fr/translation.json
+  locales/      en/ and fr/ with home, global, funfacts, and module JSON files
   styles/       Global CSS and centralized theme tokens
   assets/       Bundled local assets
 ```
 
 React Router owns navigation. The registry supplies home-page metadata and
-lazy-loaded activities. `Suspense` announces loading, and the application error
-boundary handles rendering or activity-download failures. Unknown routes and
-module IDs show a friendly return-home page. State uses React hooks only and is
-not saved. English is the initial language; switching to French updates the entire
-interface and document language without resetting the current activity. A page
-reload resets language and activity state.
+lazy-loaded activities. Each `/modules/<id>` route shows module details and a
+launch action; activities open at `/modules/<id>/activity`. Reusable components
+belong in `src/components/`; module-specific activities, components, and data
+belong in their own `src/modules/<module-id>/` folder. Modules can compose
+shared components, such as a future map or quiz, without sharing activity-specific
+state or configuration. Opening a module overview preloads its activity and
+shows progress in the navigation bar. Preloads are cancelled when leaving that
+module. The residential-school module currently uses a five-second simulated
+preload; replace it with real asset or data loading when those resources exist.
+`Suspense` announces loading, and the application error
+boundary handles rendering or activity-download failures. Unknown page URLs show
+a playful 404 with an Alberta fun fact; missing modules or invalid paths beneath
+`/modules/` show a module-specific recovery message. State uses React hooks only
+and is not saved. English is the initial language; switching to French updates
+the entire interface and document language without resetting the current
+activity. A page reload resets language and activity state.
 
 ### Add a module
 
 1. Create a folder under `src/modules/`, such as `land-use/`.
 2. Add a default-exported React activity component. Keep its components, state,
-   and logic in that folder. Include a translated return-home link.
-3. Add matching `modules.landUse.title` and `modules.landUse.description` keys in
-   both translation files, plus any activity-specific text. Add a category under
-   `categories` in both files if needed.
+   and logic in that folder. Import reusable UI from `src/components/` and include
+   a translated link back to the module overview.
+3. Add a matching module resource in both `src/locales/en/<namespace>.json` and
+   `src/locales/fr/<namespace>.json`. Include `title`, `description`, `category`,
+   and any activity-specific text. Register the namespace in `src/app/i18n.ts`
+   and `ModuleTranslationNamespace` in `src/modules/types.ts`.
 4. Add a `LearningModule` entry to `src/modules/registry.ts`: a unique URL-safe
-   `id`, translation keys, category, estimated minutes, and
+   `id`, its `translationNamespace`, estimated minutes, and
    `lazy(() => import('./land-use/LandUse'))`.
-5. Run the checks below. The home card and `/modules/<id>` route are automatic.
+5. Run the checks below. The home card, module overview, and activity route are
+   automatic.
 
 ### Add or change translations
 
-Keep all visible interface text in `src/locales/en/translation.json` and
-`src/locales/fr/translation.json`, with the same key structure. Use
-`useTranslation()` and `t('key')`, including for accessible labels and feedback.
-English resources define the TypeScript translation-key types. Use i18next
-interpolation rather than concatenating translated sentences.
+Keep shared interface text in `global.json`, homepage content in `home.json`,
+and fun-fact content in `funfacts.json` inside each language folder under
+`src/locales/`. Give every module its own JSON namespace file, such as
+`wildlifeFinder.json` or `residentialSchool.json`, and keep matching English and
+French keys, including `launch` for the overview action. Use
+`useTranslation('home')`, `useTranslation('global')`, and the module's
+namespace as appropriate. English resources define the TypeScript
+translation-key types. Use i18next interpolation rather than concatenating
+translated sentences.
 
 To add another language, add its resource file, register it and its language code
 in `src/app/i18n.ts`, and add its translated name and option to the language
@@ -86,8 +105,18 @@ Tailwind CSS 4 uses `@tailwindcss/vite` in `vite.config.ts` and
 `@import 'tailwindcss'` in `src/styles/global.css`. The CSS `@theme` block
 centralizes colours, the system font stack, and spacing. No legacy
 `tailwind.config.js`, PostCSS configuration, or `@tailwind` directives are needed.
+Add theme values and custom breakpoints in that `@theme` block; the custom
+`xs:` variant starts at `24rem` (384px), below Tailwind's default `sm:` at
+`40rem` (640px). For example, `xs:grid-cols-2` applies from 384px upward.
 Prefer utilities and the small shared component classes. Controls have
 touch-friendly targets, visible keyboard focus, and reduced-motion support.
+
+Development-only breakpoint and dark-mode controls live in
+`src/components/development/`. They render only when Vite is in development mode
+and `VITE_ENVIRONMENT=development`; the browser tab title is prefixed with
+`Dev | `. The breakpoint badge toggles both vertical breakpoint guides and a
+centered, translucent legend. The reusable `Dropdown` component powers the
+language selector and supports keyboard navigation.
 
 Use strict TypeScript, same-line opening braces, and Prettier formatting. Add a
 short header to hand-written source files with filename, author (Chace Nielson),
@@ -109,7 +138,8 @@ There is no automated test framework yet. Before adding a module, manually check
 - Home cards and navigation at desktop and tablet sizes.
 - Both languages on home, in the activity, and on the not-found page.
 - Incorrect and correct answers, reset, return home, and browser back/forward.
-- Direct loading and refreshing `/modules/wildlife-habitats`.
+- Direct loading and refreshing `/modules/wildlife-habitats` and
+  `/modules/wildlife-habitats/activity`.
 - Unknown URLs and module IDs, such as `/missing` and `/modules/missing`.
 - Keyboard navigation, focus visibility, and the skip-to-content link.
 - Loading feedback with a delayed activity request, and error recovery with a
@@ -120,7 +150,7 @@ There is no automated test framework yet. Before adding a module, manually check
 Build with `npm ci && npm run build` and serve `dist/` from the site root using a
 static host. **Configure an SPA fallback:** requests that do not match static
 files must serve `index.html` with a successful response, so direct navigation to
-`/modules/wildlife-habitats` works. For example, an nginx location can use
+`/modules/wildlife-habitats/activity` works. For example, an nginx location can use
 `try_files $uri $uri/ /index.html;`. Keep real asset requests working normally.
 Vite's development/preview servers provide the fallback locally; `npm run preview`
 is not a production server.

@@ -1,21 +1,49 @@
 /**
  * File: ModulePage.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Resolve module IDs and load activities only when requested.
+ * Description: Render module details and load activities only when requested.
  * Dependencies: React Suspense, React Router, module registry.
  */
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { Loading } from '../components/Loading'
-import { NotFound } from '../components/NotFound'
+import { ModuleOverview } from '../components/ModuleOverview'
+import { ModuleNotFound } from '../components/ModuleNotFound'
+import { useModulePreload } from '../modules/useModulePreload'
 import { modules } from '../modules/registry'
+import type { LearningModule } from '../modules/types'
 
-export function ModulePage() {
-  const { moduleId } = useParams()
-  const module = modules.find((entry) => entry.id === moduleId)
+type ModuleActivityProps = {
+  module: LearningModule
+}
 
-  if (!module) {
-    return <NotFound />
+function ModuleActivity({ module }: ModuleActivityProps) {
+  const { t } = useTranslation('global')
+  const { state, preloadModule, isModuleReady } = useModulePreload()
+
+  useEffect(() => {
+    void preloadModule(module)
+  }, [module, preloadModule])
+
+  if (!isModuleReady(module.id)) {
+    if (state.moduleId === module.id && state.status === 'error') {
+      return (
+        <section role="alert" className="panel max-w-3xl space-y-4">
+          <h1>{t('preload.errorTitle')}</h1>
+          <p className="text-muted">{t('preload.errorDescription')}</p>
+          <button
+            type="button"
+            className="button-secondary"
+            onClick={() => void preloadModule(module)}
+          >
+            {t('preload.retry')}
+          </button>
+        </section>
+      )
+    }
+
+    return <Loading label={t('preload.preparing')} />
   }
 
   const Activity = module.component
@@ -25,4 +53,23 @@ export function ModulePage() {
       <Activity key={module.id} />
     </Suspense>
   )
+}
+
+export function ModulePage() {
+  const { moduleId, '*': modulePath } = useParams()
+  const module = modules.find((entry) => entry.id === moduleId)
+
+  if (!module) {
+    return <ModuleNotFound />
+  }
+
+  if (!modulePath) {
+    return <ModuleOverview module={module} />
+  }
+
+  if (modulePath !== 'activity') {
+    return <ModuleNotFound />
+  }
+
+  return <ModuleActivity module={module} />
 }
