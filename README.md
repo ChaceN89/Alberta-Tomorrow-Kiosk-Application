@@ -6,7 +6,7 @@ explore land use, geology, oil sands, climate events, and more.
 
 ## Setup
 
-Use **Node.js 22.12+ (22.x) or Node.js 24+**, with npm. Node 22 is selected in
+Use **Node.js 22.13+ (22.x) or Node.js 24+**, with npm. Node 22 is selected in
 `.nvmrc`; use a maintained Node release. These requirements cover Vite 8 and ESLint 10.
 TypeScript 6 is used for compatibility with typescript-eslint's supported range.
 

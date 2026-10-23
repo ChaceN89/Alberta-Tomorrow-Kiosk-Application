@@ -19,7 +19,7 @@
 - Use same-line opening braces and Prettier. Hand-written source files require
   a short filename, author (Chace Nielson), created date, updated date, description,
   and dependencies/notes header. Do not add headers to JSON or generated files.
-- Use Node 22.12+ (22.x) or 24+. Validate with `npm run typecheck`,
+- Use Node 22.13+ (22.x) or 24+. Validate with `npm run typecheck`,
   `npm run lint`, `npm run format:check`, and `npm run build`. No automated test
   framework exists yet; manually verify both languages and activity interactions.
 - Keep scope small. Do not add authentication, backend services, persistence,
