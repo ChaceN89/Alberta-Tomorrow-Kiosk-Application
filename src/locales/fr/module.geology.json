@@ -4,7 +4,7 @@
   "overviewDescription": "Répondez à trois questions à choix multiples sur les badlands, les blocs transportés par les glaciers et les sables bitumineux de l’Alberta. Chaque bonne réponse ajoute une note à votre journal d’expédition.",
   "category": "Géologie",
   "launch": "Commencer le questionnaire",
-  "backToOverview": "Retour aux détails de l’activité",
+  "backToOverview": "Retour aux détails de l’expédition",
   "activity": {
     "introduction": "Le paysage de l’Alberta renferme des indices sur la vie ancienne et la puissance des glaces. Répondez à trois questions pour ajouter chaque découverte à votre journal.",
     "progress": "Question {{current}} sur {{total}}",

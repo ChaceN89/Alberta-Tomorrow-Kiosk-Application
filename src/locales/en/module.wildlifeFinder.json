@@ -3,8 +3,8 @@
   "description": "Meet a woodland caribou and discover where it lives in Alberta.",
   "overviewDescription": "Explore how habitats provide food, water, and shelter, then answer a question about where woodland caribou find lichens in Alberta.",
   "category": "Wildlife",
-  "launch": "Start activity",
-  "backToOverview": "Back to activity details",
+  "launch": "Start expedition",
+  "backToOverview": "Back to expedition details",
   "activity": {
     "introduction": "Animals depend on their habitats for food, water, and shelter. Let's explore a home for Alberta's woodland caribou.",
     "question": "Which habitat is home to woodland caribou in northern Alberta?",

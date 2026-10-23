@@ -115,7 +115,7 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
       <div className="flex flex-wrap gap-3">
         <Link
           className="button"
-          to={`/modules/${module.id}/activity`}
+          to={`/modules/${module.id}/expedition`}
           onClick={onNavigate}
         >
           {t(progress.status === 'complete' ? 'revisit' : 'continue')}

@@ -102,7 +102,7 @@ function ModuleStatusItem({
         </Link>
         <Link
           className="button min-h-10 px-3 py-2 text-sm"
-          to={`/modules/${module.id}/activity`}
+          to={`/modules/${module.id}/expedition`}
           onClick={onClose}
         >
           {t('moduleActivity')}

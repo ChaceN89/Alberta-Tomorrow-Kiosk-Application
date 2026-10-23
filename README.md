@@ -53,7 +53,7 @@ src/
 
 React Router owns navigation. The registry supplies home-page metadata and
 lazy-loaded activities. Each `/modules/<id>` route shows module details and a
-launch action; activities open at `/modules/<id>/activity`. Reusable components
+launch action; activities open at `/modules/<id>/expedition`. Reusable components
 belong in `src/components/`; module-specific activities, components, and data
 belong in their own `src/modules/<module-id>/` folder. Modules can compose
 shared components, such as a future map or quiz, without sharing activity-specific
@@ -114,7 +114,7 @@ save data later.
    a small file in the module folder) and matching `journal.summary` and
    `journal.entries` in both locale files. The activity receives
    `completedCheckpoints` and `completeCheckpoint` props.
-5. Run the checks below. The home card, module overview, and activity route are
+5. Run the checks below. The home card, module overview, and expedition route are
    automatic.
 
 ### Add or change translations
@@ -173,7 +173,7 @@ There is no automated test framework yet. Before adding a module, manually check
 - Both languages on home, in the activity, and on the not-found page.
 - Incorrect and correct answers, reset, return home, and browser back/forward.
 - Direct loading and refreshing `/modules/wildlife-habitats` and
-  `/modules/wildlife-habitats/activity`.
+  `/modules/wildlife-habitats/expedition`.
 - Unknown URLs and module IDs, such as `/missing` and `/modules/missing`.
 - Keyboard navigation, focus visibility, and the skip-to-content link.
 - Loading feedback with a delayed activity request, and error recovery with a
@@ -184,7 +184,7 @@ There is no automated test framework yet. Before adding a module, manually check
 Build with `npm ci && npm run build` and serve `dist/` from the site root using a
 static host. **Configure an SPA fallback:** requests that do not match static
 files must serve `index.html` with a successful response, so direct navigation to
-`/modules/wildlife-habitats/activity` works. For example, an nginx location can use
+`/modules/wildlife-habitats/expedition` works. For example, an nginx location can use
 `try_files $uri $uri/ /index.html;`. Keep real asset requests working normally.
 Vite's development/preview servers provide the fallback locally; `npm run preview`
 is not a production server.

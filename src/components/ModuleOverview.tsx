@@ -25,7 +25,7 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
   const { getExpeditionProgress, openJournal } = useJournal()
   const expeditionProgress = getExpeditionProgress(module)
   const navigate = useNavigate()
-  const activityPath = `/modules/${module.id}/activity`
+  const activityPath = `/modules/${module.id}/expedition`
   const isReady = isModuleReady(module.id)
   const hasError = state.moduleId === module.id && state.status === 'error'
   const isPreparing = !isReady && !hasError

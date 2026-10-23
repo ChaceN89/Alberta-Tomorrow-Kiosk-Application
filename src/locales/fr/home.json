@@ -1,7 +1,7 @@
 {
   "eyebrow": "Explorez. Découvrez. Apprenez.",
-  "title": "Découvrez l'Alberta, une activité à la fois.",
-  "description": "Explorez les paysages et la faune qui rendent l'Alberta unique. Choisissez une activité pour commencer.",
-  "exploreModule": "Découvrir cette activité",
+  "title": "Découvrez l'Alberta, une expédition à la fois.",
+  "description": "Explorez les paysages et la faune qui rendent l'Alberta unique. Choisissez une expédition pour commencer.",
+  "exploreModule": "Découvrir cette expédition",
   "moduleDuration": "Environ {{count}} minutes"
 }

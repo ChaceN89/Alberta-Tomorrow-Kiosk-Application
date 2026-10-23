@@ -13,6 +13,7 @@
     "sourceLabel": "Read the NCTR archive record",
     "sourceLink": "Read the archive record for {{name}} from the National Centre for Truth and Reconciliation",
     "addToJournal": "Add to journal",
+    "addToJournalHint": "Open the archive record first to add this school to your journal.",
     "addToJournalLabel": "Add {{name}} to my journal",
     "addedToJournal": "Added to journal",
     "addedToJournalLabel": "{{name}} is in my journal",

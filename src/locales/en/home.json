@@ -1,7 +1,7 @@
 {
   "eyebrow": "Explore. Discover. Learn.",
-  "title": "Discover Alberta, one activity at a time.",
-  "description": "Explore the landscapes and wildlife that make Alberta unique. Choose an activity to get started.",
-  "exploreModule": "Explore this activity",
+  "title": "Discover Alberta, one expedition at a time.",
+  "description": "Explore the landscapes and wildlife that make Alberta unique. Choose an expedition to get started.",
+  "exploreModule": "Explore this expedition",
   "moduleDuration": "About {{count}} minutes"
 }

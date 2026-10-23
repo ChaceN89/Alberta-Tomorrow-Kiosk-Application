@@ -13,6 +13,7 @@
     "sourceLabel": "Consulter le dossier dans les archives du CNVR",
     "sourceLink": "Consulter le dossier d’archives de {{name}} au Centre national pour la vérité et la réconciliation",
     "addToJournal": "Ajouter au journal",
+    "addToJournalHint": "Ouvrez d’abord le dossier d’archives pour ajouter cette école à votre journal.",
     "addToJournalLabel": "Ajouter {{name}} à mon journal",
     "addedToJournal": "Ajouté au journal",
     "addedToJournalLabel": "{{name}} figure dans mon journal",

@@ -86,7 +86,7 @@ export function ModulePage() {
     return <ModuleOverview module={module} />
   }
 
-  if (modulePath !== 'activity') {
+  if (modulePath !== 'expedition') {
     return <ModuleNotFound />
   }
 

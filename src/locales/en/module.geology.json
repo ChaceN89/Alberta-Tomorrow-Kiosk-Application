@@ -4,7 +4,7 @@
   "overviewDescription": "Answer three multiple-choice questions about Alberta's badlands, glacial boulders, and oil sands. Each correct answer adds a note to your expedition journal.",
   "category": "Geology",
   "launch": "Start the quiz",
-  "backToOverview": "Back to activity details",
+  "backToOverview": "Back to expedition details",
   "activity": {
     "introduction": "Alberta's landscape holds clues about ancient life and powerful ice. Answer three questions to add each discovery to your journal.",
     "progress": "Question {{current}} of {{total}}",
