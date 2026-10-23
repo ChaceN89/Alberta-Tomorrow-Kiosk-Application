@@ -16,5 +16,20 @@
     "correct": "That's right! Northern Alberta's woodland caribou live in boreal forests and peatlands, where they find lichens to eat.",
     "tryAgain": "Not quite. Think of a northern habitat with forests, wetlands, and lichens. Try another answer!",
     "reset": "Start again"
+  },
+  "journal": {
+    "summary": "Field notes on how Alberta's wildlife depends on its habitat.",
+    "entries": [
+      {
+        "id": "habitats-matter",
+        "title": "Why habitats matter",
+        "summary": "Animals depend on their habitats for food, water, and shelter."
+      },
+      {
+        "id": "caribou-home",
+        "title": "Home of the woodland caribou",
+        "summary": "Northern Alberta's woodland caribou live in boreal forests and peatlands, where they find lichens to eat."
+      }
+    ]
   }
 }

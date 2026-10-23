@@ -16,5 +16,20 @@
     "correct": "Bravo ! Les caribous des bois du nord de l'Alberta vivent dans les forêts boréales et les tourbières, où ils trouvent des lichens à manger.",
     "tryAgain": "Pas tout à fait. Pensez à un habitat nordique avec des forêts, des milieux humides et des lichens. Essayez une autre réponse !",
     "reset": "Recommencer"
+  },
+  "journal": {
+    "summary": "Notes de terrain sur la façon dont la faune de l’Alberta dépend de son habitat.",
+    "entries": [
+      {
+        "id": "habitats-matter",
+        "title": "Pourquoi les habitats sont importants",
+        "summary": "Les animaux dépendent de leur habitat pour se nourrir, boire et s'abriter."
+      },
+      {
+        "id": "caribou-home",
+        "title": "Le territoire du caribou des bois",
+        "summary": "Les caribous des bois du nord de l'Alberta vivent dans les forêts boréales et les tourbières, où ils trouvent des lichens à manger."
+      }
+    ]
   }
 }

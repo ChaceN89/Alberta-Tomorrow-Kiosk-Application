@@ -1,22 +1,26 @@
 /**
  * File: Layout.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Provide responsive navigation, language controls, and main landmark.
- * Dependencies: React Router, react-i18next, shared dropdown, development tools.
+ * Description: Provide responsive navigation, journal access, language controls, and main landmark.
+ * Dependencies: React Router, react-i18next, shared dropdown, journal modal, development tools.
  */
 import { useTranslation } from 'react-i18next'
 import { Toaster } from 'react-hot-toast'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import leaf from '../assets/leaf.svg'
-import { OverlayScrollbar } from './OverlayScrollbar'
+import logo from '../assets/expedition.svg'
+import { useJournal } from '../journal/useJournal'
 import { useModulePreload } from '../modules/useModulePreload'
 import { DisplayTesting } from './development/DisplayTesting'
 import { Dropdown } from './Dropdown'
+import { JournalModal } from './JournalModal'
+import { OverlayScrollbar } from './OverlayScrollbar'
 
 export function Layout() {
   const { t, i18n } = useTranslation('global')
+  const { t: tJournal } = useTranslation('journal')
   const { pathname } = useLocation()
   const { state: preloadState } = useModulePreload()
+  const { openJournal } = useJournal()
   const languages = [
     { id: 'en', label: t('language.en') },
     { id: 'fr', label: t('language.fr') },
@@ -34,11 +38,14 @@ export function Layout() {
             to="/"
             className="flex min-h-12 items-center gap-3 text-xl font-bold text-pine"
           >
-            <img src={leaf} alt="" className="size-9" />
+            <img src={logo} alt="" className="size-9" />
             {t('app.name')}
           </Link>
           <div className="flex flex-wrap items-center gap-6">
-            <nav aria-label={t('navigation.label')}>
+            <nav
+              aria-label={t('navigation.label')}
+              className="flex items-center gap-4"
+            >
               <Link
                 to="/"
                 className="text-link"
@@ -46,6 +53,30 @@ export function Layout() {
               >
                 {t('navigation.home')}
               </Link>
+              <button
+                type="button"
+                className="button-secondary min-h-12 gap-2 px-4 py-2"
+                aria-label={tJournal('openLabel')}
+                onClick={() =>
+                  openJournal(pathname.match(/^\/modules\/([^/]+)/)?.[1])
+                }
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                  className="size-5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Z" />
+                  <path d="M5 17a3 3 0 0 1 3-3h11M10 8h5" />
+                </svg>
+                {tJournal('open')}
+              </button>
             </nav>
             <Dropdown
               ariaLabel={t('language.label')}
@@ -93,6 +124,7 @@ export function Layout() {
         </div>
       </footer>
       <DisplayTesting />
+      <JournalModal />
       <OverlayScrollbar />
       <Toaster
         position="top-center"

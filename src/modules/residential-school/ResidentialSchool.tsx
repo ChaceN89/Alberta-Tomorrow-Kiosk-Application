@@ -2,12 +2,16 @@
  * File: ResidentialSchool.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
  * Description: Present historical Alberta residential-school records respectfully.
- * Dependencies: React Router, react-i18next; sources link to NCTR archives.
+ * Dependencies: React Router, react-i18next; sources link to NCTR archives; records journal checkpoints.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import type { ModuleActivityProps } from '../types'
 
-export default function ResidentialSchool() {
+export default function ResidentialSchool({
+  completedCheckpoints,
+  completeCheckpoint,
+}: ModuleActivityProps) {
   const { t } = useTranslation('residentialSchool')
   const schools = t('activity.schools', { returnObjects: true })
 
@@ -42,6 +46,26 @@ export default function ResidentialSchool() {
             >
               {t('activity.sourceLabel')}
             </a>
+            <div>
+              <button
+                type="button"
+                className="button-secondary min-h-10 px-4 py-2 text-sm"
+                disabled={completedCheckpoints.includes(school.id)}
+                aria-label={t(
+                  completedCheckpoints.includes(school.id)
+                    ? 'activity.addedToJournalLabel'
+                    : 'activity.addToJournalLabel',
+                  { name: school.name },
+                )}
+                onClick={() => completeCheckpoint(school.id)}
+              >
+                {t(
+                  completedCheckpoints.includes(school.id)
+                    ? 'activity.addedToJournal'
+                    : 'activity.addToJournal',
+                )}
+              </button>
+            </div>
           </li>
         ))}
       </ul>

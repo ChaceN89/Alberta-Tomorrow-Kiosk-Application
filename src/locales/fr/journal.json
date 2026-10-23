@@ -1,0 +1,28 @@
+{
+  "title": "Journal d’expédition",
+  "open": "Journal",
+  "openLabel": "Ouvrir le journal d’expédition",
+  "close": "Fermer le journal",
+  "viewJournal": "Voir le journal",
+  "viewJournalFor": "Voir le journal de {{title}}",
+  "expeditionNumber": "Expédition {{number}} sur {{total}}",
+  "previous": "Expédition précédente",
+  "next": "Expédition suivante",
+  "expeditionList": "Toutes les expéditions",
+  "status": {
+    "notStarted": "Pas commencée",
+    "inProgress": "En cours",
+    "complete": "Expédition terminée"
+  },
+  "progress": "{{completed}} sur {{total}} étapes",
+  "notebook": "Notes de terrain",
+  "locked": "Pas encore découvert",
+  "lockedHint": "Poursuivez cette expédition pour ajouter cette note.",
+  "recorded": "Consignée",
+  "start": "Commencer l’expédition",
+  "continue": "Poursuivre l’expédition",
+  "revisit": "Revisiter l’expédition",
+  "details": "Détails de l’expédition",
+  "toastUpdated": "Journal mis à jour.",
+  "storageUnavailable": "La progression ne peut pas être enregistrée dans ce navigateur; elle sera perdue quand vous quitterez cette page."
+}

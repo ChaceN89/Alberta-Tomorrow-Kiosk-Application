@@ -15,6 +15,7 @@
   --color-muted: #4a6259;
   --color-line: #b5c6bd;
   --color-focus: #075ed1;
+  --color-flag: #c2410c;
   --breakpoint-xs: 24rem;
   --font-sans: 'Segoe UI', system-ui, sans-serif;
   --spacing: 0.25rem;
@@ -90,6 +91,7 @@ html.dark {
   --color-muted: #c0d2c7;
   --color-line: #53695e;
   --color-focus: #90c5ff;
+  --color-flag: #fb923c;
 }
 
 html.dark .button,

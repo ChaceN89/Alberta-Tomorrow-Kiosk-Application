@@ -1,0 +1,12 @@
+<!--
+File: expedition.svg | Author: Chace Nielson
+Created: 2026-10-23 | Updated: 2026-10-23
+Description: Base camp flag on a mountain mark for the application header and favicon.
+Notes: Decorative bundled vector; no external assets.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <rect width="40" height="40" rx="10" fill="#175443"/>
+  <path d="M6 31 17 13l6 9 4-5 7 14Z" fill="#d8e9c4"/>
+  <path d="M17 13V6" fill="none" stroke="#d8e9c4" stroke-linecap="round" stroke-width="2"/>
+  <path d="m17 6 8 2.5-8 2.5Z" fill="#f4a261"/>
+</svg>

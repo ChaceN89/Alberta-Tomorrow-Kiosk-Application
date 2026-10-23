@@ -1,0 +1,28 @@
+{
+  "title": "Expedition Journal",
+  "open": "Journal",
+  "openLabel": "Open expedition journal",
+  "close": "Close journal",
+  "viewJournal": "View journal",
+  "viewJournalFor": "View journal for {{title}}",
+  "expeditionNumber": "Expedition {{number}} of {{total}}",
+  "previous": "Previous expedition",
+  "next": "Next expedition",
+  "expeditionList": "All expeditions",
+  "status": {
+    "notStarted": "Not started",
+    "inProgress": "In progress",
+    "complete": "Expedition complete"
+  },
+  "progress": "{{completed}} of {{total}} checkpoints",
+  "notebook": "Field notes",
+  "locked": "Not yet discovered",
+  "lockedHint": "Keep exploring this expedition to add this note.",
+  "recorded": "Recorded",
+  "start": "Start expedition",
+  "continue": "Continue expedition",
+  "revisit": "Revisit expedition",
+  "details": "Expedition details",
+  "toastUpdated": "Journal updated.",
+  "storageUnavailable": "Progress can't be saved in this browser, so it will be lost when you leave this page."
+}

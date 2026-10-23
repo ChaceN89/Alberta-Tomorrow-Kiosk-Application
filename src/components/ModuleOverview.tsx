@@ -2,13 +2,15 @@
  * File: ModuleOverview.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
  * Description: Show reusable module details and navigation before launch.
- * Dependencies: React Router, react-i18next, learning-module metadata.
+ * Dependencies: React Router, react-i18next, learning-module metadata, journal context.
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
+import { useJournal } from '../journal/useJournal'
 import { useModulePreload } from '../modules/useModulePreload'
 import type { LearningModule } from '../modules/types'
+import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
 type ModuleOverviewProps = {
   module: LearningModule
@@ -18,7 +20,10 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
   const { t } = useTranslation(module.translationNamespace)
   const { t: tHome } = useTranslation('home')
   const { t: tGlobal } = useTranslation('global')
+  const { t: tJournal } = useTranslation('journal')
   const { state, preloadModule, isModuleReady } = useModulePreload()
+  const { getExpeditionProgress, openJournal } = useJournal()
+  const expeditionProgress = getExpeditionProgress(module)
   const navigate = useNavigate()
   const activityPath = `/modules/${module.id}/activity`
   const isReady = isModuleReady(module.id)
@@ -58,9 +63,17 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
         </div>
       )}
       <div className="panel space-y-4">
-        <p className="font-medium text-muted">
-          {tHome('moduleDuration', { count: module.estimatedMinutes })}
-        </p>
+        <div className="flex items-center gap-4">
+          <ExpeditionPeak progress={expeditionProgress} className="size-14" />
+          <div>
+            <p className="font-medium text-muted">
+              {tHome('moduleDuration', { count: module.estimatedMinutes })}
+            </p>
+            <p className="text-sm font-semibold text-pine">
+              <ExpeditionStatusText progress={expeditionProgress} />
+            </p>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
@@ -85,6 +98,13 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
             >
               {t('launch')}
             </span>
+          </button>
+          <button
+            type="button"
+            className="button-secondary"
+            onClick={() => openJournal(module.id)}
+          >
+            {tJournal('viewJournal')}
           </button>
           <Link className="button-secondary" to="/">
             {tGlobal('navigation.returnHome')}

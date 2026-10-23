@@ -5,7 +5,9 @@
  * Dependencies: React Router, react-i18next, module preload context.
  */
 import { useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { ApplicationStatePanel } from './panels/ApplicationStatePanel'
 import { ModuleStatusPanel } from './panels/ModuleStatusPanel'
@@ -22,6 +24,7 @@ export function DisplayTesting() {
   const { t } = useTranslation('development')
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
+  const { resetJournal } = useJournal()
   const [menuOpen, setMenuOpen] = useState(false)
   const [activePanel, setActivePanel] = useState<ActivePanel>(null)
   const [breakpointMode, setBreakpointMode] = useState<BreakpointMode>('off')
@@ -110,6 +113,17 @@ export function DisplayTesting() {
             >
               <span aria-hidden="true">▶</span>
               {t('applicationStates')}
+            </button>
+            <button
+              type="button"
+              className="dev-tool-menu-button"
+              onClick={() => {
+                resetJournal()
+                toast(t('journalReset'), { id: 'journal-reset' })
+              }}
+            >
+              <span aria-hidden="true">↺</span>
+              {t('resetJournal')}
             </button>
             <button
               type="button"

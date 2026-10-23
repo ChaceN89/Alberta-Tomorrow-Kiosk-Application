@@ -29,8 +29,7 @@ function ModuleStatusItem({
   onClose,
 }: ModuleStatusItemProps) {
   const { t } = useTranslation('development')
-  const { t: tWildlife } = useTranslation('wildlifeFinder')
-  const { t: tSchool } = useTranslation('residentialSchool')
+  const { t: tModule } = useTranslation(module.translationNamespace)
   const { isModuleReady, preloadModule } = useModulePreload()
   const isCurrent = preloadState.moduleId === module.id
   const status = isCurrent
@@ -38,10 +37,7 @@ function ModuleStatusItem({
     : isModuleReady(module.id)
       ? 'ready'
       : 'idle'
-  const title =
-    module.translationNamespace === 'wildlifeFinder'
-      ? tWildlife('title')
-      : tSchool('title')
+  const title = tModule('title')
   const progress = isCurrent
     ? preloadState.progress
     : status === 'ready'

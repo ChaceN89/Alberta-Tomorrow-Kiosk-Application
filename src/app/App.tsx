@@ -12,6 +12,7 @@ import { NotFound } from '../components/NotFound'
 import { HomePage } from './HomePage'
 import { ModulePage } from './ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
+import { JournalProvider } from '../journal/JournalProvider'
 
 export function App() {
   const { t, i18n } = useTranslation('global')
@@ -25,15 +26,17 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <ModulePreloadProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="modules/:moduleId/*" element={<ModulePage />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </ModulePreloadProvider>
+      <JournalProvider>
+        <ModulePreloadProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<HomePage />} />
+              <Route path="modules/:moduleId/*" element={<ModulePage />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </ModulePreloadProvider>
+      </JournalProvider>
     </BrowserRouter>
   )
 }

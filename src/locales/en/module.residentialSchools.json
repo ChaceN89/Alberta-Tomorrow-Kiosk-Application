@@ -12,6 +12,10 @@
     "operatingYears": "Operating years:",
     "sourceLabel": "Read the NCTR archive record",
     "sourceLink": "Read the archive record for {{name}} from the National Centre for Truth and Reconciliation",
+    "addToJournal": "Add to journal",
+    "addToJournalLabel": "Add {{name}} to my journal",
+    "addedToJournal": "Added to journal",
+    "addedToJournalLabel": "{{name}} is in my journal",
     "schools": [
       {
         "id": "st-marys-blood",
@@ -36,6 +40,26 @@
         "operatingYears": "1895–1932",
         "description": "The school was in northern Alberta, northwest of Edmonton, and operated under Anglican Church administration.",
         "source": "https://archives.nctr.ca/index.php/Lesser-Slave-Lake-Residential-School"
+      }
+    ]
+  },
+  "journal": {
+    "summary": "Notes from learning about three Alberta residential schools, using records from the National Centre for Truth and Reconciliation.",
+    "entries": [
+      {
+        "id": "st-marys-blood",
+        "title": "St. Mary's Residential School (Blood)",
+        "summary": "The school operated from 1898 to 1988 on the Blood (Kainai Nation) reserve southwest of Lethbridge."
+      },
+      {
+        "id": "st-albert-youville",
+        "title": "St. Albert Residential School (Youville)",
+        "summary": "The school operated from 1873 to 1948 in St. Albert, northwest of Edmonton, within Treaty 6 territory."
+      },
+      {
+        "id": "lesser-slave-lake",
+        "title": "Lesser Slave Lake Residential School (St. Peter's)",
+        "summary": "The school operated from 1895 to 1932 in northern Alberta, northwest of Edmonton, under Anglican Church administration."
       }
     ]
   }

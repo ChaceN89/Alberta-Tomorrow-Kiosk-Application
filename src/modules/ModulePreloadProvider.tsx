@@ -45,8 +45,7 @@ export function ModulePreloadProvider({
 }: ModulePreloadProviderProps) {
   const { pathname } = useLocation()
   const { t } = useTranslation('global')
-  const { t: tWildlife } = useTranslation('wildlifeFinder')
-  const { t: tResidentialSchool } = useTranslation('residentialSchool')
+  const { i18n } = useTranslation()
   const [state, setState] = useState<ModulePreloadState>(idleState)
   const activePreload = useRef<ActivePreload | null>(null)
   const readyModules = useRef(new Set<string>())
@@ -89,10 +88,7 @@ export function ModulePreloadProvider({
       cancelPreload()
       const controller = new AbortController()
       const toastId = MODULE_PRELOAD_TOAST_ID
-      const activityName =
-        module.translationNamespace === 'wildlifeFinder'
-          ? tWildlife('title')
-          : tResidentialSchool('title')
+      const activityName = i18n.t('title', { ns: module.translationNamespace })
       toast.loading(t('preload.toastLoading'), { id: toastId })
       setState({ moduleId: module.id, status: 'loading', progress: 5 })
 
@@ -162,7 +158,7 @@ export function ModulePreloadProvider({
 
       return promise
     },
-    [cancelPreload, t, tResidentialSchool, tWildlife],
+    [cancelPreload, i18n, t],
   )
 
   useEffect(() => {

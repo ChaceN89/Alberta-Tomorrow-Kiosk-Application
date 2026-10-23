@@ -1,0 +1,72 @@
+{
+  "title": "Roches, fossiles et reliefs",
+  "description": "Testez vos connaissances sur les fossiles, les blocs rocheux et les sables bitumineux de l’Alberta avec un questionnaire de trois questions.",
+  "overviewDescription": "Répondez à trois questions à choix multiples sur les badlands, les blocs transportés par les glaciers et les sables bitumineux de l’Alberta. Chaque bonne réponse ajoute une note à votre journal d’expédition.",
+  "category": "Géologie",
+  "launch": "Commencer le questionnaire",
+  "backToOverview": "Retour aux détails de l’activité",
+  "activity": {
+    "introduction": "Le paysage de l’Alberta renferme des indices sur la vie ancienne et la puissance des glaces. Répondez à trois questions pour ajouter chaque découverte à votre journal.",
+    "progress": "Question {{current}} sur {{total}}",
+    "next": "Question suivante",
+    "finish": "Terminer le questionnaire",
+    "complete": {
+      "title": "Questionnaire terminé !",
+      "description": "Vous avez ajouté trois découvertes géologiques à votre journal d’expédition.",
+      "viewJournal": "Voir la page du journal",
+      "retry": "Refaire le questionnaire"
+    },
+    "questions": [
+      {
+        "prompt": "Quelle région de l’Alberta est célèbre pour ses badlands et ses fossiles de dinosaures ?",
+        "options": [
+          "Les sommets des Rocheuses",
+          "La vallée de la rivière Red Deer, près de Drumheller",
+          "Les tourbières boréales du Nord"
+        ],
+        "correct": "Bravo ! En 1884, le géologue Joseph Burr Tyrrell a découvert un crâne de dinosaure dans les badlands près de Drumheller. Il a ensuite été nommé Albertosaurus.",
+        "tryAgain": "Pas tout à fait. Pensez aux badlands secs et stratifiés où les fossiles apparaissent le long d’une vallée fluviale. Essayez une autre réponse !"
+      },
+      {
+        "prompt": "Comment l’énorme bloc Big Rock, près d’Okotoks, a-t-il voyagé depuis les Rocheuses ?",
+        "options": [
+          "Une éruption volcanique l’a projeté",
+          "La glace d’un glacier l’a transporté",
+          "Une rivière impétueuse l’a roulé"
+        ],
+        "correct": "Bravo ! La glace d’un glacier a transporté Big Rock hors des Rocheuses et l’a déposé près d’Okotoks.",
+        "tryAgain": "Pas tout à fait. Ce bloc est si gros que seule une force immense et lente a pu le déplacer. Essayez une autre réponse !"
+      },
+      {
+        "prompt": "Dans quelle partie de l’Alberta trouve-t-on principalement les sables bitumineux ?",
+        "options": [
+          "Le nord de l’Alberta",
+          "Le sud de l’Alberta, près de la frontière américaine",
+          "Le long des sommets des Rocheuses"
+        ],
+        "correct": "Bravo ! Les sables bitumineux de l’Alberta se trouvent dans le nord de la province, notamment dans les régions d’Athabasca, de Cold Lake et de Peace River.",
+        "tryAgain": "Pas tout à fait. Pensez à la région de Fort McMurray. Essayez une autre réponse !"
+      }
+    ]
+  },
+  "journal": {
+    "summary": "Notes de terrain sur les fossiles, les blocs et les roches qui racontent l’histoire de l’Alberta.",
+    "entries": [
+      {
+        "id": "badlands",
+        "title": "Badlands et ossements de dinosaures",
+        "summary": "La vallée de la rivière Red Deer, près de Drumheller, compte des badlands où un crâne de dinosaure a été découvert en 1884. Il a ensuite été nommé Albertosaurus."
+      },
+      {
+        "id": "glacial-boulder",
+        "title": "Un bloc transporté par la glace",
+        "summary": "La glace d’un glacier a transporté Big Rock hors des Rocheuses jusqu’à son emplacement actuel près d’Okotoks."
+      },
+      {
+        "id": "oil-sands",
+        "title": "Les sables bitumineux du Nord",
+        "summary": "Les sables bitumineux de l’Alberta se trouvent dans le nord de la province, notamment dans les régions d’Athabasca, de Cold Lake et de Peace River."
+      }
+    ]
+  }
+}

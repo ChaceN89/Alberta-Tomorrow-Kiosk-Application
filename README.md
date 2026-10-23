@@ -1,8 +1,9 @@
 # Alberta Expeditions
 
-A lightweight, bilingual educational app from Alberta Tomorrow. The app currently
-includes wildlife and residential-school modules; future independent modules can
-explore land use, geology, energy, climate events, and more.
+A lightweight, bilingual educational app from Alberta Tomorrow. Each module is an
+"expedition" with its own mountain on the home page and entries in a field journal.
+The app currently includes wildlife, residential-school, and geology expeditions;
+future independent modules can explore land use, energy, climate events, and more.
 
 ## Setup
 
@@ -43,8 +44,9 @@ Commit `package-lock.json`; use `npm ci` for reproducible installs.
 src/
   app/          Entry point, translations setup, routing, and pages
   components/   Shared UI and reusable components used across modules
+  journal/      Journal progress state, localStorage persistence, and context
   modules/      Typed registry, shared types, and individual module folders
-  locales/      en/ and fr/ with home, global, funfacts, and module JSON files
+  locales/      en/ and fr/ with global, home, journal, development, funfacts, and module.* JSON files
   styles/       Global CSS and centralized theme tokens
   assets/       Bundled local assets
 ```
@@ -62,10 +64,30 @@ preload; replace it with real asset or data loading when those resources exist.
 `Suspense` announces loading, and the application error
 boundary handles rendering or activity-download failures. Unknown page URLs show
 a playful 404 with an Alberta fun fact; missing modules or invalid paths beneath
-`/modules/` show a module-specific recovery message. State uses React hooks only
-and is not saved. English is the initial language; switching to French updates
-the entire interface and document language without resetting the current
-activity. A page reload resets language and activity state.
+`/modules/` show a module-specific recovery message. English is the initial
+language; switching to French updates the entire interface and document language
+without resetting the current activity. A page reload resets language and
+activity state, but the expedition journal is kept (see below).
+
+### Expedition journal
+
+Each module declares journal **checkpoints**: ids for things a learner
+accomplished or learned. Activities receive `completedCheckpoints` and a
+`completeCheckpoint(id)` callback as props (`ModuleActivityProps` in
+`src/modules/types.ts`). Recording a checkpoint saves it in browser
+`localStorage` (key `alberta-expeditions:journal`, via
+`src/journal/journalStorage.ts`) and shows a toast. A module's status is derived:
+no checkpoints is _not started_, some is _in progress_, and all is _complete_.
+Home cards and overviews show a mountain that fills as checkpoints are recorded
+and gains a flag when the expedition is complete. The **Journal** button in the
+navigation bar, the **View journal** buttons, and the quiz completion screen open
+the journal modal, which has previous/next arrows and a list for switching
+expeditions. The development menu has **Reset journal progress**.
+
+Journal text lives in each module's locale file under `journal.summary` and
+`journal.entries` (`id`, `title`, `summary`); generic journal labels are in
+`journal.json`. Storage is local only; replace `journalStorage.ts` to sync with
+save data later.
 
 ### Add a module
 
@@ -79,7 +101,10 @@ activity. A page reload resets language and activity state.
    and `ModuleTranslationNamespace` in `src/modules/types.ts`.
 4. Add a `LearningModule` entry to `src/modules/registry.ts`: a unique URL-safe
    `id`, its `translationNamespace`, estimated minutes, and
-   `lazy(() => import('./land-use/LandUse'))`.
+   `lazy(() => import('./land-use/LandUse'))`. Also add `checkpoints` (ids kept in
+   a small file in the module folder) and matching `journal.summary` and
+   `journal.entries` in both locale files. The activity receives
+   `completedCheckpoints` and `completeCheckpoint` props.
 5. Run the checks below. The home card, module overview, and activity route are
    automatic.
 
@@ -155,5 +180,6 @@ files must serve `index.html` with a successful response, so direct navigation t
 Vite's development/preview servers provide the fallback locally; `npm run preview`
 is not a production server.
 
-This foundation intentionally has no authentication, backend, persistence,
-analytics, 3D engine, Electron, or offline/PWA support.
+This foundation intentionally has no authentication, backend, analytics, 3D
+engine, Electron, or offline/PWA support. The only persistence is the
+browser-local expedition journal.

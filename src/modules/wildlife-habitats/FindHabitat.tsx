@@ -2,18 +2,33 @@
  * File: FindHabitat.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
  * Description: Match a woodland caribou to an Alberta habitat with instant feedback.
- * Dependencies: React state, React Router, react-i18next; no saved progress.
+ * Dependencies: React state, React Router, react-i18next; records journal checkpoints.
  */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import type { ModuleActivityProps } from '../types'
 
 const habitats = ['prairie', 'boreal', 'mountains'] as const
 type Habitat = (typeof habitats)[number]
 
-export default function FindHabitat() {
+export default function FindHabitat({
+  completeCheckpoint,
+}: ModuleActivityProps) {
   const { t } = useTranslation('wildlifeFinder')
   const [selected, setSelected] = useState<Habitat | null>(null)
+
+  useEffect(() => {
+    completeCheckpoint('habitats-matter')
+  }, [completeCheckpoint])
+
+  const chooseHabitat = (habitat: Habitat) => {
+    setSelected(habitat)
+
+    if (habitat === 'boreal') {
+      completeCheckpoint('caribou-home')
+    }
+  }
 
   return (
     <section aria-labelledby="activity-title" className="max-w-3xl space-y-6">
@@ -32,7 +47,7 @@ export default function FindHabitat() {
                 type="button"
                 aria-pressed={selected === habitat}
                 className="button-secondary"
-                onClick={() => setSelected(habitat)}
+                onClick={() => chooseHabitat(habitat)}
               >
                 {t(`activity.habitats.${habitat}`)}
               </button>

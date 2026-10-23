@@ -40,5 +40,7 @@
   "previewActivityLoading": "Prévisualiser le chargement d’une activité",
   "previewActivityError": "Prévisualiser l’erreur d’une activité",
   "closePreview": "Fermer l’aperçu d’état",
-  "previewMode": "L’aperçu d’état de développement est actif"
+  "previewMode": "L’aperçu d’état de développement est actif",
+  "resetJournal": "Réinitialiser la progression du journal",
+  "journalReset": "Progression du journal réinitialisée."
 }

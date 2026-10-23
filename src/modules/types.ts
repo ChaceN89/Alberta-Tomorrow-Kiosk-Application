@@ -6,9 +6,19 @@
  */
 import type { ComponentType, LazyExoticComponent } from 'react'
 
-export type ModuleTranslationNamespace = 'residentialSchool' | 'wildlifeFinder'
+export type ModuleTranslationNamespace =
+  'geology' | 'residentialSchool' | 'wildlifeFinder'
 
-export type ModuleActivityLoader = () => Promise<{ default: ComponentType }>
+export type ModuleActivityProps = {
+  completedCheckpoints: readonly string[]
+  completeCheckpoint: (checkpointId: string) => void
+}
+
+export type ModuleActivityComponent = ComponentType<ModuleActivityProps>
+
+export type ModuleActivityLoader = () => Promise<{
+  default: ModuleActivityComponent
+}>
 
 export type ModulePreloadContext = {
   signal: AbortSignal
@@ -21,7 +31,8 @@ export interface LearningModule {
   id: string
   translationNamespace: ModuleTranslationNamespace
   estimatedMinutes: number
-  component: LazyExoticComponent<ComponentType>
+  checkpoints: readonly string[]
+  component: LazyExoticComponent<ModuleActivityComponent>
   loadActivity: ModuleActivityLoader
   preload?: ModulePreloader
 }

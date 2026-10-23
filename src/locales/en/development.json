@@ -40,5 +40,7 @@
   "previewActivityLoading": "Preview activity loading",
   "previewActivityError": "Preview activity error",
   "closePreview": "Close state preview",
-  "previewMode": "Developer state preview is active"
+  "previewMode": "Developer state preview is active",
+  "resetJournal": "Reset journal progress",
+  "journalReset": "Journal progress reset."
 }
