@@ -76,13 +76,22 @@ accomplished or learned. Activities receive `completedCheckpoints` and a
 `completeCheckpoint(id)` callback as props (`ModuleActivityProps` in
 `src/modules/types.ts`). Recording a checkpoint saves it in browser
 `localStorage` (key `alberta-expeditions:journal`, via
-`src/journal/journalStorage.ts`) and shows a toast. A module's status is derived:
-no checkpoints is _not started_, some is _in progress_, and all is _complete_.
-Home cards and overviews show a mountain that fills as checkpoints are recorded
-and gains a flag when the expedition is complete. The **Journal** button in the
-navigation bar, the **View journal** buttons, and the quiz completion screen open
-the journal modal, which has previous/next arrows and a list for switching
-expeditions. The development menu has **Reset journal progress**.
+`src/journal/journalStorage.ts`) and shows a toast. Each expedition also has a
+**started** flag (`startedAt`): opening a module's activity starts it, and
+recording any checkpoint starts it too, for example from a map or 3D scene via
+`useJournal().completeCheckpoint(moduleId, checkpointId)`. Only started
+expeditions get a page in the journal. A module's status is derived: no record
+is _not started_, started with checkpoints left is _in progress_, and every
+checkpoint recorded is _complete_. Home cards and overviews show a mountain that
+fills as checkpoints are recorded and gains a flag when the expedition is
+complete; **View journal** appears once an expedition is started.
+
+The **Journal** button in the navigation bar and the **View journal** buttons
+open the journal modal, which is always 90% of the viewport height. Its first
+page is a title page explaining the journal, followed by one page per started
+expedition ("Expedition 2 of 3"); the title shows the number of entries. The
+arrows and a floating dropdown switch pages. The development menu has **Reset
+journal progress**.
 
 Journal text lives in each module's locale file under `journal.summary` and
 `journal.entries` (`id`, `title`, `summary`); generic journal labels are in

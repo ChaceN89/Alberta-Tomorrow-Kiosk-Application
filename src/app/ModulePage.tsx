@@ -19,10 +19,9 @@ type ModuleActivityProps = {
   module: LearningModule
 }
 
-function ModuleActivity({ module }: ModuleActivityProps) {
-  const { t } = useTranslation('global')
-  const { state, preloadModule, isModuleReady } = useModulePreload()
-  const { completeCheckpoint, getCompletedCheckpoints } = useJournal()
+function ExpeditionActivity({ module }: ModuleActivityProps) {
+  const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
+    useJournal()
   const recordCheckpoint = useCallback(
     (checkpointId: string) => completeCheckpoint(module.id, checkpointId),
     [completeCheckpoint, module.id],
@@ -52,17 +51,7 @@ function ModuleActivity({ module }: ModuleActivityProps) {
     return <Loading label={t('preload.preparing')} />
   }
 
-  const Activity = module.component
-
-  return (
-    <Suspense fallback={<Loading />}>
-      <Activity
-        key={module.id}
-        completedCheckpoints={getCompletedCheckpoints(module.id)}
-        completeCheckpoint={recordCheckpoint}
-      />
-    </Suspense>
-  )
+  return <ExpeditionActivity module={module} />
 }
 
 export function ModulePage() {

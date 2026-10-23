@@ -99,13 +99,15 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
               {t('launch')}
             </span>
           </button>
-          <button
-            type="button"
-            className="button-secondary"
-            onClick={() => openJournal(module.id)}
-          >
-            {tJournal('viewJournal')}
-          </button>
+          {expeditionProgress.status !== 'notStarted' && (
+            <button
+              type="button"
+              className="button-secondary"
+              onClick={() => openJournal(module.id)}
+            >
+              {tJournal('viewJournal')}
+            </button>
+          )}
           <Link className="button-secondary" to="/">
             {tGlobal('navigation.returnHome')}
           </Link>

@@ -1,14 +1,31 @@
 {
   "title": "Journal d’expédition",
+  "titleWithCount_one": "Journal d’expédition : {{count}} entrée",
+  "titleWithCount_other": "Journal d’expédition : {{count}} entrées",
   "open": "Journal",
   "openLabel": "Ouvrir le journal d’expédition",
   "close": "Fermer le journal",
   "viewJournal": "Voir le journal",
   "viewJournalFor": "Voir le journal de {{title}}",
+  "titlePage": "Page de titre",
+  "aboutNav": "À propos de ce journal",
+  "about": {
+    "heading": "Votre journal d’expédition",
+    "description": "Ce journal garde la trace des expéditions que vous avez commencées. Chaque expédition a sa propre page, et des notes de terrain s’y ajoutent au fil de votre exploration, pour que vous puissiez revoir ce que vous avez découvert.",
+    "stepsHeading": "Comment ça fonctionne",
+    "steps": [
+      "Commencez une expédition pour ajouter sa page à ce journal.",
+      "Franchissez des étapes pour consigner des notes de terrain sur ce que vous avez appris.",
+      "Consignez toutes les notes pour atteindre le sommet et planter un drapeau sur votre montagne."
+    ],
+    "saved": "Votre journal est enregistré dans ce navigateur.",
+    "empty": "Vous n’avez encore commencé aucune expédition.",
+    "browse": "Parcourir les expéditions"
+  },
   "expeditionNumber": "Expédition {{number}} sur {{total}}",
-  "previous": "Expédition précédente",
-  "next": "Expédition suivante",
-  "expeditionList": "Toutes les expéditions",
+  "previous": "Page précédente",
+  "next": "Page suivante",
+  "expeditionList": "Pages du journal",
   "status": {
     "notStarted": "Pas commencée",
     "inProgress": "En cours",
@@ -19,10 +36,10 @@
   "locked": "Pas encore découvert",
   "lockedHint": "Poursuivez cette expédition pour ajouter cette note.",
   "recorded": "Consignée",
-  "start": "Commencer l’expédition",
   "continue": "Poursuivre l’expédition",
   "revisit": "Revisiter l’expédition",
   "details": "Détails de l’expédition",
+  "toastStarted": "Expédition ajoutée à votre journal.",
   "toastUpdated": "Journal mis à jour.",
   "storageUnavailable": "La progression ne peut pas être enregistrée dans ce navigateur; elle sera perdue quand vous quitterez cette page."
 }

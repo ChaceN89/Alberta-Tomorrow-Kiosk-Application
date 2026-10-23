@@ -5,10 +5,17 @@
  * Dependencies: Browser localStorage; swap this module for save-data sync later.
  */
 const STORAGE_KEY = 'alberta-expeditions:journal'
-const STORAGE_VERSION = 1
+const STORAGE_VERSION = 2
 
-// Maps expedition id -> checkpoint id -> ISO timestamp when it was recorded.
-export type JournalProgress = Record<string, Record<string, string>>
+export type ExpeditionRecord = {
+  // When the expedition was started; its presence adds it to the journal.
+  startedAt: string
+  // Maps checkpoint id -> ISO timestamp when it was recorded.
+  checkpoints: Record<string, string>
+}
+
+// Maps expedition id -> its saved record.
+export type JournalProgress = Record<string, ExpeditionRecord>
 
 type LoadedJournal = {
   progress: JournalProgress
@@ -17,6 +24,16 @@ type LoadedJournal = {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function parseCheckpoints(value: unknown): Record<string, string> {
+  if (!isRecord(value)) return {}
+
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      (entry): entry is [string, string] => typeof entry[1] === 'string',
+    ),
+  )
 }
 
 function parseProgress(raw: string): JournalProgress {
@@ -28,27 +45,30 @@ function parseProgress(raw: string): JournalProgress {
     return {}
   }
 
-  if (
-    !isRecord(parsed) ||
-    parsed.version !== STORAGE_VERSION ||
-    !isRecord(parsed.expeditions)
-  ) {
+  if (!isRecord(parsed) || !isRecord(parsed.expeditions)) {
     return {}
   }
 
   const progress: JournalProgress = {}
 
-  for (const [expeditionId, checkpoints] of Object.entries(
-    parsed.expeditions,
-  )) {
-    if (!isRecord(checkpoints)) continue
+  for (const [expeditionId, saved] of Object.entries(parsed.expeditions)) {
+    if (parsed.version === 1) {
+      // Version 1 stored only checkpoints; any recorded checkpoint means started.
+      const checkpoints = parseCheckpoints(saved)
+      const [earliest] = Object.values(checkpoints).sort()
 
-    const recorded = Object.entries(checkpoints).filter(
-      (entry): entry is [string, string] => typeof entry[1] === 'string',
-    )
-
-    if (recorded.length > 0) {
-      progress[expeditionId] = Object.fromEntries(recorded)
+      if (earliest) {
+        progress[expeditionId] = { startedAt: earliest, checkpoints }
+      }
+    } else if (
+      parsed.version === STORAGE_VERSION &&
+      isRecord(saved) &&
+      typeof saved.startedAt === 'string'
+    ) {
+      progress[expeditionId] = {
+        startedAt: saved.startedAt,
+        checkpoints: parseCheckpoints(saved.checkpoints),
+      }
     }
   }
 

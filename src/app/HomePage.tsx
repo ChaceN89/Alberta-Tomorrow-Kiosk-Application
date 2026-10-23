@@ -45,14 +45,16 @@ function ModuleCard({ module }: ModuleCardProps) {
         <Link className="button" to={`/modules/${module.id}`}>
           {tHome('exploreModule')}
         </Link>
-        <button
-          type="button"
-          className="button-secondary"
-          aria-label={tJournal('viewJournalFor', { title })}
-          onClick={() => openJournal(module.id)}
-        >
-          {tJournal('viewJournal')}
-        </button>
+        {progress.status !== 'notStarted' && (
+          <button
+            type="button"
+            className="button-secondary"
+            aria-label={tJournal('viewJournalFor', { title })}
+            onClick={() => openJournal(module.id)}
+          >
+            {tJournal('viewJournal')}
+          </button>
+        )}
       </div>
     </li>
   )

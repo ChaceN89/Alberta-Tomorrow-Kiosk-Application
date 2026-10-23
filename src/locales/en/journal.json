@@ -1,14 +1,31 @@
 {
   "title": "Expedition Journal",
+  "titleWithCount_one": "Expedition Journal: {{count}} entry",
+  "titleWithCount_other": "Expedition Journal: {{count}} entries",
   "open": "Journal",
   "openLabel": "Open expedition journal",
   "close": "Close journal",
   "viewJournal": "View journal",
   "viewJournalFor": "View journal for {{title}}",
+  "titlePage": "Title page",
+  "aboutNav": "About this journal",
+  "about": {
+    "heading": "Your expedition journal",
+    "description": "This journal keeps track of the expeditions you've started. Each expedition gets its own page, and field notes are added as you explore, so you can look back on what you've discovered.",
+    "stepsHeading": "How it works",
+    "steps": [
+      "Start an expedition to add its page to this journal.",
+      "Complete checkpoints to record field notes about what you learned.",
+      "Record every note to reach the summit and earn a flag on your mountain."
+    ],
+    "saved": "Your journal is saved in this browser.",
+    "empty": "You haven't started any expeditions yet.",
+    "browse": "Browse expeditions"
+  },
   "expeditionNumber": "Expedition {{number}} of {{total}}",
-  "previous": "Previous expedition",
-  "next": "Next expedition",
-  "expeditionList": "All expeditions",
+  "previous": "Previous page",
+  "next": "Next page",
+  "expeditionList": "Journal pages",
   "status": {
     "notStarted": "Not started",
     "inProgress": "In progress",
@@ -19,10 +36,10 @@
   "locked": "Not yet discovered",
   "lockedHint": "Keep exploring this expedition to add this note.",
   "recorded": "Recorded",
-  "start": "Start expedition",
   "continue": "Continue expedition",
   "revisit": "Revisit expedition",
   "details": "Expedition details",
+  "toastStarted": "Expedition added to your journal.",
   "toastUpdated": "Journal updated.",
   "storageUnavailable": "Progress can't be saved in this browser, so it will be lost when you leave this page."
 }

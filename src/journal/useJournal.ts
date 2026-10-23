@@ -21,7 +21,9 @@ type JournalContextValue = {
   isStorageAvailable: boolean
   openJournal: (moduleId?: string) => void
   closeJournal: () => void
-  selectExpedition: (moduleId: string) => void
+  // Passing null selects the journal's title page.
+  selectExpedition: (moduleId: string | null) => void
+  startExpedition: (moduleId: string) => void
   completeCheckpoint: (moduleId: string, checkpointId: string) => void
   isCheckpointComplete: (moduleId: string, checkpointId: string) => boolean
   getCompletedCheckpoints: (moduleId: string) => readonly string[]
