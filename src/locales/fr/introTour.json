@@ -1,0 +1,28 @@
+{
+  "stepCount": "Étape {{current}} sur {{total}}",
+  "next": "Suivant",
+  "skip": "Passer la visite",
+  "welcome": {
+    "title": "Bienvenue dans Alberta Expeditions",
+    "description": "Alberta Expeditions fait partie de la plateforme éducative d’Alberta Tomorrow. Chaque expédition est un court voyage pratique au cœur de la faune, des paysages, de la géologie ou de l’histoire de l’Alberta.",
+    "structure": [
+      "L’accueil présente chaque expédition sous forme de carte, avec sa propre montagne.",
+      "Commencez une expédition pour ajouter sa page à votre journal.",
+      "Franchissez des étapes pour consigner des notes de terrain et planter un drapeau au sommet."
+    ],
+    "start": "Faire la visite"
+  },
+  "expeditions": {
+    "title": "Choisissez votre expédition",
+    "description": "Des caribous des bois de la forêt boréale aux badlands des dinosaures, en passant par l’histoire qui a façonné notre province, chaque carte est un nouveau parcours à travers l’Alberta."
+  },
+  "journal": {
+    "title": "Votre journal d’expédition",
+    "description": "Choisissez une carte d’expédition pour commencer. Chaque expédition commencée a sa propre page dans votre journal, remplie de notes de terrain sur vos découvertes."
+  },
+  "finish": {
+    "title": "Vous êtes prêt à explorer !",
+    "description": "Bonne chance et amusez-vous bien à découvrir l’Alberta.",
+    "start": "Commencer l’exploration"
+  }
+}

@@ -13,6 +13,7 @@ import { HomePage } from './HomePage'
 import { ModulePage } from './ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
 import { JournalProvider } from '../journal/JournalProvider'
+import { IntroTourProvider } from '../tour/IntroTourProvider'
 
 export function App() {
   const { t, i18n } = useTranslation('global')
@@ -27,15 +28,17 @@ export function App() {
   return (
     <BrowserRouter>
       <JournalProvider>
-        <ModulePreloadProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path="modules/:moduleId/*" element={<ModulePage />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </ModulePreloadProvider>
+        <IntroTourProvider>
+          <ModulePreloadProvider>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route index element={<HomePage />} />
+                <Route path="modules/:moduleId/*" element={<ModulePage />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </ModulePreloadProvider>
+        </IntroTourProvider>
       </JournalProvider>
     </BrowserRouter>
   )

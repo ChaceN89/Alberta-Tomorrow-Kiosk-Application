@@ -10,6 +10,7 @@ import enDevelopment from '../locales/en/development.json'
 import enGlobal from '../locales/en/global.json'
 import enFunfacts from '../locales/en/funfacts.json'
 import enHome from '../locales/en/home.json'
+import enIntroTour from '../locales/en/introTour.json'
 import enJournal from '../locales/en/journal.json'
 import enGeology from '../locales/en/module.geology.json'
 import enResidentialSchool from '../locales/en/module.residentialSchools.json'
@@ -18,6 +19,7 @@ import frDevelopment from '../locales/fr/development.json'
 import frGlobal from '../locales/fr/global.json'
 import frFunfacts from '../locales/fr/funfacts.json'
 import frHome from '../locales/fr/home.json'
+import frIntroTour from '../locales/fr/introTour.json'
 import frJournal from '../locales/fr/journal.json'
 import frGeology from '../locales/fr/module.geology.json'
 import frResidentialSchool from '../locales/fr/module.residentialSchools.json'
@@ -32,6 +34,7 @@ declare module 'i18next' {
       funfacts: typeof enFunfacts
       geology: typeof enGeology
       home: typeof enHome
+      introTour: typeof enIntroTour
       journal: typeof enJournal
       residentialSchool: typeof enResidentialSchool
       wildlifeFinder: typeof enWildlifeFinder
@@ -48,6 +51,7 @@ void i18n.use(initReactI18next).init({
       funfacts: enFunfacts,
       geology: enGeology,
       home: enHome,
+      introTour: enIntroTour,
       journal: enJournal,
       residentialSchool: enResidentialSchool,
       wildlifeFinder: enWildlifeFinder,
@@ -58,6 +62,7 @@ void i18n.use(initReactI18next).init({
       funfacts: frFunfacts,
       geology: frGeology,
       home: frHome,
+      introTour: frIntroTour,
       journal: frJournal,
       residentialSchool: frResidentialSchool,
       wildlifeFinder: frWildlifeFinder,
@@ -67,6 +72,7 @@ void i18n.use(initReactI18next).init({
     'development',
     'global',
     'home',
+    'introTour',
     'journal',
     'funfacts',
     'geology',

@@ -98,6 +98,19 @@ Journal text lives in each module's locale file under `journal.summary` and
 `journal.json`. Storage is local only; replace `journalStorage.ts` to sync with
 save data later.
 
+### First-visit intro tour
+
+First-time visitors get a short tour on the home page: a welcome dialog, a
+pointer above the expedition cards, a pointer to the Journal button, and a
+closing message. It uses a native modal `<dialog>`, so the page behind it can't
+be clicked, and **Skip tour** or Escape ends it. Finishing or skipping saves
+`alberta-expeditions:intro-tour-completed` in `localStorage`
+(`src/tour/introTourStorage.ts`); the tour only starts automatically when that
+flag is missing and the visitor is on the home page. Steps live in
+`src/tour/steps.ts`, anchors are `data-tour` attributes, and the text is in
+`introTour.json`. The development menu's **Intro tour** panel can reset the flag
+(the tour then starts on the next page load) or restart the tour immediately.
+
 ### Add a module
 
 1. Create a folder under `src/modules/`, such as `land-use/`.

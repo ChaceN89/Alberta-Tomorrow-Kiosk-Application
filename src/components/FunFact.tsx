@@ -19,7 +19,6 @@ export function FunFact() {
 
   return (
     <aside className="rounded-2xl border border-line bg-surface p-5">
-      <h2 className="mb-2 text-lg font-semibold text-pine">{t('heading')}</h2>
       <p className="text-muted">{fact}</p>
     </aside>
   )

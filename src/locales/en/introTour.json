@@ -1,0 +1,28 @@
+{
+  "stepCount": "Step {{current}} of {{total}}",
+  "next": "Next",
+  "skip": "Skip tour",
+  "welcome": {
+    "title": "Welcome to Alberta Expeditions",
+    "description": "Alberta Expeditions is part of Alberta Tomorrow's educational platform. Each expedition is a short, hands-on journey into a different part of Alberta's wildlife, landscapes, geology, or history.",
+    "structure": [
+      "Home shows every expedition as a card with its own mountain.",
+      "Start an expedition to add its page to your journal.",
+      "Complete checkpoints to record field notes and plant a flag on the summit."
+    ],
+    "start": "Take the tour"
+  },
+  "expeditions": {
+    "title": "Choose your expedition",
+    "description": "From woodland caribou in the boreal forest to dinosaur country in the badlands, and the history that shaped our province, every card is a new route across Alberta."
+  },
+  "journal": {
+    "title": "Your expedition journal",
+    "description": "Pick an expedition card to begin. Every expedition you start gets its own page in your journal, filled with field notes about what you discover."
+  },
+  "finish": {
+    "title": "You're ready to explore!",
+    "description": "Good luck out there, and have fun discovering Alberta.",
+    "start": "Start exploring"
+  }
+}

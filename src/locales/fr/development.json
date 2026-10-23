@@ -42,5 +42,10 @@
   "closePreview": "Fermer l’aperçu d’état",
   "previewMode": "L’aperçu d’état de développement est actif",
   "resetJournal": "Réinitialiser la progression du journal",
-  "journalReset": "Progression du journal réinitialisée."
+  "journalReset": "Progression du journal réinitialisée.",
+  "introTour": "Visite d’introduction",
+  "introTourDescription": "Testez la visite de première visite. Elle démarre seule uniquement lorsque son indicateur enregistré est absent.",
+  "resetIntroTourFlag": "Réinitialiser l’indicateur de visite",
+  "restartIntroTour": "Relancer la visite d’introduction",
+  "introTourFlagReset": "Indicateur de visite réinitialisé. Rechargez la page pour lancer la visite."
 }

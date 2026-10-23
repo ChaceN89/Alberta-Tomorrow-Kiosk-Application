@@ -70,7 +70,10 @@ export function HomePage() {
         <h1 id="home-title">{t('title')}</h1>
         <p className="text-lg text-muted">{t('description')}</p>
       </div>
-      <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <ul
+        data-tour="expedition-list"
+        className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+      >
         {modules.map((module) => (
           <ModuleCard key={module.id} module={module} />
         ))}

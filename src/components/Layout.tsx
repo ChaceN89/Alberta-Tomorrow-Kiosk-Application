@@ -12,6 +12,7 @@ import { useJournal } from '../journal/useJournal'
 import { useModulePreload } from '../modules/useModulePreload'
 import { DisplayTesting } from './development/DisplayTesting'
 import { Dropdown } from './Dropdown'
+import { IntroTour } from './IntroTour'
 import { JournalModal } from './JournalModal'
 import { OverlayScrollbar } from './OverlayScrollbar'
 
@@ -55,6 +56,7 @@ export function Layout() {
               </Link>
               <button
                 type="button"
+                data-tour="journal-button"
                 className="button-secondary min-h-12 gap-2 px-4 py-2"
                 aria-label={tJournal('openLabel')}
                 onClick={() =>
@@ -125,7 +127,7 @@ export function Layout() {
       </footer>
       <DisplayTesting />
       <JournalModal />
-      <OverlayScrollbar />
+      <IntroTour /> <OverlayScrollbar />
       <Toaster
         position="top-center"
         containerStyle={{ top: 80 }}

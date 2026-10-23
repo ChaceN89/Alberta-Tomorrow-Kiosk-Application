@@ -10,12 +10,13 @@ import { useTranslation } from 'react-i18next'
 import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { ApplicationStatePanel } from './panels/ApplicationStatePanel'
+import { IntroTourPanel } from './panels/IntroTourPanel'
 import { ModuleStatusPanel } from './panels/ModuleStatusPanel'
 import { DarkModeTestingToggle } from './DarkModeTestingToggle'
 import { TailwindBreakPoints } from './TailwindBreakPoints'
 import { getCurrentBreakpoint } from './breakpoints'
 
-type ActivePanel = 'modules' | 'states' | null
+type ActivePanel = 'modules' | 'states' | 'tour' | null
 type BreakpointMode = 'off' | 'guides' | 'indicator'
 
 export function DisplayTesting() {
@@ -54,6 +55,11 @@ export function DisplayTesting() {
   const closePanel = () => {
     setActivePanel(null)
     setMenuOpen(true)
+  }
+
+  const closeAllTools = () => {
+    setActivePanel(null)
+    setMenuOpen(false)
   }
 
   return (
@@ -117,6 +123,14 @@ export function DisplayTesting() {
             <button
               type="button"
               className="dev-tool-menu-button"
+              onClick={() => openPanel('tour')}
+            >
+              <span aria-hidden="true">?</span>
+              {t('introTour')}
+            </button>
+            <button
+              type="button"
+              className="dev-tool-menu-button"
               onClick={() => {
                 resetJournal()
                 toast(t('journalReset'), { id: 'journal-reset' })
@@ -175,6 +189,9 @@ export function DisplayTesting() {
           )}
           {activePanel === 'states' && (
             <ApplicationStatePanel onClose={closePanel} />
+          )}
+          {activePanel === 'tour' && (
+            <IntroTourPanel onClose={closePanel} onRestarted={closeAllTools} />
           )}
         </div>
       )}

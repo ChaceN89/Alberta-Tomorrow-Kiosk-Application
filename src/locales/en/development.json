@@ -42,5 +42,10 @@
   "closePreview": "Close state preview",
   "previewMode": "Developer state preview is active",
   "resetJournal": "Reset journal progress",
-  "journalReset": "Journal progress reset."
+  "journalReset": "Journal progress reset.",
+  "introTour": "Intro tour",
+  "introTourDescription": "Test the first-visit tour. It starts on its own only when its saved flag is missing.",
+  "resetIntroTourFlag": "Reset intro tour flag",
+  "restartIntroTour": "Restart intro tour",
+  "introTourFlagReset": "Intro tour flag reset. Reload the page to start the tour."
 }

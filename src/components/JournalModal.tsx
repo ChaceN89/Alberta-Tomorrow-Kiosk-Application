@@ -35,7 +35,6 @@ function JournalTitlePage({ hasEntries, onNavigate }: JournalTitlePageProps) {
     <article className="space-y-5">
       <header className="flex items-center gap-4">
         <img src={logo} alt="" className="size-16 shrink-0" />
-        <h3 className="text-xl font-semibold">{t('about.heading')}</h3>
       </header>
       <p className="text-muted">{t('about.description')}</p>
       <section aria-labelledby={stepsId} className="space-y-3">
@@ -322,7 +321,7 @@ export function JournalModal() {
                     <button
                       type="button"
                       aria-current={index === activeIndex ? 'true' : undefined}
-                      className="flex min-h-12 w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-canvas aria-[current=true]:bg-canvas aria-[current=true]:font-semibold"
+                      className="flex min-h-12 w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-canvas aria-current:bg-canvas aria-current:font-semibold"
                       onClick={() => goToPage(page)}
                     >
                       {page && progress ? (
@@ -360,7 +359,7 @@ export function JournalModal() {
         </div>
         <div
           ref={contentRef}
-          className="min-h-0 flex-1 overflow-y-auto p-4 [scrollbar-width:thin] md:p-6"
+          className="min-h-0 flex-1 overflow-y-auto p-4 scrollbar-thin md:p-6"
         >
           {!isStorageAvailable && (
             <p
