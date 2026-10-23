@@ -28,6 +28,10 @@
     "toastCancelled": "Activity preparation stopped.",
     "toastError": "Couldn't prepare the activity."
   },
+  "scrollbar": {
+    "label": "Page scrollbar",
+    "position": "{{percent}}% scrolled"
+  },
   "language": {
     "label": "Language",
     "en": "English",

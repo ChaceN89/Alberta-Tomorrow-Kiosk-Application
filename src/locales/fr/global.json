@@ -28,6 +28,10 @@
     "toastCancelled": "Préparation de l’activité interrompue.",
     "toastError": "Impossible de préparer l’activité."
   },
+  "scrollbar": {
+    "label": "Barre de défilement de la page",
+    "position": "{{percent}} % défilé"
+  },
   "language": {
     "label": "Langue",
     "en": "English",

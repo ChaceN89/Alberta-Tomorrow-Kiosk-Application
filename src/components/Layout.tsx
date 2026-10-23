@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { Toaster } from 'react-hot-toast'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import leaf from '../assets/leaf.svg'
+import { OverlayScrollbar } from './OverlayScrollbar'
 import { useModulePreload } from '../modules/useModulePreload'
 import { DisplayTesting } from './development/DisplayTesting'
 import { Dropdown } from './Dropdown'
@@ -92,6 +93,7 @@ export function Layout() {
         </div>
       </footer>
       <DisplayTesting />
+      <OverlayScrollbar />
       <Toaster
         position="top-center"
         containerStyle={{ top: 80 }}
