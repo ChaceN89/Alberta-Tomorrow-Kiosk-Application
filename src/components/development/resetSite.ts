@@ -13,7 +13,7 @@
   - None.
  */
 import { clearJournalStorage } from '../../journal/journalStorage'
-import { resetIntroTour } from '../../introTour/introTourStorage'
+import { resetIntroTour } from '../../site-tours/intro-tour/introTourStorage'
 
 export function resetSite() {
   clearJournalStorage()

@@ -22,7 +22,7 @@ import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
 import { JournalProvider } from '../journal/JournalProvider'
-import { IntroTourProvider } from '../introTour/IntroTourProvider'
+import { IntroTourProvider } from '../site-tours/intro-tour/IntroTourProvider'
 import { AudioPlayerProvider } from '../module-tools/media-player/AudioPlayerProvider'
 
 export function App() {

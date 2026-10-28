@@ -4,7 +4,7 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Offer replay controls for completed wildlife audio journal entries.
+  - Offer replay controls for completed wildlife audio and video journal entries.
 
   Usage:
   - Lazy-rendered by the journal for completed wildlife entries.
@@ -16,13 +16,35 @@ import { useTranslation } from 'react-i18next'
 import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
 import { useJournal } from '../../journal/useJournal'
 import type { JournalEntryActionProps } from '../types'
+import { foxesVideoCheckpoint } from './checkpoints'
 import { wildlifeTracks } from './tracks'
+import { foxesOfAlbertaVideo } from './videos'
 
 export default function WildlifeJournalEntryAction({
   entryId,
 }: JournalEntryActionProps) {
   const { t } = useTranslation('wildlifeFinder')
   const { completeCheckpoint } = useJournal()
+
+  if (entryId === foxesVideoCheckpoint) {
+    return (
+      <TrackPlayButton
+        track={{
+          ...foxesOfAlbertaVideo,
+          title: t('listen.videoTitle'),
+          subtitle: t('title'),
+          translation: {
+            namespace: 'wildlifeFinder',
+            titleKey: 'listen.videoTitle',
+            subtitleKey: 'title',
+          },
+        }}
+        onEnd={() =>
+          completeCheckpoint('wildlife-habitats', foxesVideoCheckpoint)
+        }
+      />
+    )
+  }
 
   const track = wildlifeTracks.find(
     (item) =>

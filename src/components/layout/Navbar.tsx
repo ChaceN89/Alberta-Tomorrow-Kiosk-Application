@@ -16,7 +16,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../../assets/expedition.svg'
-import { useIntroTour } from '../../introTour/useIntroTour'
+import { useIntroTour } from '../../site-tours/intro-tour/useIntroTour'
 import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { Dropdown } from '../shared/Dropdown'

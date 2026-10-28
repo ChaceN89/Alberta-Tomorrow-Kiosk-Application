@@ -16,8 +16,8 @@ import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import logo from '../../assets/expedition.svg'
 import '../../styles/IntroTour.css'
-import { tourSteps, type TourAnchor } from '../../introTour/steps'
-import { useIntroTour } from '../../introTour/useIntroTour'
+import { tourSteps, type TourAnchor } from '../../site-tours/intro-tour/steps'
+import { useIntroTour } from '../../site-tours/intro-tour/useIntroTour'
 
 const POPUP_MARGIN = 16
 const POPUP_GAP = 14

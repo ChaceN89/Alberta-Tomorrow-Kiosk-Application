@@ -15,7 +15,7 @@
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '../../toasts/toasterIds'
-import { useIntroTour } from '../../../introTour/useIntroTour'
+import { useIntroTour } from '../../../site-tours/intro-tour/useIntroTour'
 import { DevPanel } from './DevPanel'
 
 type IntroTourPanelProps = {
