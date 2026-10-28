@@ -1,81 +1,68 @@
 /**
   File: FindHabitat.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
-  - Match a woodland caribou to an Alberta habitat with instant feedback.
+  - Wildlife expedition with two views: listen to audio clips, then take the habitat quiz.
+  - Both views use shared module tools (audio player, quiz system) and record journal checkpoints.
 
   Usage:
   - Registered activity components are lazy-loaded by the module registry.
 
   Notes:
-  - None.
+  - ListenSection and HabitatQuiz hold each view; this file only switches between them.
  */
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import type { ModuleActivityProps } from '../types'
+import { HabitatQuiz } from './HabitatQuiz'
+import { ListenSection } from './ListenSection'
 
-const habitats = ['prairie', 'boreal', 'mountains'] as const
-type Habitat = (typeof habitats)[number]
+type View = 'activity' | 'quiz'
 
 export default function FindHabitat({
+  completedCheckpoints,
   completeCheckpoint,
 }: ModuleActivityProps) {
   const { t } = useTranslation('wildlifeFinder')
-  const [selected, setSelected] = useState<Habitat | null>(null)
+  const [view, setView] = useState<View>('activity')
 
   useEffect(() => {
     completeCheckpoint('habitats-matter')
   }, [completeCheckpoint])
 
-  const chooseHabitat = (habitat: Habitat) => {
-    setSelected(habitat)
-
-    if (habitat === 'boreal') {
-      completeCheckpoint('caribou-home')
-    }
-  }
+  const startQuiz = () => setView('quiz')
+  const showActivity = () => setView('activity')
 
   return (
     <section aria-labelledby="activity-title" className="max-w-3xl space-y-6">
       <p className="font-semibold text-pine">{t('category')}</p>
       <h1 id="activity-title">{t('title')}</h1>
       <p className="text-lg text-muted">{t('activity.introduction')}</p>
-      <div className="panel space-y-6">
-        <fieldset>
-          <legend className="mb-4 text-xl font-semibold">
-            {t('activity.question')}
-          </legend>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {habitats.map((habitat) => (
-              <button
-                key={habitat}
-                type="button"
-                aria-pressed={selected === habitat}
-                className="button-secondary"
-                onClick={() => chooseHabitat(habitat)}
-              >
-                {t(`activity.habitats.${habitat}`)}
-              </button>
-            ))}
+      {view === 'activity' ? (
+        <>
+          <ListenSection
+            completedCheckpoints={completedCheckpoints}
+            completeCheckpoint={completeCheckpoint}
+          />
+          <div className="panel space-y-4">
+            <h2>{t('quiz.heading')}</h2>
+            <p className="text-muted">{t('quiz.description')}</p>
+            <button type="button" className="button" onClick={startQuiz}>
+              {t('quiz.start')}
+            </button>
           </div>
-        </fieldset>
-        <p role="status" className="min-h-16 font-medium text-pine">
-          {selected !== null &&
-            t(selected === 'boreal' ? 'activity.correct' : 'activity.tryAgain')}
-        </p>
-        <button
-          type="button"
-          className="button-secondary"
-          onClick={() => setSelected(null)}
-          disabled={selected === null}
-        >
-          {t('activity.reset')}
-        </button>
-      </div>
-      <Link to="/modules/wildlife-habitats" className="button">
+        </>
+      ) : (
+        <HabitatQuiz
+          completedCheckpoints={completedCheckpoints}
+          completeCheckpoint={completeCheckpoint}
+          onBackToActivity={showActivity}
+        />
+      )}
+      <Link to="/modules/wildlife-habitats" className="button-secondary">
         {t('backToOverview')}
       </Link>
     </section>

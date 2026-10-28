@@ -1,7 +1,7 @@
 /*
   File: global.css | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Tailwind entry point, centralized theme, and shared touch-friendly UI.
@@ -128,6 +128,131 @@ html::-webkit-scrollbar {
   }
 }
 
+@keyframes audio-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes audio-panel-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes audio-close-dialog-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes audio-close-dialog-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes audio-bar {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.audio-panel-enter {
+  animation: audio-panel-enter 300ms ease-out both;
+}
+
+.audio-panel-exit {
+  animation: audio-panel-exit 300ms ease-in both;
+}
+
+.audio-panel-tab-view {
+  transition:
+    opacity 320ms ease,
+    transform 320ms cubic-bezier(0.22, 0.75, 0.2, 1);
+}
+
+.audio-panel-tab-view--active {
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.audio-panel-tab-view--inactive {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.audio-panel-tab-view--player.audio-panel-tab-view--inactive {
+  transform: translateY(-8rem);
+}
+
+.audio-panel-tab-view--queue.audio-panel-tab-view--inactive {
+  transform: translateY(8rem);
+}
+
+.audio-close-dialog {
+  animation: audio-close-dialog-in 180ms ease-out both;
+}
+
+.audio-close-dialog__content {
+  animation: audio-close-dialog-content-in 180ms ease-out both;
+}
+
+.audio-bar {
+  transform: scaleY(0.6);
+  transform-origin: bottom;
+  animation: audio-bar 900ms ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .audio-player-shell button:not(:disabled) {
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .audio-player-shell button:not(:disabled):hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 10px rgb(0 0 0 / 12%);
+  }
+
+  .audio-player-shell button:not(:disabled):active {
+    transform: scale(0.98);
+  }
+}
+
 .splash-screen {
   animation: splash-fade-in 350ms ease-out both;
 }
@@ -154,9 +279,23 @@ html::-webkit-scrollbar {
   .splash-screen--exiting,
   .tour-pop-a,
   .tour-pop-b,
+  .audio-panel-enter,
+  .audio-panel-exit,
+  .audio-panel-tab-view,
+  .audio-close-dialog,
+  .audio-close-dialog__content,
+  .audio-bar,
   .tour-pop-a::backdrop,
   .tour-pop-b::backdrop {
     animation: none;
+  }
+
+  .audio-player-shell button:not(:disabled) {
+    transition: none;
+  }
+
+  .audio-panel-tab-view {
+    transition: none;
   }
 }
 

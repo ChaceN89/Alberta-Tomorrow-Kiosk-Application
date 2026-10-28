@@ -1,7 +1,7 @@
 /**
   File: App.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Compose the route tree under BrowserRouter, enabling client-side navigation and deep links.
@@ -23,6 +23,7 @@ import { ModulePage } from './pages/ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
 import { JournalProvider } from '../journal/JournalProvider'
 import { IntroTourProvider } from '../introTour/IntroTourProvider'
+import { AudioPlayerProvider } from '../module-tools/audio-player/AudioPlayerProvider'
 
 export function App() {
   return (
@@ -30,13 +31,16 @@ export function App() {
       <JournalProvider>
         <IntroTourProvider>
           <ModulePreloadProvider>
-            <Routes>
-              <Route element={<Layout />}>
-                <Route index element={<HomePage />} />
-                <Route path="modules/:moduleId/*" element={<ModulePage />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
+            {/* Above the routes so audio keeps playing while learners navigate */}
+            <AudioPlayerProvider>
+              <Routes>
+                <Route element={<Layout />}>
+                  <Route index element={<HomePage />} />
+                  <Route path="modules/:moduleId/*" element={<ModulePage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </AudioPlayerProvider>
           </ModulePreloadProvider>
         </IntroTourProvider>
       </JournalProvider>

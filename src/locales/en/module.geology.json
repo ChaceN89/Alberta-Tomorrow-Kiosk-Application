@@ -7,9 +7,6 @@
   "backToOverview": "Back to expedition details",
   "activity": {
     "introduction": "Alberta's landscape holds clues about ancient life and powerful ice. Answer three questions to add each discovery to your journal.",
-    "progress": "Question {{current}} of {{total}}",
-    "next": "Next question",
-    "finish": "Finish quiz",
     "complete": {
       "title": "Quiz complete!",
       "description": "You added three geology discoveries to your expedition journal.",
@@ -20,9 +17,9 @@
       {
         "prompt": "Which part of Alberta is famous for badlands and dinosaur fossils?",
         "options": [
-          "The Rocky Mountain peaks",
-          "The Red Deer River valley near Drumheller",
-          "The northern boreal peatlands"
+          { "wrong": "The Rocky Mountain peaks" },
+          { "correct": "The Red Deer River valley near Drumheller" },
+          { "wrong": "The northern boreal peatlands" }
         ],
         "correct": "That's right! In 1884, geologist Joseph Burr Tyrrell found a dinosaur skull in the badlands near Drumheller. It was later named Albertosaurus.",
         "tryAgain": "Not quite. Think of the dry, layered badlands where fossils are exposed along a river valley. Try another answer!"
@@ -30,9 +27,9 @@
       {
         "prompt": "How did the huge Big Rock boulder near Okotoks travel from the Rocky Mountains?",
         "options": [
-          "A volcanic eruption threw it",
-          "Glacial ice carried it",
-          "A rushing river rolled it"
+          { "wrong": "A volcanic eruption threw it" },
+          { "correct": "Glacial ice carried it" },
+          { "wrong": "A rushing river rolled it" }
         ],
         "correct": "That's right! Glacial ice carried Big Rock out of the Rocky Mountains and left it near Okotoks.",
         "tryAgain": "Not quite. This boulder is so large that only something enormous and slow-moving could carry it. Try another answer!"
@@ -40,9 +37,9 @@
       {
         "prompt": "In which part of Alberta are the oil sands mainly found?",
         "options": [
-          "Northern Alberta",
-          "Southern Alberta near the U.S. border",
-          "Along the Rocky Mountain peaks"
+          { "correct": "Northern Alberta" },
+          { "wrong": "Southern Alberta near the U.S. border" },
+          { "wrong": "Along the Rocky Mountain peaks" }
         ],
         "correct": "That's right! Alberta's oil sands are found in northern Alberta, including the Athabasca, Cold Lake, and Peace River areas.",
         "tryAgain": "Not quite. Think of the region around Fort McMurray. Try another answer!"

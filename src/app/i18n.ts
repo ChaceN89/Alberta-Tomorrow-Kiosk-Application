@@ -1,7 +1,7 @@
 /**
   File: i18n.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Register bundled English and French resources with typed keys.
@@ -21,6 +21,7 @@ import enHome from '../locales/en/home.json'
 import enIntroTour from '../locales/en/introTour.json'
 import enJournal from '../locales/en/journal.json'
 import enGeology from '../locales/en/module.geology.json'
+import enModuleTools from '../locales/en/moduleTools.json'
 import enResidentialSchool from '../locales/en/module.residentialSchools.json'
 import enWildlifeFinder from '../locales/en/module.wildlifeFinder.json'
 import frDevelopment from '../locales/fr/development.json'
@@ -30,6 +31,7 @@ import frHome from '../locales/fr/home.json'
 import frIntroTour from '../locales/fr/introTour.json'
 import frJournal from '../locales/fr/journal.json'
 import frGeology from '../locales/fr/module.geology.json'
+import frModuleTools from '../locales/fr/moduleTools.json'
 import frResidentialSchool from '../locales/fr/module.residentialSchools.json'
 import frWildlifeFinder from '../locales/fr/module.wildlifeFinder.json'
 
@@ -45,6 +47,7 @@ declare module 'i18next' {
       home: typeof enHome // English home resources
       introTour: typeof enIntroTour // English intro tour resources
       journal: typeof enJournal // English journal resources
+      moduleTools: typeof enModuleTools // English shared module tool resources
       residentialSchool: typeof enResidentialSchool // English residential school module resources
       wildlifeFinder: typeof enWildlifeFinder // English wildlife finder module resources
     }
@@ -62,6 +65,7 @@ void i18n.use(initReactI18next).init({
       home: enHome,
       introTour: enIntroTour,
       journal: enJournal,
+      moduleTools: enModuleTools,
       residentialSchool: enResidentialSchool,
       wildlifeFinder: enWildlifeFinder,
     },
@@ -73,6 +77,7 @@ void i18n.use(initReactI18next).init({
       home: frHome,
       introTour: frIntroTour,
       journal: frJournal,
+      moduleTools: frModuleTools,
       residentialSchool: frResidentialSchool,
       wildlifeFinder: frWildlifeFinder,
     },
@@ -83,6 +88,7 @@ void i18n.use(initReactI18next).init({
     'home',
     'introTour',
     'journal',
+    'moduleTools',
     'funfacts',
     'geology',
     'wildlifeFinder',

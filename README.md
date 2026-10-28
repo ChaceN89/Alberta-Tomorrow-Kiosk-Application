@@ -46,7 +46,8 @@ src/
   components/   Shared UI and reusable components used across modules
   journal/      Journal progress state, localStorage persistence, and context
   modules/      Typed registry, shared types, and individual module folders
-  locales/      en/ and fr/ with global, home, journal, development, funfacts, and module.* JSON files
+  module-tools/ Reusable module tools (audio-player, quiz-system) shared by modules
+  locales/      en/ and fr/ with global, home, journal, development, funfacts, moduleTools, and module.* JSON files
   styles/       Global CSS and centralized theme tokens
   assets/       Bundled local assets
 ```
@@ -56,8 +57,27 @@ lazy-loaded activities. Each `/modules/<id>` route shows module details and a
 launch action; activities open at `/modules/<id>/expedition`. Reusable components
 belong in `src/components/`; module-specific activities, components, and data
 belong in their own `src/modules/<module-id>/` folder. Modules can compose
-shared components, such as a future map or quiz, without sharing activity-specific
-state or configuration. Opening a module overview preloads its activity and
+shared components without sharing activity-specific state or configuration.
+
+Reusable module tools live in `src/module-tools/<tool>/`. A module supplies its own
+content (text, files, checkpoint ids) and the tool handles display and interaction:
+
+- **Audio player** (`audio-player/`): `AudioPlayerProvider` wraps the routes so one
+  audio element keeps playing across pages, and `AudioPlayerPanel` is the corner
+  mp3-style player. Modules render `TrackPlayButton` with a track and optional
+  `onStart`/`onEnd` callbacks (for example, to call `completeCheckpoint`). The panel
+  opens when audio starts, collapses to a tab that animates while playing, and
+  includes volume and playback-speed controls. When another track is playing,
+  module tracks can be added to the queue or played immediately. Queued tracks can
+  be removed, advanced to with Next, or played automatically when the current
+  track ends. Closing during playback asks for confirmation before unloading the
+  track and clearing the queue. The fast and slow buttons cycle speeds listed in
+  `playbackRates.ts`; their tooltips work with hover and keyboard focus.
+- **Quiz system** (`quiz-system/`): `Quiz` takes `QuizQuestion[]`, records answers
+  through `onQuestionCorrect`, and lets the module render its own finish screen.
+  Reuse a question's id as its journal checkpoint id so progress resumes.
+
+Opening a module overview preloads its activity and
 shows progress in the navigation bar. Preloads are cancelled when leaving that
 module. The residential-school module currently uses a five-second simulated
 preload; replace it with real asset or data loading when those resources exist.

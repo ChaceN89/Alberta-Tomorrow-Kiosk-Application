@@ -4,7 +4,8 @@
   Keep this a single npm application; commit the lockfile.
 - `src/app/` owns initialization, routing, and pages. `src/components/` contains
   shared UI. Keep each activity's components and logic in its own `src/modules/`
-  folder.
+  folder. Reusable module tools (audio player, quiz system) live in
+  `src/module-tools/`; modules supply content and tools handle display.
 - Register activities in `src/modules/registry.ts` using `LearningModule` metadata
   and `React.lazy`. Export each activity component as default. The registry drives
   home cards and `/modules/:moduleId`; don't add a separate route per activity.

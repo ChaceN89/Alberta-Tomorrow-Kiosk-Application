@@ -1,21 +1,71 @@
 {
-  "title": "Trouver un habitat",
-  "description": "Découvrez le caribou des bois et son habitat en Alberta.",
-  "overviewDescription": "Découvrez comment les habitats fournissent nourriture, eau et abri, puis répondez à une question sur les endroits où le caribou des bois trouve des lichens en Alberta.",
+  "title": "Les renards de l’Alberta",
+  "description": "Découvrez les renards véloces et roux de l’Alberta et leur mode de vie.",
+  "overviewDescription": "Découvrez les renards véloces et roux de l’Alberta, écoutez trois extraits audio, puis répondez à des questions sur leurs habitats et leur alimentation.",
   "category": "Faune",
   "launch": "Commencer l’expédition",
   "backToOverview": "Retour aux détails de l’expédition",
   "activity": {
-    "introduction": "Les animaux dépendent de leur habitat pour se nourrir, boire et s'abriter. Explorons l'habitat du caribou des bois en Alberta.",
-    "question": "Quel habitat abrite le caribou des bois dans le nord de l'Alberta ?",
-    "habitats": {
-      "prairie": "Prairie ouverte",
-      "boreal": "Forêt boréale",
-      "mountains": "Sommets rocheux"
+    "introduction": "Les renards dépendent de leur habitat pour se nourrir, boire et s’abriter. Découvrez les renards véloces et roux de l’Alberta grâce à des extraits audio et un questionnaire."
+  },
+  "listen": {
+    "heading": "Écouter et explorer",
+    "description": "Appuyez sur lecture pour entendre un extrait de l’expédition. Le lecteur audio continue pendant que vous explorez d’autres pages.",
+    "steps": {
+      "started": "Commencer l’écoute",
+      "finished": "Terminer l’écoute"
     },
-    "correct": "Bravo ! Les caribous des bois du nord de l'Alberta vivent dans les forêts boréales et les tourbières, où ils trouvent des lichens à manger.",
-    "tryAgain": "Pas tout à fait. Pensez à un habitat nordique avec des forêts, des milieux humides et des lichens. Essayez une autre réponse !",
-    "reset": "Recommencer"
+    "status": {
+      "done": "Consigné dans votre journal",
+      "todo": "Pas encore consigné"
+    },
+    "tracks": {
+      "song": {
+        "title": "Chanson d’essai",
+        "description": "Commencez l’écoute pour ajouter une note au journal, puis écoutez jusqu’à la fin pour en ajouter une autre."
+      },
+      "narration": {
+        "title": "Narration d’essai",
+        "description": "Un court enregistrement. Écoutez-le en entier pour ajouter une note au journal."
+      },
+      "redFoxSound": {
+        "title": "Cri du renard roux",
+        "description": "Commencez l’écoute pour ajouter une note à votre journal."
+      }
+    }
+  },
+  "quiz": {
+    "heading": "Mettez vos connaissances à l’épreuve",
+    "description": "Répondez à des questions sur les renards véloces et roux de l’Alberta.",
+    "start": "Commencer le questionnaire",
+    "backToActivity": "Retour à l’activité",
+    "questions": {
+      "swiftFox": {
+        "prompt": "Quel habitat est le plus caractéristique du renard véloce dans le sud-est de l’Alberta ?",
+        "options": {
+          "borealWrong": "Forêt boréale",
+          "shortgrassPrairieCorrect": "Prairie ouverte à herbes courtes",
+          "wetlandsWrong": "Milieux humides boréaux"
+        },
+        "correct": "Bravo ! Le renard véloce est adapté aux prairies ouvertes à herbes courtes du sud-est de l’Alberta.",
+        "tryAgain": "Pas tout à fait. Pensez à une prairie ouverte et sèche du sud de l’Alberta."
+      },
+      "redFox": {
+        "prompt": "Que mangent les renards roux ?",
+        "options": {
+          "onlyLargeAnimalsWrong": "Seulement de gros animaux",
+          "smallAnimalsAndPlantsCorrect": "De petits animaux et des végétaux, notamment des fruits",
+          "onlyGrassWrong": "Seulement de l’herbe"
+        },
+        "correct": "Bravo ! Les renards roux ont une alimentation variée qui comprend de petits animaux et des aliments végétaux comme des fruits.",
+        "tryAgain": "Pas tout à fait. Les renards roux ont une alimentation variée qui comprend des aliments d’origine animale et végétale."
+      }
+    },
+    "complete": {
+      "title": "Questionnaire terminé !",
+      "description": "Vous avez découvert les habitats et l’alimentation des renards véloces et roux de l’Alberta.",
+      "retry": "Refaire le questionnaire"
+    }
   },
   "journal": {
     "summary": "Notes de terrain sur la façon dont la faune de l’Alberta dépend de son habitat.",
@@ -26,9 +76,34 @@
         "summary": "Les animaux dépendent de leur habitat pour se nourrir, boire et s'abriter."
       },
       {
-        "id": "caribou-home",
-        "title": "Le territoire du caribou des bois",
-        "summary": "Les caribous des bois du nord de l'Alberta vivent dans les forêts boréales et les tourbières, où ils trouvent des lichens à manger."
+        "id": "audio-1-started",
+        "title": "L’écoute commence",
+        "summary": "Vous avez commencé à écouter la chanson d’essai de l’expédition. Les sons nous en apprennent beaucoup sur un lieu."
+      },
+      {
+        "id": "audio-1-finished",
+        "title": "La chanson en entier",
+        "summary": "Vous avez écouté la chanson d’essai jusqu’à la fin."
+      },
+      {
+        "id": "audio-2-finished",
+        "title": "Une voix du terrain",
+        "summary": "Vous avez terminé l’écoute de la narration d’essai."
+      },
+      {
+        "id": "audio-3-started",
+        "title": "Un renard dans son milieu",
+        "summary": "Vous avez commencé à écouter un enregistrement du cri d’un renard roux."
+      },
+      {
+        "id": "swift-fox-home",
+        "title": "L’habitat du renard véloce",
+        "summary": "Le renard véloce est adapté aux prairies ouvertes à herbes courtes du sud-est de l’Alberta."
+      },
+      {
+        "id": "red-fox-food",
+        "title": "L’alimentation du renard roux",
+        "summary": "Les renards roux ont une alimentation variée qui comprend de petits animaux et des aliments végétaux comme des fruits."
       }
     ]
   }

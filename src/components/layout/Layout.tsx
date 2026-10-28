@@ -1,7 +1,7 @@
 /**
   File: Layout.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Compose the skip link, navbar, routed page, footer, and global overlays.
@@ -14,6 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
+import { AudioPlayerPanel } from '../../module-tools/audio-player/AudioPlayerPanel'
 import { DisplayTesting } from '../development/DisplayTesting'
 import { MyToasters } from '../toasts/MyToasters'
 import { Footer } from './Footer'
@@ -55,6 +56,9 @@ export function Layout() {
 
       {/* the intro tour component - create modals for the guided tour */}
       <IntroTour />
+
+      {/* Corner audio player shared by every module tool */}
+      <AudioPlayerPanel />
 
       {/* Custom overlay scrollbar component */}
       <OverlayScrollbar />

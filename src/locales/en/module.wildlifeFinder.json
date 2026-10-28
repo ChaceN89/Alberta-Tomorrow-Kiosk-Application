@@ -1,21 +1,71 @@
 {
-  "title": "Find a habitat",
-  "description": "Meet a woodland caribou and discover where it lives in Alberta.",
-  "overviewDescription": "Explore how habitats provide food, water, and shelter, then answer a question about where woodland caribou find lichens in Alberta.",
+  "title": "Foxes of Alberta",
+  "description": "Meet Alberta's swift and red foxes and discover how they live.",
+  "overviewDescription": "Explore Alberta's swift and red foxes, listen to three audio clips, then answer questions about their habitats and diets.",
   "category": "Wildlife",
   "launch": "Start expedition",
   "backToOverview": "Back to expedition details",
   "activity": {
-    "introduction": "Animals depend on their habitats for food, water, and shelter. Let's explore a home for Alberta's woodland caribou.",
-    "question": "Which habitat is home to woodland caribou in northern Alberta?",
-    "habitats": {
-      "prairie": "Open prairie",
-      "boreal": "Boreal forest",
-      "mountains": "Rocky peaks"
+    "introduction": "Foxes depend on their habitats for food, water, and shelter. Explore Alberta's swift and red foxes through audio and a quiz."
+  },
+  "listen": {
+    "heading": "Listen and explore",
+    "description": "Press play to hear a clip from the expedition. The audio player keeps going while you explore other pages.",
+    "steps": {
+      "started": "Start listening",
+      "finished": "Finish listening"
     },
-    "correct": "That's right! Northern Alberta's woodland caribou live in boreal forests and peatlands, where they find lichens to eat.",
-    "tryAgain": "Not quite. Think of a northern habitat with forests, wetlands, and lichens. Try another answer!",
-    "reset": "Start again"
+    "status": {
+      "done": "Recorded in your journal",
+      "todo": "Not yet recorded"
+    },
+    "tracks": {
+      "song": {
+        "title": "Test song",
+        "description": "Start listening to add a journal note, then play to the end to add another."
+      },
+      "narration": {
+        "title": "Test narration",
+        "description": "A short recording. Finish it to add a journal note."
+      },
+      "redFoxSound": {
+        "title": "Red fox sound",
+        "description": "Start listening to add a note to your journal."
+      }
+    }
+  },
+  "quiz": {
+    "heading": "Test your knowledge",
+    "description": "Answer questions about swift and red foxes in Alberta.",
+    "start": "Start the quiz",
+    "backToActivity": "Back to the activity",
+    "questions": {
+      "swiftFox": {
+        "prompt": "Which habitat is most closely associated with swift foxes in southeastern Alberta?",
+        "options": {
+          "borealWrong": "Boreal forest",
+          "shortgrassPrairieCorrect": "Open shortgrass prairie",
+          "wetlandsWrong": "Boreal wetlands"
+        },
+        "correct": "That's right! Swift foxes are adapted to the open shortgrass prairie of southeastern Alberta.",
+        "tryAgain": "Not quite. Look for an open, dry grassland habitat in southern Alberta."
+      },
+      "redFox": {
+        "prompt": "What do red foxes eat?",
+        "options": {
+          "onlyLargeAnimalsWrong": "Only large animals",
+          "smallAnimalsAndPlantsCorrect": "Small animals and plants, including fruit",
+          "onlyGrassWrong": "Only grass"
+        },
+        "correct": "That's right! Red foxes eat a varied diet that includes small animals and plant foods such as fruit.",
+        "tryAgain": "Not quite. Red foxes eat a varied diet, including both animal and plant foods."
+      }
+    },
+    "complete": {
+      "title": "Quiz complete!",
+      "description": "You explored the habitats and diets of Alberta's swift and red foxes.",
+      "retry": "Take the quiz again"
+    }
   },
   "journal": {
     "summary": "Field notes on how Alberta's wildlife depends on its habitat.",
@@ -26,9 +76,34 @@
         "summary": "Animals depend on their habitats for food, water, and shelter."
       },
       {
-        "id": "caribou-home",
-        "title": "Home of the woodland caribou",
-        "summary": "Northern Alberta's woodland caribou live in boreal forests and peatlands, where they find lichens to eat."
+        "id": "audio-1-started",
+        "title": "Listening begins",
+        "summary": "You started listening to the expedition's test song. Sounds can tell us a lot about a place."
+      },
+      {
+        "id": "audio-1-finished",
+        "title": "The whole song",
+        "summary": "You listened to the test song all the way to the end."
+      },
+      {
+        "id": "audio-2-finished",
+        "title": "A voice from the field",
+        "summary": "You finished listening to the test narration."
+      },
+      {
+        "id": "audio-3-started",
+        "title": "A fox in the field",
+        "summary": "You started listening to a red fox sound recording."
+      },
+      {
+        "id": "swift-fox-home",
+        "title": "Swift fox habitat",
+        "summary": "Swift foxes are adapted to the open shortgrass prairie of southeastern Alberta."
+      },
+      {
+        "id": "red-fox-food",
+        "title": "Red fox diet",
+        "summary": "Red foxes eat a varied diet that includes small animals and plant foods such as fruit."
       }
     ]
   }
