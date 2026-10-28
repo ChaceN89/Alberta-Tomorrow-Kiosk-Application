@@ -33,8 +33,8 @@ export function JournalToast({
   const { t } = useTranslation('journal')
 
   return (
-    <div className="flex w-[min(20rem,calc(100vw-2rem))] items-center gap-3">
-      <ExpeditionPeak progress={progress} className="size-12" />
+    <div className="flex w-max min-w-[min(16rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] items-center gap-3">
+      <ExpeditionPeak progress={progress} className="size-12 shrink-0" />
       <p className="min-w-0 grow font-semibold">{message}</p>
       <button
         type="button"
@@ -42,7 +42,7 @@ export function JournalToast({
         aria-label={t('viewJournalFor', { title })}
         onClick={onViewJournal}
       >
-        <JournalIcon className="size-6" />
+        <JournalIcon className="size-10" />
       </button>
     </div>
   )

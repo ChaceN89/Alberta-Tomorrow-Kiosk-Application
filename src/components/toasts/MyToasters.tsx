@@ -56,7 +56,7 @@ export function MyToasters() {
       />
       <Toaster
         toasterId={NOTIFICATION_TOASTER_ID}
-        position="top-center"
+        position="top-left"
         containerStyle={{ bottom: 80 }}
         toastOptions={notificationToastOptions}
       />
