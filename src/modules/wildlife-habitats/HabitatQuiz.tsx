@@ -16,7 +16,7 @@
 import { useTranslation } from 'react-i18next'
 import { Quiz } from '../../module-tools/quiz-system/Quiz'
 import type { QuizQuestion } from '../../module-tools/quiz-system/types'
-import { TrackPlayButton } from '../../module-tools/audio-player/TrackPlayButton'
+import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
 import type { ModuleActivityProps } from '../types'
 import { wildlifeTracks } from './tracks'
 
@@ -64,11 +64,17 @@ export function HabitatQuiz({
       audio: (
         <TrackPlayButton
           track={{
+            type: 'audio',
             id: redFoxTrack.id,
             src: redFoxTrack.src,
             coverArt: redFoxTrack.coverArt,
             title: t('listen.tracks.redFoxSound.title'),
             subtitle: t('title'),
+            translation: {
+              namespace: 'wildlifeFinder',
+              titleKey: 'listen.tracks.redFoxSound.title',
+              subtitleKey: 'title',
+            },
           }}
           onStart={() => completeCheckpoint(redFoxTrack.startCheckpoint)}
         />

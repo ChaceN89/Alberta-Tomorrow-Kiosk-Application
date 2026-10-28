@@ -4,7 +4,7 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Small decorative SVG icons used by the audio player controls and tab.
+  - Small decorative SVG icons used by the shared media player controls and tab.
 
   Usage:
   - Imported by AudioPlayerPanel and TrackPlayButton.
@@ -76,6 +76,30 @@ export function MusicNoteIcon({ className }: IconProps) {
   return (
     <Icon className={className}>
       <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z" />
+    </Icon>
+  )
+}
+
+export function FullscreenIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="M3 9V3h6v2H5v4H3zm12-6h6v6h-2V5h-4V3zM3 15h2v4h4v2H3v-6zm16 4v-4h2v6h-6v-2h4z" />
+    </Icon>
+  )
+}
+
+export function ExitFullscreenIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="M9 3h2v8H3V9h6V3zm12 6v2h-8V3h2v6h6zM9 21v-6H3v-2h8v8H9zm12-8v2h-6v6h-2v-8h8z" />
+    </Icon>
+  )
+}
+
+export function VolumeIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="M3 9v6h4l5 4V5L7 9H3zm12.5 3a3.5 3.5 0 0 0-2-3.16v6.32a3.5 3.5 0 0 0 2-3.16zm-2-7.5v2.06a6 6 0 0 1 0 10.88v2.06a8 8 0 0 0 0-15z" />
     </Icon>
   )
 }

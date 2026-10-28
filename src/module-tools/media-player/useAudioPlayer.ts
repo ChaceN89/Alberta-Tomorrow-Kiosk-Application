@@ -4,8 +4,8 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Define the audio player context, track and callback types, and the consumer hook.
-  - Modules call playTrack with plain track data and optional start/end callbacks.
+  - Define the shared media player context, track types, callbacks, and consumer hook.
+  - Modules call playTrack with typed media data and optional start/end callbacks.
 
   Usage:
   - Modules and module tools call useAudioPlayer; AudioPlayerProvider supplies the value.
@@ -16,14 +16,31 @@
     speeding through to the end.
  */
 import { createContext, useContext } from 'react'
+import type { YouTubePlayerController } from './YouTubePlayer'
 
-export type AudioTrack = {
+type MediaItemBase = {
   id: string
-  src: string
   title: string
   subtitle?: string
   coverArt: string
+  translation?: {
+    namespace: 'geology' | 'wildlifeFinder'
+    titleKey: string
+    subtitleKey?: string
+  }
 }
+
+export type AudioTrack = MediaItemBase & {
+  type: 'audio'
+  src: string
+}
+
+export type YouTubeTrack = MediaItemBase & {
+  type: 'youtube'
+  videoId: string
+}
+
+export type MediaTrack = AudioTrack | YouTubeTrack
 
 export type AudioPlayCallbacks = {
   onStart?: () => void
@@ -32,17 +49,18 @@ export type AudioPlayCallbacks = {
 
 export type QueuedAudioTrack = {
   queueId: number
-  track: AudioTrack
+  track: MediaTrack
   callbacks: AudioPlayCallbacks
 }
 
 type AudioPlayerContextValue = {
   // null means nothing is loaded and the player is fully turned off.
-  track: AudioTrack | null
+  track: MediaTrack | null
   isPlaying: boolean
   isEnded: boolean
   hasError: boolean
   isPanelOpen: boolean
+  isFullscreen: boolean
   isClosing: boolean
   activePanelTab: 'player' | 'queue'
   currentTime: number
@@ -50,9 +68,13 @@ type AudioPlayerContextValue = {
   playbackRate: number
   volume: number
   queue: readonly QueuedAudioTrack[]
-  playTrack: (track: AudioTrack, callbacks?: AudioPlayCallbacks) => void
-  playNow: (track: AudioTrack, callbacks?: AudioPlayCallbacks) => void
-  addToQueue: (track: AudioTrack, callbacks?: AudioPlayCallbacks) => void
+  onVideoPlayerReady: (player: YouTubePlayerController | null) => void
+  onVideoPlayingChange: (isPlaying: boolean) => void
+  onMediaEnded: () => void
+  onPlaybackError: () => void
+  playTrack: (track: MediaTrack, callbacks?: AudioPlayCallbacks) => void
+  playNow: (track: MediaTrack, callbacks?: AudioPlayCallbacks) => void
+  addToQueue: (track: MediaTrack, callbacks?: AudioPlayCallbacks) => void
   removeFromQueue: (queueId: number) => void
   moveInQueue: (queueId: number, direction: 'up' | 'down') => void
   playNext: () => void
@@ -62,6 +84,7 @@ type AudioPlayerContextValue = {
   speedUp: () => void
   slowDown: () => void
   setPanelOpen: (isOpen: boolean) => void
+  setFullscreen: (isFullscreen: boolean) => void
   setActivePanelTab: (tab: 'player' | 'queue') => void
   beginClose: () => void
   // Unloads the track and hides the player completely.

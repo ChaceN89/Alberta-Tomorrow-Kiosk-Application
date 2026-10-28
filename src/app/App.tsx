@@ -23,7 +23,7 @@ import { ModulePage } from './pages/ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
 import { JournalProvider } from '../journal/JournalProvider'
 import { IntroTourProvider } from '../introTour/IntroTourProvider'
-import { AudioPlayerProvider } from '../module-tools/audio-player/AudioPlayerProvider'
+import { AudioPlayerProvider } from '../module-tools/media-player/AudioPlayerProvider'
 
 export function App() {
   return (
@@ -31,7 +31,7 @@ export function App() {
       <JournalProvider>
         <IntroTourProvider>
           <ModulePreloadProvider>
-            {/* Above the routes so audio keeps playing while learners navigate */}
+            {/* Above the routes so media keeps playing while learners navigate */}
             <AudioPlayerProvider>
               <Routes>
                 <Route element={<Layout />}>

@@ -1,16 +1,20 @@
 {
   "title": "Foxes of Alberta",
   "description": "Meet Alberta's swift and red foxes and discover how they live.",
-  "overviewDescription": "Explore Alberta's swift and red foxes, listen to three audio clips, then answer questions about their habitats and diets.",
+  "overviewDescription": "Explore Alberta's swift and red foxes, listen to audio clips, watch a video, then answer questions about their habitats and diets.",
   "category": "Wildlife",
   "launch": "Start expedition",
   "backToOverview": "Back to expedition details",
   "activity": {
-    "introduction": "Foxes depend on their habitats for food, water, and shelter. Explore Alberta's swift and red foxes through audio and a quiz."
+    "introduction": "Foxes depend on their habitats for food, water, and shelter. Explore Alberta's swift and red foxes through audio, video, and a quiz."
   },
   "listen": {
     "heading": "Listen and explore",
-    "description": "Press play to hear a clip from the expedition. The audio player keeps going while you explore other pages.",
+    "description": "Play audio or video from the expedition. The media player keeps going while you explore other pages.",
+    "videoHeading": "Watch a video",
+    "videoTitle": "Foxes of Alberta",
+    "videoDescription": "Watch a video about Alberta's foxes.",
+    "videoFinished": "Watch to the end",
     "steps": {
       "started": "Start listening",
       "finished": "Finish listening"
@@ -104,6 +108,11 @@
         "id": "audio-3-started",
         "title": "A fox in the field",
         "summary": "You started listening to a red fox sound recording."
+      },
+      {
+        "id": "foxes-video-finished",
+        "title": "Foxes of Alberta video",
+        "summary": "You watched the video about Alberta's foxes to the end."
       },
       {
         "id": "swift-fox-home",

@@ -4,23 +4,24 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Own the single audio element and expose playback, volume, and queue state to the app.
-  - Mounted above the routes so audio and queued callbacks survive client-side navigation.
+  - Own audio playback and expose shared media queue state to the app.
+  - Mounted above the routes so playback and queued callbacks survive navigation.
 
   Usage:
   - Wrap the routed app in AudioPlayerProvider; read it with useAudioPlayer.
 
   Notes:
-  - Starting a track immediately replaces the current track; Add to queue preserves it.
+  - Starting media immediately replaces the current item; Add to queue preserves it.
   - A track's module callbacks remain attached while it waits in the queue.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { nextFastRate, nextSlowRate, NORMAL_RATE } from './playbackRates'
+import type { YouTubePlayerController } from './YouTubePlayer'
 import {
   AudioPlayerContext,
   type AudioPlayCallbacks,
-  type AudioTrack,
+  type MediaTrack,
   type QueuedAudioTrack,
 } from './useAudioPlayer'
 
@@ -30,15 +31,18 @@ type AudioPlayerProviderProps = {
 
 export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
+  const videoPlayerRef = useRef<YouTubePlayerController | null>(null)
+  const volumeRef = useRef(1)
   const currentItemRef = useRef<QueuedAudioTrack | null>(null)
   const queueRef = useRef<QueuedAudioTrack[]>([])
   const queueIdRef = useRef(0)
   const hasStartedRef = useRef(false)
-  const [track, setTrack] = useState<AudioTrack | null>(null)
+  const [track, setTrack] = useState<MediaTrack | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isEnded, setIsEnded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isPanelOpen, setPanelOpen] = useState(false)
+  const [isFullscreen, setFullscreen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const [activePanelTab, setActivePanelTab] = useState<'player' | 'queue'>(
     'player',
@@ -77,23 +81,78 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       setHasError(false)
       setIsClosing(false)
       setActivePanelTab('player')
-      setPanelOpen(true)
-      audio.src = item.track.src
       audio.playbackRate = NORMAL_RATE
-      audio.volume = volume
+      audio.volume = volumeRef.current
 
-      if (shouldPlay) startPlayback(audio)
+      if (item.track.type === 'audio') {
+        audio.src = item.track.src
+        if (shouldPlay) startPlayback(audio)
+      } else {
+        audio.pause()
+        audio.removeAttribute('src')
+        audio.load()
+      }
     },
-    [startPlayback, volume],
+    [startPlayback],
   )
+
+  const onVideoPlayerReady = useCallback(
+    (player: YouTubePlayerController | null) => {
+      videoPlayerRef.current = player
+      if (player) player.setVolume(Math.round(volumeRef.current * 100))
+    },
+    [],
+  )
+
+  const onVideoPlayingChange = useCallback((playing: boolean) => {
+    setIsPlaying(playing)
+    if (playing) {
+      setIsEnded(false)
+      setHasError(false)
+      if (!hasStartedRef.current) {
+        hasStartedRef.current = true
+        currentItemRef.current?.callbacks.onStart?.()
+      }
+    }
+  }, [])
+
+  const onPlaybackError = useCallback(() => {
+    setHasError(true)
+    setIsPlaying(false)
+  }, [])
 
   const updateQueue = useCallback((next: QueuedAudioTrack[]) => {
     queueRef.current = next
     setQueue(next)
   }, [])
 
+  const stop = useCallback(() => {
+    const audio = audioRef.current
+
+    if (audio) {
+      audio.pause()
+      audio.removeAttribute('src')
+      audio.load()
+    }
+
+    currentItemRef.current = null
+    hasStartedRef.current = false
+    updateQueue([])
+    setTrack(null)
+    setIsPlaying(false)
+    setIsEnded(false)
+    setHasError(false)
+    setIsClosing(false)
+    setFullscreen(false)
+    setActivePanelTab('player')
+    setPanelOpen(false)
+    setCurrentTime(0)
+    setDuration(0)
+    setPlaybackRate(NORMAL_RATE)
+  }, [updateQueue])
+
   const playTrack = useCallback(
-    (next: AudioTrack, callbacks: AudioPlayCallbacks = {}) => {
+    (next: MediaTrack, callbacks: AudioPlayCallbacks = {}) => {
       const audio = audioRef.current
       if (!audio) return
 
@@ -110,7 +169,12 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
             true,
           )
         } else if (audio.paused) {
-          startPlayback(audio)
+          if (next.type === 'youtube') {
+            if (isEnded) videoPlayerRef.current?.seekTo(0, true)
+            videoPlayerRef.current?.playVideo()
+          } else {
+            startPlayback(audio)
+          }
         }
         return
       }
@@ -127,11 +191,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
       loadItem({ queueId: ++queueIdRef.current, track: next, callbacks }, true)
     },
-    [loadItem, startPlayback, updateQueue],
+    [isEnded, loadItem, startPlayback, updateQueue],
   )
 
   const playNow = useCallback(
-    (next: AudioTrack, callbacks: AudioPlayCallbacks = {}) => {
+    (next: MediaTrack, callbacks: AudioPlayCallbacks = {}) => {
       const existingIndex = queueRef.current.findIndex(
         (item) => item.track.id === next.id,
       )
@@ -157,7 +221,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   )
 
   const addToQueue = useCallback(
-    (next: AudioTrack, callbacks: AudioPlayCallbacks = {}) => {
+    (next: MediaTrack, callbacks: AudioPlayCallbacks = {}) => {
       if (currentItemRef.current?.track.id === next.id) return
       if (queueRef.current.some((item) => item.track.id === next.id)) return
 
@@ -212,9 +276,35 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     loadItem(next, true)
   }, [loadItem, updateQueue])
 
+  const onMediaEnded = useCallback(() => {
+    const currentItem = currentItemRef.current
+    currentItem?.callbacks.onEnd?.()
+
+    const [next, ...remaining] = queueRef.current
+    if (next) {
+      updateQueue(remaining)
+      loadItem(next, true)
+    } else if (currentItem?.track.type === 'youtube') {
+      stop()
+    } else {
+      setIsPlaying(false)
+      setIsEnded(true)
+    }
+  }, [loadItem, stop, updateQueue])
+
   const togglePlayback = useCallback(() => {
     const audio = audioRef.current
     if (!audio || !currentItemRef.current) return
+
+    if (currentItemRef.current.track.type === 'youtube') {
+      if (isPlaying) {
+        videoPlayerRef.current?.pauseVideo()
+      } else {
+        if (isEnded) videoPlayerRef.current?.seekTo(0, true)
+        videoPlayerRef.current?.playVideo()
+      }
+      return
+    }
 
     if (audio.paused) {
       if (audio.ended) audio.currentTime = 0
@@ -222,7 +312,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     } else {
       audio.pause()
     }
-  }, [startPlayback])
+  }, [isEnded, isPlaying, startPlayback])
 
   const seek = useCallback((seconds: number) => {
     const audio = audioRef.current
@@ -234,8 +324,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
   const setVolume = useCallback((nextVolume: number) => {
     const normalized = Math.max(0, Math.min(nextVolume, 1))
+    volumeRef.current = normalized
     setVolumeState(normalized)
     if (audioRef.current) audioRef.current.volume = normalized
+    videoPlayerRef.current?.setVolume(Math.round(normalized * 100))
   }, [])
 
   const speedUp = useCallback(() => {
@@ -254,30 +346,6 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     }
   }, [])
 
-  const stop = useCallback(() => {
-    const audio = audioRef.current
-
-    if (audio) {
-      audio.pause()
-      audio.removeAttribute('src')
-      audio.load()
-    }
-
-    currentItemRef.current = null
-    hasStartedRef.current = false
-    updateQueue([])
-    setTrack(null)
-    setIsPlaying(false)
-    setIsEnded(false)
-    setHasError(false)
-    setIsClosing(false)
-    setActivePanelTab('player')
-    setPanelOpen(false)
-    setCurrentTime(0)
-    setDuration(0)
-    setPlaybackRate(NORMAL_RATE)
-  }, [updateQueue])
-
   const beginClose = useCallback(() => {
     setIsClosing(true)
     audioRef.current?.pause()
@@ -290,6 +358,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isEnded,
       hasError,
       isPanelOpen,
+      isFullscreen,
       isClosing,
       activePanelTab,
       currentTime,
@@ -297,6 +366,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       playbackRate,
       volume,
       queue,
+      onVideoPlayerReady,
+      onVideoPlayingChange,
+      onMediaEnded,
+      onPlaybackError,
       playTrack,
       playNow,
       addToQueue,
@@ -309,6 +382,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       speedUp,
       slowDown,
       setPanelOpen,
+      setFullscreen,
       setActivePanelTab,
       beginClose,
       stop,
@@ -323,18 +397,24 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isEnded,
       isClosing,
       isPanelOpen,
+      isFullscreen,
       isPlaying,
       playNow,
       playTrack,
       playbackRate,
       playNext,
       queue,
+      onVideoPlayerReady,
+      onVideoPlayingChange,
+      onMediaEnded,
+      onPlaybackError,
       removeFromQueue,
       moveInQueue,
       seek,
       setVolume,
       setActivePanelTab,
       setPanelOpen,
+      setFullscreen,
       slowDown,
       speedUp,
       stop,
@@ -364,16 +444,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
         }}
         onPause={() => setIsPlaying(false)}
         onEnded={() => {
-          currentItemRef.current?.callbacks.onEnd?.()
-
-          const [next, ...remaining] = queueRef.current
-          if (next) {
-            updateQueue(remaining)
-            loadItem(next, true)
-          } else {
-            setIsPlaying(false)
-            setIsEnded(true)
-          }
+          onMediaEnded()
         }}
         onTimeUpdate={(event) =>
           setCurrentTime(event.currentTarget.currentTime)

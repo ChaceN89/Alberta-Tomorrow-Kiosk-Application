@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { AudioPlayerPanel } from '../../module-tools/audio-player/AudioPlayerPanel'
+import { AudioPlayerPanel } from '../../module-tools/media-player/AudioPlayerPanel'
 import { DisplayTesting } from '../development/DisplayTesting'
 import { MyToasters } from '../toasts/MyToasters'
 import { Footer } from './Footer'
@@ -57,7 +57,7 @@ export function Layout() {
       {/* the intro tour component - create modals for the guided tour */}
       <IntroTour />
 
-      {/* Corner audio player shared by every module tool */}
+      {/* Corner media player shared by every module tool */}
       <AudioPlayerPanel />
 
       {/* Custom overlay scrollbar component */}

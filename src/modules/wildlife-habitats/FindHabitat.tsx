@@ -37,10 +37,12 @@ export default function FindHabitat({
   const showActivity = () => setView('activity')
 
   return (
-    <section aria-labelledby="activity-title" className="max-w-3xl space-y-6">
-      <p className="font-semibold text-pine">{t('category')}</p>
-      <h1 id="activity-title">{t('title')}</h1>
-      <p className="text-lg text-muted">{t('activity.introduction')}</p>
+    <section aria-labelledby="activity-title" className="w-full space-y-6">
+      <div className="max-w-3xl space-y-6">
+        <p className="font-semibold text-pine">{t('category')}</p>
+        <h1 id="activity-title">{t('title')}</h1>
+        <p className="text-lg text-muted">{t('activity.introduction')}</p>
+      </div>
       {view === 'activity' ? (
         <>
           <ListenSection

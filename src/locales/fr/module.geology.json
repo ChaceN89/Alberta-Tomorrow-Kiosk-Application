@@ -7,6 +7,12 @@
   "backToOverview": "Retour aux détails de l’expédition",
   "activity": {
     "introduction": "Le paysage de l’Alberta renferme des indices sur la vie ancienne et la puissance des glaces. Répondez à trois questions pour ajouter chaque découverte à votre journal.",
+    "media": {
+      "heading": "Regarder et explorer",
+      "description": "Regardez une vidéo sur les paysages naturels de l’Alberta.",
+      "videoTitle": "Paysages naturels | Alberta Tomorrow",
+      "videoDescription": "Les paysages naturels de l’Alberta, présentés par Alberta Tomorrow."
+    },
     "complete": {
       "title": "Questionnaire terminé !",
       "description": "Vous avez ajouté trois découvertes géologiques à votre journal d’expédition.",

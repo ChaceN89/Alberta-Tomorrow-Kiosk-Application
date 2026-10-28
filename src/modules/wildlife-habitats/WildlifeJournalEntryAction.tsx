@@ -13,7 +13,7 @@
   - Reuses expedition tracks and their existing listening checkpoints.
  */
 import { useTranslation } from 'react-i18next'
-import { TrackPlayButton } from '../../module-tools/audio-player/TrackPlayButton'
+import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
 import { useJournal } from '../../journal/useJournal'
 import type { JournalEntryActionProps } from '../types'
 import { wildlifeTracks } from './tracks'
@@ -42,11 +42,17 @@ export default function WildlifeJournalEntryAction({
   return (
     <TrackPlayButton
       track={{
+        type: 'audio',
         id: track.id,
         src: track.src,
         coverArt: track.coverArt,
         title: t(`listen.tracks.${track.key}.title`),
         subtitle: t('title'),
+        translation: {
+          namespace: 'wildlifeFinder',
+          titleKey: `listen.tracks.${track.key}.title`,
+          subtitleKey: 'title',
+        },
       }}
       onStart={
         'startCheckpoint' in track

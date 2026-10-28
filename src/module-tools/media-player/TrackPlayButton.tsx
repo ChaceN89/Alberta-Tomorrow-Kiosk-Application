@@ -4,7 +4,7 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Offer concise playback and queue actions for a module audio track.
+  - Offer concise playback and queue actions for module media.
   - Passes optional onStart and onEnd callbacks so modules can record checkpoints.
 
   Usage:
@@ -20,11 +20,11 @@ import { AddToQueueIcon, PauseIcon, PlayIcon } from './AudioPlayerIcons'
 import {
   useAudioPlayer,
   type AudioPlayCallbacks,
-  type AudioTrack,
+  type MediaTrack,
 } from './useAudioPlayer'
 
 type TrackPlayButtonProps = AudioPlayCallbacks & {
-  track: AudioTrack
+  track: MediaTrack
 }
 
 export function TrackPlayButton({
@@ -32,13 +32,15 @@ export function TrackPlayButton({
   onStart,
   onEnd,
 }: TrackPlayButtonProps) {
-  const { t } = useTranslation('moduleTools')
+  const { t, i18n } = useTranslation('moduleTools')
   const {
     track: current,
     isPlaying,
     isEnded,
     isClosing,
     queue,
+    setPanelOpen,
+    setFullscreen,
     playTrack,
     playNow,
     addToQueue,
@@ -72,7 +74,18 @@ export function TrackPlayButton({
     } else {
       playTrack(track, callbacks)
     }
+
+    if (track.type === 'youtube' && !isActive) {
+      setPanelOpen(true)
+      setFullscreen(true)
+    }
   }
+  const localizedTitle = track.translation
+    ? i18n.t(track.translation.titleKey, {
+        ns: track.translation.namespace,
+        defaultValue: track.title,
+      })
+    : track.title
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -83,7 +96,7 @@ export function TrackPlayButton({
           action === 'playNow'
             ? 'audioPlayer.playNowTrack'
             : `audioPlayer.${action}Track`,
-          { title: track.title },
+          { title: localizedTitle },
         )}
         onClick={play}
       >
@@ -107,7 +120,7 @@ export function TrackPlayButton({
             isQueued
               ? 'audioPlayer.alreadyInQueueTrack'
               : 'audioPlayer.addToQueueTrack',
-            { title: track.title },
+            { title: localizedTitle },
           )}
           onClick={() => {
             if (!isQueued) addToQueue(track, callbacks)

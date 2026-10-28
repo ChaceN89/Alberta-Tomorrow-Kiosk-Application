@@ -7,6 +7,12 @@
   "backToOverview": "Back to expedition details",
   "activity": {
     "introduction": "Alberta's landscape holds clues about ancient life and powerful ice. Answer three questions to add each discovery to your journal.",
+    "media": {
+      "heading": "Watch and explore",
+      "description": "Watch a video about Alberta's natural landscapes.",
+      "videoTitle": "Natural Landscapes. Alberta Tomorrow.",
+      "videoDescription": "Natural landscapes across Alberta, presented by Alberta Tomorrow."
+    },
     "complete": {
       "title": "Quiz complete!",
       "description": "You added three geology discoveries to your expedition journal.",

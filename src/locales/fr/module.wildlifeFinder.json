@@ -1,16 +1,20 @@
 {
   "title": "Les renards de l’Alberta",
   "description": "Découvrez les renards véloces et roux de l’Alberta et leur mode de vie.",
-  "overviewDescription": "Découvrez les renards véloces et roux de l’Alberta, écoutez trois extraits audio, puis répondez à des questions sur leurs habitats et leur alimentation.",
+  "overviewDescription": "Découvrez les renards véloces et roux de l’Alberta, écoutez des extraits audio, regardez une vidéo, puis répondez à des questions sur leurs habitats et leur alimentation.",
   "category": "Faune",
   "launch": "Commencer l’expédition",
   "backToOverview": "Retour aux détails de l’expédition",
   "activity": {
-    "introduction": "Les renards dépendent de leur habitat pour se nourrir, boire et s’abriter. Découvrez les renards véloces et roux de l’Alberta grâce à des extraits audio et un questionnaire."
+    "introduction": "Les renards dépendent de leur habitat pour se nourrir, boire et s’abriter. Découvrez les renards véloces et roux de l’Alberta grâce à des extraits audio, une vidéo et un questionnaire."
   },
   "listen": {
     "heading": "Écouter et explorer",
-    "description": "Appuyez sur lecture pour entendre un extrait de l’expédition. Le lecteur audio continue pendant que vous explorez d’autres pages.",
+    "description": "Lisez des extraits audio ou vidéo de l’expédition. Le lecteur multimédia continue pendant que vous explorez d’autres pages.",
+    "videoHeading": "Regarder une vidéo",
+    "videoTitle": "Les renards de l’Alberta",
+    "videoDescription": "Regardez une vidéo sur les renards de l’Alberta.",
+    "videoFinished": "Regarder jusqu’à la fin",
     "steps": {
       "started": "Commencer l’écoute",
       "finished": "Terminer l’écoute"
@@ -104,6 +108,11 @@
         "id": "audio-3-started",
         "title": "Un renard dans son milieu",
         "summary": "Vous avez commencé à écouter un enregistrement du cri d’un renard roux."
+      },
+      {
+        "id": "foxes-video-finished",
+        "title": "Vidéo sur les renards de l’Alberta",
+        "summary": "Vous avez regardé jusqu’à la fin la vidéo sur les renards de l’Alberta."
       },
       {
         "id": "swift-fox-home",
