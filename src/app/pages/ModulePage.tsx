@@ -12,91 +12,31 @@
   Notes:
   - None.
  */
-import { Suspense, useCallback, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { Loading } from '../../components/app-states/Loading'
 import { ModuleNotFound } from '../../components/modules/ModuleNotFound'
 import { ModuleOverview } from '../../components/modules/ModuleOverview'
-import { useJournal } from '../../journal/useJournal'
-import { useModulePreload } from '../../modules/useModulePreload'
 import { modules } from '../../modules/registry'
-import type { LearningModule } from '../../modules/types'
-
-type ModuleActivityProps = {
-  module: LearningModule
-}
-
-function ExpeditionActivity({ module }: ModuleActivityProps) {
-  const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
-    useJournal()
-  const recordCheckpoint = useCallback(
-    (checkpointId: string) => completeCheckpoint(module.id, checkpointId),
-    [completeCheckpoint, module.id],
-  )
-  const Activity = module.component
-
-  useEffect(() => {
-    startExpedition(module.id)
-  }, [module.id, startExpedition])
-
-  return (
-    <Suspense fallback={<Loading />}>
-      <Activity
-        key={module.id}
-        completedCheckpoints={getCompletedCheckpoints(module.id)}
-        completeCheckpoint={recordCheckpoint}
-      />
-    </Suspense>
-  )
-}
-
-function ModuleActivity({ module }: ModuleActivityProps) {
-  const { t } = useTranslation('global')
-  const { state, preloadModule, isModuleReady } = useModulePreload()
-
-  useEffect(() => {
-    void preloadModule(module)
-  }, [module, preloadModule])
-
-  if (!isModuleReady(module.id)) {
-    if (state.moduleId === module.id && state.status === 'error') {
-      return (
-        <section role="alert" className="panel max-w-3xl space-y-4">
-          <h1>{t('preload.errorTitle')}</h1>
-          <p className="text-muted">{t('preload.errorDescription')}</p>
-          <button
-            type="button"
-            className="button-secondary"
-            onClick={() => void preloadModule(module)}
-          >
-            {t('preload.retry')}
-          </button>
-        </section>
-      )
-    }
-
-    return <Loading label={t('preload.preparing')} />
-  }
-
-  return <ExpeditionActivity module={module} />
-}
+import { ModuleActivity } from './module/ModuleActivity'
 
 export function ModulePage() {
   const { moduleId, '*': modulePath } = useParams()
   const module = modules.find((entry) => entry.id === moduleId)
 
+  // if no module is found, render the not found component
   if (!module) {
     return <ModuleNotFound />
   }
 
+  // if no specific path is provided, render the module overview
   if (!modulePath) {
     return <ModuleOverview module={module} />
   }
 
+  // if the module path is not recognized, render the not found component
   if (modulePath !== 'expedition') {
     return <ModuleNotFound />
   }
 
+  // final check - return the actual module activity component - quiz, list, images etc - specific data to the module
   return <ModuleActivity module={module} />
 }
