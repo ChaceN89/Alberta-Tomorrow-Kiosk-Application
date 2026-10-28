@@ -1,8 +1,16 @@
 /**
- * File: ResidentialSchool.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Present historical Alberta residential-school records respectfully.
- * Dependencies: React Router, react-i18next; sources link to NCTR archives; records journal checkpoints.
+  File: ResidentialSchool.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Present historical Alberta residential-school records respectfully.
+
+  Usage:
+  - Registered activity components are lazy-loaded by the module registry.
+
+  Notes:
+  - None.
  */
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

@@ -1,8 +1,16 @@
 /**
- * File: SplashScreen.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Show the branded initial loading screen and fade transition.
- * Dependencies: Loading spinner, react-i18next, bundled expedition logo.
+  File: SplashScreen.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Show the branded initial loading screen and fade transition.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import logo from '../../assets/expedition.svg'

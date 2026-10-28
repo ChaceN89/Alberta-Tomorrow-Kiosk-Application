@@ -1,8 +1,16 @@
 /**
- * File: steps.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Define the ordered steps of the first-visit intro tour.
- * Notes: Step ids match top-level keys in introTour.json; anchors match data-tour attributes.
+  File: steps.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Define the ordered steps of the first-visit intro tour.
+
+  Usage:
+  - Journal and intro-tour internals serve their providers or components.
+
+  Notes:
+  - Step ids match top-level keys in introTour.json; anchors match data-tour attributes.
  */
 export type TourAnchor = 'expedition-list' | 'journal-button'
 

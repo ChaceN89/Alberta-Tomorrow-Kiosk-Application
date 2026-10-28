@@ -1,8 +1,16 @@
 /**
- * File: introTourStorage.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Remember in browser localStorage whether the first-visit tour was finished.
- * Dependencies: Browser localStorage; a later settings screen can call resetIntroTour.
+  File: introTourStorage.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Remember in browser localStorage whether the first-visit tour was finished.
+
+  Usage:
+  - Journal and intro-tour internals serve their providers or components.
+
+  Notes:
+  - None.
  */
 const STORAGE_KEY = 'alberta-expeditions:intro-tour-completed'
 

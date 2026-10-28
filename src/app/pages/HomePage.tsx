@@ -1,8 +1,16 @@
 /**
- * File: HomePage.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Display available expeditions from the registry with journal progress.
- * Dependencies: react-i18next, module registry, module card.
+  File: HomePage.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Display available expeditions from the registry with journal progress.
+
+  Usage:
+  - App route pages are rendered by the router.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import { ModuleCard } from '../../components/modules/ModuleCard'

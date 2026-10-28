@@ -1,8 +1,16 @@
 /**
- * File: NotFound.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Show a route-not-found page with a home link and Alberta fact.
- * Dependencies: React Router, react-i18next, FunFact.
+  File: NotFound.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Show a route-not-found page with a home link and Alberta fact.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'

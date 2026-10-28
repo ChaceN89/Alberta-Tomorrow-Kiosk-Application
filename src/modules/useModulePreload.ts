@@ -1,8 +1,16 @@
 /**
- * File: useModulePreload.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Define the module preload context and consumer hook.
- * Dependencies: React context, learning-module registry types.
+  File: useModulePreload.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Define the module preload context and consumer hook.
+
+  Usage:
+  - Module support files are imported by module flows.
+
+  Notes:
+  - None.
  */
 import { createContext, useContext } from 'react'
 import type { LearningModule } from './types'

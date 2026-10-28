@@ -1,8 +1,16 @@
 /**
- * File: useJournal.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Define the expedition journal context and consumer hook.
- * Dependencies: React context, learning-module registry types.
+  File: useJournal.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Define the expedition journal context and consumer hook.
+
+  Usage:
+  - Journal and intro-tour internals serve their providers or components.
+
+  Notes:
+  - None.
  */
 import { createContext, useContext } from 'react'
 import type { LearningModule } from '../modules/types'

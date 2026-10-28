@@ -1,8 +1,16 @@
 /**
- * File: registry.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Register discoverable activities/modules without eagerly importing them.
- * Dependencies: React lazy, shared module types, per-module checkpoint ids.
+  File: registry.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Register discoverable activities/modules without eagerly importing them.
+
+  Usage:
+  - The module registry registers and lazy-loads activity components.
+
+  Notes:
+  - None.
  */
 import { lazy } from 'react'
 import { geologyCheckpoints } from './geology/quiz'

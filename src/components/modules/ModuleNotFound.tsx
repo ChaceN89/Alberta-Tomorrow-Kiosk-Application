@@ -1,8 +1,16 @@
 /**
- * File: ModuleNotFound.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Explain when a requested learning module cannot be found.
- * Dependencies: React Router and the global i18next namespace.
+  File: ModuleNotFound.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Explain when a requested learning module cannot be found.
+
+  Usage:
+  - Module shared UI is used by module pages.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'

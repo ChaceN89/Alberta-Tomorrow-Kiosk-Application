@@ -1,8 +1,16 @@
 /**
- * File: types.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Define metadata and locale namespace types for learning modules.
- * Dependencies: React component and lazy-loading types.
+  File: types.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Define metadata and locale namespace types for learning modules.
+
+  Usage:
+  - Module support files are imported by module flows.
+
+  Notes:
+  - None.
  */
 import type { ComponentType, LazyExoticComponent } from 'react'
 

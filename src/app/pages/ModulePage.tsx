@@ -1,8 +1,16 @@
 /**
- * File: ModulePage.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Render module details and load activities only when requested.
- * Dependencies: React Suspense, React Router, module views, journal and preload contexts.
+  File: ModulePage.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Render module details and load activities only when requested.
+
+  Usage:
+  - App route pages are rendered by the router.
+
+  Notes:
+  - None.
  */
 import { Suspense, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'

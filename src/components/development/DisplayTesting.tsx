@@ -1,8 +1,16 @@
 /**
- * File: DisplayTesting.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Provide the development menu and set the document title and language.
- * Dependencies: React Router, react-i18next, module preload context.
+  File: DisplayTesting.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide the development menu and set the document title and language.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'

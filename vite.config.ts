@@ -1,8 +1,16 @@
 /**
- * File: vite.config.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Configure React and Tailwind's Vite integration.
- * Dependencies: Vite, @vitejs/plugin-react, @tailwindcss/vite.
+  File: vite.config.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Configure React and Tailwind's Vite integration.
+
+  Usage:
+  - The Vite configuration is loaded by Vite.
+
+  Notes:
+  - None.
  */
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'

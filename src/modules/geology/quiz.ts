@@ -1,8 +1,16 @@
 /**
- * File: quiz.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Checkpoint ids and correct answers for the geology quiz.
- * Notes: Order matches activity.questions and journal.entries in module.geology.json.
+  File: quiz.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Checkpoint ids and correct answers for the geology quiz.
+
+  Usage:
+  - Module data files are used by their activity.
+
+  Notes:
+  - Order matches activity.questions and journal.entries in module.geology.json.
  */
 export const geologyCheckpoints = [
   'badlands',

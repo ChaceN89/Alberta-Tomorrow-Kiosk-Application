@@ -1,8 +1,16 @@
 /**
- * File: ModulePreloadProvider.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Coordinate cancellable module preloads and expose their progress.
- * Dependencies: React Router, React context, learning-module registry types.
+  File: ModulePreloadProvider.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Coordinate cancellable module preloads and expose their progress.
+
+  Usage:
+  - Providers supply or wrap state.
+
+  Notes:
+  - None.
  */
 import {
   useCallback,

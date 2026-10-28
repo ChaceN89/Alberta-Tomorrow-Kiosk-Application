@@ -1,8 +1,16 @@
 /**
- * File: Footer.tsx | Author: Chace Nielson
- * Created: 2026-10-28 | Updated: 2026-10-28
- * Description: Display the application footer and link to Alberta Tomorrow.
- * Dependencies: react-i18next, global translations.
+  File: Footer.tsx | Author: Chace Nielson
+  Date Created: Oct 28, 2026
+  Date Updated: Oct 28, 2026
+
+  Description:
+  - Display the application footer and link to Alberta Tomorrow.
+
+  Usage:
+  - Layout components render in the app shell.
+
+  Notes:
+  - None.
  */
 import { Trans } from 'react-i18next'
 

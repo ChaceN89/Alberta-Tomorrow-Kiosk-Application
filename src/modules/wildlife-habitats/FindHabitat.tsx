@@ -1,8 +1,16 @@
 /**
- * File: FindHabitat.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Match a woodland caribou to an Alberta habitat with instant feedback.
- * Dependencies: React state, React Router, react-i18next; records journal checkpoints.
+  File: FindHabitat.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Match a woodland caribou to an Alberta habitat with instant feedback.
+
+  Usage:
+  - Registered activity components are lazy-loaded by the module registry.
+
+  Notes:
+  - None.
  */
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

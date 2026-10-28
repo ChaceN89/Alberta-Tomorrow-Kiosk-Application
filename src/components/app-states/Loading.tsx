@@ -1,8 +1,16 @@
 /**
- * File: Loading.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Display a reusable loading status with an accessible animated spinner.
- * Dependencies: React, react-i18next.
+  File: Loading.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Display a reusable loading status with an accessible animated spinner.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 

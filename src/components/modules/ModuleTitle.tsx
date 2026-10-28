@@ -1,8 +1,16 @@
 /**
- * File: ModuleTitle.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Render a module's localized title from its own translation namespace.
- * Dependencies: react-i18next, learning-module metadata.
+  File: ModuleTitle.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Render a module's localized title from its own translation namespace.
+
+  Usage:
+  - Module shared UI is used by module pages.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import type { LearningModule } from '../../modules/types'

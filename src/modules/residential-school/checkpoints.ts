@@ -1,8 +1,16 @@
 /**
- * File: checkpoints.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Journal checkpoint ids for the residential-school expedition.
- * Notes: Ids match school ids and journal.entries in module.residentialSchools.json.
+  File: checkpoints.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Journal checkpoint ids for the residential-school expedition.
+
+  Usage:
+  - Module data files are used by their activity.
+
+  Notes:
+  - Ids match school ids and journal.entries in module.residentialSchools.json.
  */
 export const residentialSchoolCheckpoints = [
   'st-marys-blood',

@@ -1,10 +1,18 @@
 /**
- * File: initializeApp.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Run app-wide startup work before the initial screen is revealed.
- * Dependencies: Browser timers; shared data requests can be added here.
- *
- * IF i wanted to load something specific here (Images, media, map data etc), i could run a custom initialization routine within this component.
+  File: initializeApp.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide an awaitable place for setup that must finish before the application appears.
+  - Currently keeps the splash screen visible for at least one second; future startup data
+    requests can be awaited here before the application is revealed.
+
+  Usage:
+  - Called by AppStartup; return only after required startup work is complete.
+
+  Notes:
+  - None.
  */
 const MINIMUM_SPLASH_DURATION_MS = 1000
 

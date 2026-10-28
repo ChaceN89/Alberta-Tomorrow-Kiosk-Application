@@ -1,8 +1,16 @@
 /**
- * File: IntroTourPanel.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Developer controls to reset or restart the first-visit intro tour.
- * Dependencies: react-hot-toast, react-i18next, intro tour context.
+  File: IntroTourPanel.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Developer controls to reset or restart the first-visit intro tour.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'

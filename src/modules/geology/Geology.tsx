@@ -1,8 +1,16 @@
 /**
- * File: Geology.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Three-question geology quiz that records journal checkpoints.
- * Dependencies: React state, React Router, react-i18next, journal context, quiz data.
+  File: Geology.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Three-question geology quiz that records journal checkpoints.
+
+  Usage:
+  - Registered activity components are lazy-loaded by the module registry.
+
+  Notes:
+  - None.
  */
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'

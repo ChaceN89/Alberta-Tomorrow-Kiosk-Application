@@ -1,8 +1,16 @@
 /**
- * File: ModuleCard.tsx | Author: Chace Nielson
- * Created: 2026-10-28 | Updated: 2026-10-28
- * Description: Show expedition details, progress, and actions in the home list.
- * Dependencies: react-i18next, React Router, journal context, module registry.
+  File: ModuleCard.tsx | Author: Chace Nielson
+  Date Created: Oct 28, 2026
+  Date Updated: Oct 28, 2026
+
+  Description:
+  - Show expedition details, progress, and actions in the home list.
+
+  Usage:
+  - Module shared UI is used by module pages.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'

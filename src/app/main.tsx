@@ -1,14 +1,18 @@
 /**
- * File: main.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Initialize translations and mount the application with error recovery.
- * - main entry point for the application, responsible for initializing translations and mounting the root component.
- *
- * - StrictMode: Ensures that the application is rendered in React's strict mode, highlighting potential problems in the component tree.
- * - ErrorBoundary: Catches JavaScript errors anywhere in the child component tree and displays a fallback UI instead of crashing the whole app.
- * - AppStartup: Handles any necessary startup logic before rendering the main application component.
- *
- * Dependencies: React, React DOM, i18next, global styles.
+  File: main.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Browser entry point: load translations and global styles, create the React root, and mount the app.
+  - StrictMode checks development behavior; ErrorBoundary provides recovery for render failures.
+  - AppStartup completes initialization and the splash transition before showing App.
+
+  Usage:
+  - Loaded by the HTML entry point to start the application in the browser.
+
+  Notes:
+  - None.
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

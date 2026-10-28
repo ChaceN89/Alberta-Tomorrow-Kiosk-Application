@@ -1,8 +1,16 @@
 /**
- * File: useIntroTour.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Define the intro tour context and consumer hook.
- * Dependencies: React context.
+  File: useIntroTour.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Define the intro tour context and consumer hook.
+
+  Usage:
+  - Journal and intro-tour internals serve their providers or components.
+
+  Notes:
+  - None.
  */
 import { createContext, useContext } from 'react'
 

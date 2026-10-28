@@ -1,8 +1,16 @@
 /**
- * File: ResetConfirmPanel.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Ask for a Yes/No confirmation in the developer tools panel style.
- * Dependencies: DevPanel, react-i18next.
+  File: ResetConfirmPanel.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Ask for a Yes/No confirmation in the developer tools panel style.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'

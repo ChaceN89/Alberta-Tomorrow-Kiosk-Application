@@ -17,8 +17,11 @@
 - Keep controls touch-friendly, semantic, keyboard accessible, and visibly
   focusable. Preserve loading, not-found, and error recovery paths.
 - Use same-line opening braces and Prettier. Hand-written source files require
-  a short filename, author (Chace Nielson), created date, updated date, description,
-  and dependencies/notes header. Do not add headers to JSON or generated files.
+  a short header with filename, author (Chace Nielson), created and updated
+  dates, description, usage, and brief notes. During foundation work, keep the
+  updated date equal to the created date; later update the single updated date
+  for meaningful changes. Header lines use two-space indentation without
+  leading asterisks. Do not add headers to JSON or generated files.
 - Use Node 22.13+ (22.x) or 24+. Validate with `npm run typecheck`,
   `npm run lint`, `npm run format:check`, and `npm run build`. No automated test
   framework exists yet; manually verify both languages and activity interactions.

@@ -1,8 +1,16 @@
 /**
- * File: preloadResidentialSchool.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Simulate a cancellable residential-school activity preload.
- * Dependencies: AbortSignal and module preload progress callback.
+  File: preloadResidentialSchool.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Simulate a cancellable residential-school activity preload.
+
+  Usage:
+  - Module data files are used by their activity.
+
+  Notes:
+  - None.
  */
 import type { ModulePreloadContext } from '../types'
 

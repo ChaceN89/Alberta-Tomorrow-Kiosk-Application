@@ -1,8 +1,16 @@
 /**
- * File: ModuleStatusPanel.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Show preload status and progress for every registered module.
- * Dependencies: Module preload context, module registry, react-i18next.
+  File: ModuleStatusPanel.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Show preload status and progress for every registered module.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'

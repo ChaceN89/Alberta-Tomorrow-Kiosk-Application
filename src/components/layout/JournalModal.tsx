@@ -1,8 +1,16 @@
 /**
- * File: JournalModal.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Show a title page and a page for each started expedition in the journal.
- * Dependencies: Native dialog, React Router, react-i18next, journal context, module registry.
+  File: JournalModal.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Show a title page and a page for each started expedition in the journal.
+
+  Usage:
+  - Layout components render in the app shell.
+
+  Notes:
+  - None.
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'

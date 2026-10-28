@@ -1,8 +1,16 @@
 /**
- * File: eslint.config.js | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Lint browser TypeScript, React hooks, and tooling configuration.
- * Dependencies: ESLint, typescript-eslint, React plugins, eslint-config-prettier.
+  File: eslint.config.js | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Lint browser TypeScript, React hooks, and tooling configuration.
+
+  Usage:
+  - The ESLint configuration is loaded by ESLint.
+
+  Notes:
+  - None.
  */
 import js from '@eslint/js'
 import prettier from 'eslint-config-prettier'

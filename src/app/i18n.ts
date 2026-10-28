@@ -1,11 +1,16 @@
 /**
- * File: i18n.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- *
- * Description: Register bundled English and French resources with typed keys.
- * -Builds the full set of language resources for English and French from the multiple JSON files in the locales directory.
- * - this might get a little large with improts of json files, but it will keep the actaul text files from getting too big and allowing separation
- *
+  File: i18n.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Register bundled English and French resources with typed keys.
+
+  Usage:
+  - App bootstrap and configuration files coordinate startup, routes, and translations.
+
+  Notes:
+  - Contains a lot of json files. anoying in this file, but makes adding text easier and more organized.
  */
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
@@ -28,19 +33,20 @@ import frGeology from '../locales/fr/module.geology.json'
 import frResidentialSchool from '../locales/fr/module.residentialSchools.json'
 import frWildlifeFinder from '../locales/fr/module.wildlifeFinder.json'
 
+// Extend i18next with typed resources for better autocompletion and type safety.
 declare module 'i18next' {
   interface CustomTypeOptions {
     defaultNS: 'home'
     resources: {
-      development: typeof enDevelopment
-      global: typeof enGlobal
-      funfacts: typeof enFunfacts
-      geology: typeof enGeology
-      home: typeof enHome
-      introTour: typeof enIntroTour
-      journal: typeof enJournal
-      residentialSchool: typeof enResidentialSchool
-      wildlifeFinder: typeof enWildlifeFinder
+      development: typeof enDevelopment // Add a trailing comment to indicate the type is for English development resources.
+      global: typeof enGlobal // English global resources
+      funfacts: typeof enFunfacts // English funfacts resources
+      geology: typeof enGeology // English geology module resources
+      home: typeof enHome // English home resources
+      introTour: typeof enIntroTour // English intro tour resources
+      journal: typeof enJournal // English journal resources
+      residentialSchool: typeof enResidentialSchool // English residential school module resources
+      wildlifeFinder: typeof enWildlifeFinder // English wildlife finder module resources
     }
   }
 }

@@ -1,8 +1,16 @@
 /**
- * File: breakpoints.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Provide the active Tailwind breakpoint for a viewport width.
- * Dependencies: Tailwind breakpoint values from global.css.
+  File: breakpoints.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide the active Tailwind breakpoint for a viewport width.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 const breakpoints = [
   { name: 'xs', minWidth: 384 },

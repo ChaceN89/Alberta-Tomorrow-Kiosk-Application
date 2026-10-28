@@ -1,8 +1,16 @@
 /**
- * File: ModuleOverview.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Show reusable module details and navigation before launch.
- * Dependencies: React Router, react-i18next, learning-module metadata, journal context.
+  File: ModuleOverview.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Show reusable module details and navigation before launch.
+
+  Usage:
+  - Module shared UI is used by module pages.
+
+  Notes:
+  - None.
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'

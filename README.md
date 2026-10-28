@@ -170,10 +170,32 @@ badge toggles both vertical breakpoint guides and a
 centered, translucent legend. The reusable `Dropdown` component powers the
 language selector and supports keyboard navigation.
 
-Use strict TypeScript, same-line opening braces, and Prettier formatting. Add a
-short header to hand-written source files with filename, author (Chace Nielson),
-created/updated dates, description, and relevant dependencies or notes. Update the
-updated date when editing. Do not put headers in JSON or generated files.
+#### Source file headers
+
+Add a short header to each hand-written source file. Keep the description,
+usage, and notes brief. While the app foundation is being organized, set the
+updated date to the created date. Later, change the single updated date for
+meaningful changes; do not maintain a running list of update entries.
+
+```tsx
+/**
+  File: FileName.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Briefly state the file's purpose.
+
+  Usage:
+  - Briefly state where or how it is used.
+
+  Notes:
+  - Add a short note when useful; otherwise write None.
+ */
+```
+
+Use strict TypeScript, same-line opening braces, and Prettier formatting. Do not
+put headers in JSON or generated files.
 
 ## Verification
 

@@ -1,8 +1,16 @@
 /**
- * File: OverlayScrollbar.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Provide app-shell scrolling with an accessible floating scrollbar.
- * Dependencies: React, react-i18next, document scrolling APIs.
+  File: OverlayScrollbar.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide app-shell scrolling with an accessible floating scrollbar.
+
+  Usage:
+  - Layout components render in the app shell.
+
+  Notes:
+  - None.
  */
 import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent, PointerEvent } from 'react'

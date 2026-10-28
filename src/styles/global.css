@@ -1,8 +1,16 @@
 /*
- * File: global.css | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Tailwind entry point, centralized theme, and shared touch-friendly UI.
- * Dependencies: Tailwind CSS v4 via @tailwindcss/vite; no legacy config needed.
+  File: global.css | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Tailwind entry point, centralized theme, and shared touch-friendly UI.
+
+  Usage:
+  - The stylesheet is imported by the app entry.
+
+  Notes:
+  - None.
  */
 @import 'tailwindcss';
 

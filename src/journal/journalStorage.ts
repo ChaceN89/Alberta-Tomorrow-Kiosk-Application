@@ -1,8 +1,16 @@
 /**
- * File: journalStorage.ts | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Read and write expedition journal progress in browser localStorage.
- * Dependencies: Browser localStorage; swap this module for save-data sync later.
+  File: journalStorage.ts | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Read and write expedition journal progress in browser localStorage.
+
+  Usage:
+  - Journal and intro-tour internals serve their providers or components.
+
+  Notes:
+  - None.
  */
 const STORAGE_KEY = 'alberta-expeditions:journal'
 const STORAGE_VERSION = 2

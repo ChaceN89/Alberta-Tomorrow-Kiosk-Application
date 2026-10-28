@@ -1,8 +1,16 @@
 /**
- * File: JournalProvider.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Track expedition checkpoints, persist them locally, and control the journal modal.
- * Dependencies: React, react-hot-toast, react-i18next, module registry, journalStorage.
+  File: JournalProvider.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Track expedition checkpoints, persist them locally, and control the journal modal.
+
+  Usage:
+  - Providers supply or wrap state.
+
+  Notes:
+  - None.
  */
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'react-hot-toast'

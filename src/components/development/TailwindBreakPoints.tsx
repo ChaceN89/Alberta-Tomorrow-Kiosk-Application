@@ -1,8 +1,16 @@
 /**
- * File: TailwindBreakPoints.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Render Tailwind breakpoint guides and their centered legend.
- * Dependencies: Tailwind CSS utilities, react-i18next.
+  File: TailwindBreakPoints.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Render Tailwind breakpoint guides and their centered legend.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 

@@ -1,8 +1,16 @@
 /**
- * File: DevPanel.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Provide a consistent accessible popup panel for developer tools.
- * Dependencies: React, react-i18next.
+  File: DevPanel.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide a consistent accessible popup panel for developer tools.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useId, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'

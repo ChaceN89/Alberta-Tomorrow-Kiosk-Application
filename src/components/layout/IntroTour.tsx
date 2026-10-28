@@ -1,8 +1,16 @@
 /**
- * File: IntroTour.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Show the first-visit tour in a click-blocking dialog with anchored arrows.
- * Dependencies: Native dialog, React, react-i18next, intro tour context and steps.
+  File: IntroTour.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Show the first-visit tour in a click-blocking dialog with anchored arrows.
+
+  Usage:
+  - Layout components render in the app shell.
+
+  Notes:
+  - None.
  */
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'

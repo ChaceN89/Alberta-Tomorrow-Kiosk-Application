@@ -1,8 +1,16 @@
 /**
- * File: ErrorBoundary.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Catch application render failures with localized recovery.
- * Dependencies: React, react-i18next; full navigation resets the boundary.
+  File: ErrorBoundary.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Catch application render failures with localized recovery.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { Component, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'

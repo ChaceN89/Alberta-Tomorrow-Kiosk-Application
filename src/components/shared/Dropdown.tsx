@@ -1,8 +1,16 @@
 /**
- * File: Dropdown.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Provide a reusable accessible action menu with keyboard navigation.
- * Dependencies: React; labels and accessible text are supplied by callers.
+  File: Dropdown.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide a reusable accessible action menu with keyboard navigation.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import type { KeyboardEvent, ReactNode } from 'react'

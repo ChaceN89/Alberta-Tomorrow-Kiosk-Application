@@ -1,8 +1,16 @@
 /**
- * File: IntroTourProvider.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Start the intro tour for first-time visitors and control its steps.
- * Dependencies: React Router, introTourStorage, tour steps.
+  File: IntroTourProvider.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Start the intro tour for first-time visitors and control its steps.
+
+  Usage:
+  - Providers supply or wrap state.
+
+  Notes:
+  - None.
  */
 import {
   useCallback,

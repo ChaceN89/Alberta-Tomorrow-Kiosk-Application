@@ -1,8 +1,16 @@
 /**
- * File: Layout.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Provide responsive navigation, journal access, language controls, and main landmark.
- * Dependencies: React Router, shared layout UI, journal and module providers, development tools.
+  File: Layout.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Provide responsive navigation, journal access, language controls, and main landmark.
+
+  Usage:
+  - Layout components render in the app shell.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 import { Toaster } from 'react-hot-toast'

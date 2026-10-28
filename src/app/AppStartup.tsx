@@ -1,9 +1,17 @@
 /**
- * File: AppStartup.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Coordinate app initialization, splash transitions, and retries.
- *
- * Dependencies: React, initializeApp, app-state screens.
+  File: AppStartup.tsx | Author: Chace Nielson
+  Date Created: Oct 23, 2026
+  Date Updated: Oct 23, 2026
+
+  Description:
+  - Run app-wide initialization while showing the splash screen, then reveal the application.
+  - Show an error screen when initialization fails and allow retrying with a fresh initialization.
+
+  Usage:
+  - Wraps App in the browser entry point before the routed application is shown.
+
+  Notes:
+  - None.
  */
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
@@ -27,6 +35,8 @@ export function AppStartup({ children }: AppStartupProps) {
   const [retryCount, setRetryCount] = useState(0) // number of initialization retries attempted
   const initializationRef = useRef<Promise<void> | null>(null)
 
+  // Handle retrying initialization by clearing the current promise and resetting state. - should never actaul occur if initialization succeeds on the first attempt
+  // This allows the user to attempt initialization again if it previously failed.
   const handleRetry = () => {
     initializationRef.current = null
     setState('loading')

@@ -1,8 +1,16 @@
 /**
- * File: ErrorScreen.tsx | Author: Chace Nielson
- * Created: 2026-10-28 | Updated: 2026-10-28
- * Description: Show the localized application startup error and retry action.
- * Dependencies: react-i18next, global translations.
+  File: ErrorScreen.tsx | Author: Chace Nielson
+  Date Created: Oct 28, 2026
+  Date Updated: Oct 28, 2026
+
+  Description:
+  - Show the localized application startup error and retry action.
+
+  Usage:
+  - Shared and app-state UI is imported by app or feature flows.
+
+  Notes:
+  - None.
  */
 import { useTranslation } from 'react-i18next'
 
