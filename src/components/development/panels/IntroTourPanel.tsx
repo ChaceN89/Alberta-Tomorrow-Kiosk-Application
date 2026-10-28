@@ -14,6 +14,7 @@
  */
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { NOTIFICATION_TOASTER_ID } from '../../toasts/toasterIds'
 import { useIntroTour } from '../../../introTour/useIntroTour'
 import { DevPanel } from './DevPanel'
 
@@ -35,7 +36,10 @@ export function IntroTourPanel({ onClose, onRestarted }: IntroTourPanelProps) {
           className="button-secondary w-full"
           onClick={() => {
             resetFlag()
-            toast(t('introTourFlagReset'), { id: 'intro-tour-reset' })
+            toast(t('introTourFlagReset'), {
+              id: 'intro-tour-reset',
+              toasterId: NOTIFICATION_TOASTER_ID,
+            })
           }}
         >
           {t('resetIntroTourFlag')}

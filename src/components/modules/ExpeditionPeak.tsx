@@ -4,10 +4,11 @@
   Date Updated: Oct 23, 2026
 
   Description:
-  - Show an expedition's mountain, filled by progress and flagged when complete.
+  - Render a mountain that fills according to expedition checkpoint progress.
+  - Show a flag when every checkpoint is complete.
 
   Usage:
-  - Module shared UI is used by module pages.
+  - Reused by module cards, overviews, journal views, and toast UI; callers control its size.
 
   Notes:
   - None.

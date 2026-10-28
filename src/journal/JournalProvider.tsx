@@ -15,6 +15,8 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { JournalToast } from '../components/toasts/JournalToast'
+import { NOTIFICATION_TOASTER_ID } from '../components/toasts/toasterIds'
 import { modules } from '../modules/registry'
 import type { LearningModule } from '../modules/types'
 import {
@@ -26,12 +28,33 @@ import { JournalContext, type ExpeditionProgress } from './useJournal'
 
 const JOURNAL_TOAST_ID = 'journal-update'
 
+function getModuleProgress(
+  module: LearningModule,
+  journalProgress: JournalProgress,
+): ExpeditionProgress {
+  const record = journalProgress[module.id]
+  const total = module.checkpoints.length
+  const completed = record
+    ? module.checkpoints.filter((id) => id in record.checkpoints).length
+    : 0
+
+  return {
+    completed,
+    total,
+    status: !record
+      ? 'notStarted'
+      : total > 0 && completed === total
+        ? 'complete'
+        : 'inProgress',
+  }
+}
+
 type JournalProviderProps = {
   children: ReactNode
 }
 
 export function JournalProvider({ children }: JournalProviderProps) {
-  const { t } = useTranslation('journal')
+  const { t, i18n } = useTranslation('journal')
   const [initialJournal] = useState(loadJournal)
   const [progress, setProgress] = useState<JournalProgress>(
     initialJournal.progress,
@@ -51,12 +74,44 @@ export function JournalProvider({ children }: JournalProviderProps) {
     setIsStorageAvailable(saveJournal(next))
   }, [])
 
+  const openJournal = useCallback((moduleId?: string) => {
+    if (moduleId !== undefined) {
+      // Only started expeditions have journal pages; others show the title page.
+      setActiveModuleId(progressRef.current[moduleId] ? moduleId : null)
+    }
+
+    setIsOpen(true)
+  }, [])
+
+  const showJournalToast = useCallback(
+    (module: LearningModule, message: string) => {
+      const title = i18n.t('title', { ns: module.translationNamespace })
+      const progress = getModuleProgress(module, progressRef.current)
+
+      toast(
+        <JournalToast
+          message={message}
+          title={title}
+          progress={progress}
+          onViewJournal={() => {
+            openJournal(module.id)
+            toast.dismiss(JOURNAL_TOAST_ID, NOTIFICATION_TOASTER_ID)
+          }}
+        />,
+        {
+          id: JOURNAL_TOAST_ID,
+          toasterId: NOTIFICATION_TOASTER_ID,
+        },
+      )
+    },
+    [i18n, openJournal],
+  )
+
   const startExpedition = useCallback(
     (moduleId: string) => {
-      if (
-        !modules.some((entry) => entry.id === moduleId) ||
-        progressRef.current[moduleId]
-      ) {
+      const module = modules.find((entry) => entry.id === moduleId)
+
+      if (!module || progressRef.current[moduleId]) {
         return
       }
 
@@ -64,12 +119,9 @@ export function JournalProvider({ children }: JournalProviderProps) {
         ...progressRef.current,
         [moduleId]: { startedAt: new Date().toISOString(), checkpoints: {} },
       })
-      toast.success(t('toastStarted'), {
-        id: JOURNAL_TOAST_ID,
-        duration: 2500,
-      })
+      showJournalToast(module, t('toastStarted'))
     },
-    [commitProgress, t],
+    [commitProgress, showJournalToast, t],
   )
 
   const completeCheckpoint = useCallback(
@@ -99,12 +151,9 @@ export function JournalProvider({ children }: JournalProviderProps) {
           checkpoints: { ...record?.checkpoints, [checkpointId]: now },
         },
       })
-      toast.success(t('toastUpdated'), {
-        id: JOURNAL_TOAST_ID,
-        duration: 2500,
-      })
+      showJournalToast(module, t('toastUpdated'))
     },
-    [commitProgress, t],
+    [commitProgress, showJournalToast, t],
   )
 
   const isCheckpointComplete = useCallback(
@@ -119,23 +168,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
   )
 
   const getExpeditionProgress = useCallback(
-    (module: LearningModule): ExpeditionProgress => {
-      const record = progress[module.id]
-      const total = module.checkpoints.length
-      const completed = record
-        ? module.checkpoints.filter((id) => id in record.checkpoints).length
-        : 0
-
-      return {
-        completed,
-        total,
-        status: !record
-          ? 'notStarted'
-          : total > 0 && completed === total
-            ? 'complete'
-            : 'inProgress',
-      }
-    },
+    (module: LearningModule) => getModuleProgress(module, progress),
     [progress],
   )
 
@@ -149,15 +182,6 @@ export function JournalProvider({ children }: JournalProviderProps) {
         ? moduleId
         : null,
     )
-  }, [])
-
-  const openJournal = useCallback((moduleId?: string) => {
-    if (moduleId !== undefined) {
-      // Only started expeditions have journal pages; others show the title page.
-      setActiveModuleId(progressRef.current[moduleId] ? moduleId : null)
-    }
-
-    setIsOpen(true)
   }, [])
 
   const closeJournal = useCallback(() => {

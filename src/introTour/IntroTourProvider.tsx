@@ -12,6 +12,7 @@
   Notes:
   - None.
  */
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   useCallback,
   useEffect,
@@ -19,7 +20,6 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 import {
   hasCompletedIntroTour,
   markIntroTourCompleted,
@@ -28,21 +28,26 @@ import {
 import { tourSteps } from './steps'
 import { IntroTourContext } from './useIntroTour'
 
-// Gives the splash screen time to finish fading before the tour appears.
+// Gives the splash screen time to finish fading before the tour appears. A little delay ensures smooth transition.
 const START_DELAY_MS = 350
 
+// props for this component - the children to be wrapped by the provider
 type IntroTourProviderProps = {
   children: ReactNode
 }
 
 export function IntroTourProvider({ children }: IntroTourProviderProps) {
+  // extract the current pathname and navigation functions from the router
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [stepIndex, setStepIndex] = useState<number | null>(null)
+  const [stepIndex, setStepIndex] = useState<number | null>(null) // step along the intro tour
+
   // Decided once per page load, so resetting the flag only affects the next load.
   const [isAutoStartPending, setIsAutoStartPending] = useState(
     () => !hasCompletedIntroTour(),
   )
+
+  // determine if the current page is the home page (root path) if not home, the tour should not auto-start
   const isHome = pathname === '/'
 
   useEffect(() => {

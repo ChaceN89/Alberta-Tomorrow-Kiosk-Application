@@ -10,6 +10,7 @@
   "navigation": {
     "home": "Home",
     "returnHome": "Return home",
+    "startTour": "Start the introduction tour",
     "skip": "Skip to main content",
     "label": "Main navigation"
   },

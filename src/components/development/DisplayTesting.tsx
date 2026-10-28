@@ -15,6 +15,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { NOTIFICATION_TOASTER_ID } from '../toasts/toasterIds'
 import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { ApplicationStatePanel } from './panels/ApplicationStatePanel'
@@ -119,7 +120,10 @@ export function DisplayTesting() {
   const confirmReset = () => {
     if (pendingReset === 'journal') {
       resetJournal()
-      toast(t('journalReset'), { id: 'journal-reset' })
+      toast(t('journalReset'), {
+        id: 'journal-reset',
+        toasterId: NOTIFICATION_TOASTER_ID,
+      })
     } else if (pendingReset === 'site') {
       resetSite()
     }
