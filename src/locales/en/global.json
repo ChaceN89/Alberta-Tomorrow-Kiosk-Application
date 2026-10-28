@@ -14,7 +14,7 @@
     "label": "Main navigation"
   },
   "footer": {
-    "credit": "Alberta Expeditions is part of Alberta Tomorrow's educational platform."
+    "credit": "Alberta Expeditions is part of <brandLink>Alberta Tomorrow's</brandLink> educational platform."
   },
   "preload": {
     "progressLabel": "Activity loading progress",

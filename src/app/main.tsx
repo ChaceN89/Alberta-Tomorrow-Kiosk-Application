@@ -1,12 +1,12 @@
 /**
  * File: main.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Initialize translations and mount the application with error recovery.
  * Dependencies: React, React DOM, i18next, global styles.
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ErrorBoundary } from '../components/ErrorBoundary'
+import { ErrorBoundary } from '../components/app-states/ErrorBoundary'
 import '../styles/global.css'
 import { AppStartup } from './AppStartup'
 import './i18n'

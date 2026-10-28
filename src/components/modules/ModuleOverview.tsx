@@ -1,15 +1,15 @@
 /**
  * File: ModuleOverview.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Show reusable module details and navigation before launch.
  * Dependencies: React Router, react-i18next, learning-module metadata, journal context.
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { useJournal } from '../journal/useJournal'
-import { useModulePreload } from '../modules/useModulePreload'
-import type { LearningModule } from '../modules/types'
+import { useJournal } from '../../journal/useJournal'
+import { useModulePreload } from '../../modules/useModulePreload'
+import type { LearningModule } from '../../modules/types'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
 type ModuleOverviewProps = {

@@ -1,12 +1,12 @@
 /**
  * File: ExpeditionPeak.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Show an expedition's mountain, filled by progress and flagged when complete.
  * Dependencies: React, react-i18next, journal progress types.
  */
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ExpeditionProgress } from '../journal/useJournal'
+import type { ExpeditionProgress } from '../../journal/useJournal'
 
 type ExpeditionPeakProps = {
   progress: ExpeditionProgress

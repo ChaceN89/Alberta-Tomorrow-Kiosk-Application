@@ -1,27 +1,30 @@
 /**
  * File: AppStartup.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Coordinate app initialization, splash transitions, and retries.
  * Dependencies: React, react-i18next, initializeApp, SplashScreen.
  */
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { SplashScreen } from '../components/SplashScreen'
+import { SplashScreen } from '../components/app-states/SplashScreen'
 import { initializeApp } from './initializeApp'
 
+//
 type StartupState = 'loading' | 'exiting' | 'ready' | 'error'
 
+// props for the AppStartup component -
 type AppStartupProps = {
   children: ReactNode
 }
 
+// Duration for the splash screen fade-out animation. In milliseconds.
 const SPLASH_FADE_DURATION_MS = 250
 
 export function AppStartup({ children }: AppStartupProps) {
-  const { t } = useTranslation('global')
-  const [state, setState] = useState<StartupState>('loading')
-  const [retryCount, setRetryCount] = useState(0)
+  const { t } = useTranslation('global') // translation function for global namespace
+  const [state, setState] = useState<StartupState>('loading') // initial startup state - loading
+  const [retryCount, setRetryCount] = useState(0) // number of initialization retries attempted
   const initializationRef = useRef<Promise<void> | null>(null)
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 /**
  * File: HomePage.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Display available expeditions from the registry with journal progress.
  * Dependencies: React Router, react-i18next, module registry, journal context.
  */
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import {
   ExpeditionPeak,
   ExpeditionStatusText,
-} from '../components/ExpeditionPeak'
+} from '../components/modules/ExpeditionPeak'
 import { useJournal } from '../journal/useJournal'
 import { modules } from '../modules/registry'
 

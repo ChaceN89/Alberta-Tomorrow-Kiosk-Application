@@ -1,14 +1,14 @@
 /**
  * File: IntroTour.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Show the first-visit tour in a click-blocking dialog with anchored arrows.
  * Dependencies: Native dialog, React, react-i18next, intro tour context and steps.
  */
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
-import logo from '../assets/expedition.svg'
-import { tourSteps, type TourAnchor } from '../tour/steps'
-import { useIntroTour } from '../tour/useIntroTour'
+import logo from '../../assets/expedition.svg'
+import { tourSteps, type TourAnchor } from '../../introTour/steps'
+import { useIntroTour } from '../../introTour/useIntroTour'
 
 const POPUP_MARGIN = 16
 const POPUP_GAP = 14

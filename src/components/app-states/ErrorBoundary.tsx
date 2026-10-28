@@ -1,7 +1,7 @@
 /**
  * File: ErrorBoundary.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Catch render and lazy-loading failures with localized recovery.
+ * Created: 2026-10-23 | Updated: 2026-10-28
+ * Description: Catch application render failures with localized recovery.
  * Dependencies: React, react-i18next; full navigation resets the boundary.
  */
 import { Component, type ReactNode } from 'react'

@@ -5,7 +5,7 @@
  * Dependencies: journalStorage and introTourStorage; add new storage clears here.
  */
 import { clearJournalStorage } from '../../journal/journalStorage'
-import { resetIntroTour } from '../../tour/introTourStorage'
+import { resetIntroTour } from '../../introTour/introTourStorage'
 
 export function resetSite() {
   clearJournalStorage()

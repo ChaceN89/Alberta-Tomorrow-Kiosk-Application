@@ -1,7 +1,7 @@
 /**
  * File: ModuleNotFound.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Explain when a requested learning module is unavailable.
+ * Created: 2026-10-23 | Updated: 2026-10-28
+ * Description: Explain when a requested learning module cannot be found.
  * Dependencies: React Router and the global i18next namespace.
  */
 import { useTranslation } from 'react-i18next'

@@ -1,18 +1,18 @@
 /**
  * File: JournalModal.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Show a title page and a page for each started expedition in the journal.
  * Dependencies: Native dialog, React Router, react-i18next, journal context, module registry.
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import logo from '../assets/expedition.svg'
-import { useJournal } from '../journal/useJournal'
-import { modules } from '../modules/registry'
-import type { LearningModule } from '../modules/types'
-import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
-import { ModuleTitle } from './ModuleTitle'
+import logo from '../../assets/expedition.svg'
+import { useJournal } from '../../journal/useJournal'
+import { modules } from '../../modules/registry'
+import type { LearningModule } from '../../modules/types'
+import { ExpeditionPeak, ExpeditionStatusText } from '../modules/ExpeditionPeak'
+import { ModuleTitle } from '../modules/ModuleTitle'
 
 type JournalPage = LearningModule | null
 

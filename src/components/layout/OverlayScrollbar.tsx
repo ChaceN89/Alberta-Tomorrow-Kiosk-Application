@@ -1,7 +1,7 @@
 /**
  * File: OverlayScrollbar.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Provide an accessible floating scrollbar without reserving layout width.
+ * Created: 2026-10-23 | Updated: 2026-10-28
+ * Description: Provide app-shell scrolling with an accessible floating scrollbar.
  * Dependencies: React, react-i18next, document scrolling APIs.
  */
 import { useEffect, useRef, useState } from 'react'

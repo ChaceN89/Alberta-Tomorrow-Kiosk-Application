@@ -6,7 +6,7 @@
  */
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { useIntroTour } from '../../../tour/useIntroTour'
+import { useIntroTour } from '../../../introTour/useIntroTour'
 import { DevPanel } from './DevPanel'
 
 type IntroTourPanelProps = {

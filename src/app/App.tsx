@@ -1,17 +1,23 @@
 /**
  * File: App.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Define routes beneath the shared application layout.
- * Dependencies: React Router, application pages and providers.
+ *
+ * Features:
+ * - Browser router: Provides routing capabilities for the application.
+ * - Journal provider: Manages journal state and data.
+ * - Intro tour provider: Manages the introductory tour for new users.
+ * - Module preload provider: Preloads module data for improved performance.
+ * - Router and Layout: Defines the routing structure and wraps routes with a consistent layout.
  */
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Layout } from '../components/Layout'
-import { NotFound } from '../components/NotFound'
+import { Layout } from '../components/layout/Layout'
+import { NotFound } from '../components/app-states/NotFound'
 import { HomePage } from './HomePage'
 import { ModulePage } from './ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
 import { JournalProvider } from '../journal/JournalProvider'
-import { IntroTourProvider } from '../tour/IntroTourProvider'
+import { IntroTourProvider } from '../introTour/IntroTourProvider'
 
 export function App() {
   return (

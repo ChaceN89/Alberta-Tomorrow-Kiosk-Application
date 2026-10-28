@@ -1,7 +1,7 @@
 /**
  * File: Loading.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Announce loading with an accessible animated spinner.
+ * Created: 2026-10-23 | Updated: 2026-10-28
+ * Description: Display a reusable loading status with an accessible animated spinner.
  * Dependencies: React, react-i18next.
  */
 import { useTranslation } from 'react-i18next'

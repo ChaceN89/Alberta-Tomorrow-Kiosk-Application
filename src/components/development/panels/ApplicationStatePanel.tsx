@@ -1,13 +1,13 @@
 /**
  * File: ApplicationStatePanel.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Preview startup and activity loading/error screens on demand.
  * Dependencies: SplashScreen, Loading, react-i18next.
  */
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Loading } from '../../Loading'
-import { SplashScreen } from '../../SplashScreen'
+import { Loading } from '../../app-states/Loading'
+import { SplashScreen } from '../../app-states/SplashScreen'
 import { DevPanel } from './DevPanel'
 
 type ApplicationStatePanelProps = {

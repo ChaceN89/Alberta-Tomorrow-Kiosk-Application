@@ -1,7 +1,7 @@
 /**
  * File: FunFact.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Show a random localized Alberta fact for empty and loading states.
+ * Created: 2026-10-23 | Updated: 2026-10-28
+ * Description: Show a reusable random localized Alberta fact.
  * Dependencies: React state and react-i18next funfacts namespace.
  */
 import { useState } from 'react'

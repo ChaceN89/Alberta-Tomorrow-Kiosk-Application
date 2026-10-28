@@ -1,12 +1,12 @@
 /**
  * File: NotFound.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
- * Description: Give lost visitors a playful route home and an Alberta fact.
+ * Created: 2026-10-23 | Updated: 2026-10-28
+ * Description: Show a route-not-found page with a home link and Alberta fact.
  * Dependencies: React Router, react-i18next, FunFact.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { FunFact } from './FunFact'
+import { FunFact } from '../shared/FunFact'
 
 export function NotFound() {
   const { t } = useTranslation('global')

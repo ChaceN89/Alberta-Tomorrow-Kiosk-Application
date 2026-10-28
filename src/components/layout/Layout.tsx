@@ -1,17 +1,18 @@
 /**
  * File: Layout.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-23
+ * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Provide responsive navigation, journal access, language controls, and main landmark.
- * Dependencies: React Router, react-i18next, shared dropdown, journal modal, development tools.
+ * Dependencies: React Router, shared layout UI, journal and module providers, development tools.
  */
 import { useTranslation } from 'react-i18next'
 import { Toaster } from 'react-hot-toast'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import logo from '../assets/expedition.svg'
-import { useJournal } from '../journal/useJournal'
-import { useModulePreload } from '../modules/useModulePreload'
-import { DisplayTesting } from './development/DisplayTesting'
-import { Dropdown } from './Dropdown'
+import logo from '../../assets/expedition.svg'
+import { useJournal } from '../../journal/useJournal'
+import { useModulePreload } from '../../modules/useModulePreload'
+import { DisplayTesting } from '../development/DisplayTesting'
+import { Dropdown } from '../shared/Dropdown'
+import { Footer } from './Footer'
 import { IntroTour } from './IntroTour'
 import { JournalModal } from './JournalModal'
 import { OverlayScrollbar } from './OverlayScrollbar'
@@ -120,11 +121,7 @@ export function Layout() {
       >
         <Outlet />
       </main>
-      <footer className="border-t border-line bg-surface">
-        <div className="mx-auto max-w-6xl px-6 py-5 text-sm text-muted">
-          {t('footer.credit')}
-        </div>
-      </footer>
+      <Footer />
       <DisplayTesting />
       <JournalModal />
       <IntroTour /> <OverlayScrollbar />
