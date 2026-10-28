@@ -1,7 +1,7 @@
 /**
   File: IntroTour.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Nov 3, 2026
 
   Description:
   - Show the first-visit tour in a click-blocking dialog with anchored arrows.
@@ -15,6 +15,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import logo from '../../assets/expedition.svg'
+import '../../styles/IntroTour.css'
 import { tourSteps, type TourAnchor } from '../../introTour/steps'
 import { useIntroTour } from '../../introTour/useIntroTour'
 

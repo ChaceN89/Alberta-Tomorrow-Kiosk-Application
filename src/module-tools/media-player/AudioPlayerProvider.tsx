@@ -17,10 +17,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { nextFastRate, nextSlowRate, NORMAL_RATE } from './playbackRates'
+import { useAudioPlayerQueue } from './useAudioPlayerQueue'
 import type { YouTubePlayerController } from './YouTubePlayer'
 import {
   AudioPlayerContext,
-  type AudioPlayCallbacks,
   type MediaTrack,
   type QueuedAudioTrack,
 } from './useAudioPlayer'
@@ -34,8 +34,6 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const videoPlayerRef = useRef<YouTubePlayerController | null>(null)
   const volumeRef = useRef(1)
   const currentItemRef = useRef<QueuedAudioTrack | null>(null)
-  const queueRef = useRef<QueuedAudioTrack[]>([])
-  const queueIdRef = useRef(0)
   const hasStartedRef = useRef(false)
   const [track, setTrack] = useState<MediaTrack | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -51,7 +49,6 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const [duration, setDuration] = useState(0)
   const [playbackRate, setPlaybackRate] = useState(NORMAL_RATE)
   const [volume, setVolumeState] = useState(1)
-  const [queue, setQueue] = useState<QueuedAudioTrack[]>([])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -121,10 +118,23 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     setIsPlaying(false)
   }, [])
 
-  const updateQueue = useCallback((next: QueuedAudioTrack[]) => {
-    queueRef.current = next
-    setQueue(next)
-  }, [])
+  const {
+    queue,
+    clearQueue,
+    playTrack,
+    playNow,
+    addToQueue,
+    removeFromQueue,
+    moveInQueue,
+    takeNext,
+  } = useAudioPlayerQueue({
+    audioRef,
+    currentItemRef,
+    videoPlayerRef,
+    isEnded,
+    startPlayback,
+    loadItem,
+  })
 
   const stop = useCallback(() => {
     const audio = audioRef.current
@@ -137,7 +147,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
     currentItemRef.current = null
     hasStartedRef.current = false
-    updateQueue([])
+    clearQueue()
     setTrack(null)
     setIsPlaying(false)
     setIsEnded(false)
@@ -149,148 +159,33 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     setCurrentTime(0)
     setDuration(0)
     setPlaybackRate(NORMAL_RATE)
-  }, [updateQueue])
+  }, [clearQueue])
 
-  const playTrack = useCallback(
-    (next: MediaTrack, callbacks: AudioPlayCallbacks = {}) => {
-      const audio = audioRef.current
-      if (!audio) return
+  const advanceQueue = useCallback(() => {
+    const next = takeNext()
+    if (!next) return false
 
-      const current = currentItemRef.current
-
-      if (current?.track.id === next.id) {
-        if (audio.ended) {
-          loadItem(
-            {
-              queueId: current.queueId,
-              track: next,
-              callbacks: current.callbacks,
-            },
-            true,
-          )
-        } else if (audio.paused) {
-          if (next.type === 'youtube') {
-            if (isEnded) videoPlayerRef.current?.seekTo(0, true)
-            videoPlayerRef.current?.playVideo()
-          } else {
-            startPlayback(audio)
-          }
-        }
-        return
-      }
-
-      const queuedIndex = queueRef.current.findIndex(
-        (item) => item.track.id === next.id,
-      )
-      if (queuedIndex !== -1) {
-        const [item] = queueRef.current.splice(queuedIndex, 1)
-        updateQueue([...queueRef.current])
-        loadItem(item, true)
-        return
-      }
-
-      loadItem({ queueId: ++queueIdRef.current, track: next, callbacks }, true)
-    },
-    [isEnded, loadItem, startPlayback, updateQueue],
-  )
-
-  const playNow = useCallback(
-    (next: MediaTrack, callbacks: AudioPlayCallbacks = {}) => {
-      const existingIndex = queueRef.current.findIndex(
-        (item) => item.track.id === next.id,
-      )
-      const existing =
-        existingIndex === -1 ? undefined : queueRef.current[existingIndex]
-
-      if (existingIndex !== -1) {
-        updateQueue(
-          queueRef.current.filter((_, index) => index !== existingIndex),
-        )
-      }
-
-      loadItem(
-        existing ?? {
-          queueId: ++queueIdRef.current,
-          track: next,
-          callbacks,
-        },
-        true,
-      )
-    },
-    [loadItem, updateQueue],
-  )
-
-  const addToQueue = useCallback(
-    (next: MediaTrack, callbacks: AudioPlayCallbacks = {}) => {
-      if (currentItemRef.current?.track.id === next.id) return
-      if (queueRef.current.some((item) => item.track.id === next.id)) return
-
-      const item = {
-        queueId: ++queueIdRef.current,
-        track: next,
-        callbacks,
-      }
-
-      if (!currentItemRef.current) {
-        loadItem(item, true)
-        return
-      }
-
-      updateQueue([...queueRef.current, item])
-    },
-    [loadItem, updateQueue],
-  )
-
-  const removeFromQueue = useCallback(
-    (queueId: number) => {
-      updateQueue(queueRef.current.filter((item) => item.queueId !== queueId))
-    },
-    [updateQueue],
-  )
-
-  const moveInQueue = useCallback(
-    (queueId: number, direction: 'up' | 'down') => {
-      const currentQueue = queueRef.current
-      const index = currentQueue.findIndex((item) => item.queueId === queueId)
-      const nextIndex = index + (direction === 'up' ? -1 : 1)
-
-      if (index === -1 || nextIndex < 0 || nextIndex >= currentQueue.length) {
-        return
-      }
-
-      const reordered = [...currentQueue]
-      ;[reordered[index], reordered[nextIndex]] = [
-        reordered[nextIndex],
-        reordered[index],
-      ]
-      updateQueue(reordered)
-    },
-    [updateQueue],
-  )
+    loadItem(next, true)
+    return true
+  }, [loadItem, takeNext])
 
   const playNext = useCallback(() => {
-    const [next, ...remaining] = queueRef.current
-    if (!next) return
-
-    updateQueue(remaining)
-    loadItem(next, true)
-  }, [loadItem, updateQueue])
+    advanceQueue()
+  }, [advanceQueue])
 
   const onMediaEnded = useCallback(() => {
     const currentItem = currentItemRef.current
     currentItem?.callbacks.onEnd?.()
 
-    const [next, ...remaining] = queueRef.current
-    if (next) {
-      updateQueue(remaining)
-      loadItem(next, true)
-    } else if (currentItem?.track.type === 'youtube') {
+    if (advanceQueue()) return
+
+    if (currentItem?.track.type === 'youtube') {
       stop()
     } else {
       setIsPlaying(false)
       setIsEnded(true)
     }
-  }, [loadItem, stop, updateQueue])
+  }, [advanceQueue, stop])
 
   const togglePlayback = useCallback(() => {
     const audio = audioRef.current
