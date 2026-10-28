@@ -63,10 +63,12 @@
   "confirmResetJournalDescription": "Cela efface chaque expédition commencée et chaque note de terrain enregistrée dans ce navigateur. Cette action est irréversible.",
   "resetSite": "Réinitialiser tout le site",
   "confirmResetSiteTitle": "Réinitialiser tout le site ?",
-  "confirmResetSiteDescription": "Cela efface le journal enregistré et l’indicateur de la visite d’introduction, puis recharge le site comme pour un nouveau visiteur. Cette action est irréversible.",
+  "confirmResetSiteDescription": "Cela efface le journal enregistré et les indicateurs des deux visites, puis recharge le site comme pour un nouveau visiteur. Cette action est irréversible.",
   "introTour": "Visite d’introduction",
   "introTourDescription": "Testez la visite de première visite. Elle démarre seule uniquement lorsque son indicateur enregistré est absent.",
   "resetIntroTourFlag": "Réinitialiser l’indicateur de visite",
   "restartIntroTour": "Relancer la visite d’introduction",
-  "introTourFlagReset": "Indicateur de visite réinitialisé. Rechargez la page pour lancer la visite."
+  "introTourFlagReset": "Indicateur de visite réinitialisé. Rechargez la page pour lancer la visite.",
+  "resetMediaPlayerTourFlag": "Réinitialiser l’indicateur de visite du lecteur multimédia",
+  "mediaPlayerTourFlagReset": "Indicateur de visite du lecteur réinitialisé. Rechargez la page et lancez un média pour voir la visite."
 }

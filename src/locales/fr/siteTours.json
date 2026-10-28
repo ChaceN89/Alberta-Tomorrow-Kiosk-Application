@@ -24,5 +24,20 @@
     "title": "Vous êtes prêt à explorer !",
     "description": "Bonne chance et amusez-vous bien à découvrir l’Alberta.",
     "start": "Commencer l’exploration"
+  },
+  "mediaPlayer": {
+    "done": "J’ai compris",
+    "player": {
+      "title": "Votre lecteur multimédia",
+      "description": "La lecture est mise en pause pendant la visite et reprend lorsque vous la terminez ou la passez. Les boutons latéraux servent à ouvrir ou réduire le lecteur, mettre la lecture en pause ou le fermer. Le reste de la page est flouté pour vous aider à vous concentrer sur ces commandes."
+    },
+    "open": {
+      "title": "Ouvrir le lecteur",
+      "description": "Sélectionnez le bouton avec la note de musique pour afficher le lecteur complet. Essayez maintenant ou passez la visite."
+    },
+    "controls": {
+      "title": "Gardez le contrôle de vos médias",
+      "description": "Mettez en pause ou réglez la lecture ici. Réduisez le lecteur pour continuer à écouter pendant l’exploration, fermez-le pour arrêter, ou mettez des médias de n’importe quelle expédition en file d’attente."
+    }
   }
 }

@@ -18,7 +18,7 @@ import enDevelopment from '../locales/en/development.json'
 import enGlobal from '../locales/en/global.json'
 import enFunfacts from '../locales/en/funfacts.json'
 import enHome from '../locales/en/home.json'
-import enIntroTour from '../locales/en/introTour.json'
+import enSiteTour from '../locales/en/siteTours.json'
 import enJournal from '../locales/en/journal.json'
 import enGeology from '../locales/en/module.geology.json'
 import enModuleTools from '../locales/en/moduleTools.json'
@@ -28,7 +28,7 @@ import frDevelopment from '../locales/fr/development.json'
 import frGlobal from '../locales/fr/global.json'
 import frFunfacts from '../locales/fr/funfacts.json'
 import frHome from '../locales/fr/home.json'
-import frIntroTour from '../locales/fr/introTour.json'
+import frSiteTour from '../locales/fr/siteTours.json'
 import frJournal from '../locales/fr/journal.json'
 import frGeology from '../locales/fr/module.geology.json'
 import frModuleTools from '../locales/fr/moduleTools.json'
@@ -45,7 +45,7 @@ declare module 'i18next' {
       funfacts: typeof enFunfacts // English funfacts resources
       geology: typeof enGeology // English geology module resources
       home: typeof enHome // English home resources
-      introTour: typeof enIntroTour // English intro tour resources
+      introTour: typeof enSiteTour // English intro tour resources
       journal: typeof enJournal // English journal resources
       moduleTools: typeof enModuleTools // English shared module tool resources
       residentialSchool: typeof enResidentialSchool // English residential school module resources
@@ -63,7 +63,7 @@ void i18n.use(initReactI18next).init({
       funfacts: enFunfacts,
       geology: enGeology,
       home: enHome,
-      introTour: enIntroTour,
+      introTour: enSiteTour,
       journal: enJournal,
       moduleTools: enModuleTools,
       residentialSchool: enResidentialSchool,
@@ -75,7 +75,7 @@ void i18n.use(initReactI18next).init({
       funfacts: frFunfacts,
       geology: frGeology,
       home: frHome,
-      introTour: frIntroTour,
+      introTour: frSiteTour,
       journal: frJournal,
       moduleTools: frModuleTools,
       residentialSchool: frResidentialSchool,

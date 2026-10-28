@@ -16,6 +16,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '../../toasts/toasterIds'
 import { useIntroTour } from '../../../site-tours/intro-tour/useIntroTour'
+import { resetMediaPlayerTour } from '../../../site-tours/media-player-tour/mediaPlayerTourStorage'
 import { DevPanel } from './DevPanel'
 
 type IntroTourPanelProps = {
@@ -53,6 +54,19 @@ export function IntroTourPanel({ onClose, onRestarted }: IntroTourPanelProps) {
           }}
         >
           {t('restartIntroTour')}
+        </button>
+        <button
+          type="button"
+          className="button-secondary w-full"
+          onClick={() => {
+            resetMediaPlayerTour()
+            toast(t('mediaPlayerTourFlagReset'), {
+              id: 'media-player-tour-reset',
+              toasterId: NOTIFICATION_TOASTER_ID,
+            })
+          }}
+        >
+          {t('resetMediaPlayerTourFlag')}
         </button>
       </div>
     </DevPanel>

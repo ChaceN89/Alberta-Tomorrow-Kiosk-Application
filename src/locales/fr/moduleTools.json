@@ -24,6 +24,7 @@
     "exitFullscreen": "Quitter le plein écran",
     "nowPlaying": "Lecture en cours : {{title}}",
     "error": "Impossible de lire ce média.",
+    "retry": "Réessayer",
     "queue": "À suivre",
     "queueWithCount": "À suivre ({{count}})",
     "queueEmpty": "La file d’attente est vide.",

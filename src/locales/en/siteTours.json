@@ -24,5 +24,20 @@
     "title": "You're ready to explore!",
     "description": "Good luck out there, and have fun discovering Alberta.",
     "start": "Start exploring"
+  },
+  "mediaPlayer": {
+    "done": "Got it",
+    "player": {
+      "title": "Your media player",
+      "description": "Playback is paused during this tour and resumes when you finish or skip. Use the side buttons to open or collapse the player, pause playback, or close it. The rest of the page is blurred so you can focus on these controls."
+    },
+    "open": {
+      "title": "Open the player",
+      "description": "Select the music-note button to open the full player. Try it now, or skip the tour."
+    },
+    "controls": {
+      "title": "Keep control of your media",
+      "description": "Pause or adjust playback here. Collapse the player to keep listening as you explore, close it to stop, or queue media from any expedition to play next."
+    }
   }
 }

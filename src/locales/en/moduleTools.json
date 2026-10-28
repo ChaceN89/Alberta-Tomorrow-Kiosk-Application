@@ -24,6 +24,7 @@
     "exitFullscreen": "Exit full screen",
     "nowPlaying": "Now playing {{title}}",
     "error": "This media couldn't be played.",
+    "retry": "Retry",
     "queue": "Up Next",
     "queueWithCount": "Up Next ({{count}})",
     "queueEmpty": "Nothing is queued.",

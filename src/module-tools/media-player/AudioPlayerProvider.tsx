@@ -35,6 +35,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const volumeRef = useRef(1)
   const currentItemRef = useRef<QueuedAudioTrack | null>(null)
   const hasStartedRef = useRef(false)
+  const playbackAttemptRef = useRef(0)
   const [track, setTrack] = useState<MediaTrack | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isEnded, setIsEnded] = useState(false)
@@ -57,7 +58,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   }, [])
 
   const startPlayback = useCallback((audio: HTMLAudioElement) => {
+    const attempt = ++playbackAttemptRef.current
+
     void audio.play().catch(() => {
+      if (attempt !== playbackAttemptRef.current) return
+
       setHasError(true)
       setIsPlaying(false)
     })
@@ -69,6 +74,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
       if (!audio) return
 
+      playbackAttemptRef.current += 1
       currentItemRef.current = item
       hasStartedRef.current = false
       setTrack(item.track)
@@ -139,6 +145,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const stop = useCallback(() => {
     const audio = audioRef.current
 
+    playbackAttemptRef.current += 1
     if (audio) {
       audio.pause()
       audio.removeAttribute('src')
@@ -186,6 +193,38 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       setIsEnded(true)
     }
   }, [advanceQueue, stop])
+
+  const pausePlayback = useCallback(() => {
+    const currentItem = currentItemRef.current
+    if (!currentItem) return
+
+    playbackAttemptRef.current += 1
+    if (currentItem.track.type === 'youtube') {
+      videoPlayerRef.current?.pauseVideo()
+    } else {
+      audioRef.current?.pause()
+    }
+
+    setIsPlaying(false)
+    setHasError(false)
+  }, [])
+
+  const resumePlayback = useCallback(() => {
+    const currentItem = currentItemRef.current
+    if (!currentItem) return
+
+    if (currentItem.track.type === 'youtube') {
+      if (isEnded) videoPlayerRef.current?.seekTo(0, true)
+      videoPlayerRef.current?.playVideo()
+      return
+    }
+
+    const audio = audioRef.current
+    if (!audio) return
+
+    if (audio.ended) audio.currentTime = 0
+    startPlayback(audio)
+  }, [isEnded, startPlayback])
 
   const togglePlayback = useCallback(() => {
     const audio = audioRef.current
@@ -271,6 +310,8 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       removeFromQueue,
       moveInQueue,
       playNext,
+      pausePlayback,
+      resumePlayback,
       togglePlayback,
       seek,
       setVolume,
@@ -294,10 +335,12 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isPanelOpen,
       isFullscreen,
       isPlaying,
+      pausePlayback,
       playNow,
       playTrack,
       playbackRate,
       playNext,
+      resumePlayback,
       queue,
       onVideoPlayerReady,
       onVideoPlayingChange,

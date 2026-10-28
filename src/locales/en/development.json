@@ -63,10 +63,12 @@
   "confirmResetJournalDescription": "This clears every started expedition and field note saved in this browser. It can't be undone.",
   "resetSite": "Reset whole site",
   "confirmResetSiteTitle": "Reset the whole site?",
-  "confirmResetSiteDescription": "This clears the saved journal and the intro tour flag, then reloads the site as if you were a first-time visitor. It can't be undone.",
+  "confirmResetSiteDescription": "This clears the saved journal and both tour flags, then reloads the site as if you were a first-time visitor. It can't be undone.",
   "introTour": "Intro tour",
   "introTourDescription": "Test the first-visit tour. It starts on its own only when its saved flag is missing.",
   "resetIntroTourFlag": "Reset intro tour flag",
   "restartIntroTour": "Restart intro tour",
-  "introTourFlagReset": "Intro tour flag reset. Reload the page to start the tour."
+  "introTourFlagReset": "Intro tour flag reset. Reload the page to start the tour.",
+  "resetMediaPlayerTourFlag": "Reset media player tour flag",
+  "mediaPlayerTourFlagReset": "Media player tour flag reset. Reload the page and start media to see the tour."
 }

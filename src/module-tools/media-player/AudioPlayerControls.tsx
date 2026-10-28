@@ -15,6 +15,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '../../components/shared/Tooltip'
+import { requestMediaPlayerTourDismissalForPlayback } from '../../site-tours/media-player-tour/mediaPlayerTourEvents'
 import {
   ExitFullscreenIcon,
   FastForwardIcon,
@@ -88,6 +89,11 @@ export function AudioPlayerControls({
 
   const rateLabel = `${playbackRate}×`
   const isVolumeVisible = isVolumeOpen && !isClosing
+  const handlePlaybackRequest = () => {
+    setVolumeOpen(false)
+    if (!isPlaying) requestMediaPlayerTourDismissalForPlayback()
+    togglePlayback()
+  }
 
   return (
     <div
@@ -98,6 +104,7 @@ export function AudioPlayerControls({
             }`
           : 'justify-start gap-2 p-2'
       }`}
+      data-media-player-tour="player-controls"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
@@ -106,161 +113,181 @@ export function AudioPlayerControls({
             <p className="truncate text-sm text-muted">{trackSubtitle}</p>
           )}
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          {track.type === 'audio' && (
-            <div className="relative">
-              <Tooltip text={t('audioPlayer.volume')}>
+        {!hasError && (
+          <div className="flex shrink-0 items-center gap-2">
+            {track.type === 'audio' && (
+              <div className="relative">
+                <Tooltip text={t('audioPlayer.volume')}>
+                  <button
+                    type="button"
+                    className="flex size-10 items-center justify-center rounded-lg text-muted hover:bg-canvas"
+                    aria-label={t('audioPlayer.volume')}
+                    aria-expanded={isVolumeVisible}
+                    aria-controls={volumeControlId}
+                    onClick={() => setVolumeOpen(!isVolumeOpen)}
+                  >
+                    <VolumeIcon className="size-5" />
+                  </button>
+                </Tooltip>
+                {isVolumeVisible && (
+                  <div
+                    id={volumeControlId}
+                    className="absolute right-full top-1/2 z-30 mr-2 flex -translate-y-1/2 flex-col items-center gap-2 rounded-xl border border-line bg-surface p-3 text-ink shadow-xl"
+                  >
+                    <label htmlFor="audio-player-volume" className="sr-only">
+                      {t('audioPlayer.volume')}
+                    </label>
+                    <input
+                      id="audio-player-volume"
+                      type="range"
+                      min={0}
+                      max={1}
+                      step={0.01}
+                      value={volume}
+                      aria-valuetext={t('audioPlayer.volumeValue', {
+                        percent: Math.round(volume * 100),
+                      })}
+                      className="h-32 w-8 cursor-pointer accent-pine"
+                      style={{
+                        writingMode: 'vertical-lr',
+                        direction: 'rtl',
+                      }}
+                      onChange={(event) =>
+                        setVolume(event.target.valueAsNumber)
+                      }
+                    />
+                    <span className="text-xs text-muted tabular-nums">
+                      {Math.round(volume * 100)}%
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+            {isFullscreen ? (
+              <Tooltip text={t('audioPlayer.exitFullscreen')}>
+                <button
+                  ref={fullscreenExitRef}
+                  type="button"
+                  className="flex size-10 items-center justify-center rounded-lg border border-line bg-surface/95 text-ink shadow-lg hover:bg-surface"
+                  aria-label={t('audioPlayer.exitFullscreen')}
+                  onClick={() => setFullscreen(false)}
+                >
+                  <ExitFullscreenIcon className="size-5" />
+                </button>
+              </Tooltip>
+            ) : (
+              <Tooltip text={t('audioPlayer.fullscreen')}>
                 <button
                   type="button"
                   className="flex size-10 items-center justify-center rounded-lg text-muted hover:bg-canvas"
-                  aria-label={t('audioPlayer.volume')}
-                  aria-expanded={isVolumeVisible}
-                  aria-controls={volumeControlId}
-                  onClick={() => setVolumeOpen(!isVolumeOpen)}
+                  aria-label={t('audioPlayer.fullscreen')}
+                  onClick={() => setFullscreen(true)}
                 >
-                  <VolumeIcon className="size-5" />
+                  <FullscreenIcon className="size-5" />
                 </button>
               </Tooltip>
-              {isVolumeVisible && (
-                <div
-                  id={volumeControlId}
-                  className="absolute right-full top-1/2 z-30 mr-2 flex -translate-y-1/2 flex-col items-center gap-2 rounded-xl border border-line bg-surface p-3 text-ink shadow-xl"
-                >
-                  <label htmlFor="audio-player-volume" className="sr-only">
-                    {t('audioPlayer.volume')}
-                  </label>
-                  <input
-                    id="audio-player-volume"
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={volume}
-                    aria-valuetext={t('audioPlayer.volumeValue', {
-                      percent: Math.round(volume * 100),
-                    })}
-                    className="h-32 w-8 cursor-pointer accent-pine"
-                    style={{
-                      writingMode: 'vertical-lr',
-                      direction: 'rtl',
-                    }}
-                    onChange={(event) => setVolume(event.target.valueAsNumber)}
-                  />
-                  <span className="text-xs text-muted tabular-nums">
-                    {Math.round(volume * 100)}%
-                  </span>
-                </div>
-              )}
+            )}
+          </div>
+        )}
+      </div>
+      {hasError ? (
+        <div className="flex flex-col items-start gap-2">
+          <p role="alert" className="text-sm font-medium text-flag">
+            {t('audioPlayer.error')}
+          </p>
+          <button
+            type="button"
+            className="button-secondary min-h-11 px-4"
+            onClick={handlePlaybackRequest}
+          >
+            {t('audioPlayer.retry')}
+          </button>
+        </div>
+      ) : (
+        <>
+          {track.type === 'audio' && (
+            <div>
+              <input
+                type="range"
+                min={0}
+                max={duration || 1}
+                step={0.1}
+                value={Math.min(currentTime, duration || 1)}
+                disabled={duration === 0}
+                aria-label={t('audioPlayer.seek')}
+                aria-valuetext={t('audioPlayer.position', {
+                  current: formatTime(currentTime),
+                  total: formatTime(duration),
+                })}
+                className="h-8 w-full cursor-pointer accent-pine disabled:cursor-not-allowed"
+                onChange={(event) => seek(event.target.valueAsNumber)}
+              />
+              <div className="flex justify-between text-xs text-muted tabular-nums">
+                <span>{formatTime(currentTime)}</span>
+                <span>{rateLabel}</span>
+                <span>{formatTime(duration)}</span>
+              </div>
             </div>
           )}
-          {isFullscreen ? (
-            <Tooltip text={t('audioPlayer.exitFullscreen')}>
-              <button
-                ref={fullscreenExitRef}
-                type="button"
-                className="flex size-10 items-center justify-center rounded-lg border border-line bg-surface/95 text-ink shadow-lg hover:bg-surface"
-                aria-label={t('audioPlayer.exitFullscreen')}
-                onClick={() => setFullscreen(false)}
-              >
-                <ExitFullscreenIcon className="size-5" />
-              </button>
-            </Tooltip>
-          ) : (
-            <Tooltip text={t('audioPlayer.fullscreen')}>
-              <button
-                type="button"
-                className="flex size-10 items-center justify-center rounded-lg text-muted hover:bg-canvas"
-                aria-label={t('audioPlayer.fullscreen')}
-                onClick={() => setFullscreen(true)}
-              >
-                <FullscreenIcon className="size-5" />
-              </button>
-            </Tooltip>
-          )}
-        </div>
-      </div>
-      {hasError && (
-        <p role="alert" className="text-sm font-medium text-flag">
-          {t('audioPlayer.error')}
-        </p>
-      )}
-      {track.type === 'audio' && (
-        <div>
-          <input
-            type="range"
-            min={0}
-            max={duration || 1}
-            step={0.1}
-            value={Math.min(currentTime, duration || 1)}
-            disabled={duration === 0}
-            aria-label={t('audioPlayer.seek')}
-            aria-valuetext={t('audioPlayer.position', {
-              current: formatTime(currentTime),
-              total: formatTime(duration),
-            })}
-            className="h-8 w-full cursor-pointer accent-pine disabled:cursor-not-allowed"
-            onChange={(event) => seek(event.target.valueAsNumber)}
-          />
-          <div className="flex justify-between text-xs text-muted tabular-nums">
-            <span>{formatTime(currentTime)}</span>
-            <span>{rateLabel}</span>
-            <span>{formatTime(duration)}</span>
+          <div className="flex items-center justify-center gap-3">
+            {track.type === 'audio' && (
+              <Tooltip text={t('audioPlayer.slowerTooltip')}>
+                <button
+                  type="button"
+                  className="button-secondary size-12 rounded-full p-0"
+                  aria-label={t('audioPlayer.slower', { rate: rateLabel })}
+                  onClick={slowDown}
+                >
+                  <RewindIcon />
+                </button>
+              </Tooltip>
+            )}
+            <button
+              type="button"
+              className="button size-14 rounded-full p-0"
+              aria-label={t(
+                isPlaying ? 'audioPlayer.pause' : 'audioPlayer.play',
+              )}
+              onClick={handlePlaybackRequest}
+            >
+              {isPlaying ? (
+                <PauseIcon className="size-7" />
+              ) : (
+                <PlayIcon className="size-7" />
+              )}
+            </button>
+            {track.type === 'audio' && (
+              <Tooltip text={t('audioPlayer.fasterTooltip')}>
+                <button
+                  type="button"
+                  className="button-secondary size-12 rounded-full p-0"
+                  aria-label={t('audioPlayer.faster', { rate: rateLabel })}
+                  onClick={speedUp}
+                >
+                  <FastForwardIcon />
+                </button>
+              </Tooltip>
+            )}
+            {queue.length > 0 && (
+              <Tooltip text={t('audioPlayer.next')}>
+                <button
+                  type="button"
+                  className="button size-12 rounded-lg p-0"
+                  aria-label={t('audioPlayer.next')}
+                  onClick={playNext}
+                >
+                  <NextIcon />
+                </button>
+              </Tooltip>
+            )}
           </div>
-        </div>
+          <p className="sr-only" role="status">
+            {isPlaying
+              ? t('audioPlayer.nowPlaying', { title: trackTitle })
+              : ''}
+          </p>
+        </>
       )}
-      <div className="flex items-center justify-center gap-3">
-        {track.type === 'audio' && (
-          <Tooltip text={t('audioPlayer.slowerTooltip')}>
-            <button
-              type="button"
-              className="button-secondary size-12 rounded-full p-0"
-              aria-label={t('audioPlayer.slower', { rate: rateLabel })}
-              onClick={slowDown}
-            >
-              <RewindIcon />
-            </button>
-          </Tooltip>
-        )}
-        <button
-          type="button"
-          className="button size-14 rounded-full p-0"
-          aria-label={t(isPlaying ? 'audioPlayer.pause' : 'audioPlayer.play')}
-          onClick={togglePlayback}
-        >
-          {isPlaying ? (
-            <PauseIcon className="size-7" />
-          ) : (
-            <PlayIcon className="size-7" />
-          )}
-        </button>
-        {track.type === 'audio' && (
-          <Tooltip text={t('audioPlayer.fasterTooltip')}>
-            <button
-              type="button"
-              className="button-secondary size-12 rounded-full p-0"
-              aria-label={t('audioPlayer.faster', { rate: rateLabel })}
-              onClick={speedUp}
-            >
-              <FastForwardIcon />
-            </button>
-          </Tooltip>
-        )}
-        {queue.length > 0 && (
-          <Tooltip text={t('audioPlayer.next')}>
-            <button
-              type="button"
-              className="button size-12 rounded-lg p-0"
-              aria-label={t('audioPlayer.next')}
-              onClick={playNext}
-            >
-              <NextIcon />
-            </button>
-          </Tooltip>
-        )}
-      </div>
-      <p className="sr-only" role="status">
-        {isPlaying ? t('audioPlayer.nowPlaying', { title: trackTitle }) : ''}
-      </p>
     </div>
   )
 }

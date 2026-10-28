@@ -17,6 +17,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '../../journal/useJournal'
+import { MediaPlayerTour } from '../../site-tours/media-player-tour/MediaPlayerTour'
 import { AudioPlayerControls } from './AudioPlayerControls'
 import { AudioPlayerQueueList } from './AudioPlayerQueueList'
 import { AudioPlayerTabs } from './AudioPlayerTabs'
@@ -159,6 +160,7 @@ export function AudioPlayerPanel() {
         isFullscreen ? 'audio-player-stage--fullscreen' : ''
       } ${stageExitAnimationClass}`}
     >
+      <MediaPlayerTour />
       <div
         className={`audio-player-frame ${
           isFullscreen ? 'audio-player-frame--fullscreen' : ''
@@ -277,10 +279,10 @@ export function AudioPlayerPanel() {
         <AudioPlayerTabs requestClose={requestClose} />
         {isConfirmingClose && (
           <div
-            className={`audio-close-dialog pointer-events-auto absolute inset-0 z-100 grid place-items-center bg-ink/50 p-4 ${
+            className={`audio-close-dialog pointer-events-auto absolute inset-0 z-100 grid place-items-center p-4 ${
               !isPanelOpen && !isFullscreen
                 ? 'audio-close-dialog--collapsed'
-                : ''
+                : 'bg-ink/50'
             }`}
           >
             <div

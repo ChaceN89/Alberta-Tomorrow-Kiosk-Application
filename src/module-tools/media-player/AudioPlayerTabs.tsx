@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerTabs.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Nov 3, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Render the player, queue, playback, and close tabs beside the player frame.
@@ -14,6 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '../../components/shared/Tooltip'
+import { requestMediaPlayerTourDismissalForPlayback } from '../../site-tours/media-player-tour/mediaPlayerTourEvents'
 import {
   CloseIcon,
   MusicNoteIcon,
@@ -62,6 +63,10 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
 
     setActivePanelTab(nextTab)
     setPanelOpen(true)
+  }
+  const handlePlaybackRequest = () => {
+    if (!isPlaying) requestMediaPlayerTourDismissalForPlayback()
+    togglePlayback()
   }
   const playerTabLabel = t(
     isPanelOpen && activePanelTab === 'player'
@@ -119,7 +124,7 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
       type="button"
       className={`${buttonClass} bg-surface text-pine`}
       aria-label={playbackTabLabel}
-      onClick={togglePlayback}
+      onClick={handlePlaybackRequest}
     >
       {isPlaying ? (
         <PauseIcon className="size-5" />
@@ -144,29 +149,34 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
       {[
         {
           className: 'bottom-55',
+          tourAnchor: 'player-tabs',
           button: closeTab,
           label: t('audioPlayer.close'),
         },
         {
           className: 'bottom-38',
+          tourAnchor: undefined,
           button: playbackTab,
           label: playbackTabLabel,
         },
         {
           className: 'bottom-21',
+          tourAnchor: 'player-tab',
           button: playerTab,
           label: playerTabLabel,
         },
         {
           className: 'bottom-4',
+          tourAnchor: undefined,
           button: queueTab,
           label: queueTabLabel,
         },
-      ].map(({ className, button, label }) => (
+      ].map(({ className, tourAnchor, button, label }) => (
         <div
           key={className}
           inert={isFullscreen}
           aria-hidden={isFullscreen}
+          data-media-player-tour={tourAnchor}
           className={`audio-player-tab absolute ${className} left-full ${sideTabClass}`}
         >
           {isPanelOpen ? button : <Tooltip text={label}>{button}</Tooltip>}
