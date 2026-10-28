@@ -52,6 +52,16 @@ html::-webkit-scrollbar {
   }
 }
 
+@keyframes audio-panel-exit-collapsed {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes splash-fade-out {
   from {
     opacity: 1;
@@ -128,18 +138,6 @@ html::-webkit-scrollbar {
   }
 }
 
-@keyframes audio-panel-enter {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes audio-panel-exit {
   from {
     opacity: 1;
@@ -149,6 +147,30 @@ html::-webkit-scrollbar {
   to {
     opacity: 0;
     transform: translateX(-100%);
+  }
+}
+
+@keyframes audio-player-media-enter {
+  from {
+    opacity: 0.65;
+    transform: scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes audio-player-tab-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -185,12 +207,162 @@ html::-webkit-scrollbar {
   }
 }
 
-.audio-panel-enter {
-  animation: audio-panel-enter 300ms ease-out both;
-}
-
 .audio-panel-exit {
   animation: audio-panel-exit 300ms ease-in both;
+}
+
+.audio-panel-exit--collapsed {
+  animation: audio-panel-exit-collapsed 300ms ease-in both;
+}
+
+.audio-player-stage {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  pointer-events: none;
+  background-color: transparent;
+  transition: background-color 1200ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.audio-player-stage--fullscreen {
+  z-index: 100;
+  pointer-events: auto;
+  background-color: color-mix(in srgb, var(--color-ink) 95%, transparent);
+}
+
+.audio-player-frame {
+  position: absolute;
+  top: calc(100dvh - min(calc(26rem + 10px), 100dvh - 2rem) - 1rem);
+  left: 0;
+  width: min(26rem, calc(100vw - 3rem));
+  height: min(calc(26rem + 10px), calc(100dvh - 2rem));
+  pointer-events: auto;
+  transition:
+    top 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    left 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    width 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    height 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    transform 1200ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.audio-player-frame--fullscreen {
+  top: 1rem;
+  left: 50%;
+  width: min(64rem, calc(100vw - 2rem));
+  height: calc(100dvh - 2rem);
+  transform: translateX(-50%);
+}
+
+.audio-player-frame--collapsed {
+  pointer-events: none;
+  transform: translateX(-100%);
+}
+
+.audio-player-card {
+  transition: border-radius 1200ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.audio-player-media-viewport {
+  position: relative;
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+
+.audio-player-media-viewport--compact {
+  width: 100%;
+}
+
+.audio-player-media-viewport--fullscreen {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.audio-player-fullscreen-lower {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) minmax(0, 0fr);
+  overflow: hidden;
+  transition:
+    grid-template-columns 300ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    grid-template-rows 300ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.audio-player-fullscreen-lower--fullscreen {
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  transition-duration: 1200ms;
+}
+
+.audio-player-controls {
+  transition:
+    gap 300ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    padding 300ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.audio-player-fullscreen-lower--fullscreen .audio-player-controls {
+  transition-duration: 1200ms;
+}
+
+.audio-player-queue {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(1rem);
+  transition:
+    opacity 60ms ease,
+    transform 80ms cubic-bezier(0.22, 0.75, 0.2, 1),
+    visibility 0s linear 80ms;
+}
+
+.audio-player-queue--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+  transition:
+    opacity 500ms ease,
+    transform 700ms cubic-bezier(0.22, 0.75, 0.2, 1),
+    visibility 0s linear 0s;
+}
+
+.audio-player-tab {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 300ms ease,
+    transform 300ms cubic-bezier(0.22, 0.75, 0.2, 1);
+}
+
+.audio-player-tab--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-1rem);
+}
+
+.audio-player-tab-enter {
+  animation: audio-player-tab-enter 360ms ease-out both;
+}
+
+@media (min-width: 48rem) {
+  .audio-player-fullscreen-lower {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .audio-player-fullscreen-lower--fullscreen {
+    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+  }
+}
+
+.audio-player-media-content {
+  animation: audio-player-media-enter 600ms ease-out both;
 }
 
 .audio-panel-tab-view {
@@ -224,6 +396,10 @@ html::-webkit-scrollbar {
   animation: audio-close-dialog-in 180ms ease-out both;
 }
 
+.audio-close-dialog--collapsed {
+  transform: translateX(100%);
+}
+
 .audio-close-dialog__content {
   animation: audio-close-dialog-content-in 180ms ease-out both;
 }
@@ -235,7 +411,7 @@ html::-webkit-scrollbar {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .audio-player-shell button:not(:disabled) {
+  .audio-player-stage button:not(:disabled) {
     transition:
       transform 160ms ease,
       box-shadow 160ms ease,
@@ -243,12 +419,12 @@ html::-webkit-scrollbar {
       color 200ms ease;
   }
 
-  .audio-player-shell button:not(:disabled):hover {
+  .audio-player-stage button:not(:disabled):hover {
     transform: translateY(-1px) scale(1.02);
     box-shadow: 0 4px 10px rgb(0 0 0 / 12%);
   }
 
-  .audio-player-shell button:not(:disabled):active {
+  .audio-player-stage button:not(:disabled):active {
     transform: scale(0.98);
   }
 }
@@ -279,10 +455,12 @@ html::-webkit-scrollbar {
   .splash-screen--exiting,
   .tour-pop-a,
   .tour-pop-b,
-  .audio-panel-enter,
   .audio-panel-exit,
+  .audio-player-media-content,
   .audio-panel-tab-view,
+  .audio-player-tab-enter,
   .audio-close-dialog,
+  .audio-panel-exit--collapsed,
   .audio-close-dialog__content,
   .audio-bar,
   .tour-pop-a::backdrop,
@@ -290,7 +468,18 @@ html::-webkit-scrollbar {
     animation: none;
   }
 
-  .audio-player-shell button:not(:disabled) {
+  .audio-player-stage button:not(:disabled) {
+    transition: none;
+  }
+
+  .audio-player-stage,
+  .audio-player-frame,
+  .audio-player-card,
+  .audio-player-media-viewport,
+  .audio-player-fullscreen-lower,
+  .audio-player-controls,
+  .audio-player-queue,
+  .audio-player-tab {
     transition: none;
   }
 

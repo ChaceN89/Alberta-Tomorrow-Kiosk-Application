@@ -83,7 +83,6 @@ type YouTubePlayerProps = {
   videoId: string
   title: string
   volume: number
-  isFullscreen: boolean
   onReady: (player: YouTubePlayerController | null) => void
   onPlayingChange: (isPlaying: boolean) => void
   onEnded: () => void
@@ -94,7 +93,6 @@ export function YouTubePlayer({
   videoId,
   title,
   volume,
-  isFullscreen,
   onReady,
   onPlayingChange,
   onEnded,
@@ -154,13 +152,7 @@ export function YouTubePlayer({
   }, [volume])
 
   return (
-    <div
-      className={`${
-        isFullscreen
-          ? 'aspect-video max-h-[min(56.25vw,calc(100dvh-18rem))]'
-          : 'aspect-video max-h-[min(12rem,calc(100dvh-18rem))]'
-      } w-full shrink-0 overflow-hidden bg-ink`}
-    >
+    <div className="audio-player-media-content size-full overflow-hidden bg-ink">
       <div
         ref={playerElementRef}
         title={title}
