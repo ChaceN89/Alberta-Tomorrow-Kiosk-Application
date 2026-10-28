@@ -39,6 +39,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const [isEnded, setIsEnded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isPanelOpen, setPanelOpen] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
   const [activePanelTab, setActivePanelTab] = useState<'player' | 'queue'>(
     'player',
   )
@@ -74,6 +75,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       setDuration(0)
       setIsEnded(false)
       setHasError(false)
+      setIsClosing(false)
       setActivePanelTab('player')
       setPanelOpen(true)
       audio.src = item.track.src
@@ -156,6 +158,9 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
   const addToQueue = useCallback(
     (next: AudioTrack, callbacks: AudioPlayCallbacks = {}) => {
+      if (currentItemRef.current?.track.id === next.id) return
+      if (queueRef.current.some((item) => item.track.id === next.id)) return
+
       const item = {
         queueId: ++queueIdRef.current,
         track: next,
@@ -175,6 +180,26 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const removeFromQueue = useCallback(
     (queueId: number) => {
       updateQueue(queueRef.current.filter((item) => item.queueId !== queueId))
+    },
+    [updateQueue],
+  )
+
+  const moveInQueue = useCallback(
+    (queueId: number, direction: 'up' | 'down') => {
+      const currentQueue = queueRef.current
+      const index = currentQueue.findIndex((item) => item.queueId === queueId)
+      const nextIndex = index + (direction === 'up' ? -1 : 1)
+
+      if (index === -1 || nextIndex < 0 || nextIndex >= currentQueue.length) {
+        return
+      }
+
+      const reordered = [...currentQueue]
+      ;[reordered[index], reordered[nextIndex]] = [
+        reordered[nextIndex],
+        reordered[index],
+      ]
+      updateQueue(reordered)
     },
     [updateQueue],
   )
@@ -245,12 +270,18 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     setIsPlaying(false)
     setIsEnded(false)
     setHasError(false)
+    setIsClosing(false)
     setActivePanelTab('player')
     setPanelOpen(false)
     setCurrentTime(0)
     setDuration(0)
     setPlaybackRate(NORMAL_RATE)
   }, [updateQueue])
+
+  const beginClose = useCallback(() => {
+    setIsClosing(true)
+    audioRef.current?.pause()
+  }, [])
 
   const value = useMemo(
     () => ({
@@ -259,6 +290,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isEnded,
       hasError,
       isPanelOpen,
+      isClosing,
       activePanelTab,
       currentTime,
       duration,
@@ -269,6 +301,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       playNow,
       addToQueue,
       removeFromQueue,
+      moveInQueue,
       playNext,
       togglePlayback,
       seek,
@@ -277,6 +310,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       slowDown,
       setPanelOpen,
       setActivePanelTab,
+      beginClose,
       stop,
     }),
     [
@@ -285,7 +319,9 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       currentTime,
       duration,
       hasError,
+      beginClose,
       isEnded,
+      isClosing,
       isPanelOpen,
       isPlaying,
       playNow,
@@ -294,6 +330,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       playNext,
       queue,
       removeFromQueue,
+      moveInQueue,
       seek,
       setVolume,
       setActivePanelTab,

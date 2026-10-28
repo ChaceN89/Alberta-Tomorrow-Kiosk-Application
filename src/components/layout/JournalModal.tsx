@@ -1,7 +1,7 @@
 /**
   File: JournalModal.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Show a title page and a page for each started expedition in the journal.
@@ -12,7 +12,7 @@
   Notes:
   - None.
  */
-import { useEffect, useId, useRef, useState } from 'react'
+import { Suspense, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/expedition.svg'
@@ -100,12 +100,23 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                 key={entry.id}
                 className="rounded-xl border border-pine/40 bg-canvas p-4"
               >
-                <p className="text-sm font-semibold text-pine">
-                  <span aria-hidden="true">✓ </span>
-                  {t('recorded')}
-                </p>
-                <h5 className="font-semibold">{entry.title}</h5>
-                <p className="text-muted">{entry.summary}</p>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-pine">
+                      <span aria-hidden="true">✓ </span>
+                      {t('recorded')}
+                    </p>
+                    <h5 className="font-semibold">{entry.title}</h5>
+                    <p className="text-muted">{entry.summary}</p>
+                  </div>
+                  {module.journalEntryAction && (
+                    <div className="shrink-0">
+                      <Suspense fallback={null}>
+                        <module.journalEntryAction entryId={entry.id} />
+                      </Suspense>
+                    </div>
+                  )}
+                </div>
               </li>
             ) : (
               <li
@@ -248,6 +259,7 @@ export function JournalModal() {
       }}
     >
       <div className="flex h-full flex-col">
+        <div id="journal-audio-player-root" className="contents" />
         <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line p-4 md:px-6">
           <h2 id={titleId} className="text-xl">
             {entryCount === 0

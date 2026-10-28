@@ -35,12 +35,19 @@ export type ModulePreloadContext = {
 
 export type ModulePreloader = (context: ModulePreloadContext) => Promise<void>
 
+export type JournalEntryActionProps = {
+  entryId: string
+}
+
 export interface LearningModule {
   id: string
   translationNamespace: ModuleTranslationNamespace
   estimatedMinutes: number
   checkpoints: readonly string[]
   component: LazyExoticComponent<ModuleActivityComponent>
+  journalEntryAction?: LazyExoticComponent<
+    ComponentType<JournalEntryActionProps>
+  >
   loadActivity: ModuleActivityLoader
   preload?: ModulePreloader
 }

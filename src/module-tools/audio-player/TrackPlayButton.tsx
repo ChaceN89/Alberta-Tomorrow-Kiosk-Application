@@ -4,7 +4,7 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Offer play, pause/resume, queue, and play-now actions for a module audio track.
+  - Offer concise playback and queue actions for a module audio track.
   - Passes optional onStart and onEnd callbacks so modules can record checkpoints.
 
   Usage:
@@ -12,10 +12,11 @@
 
   Notes:
   - When a different track is playing, learners can queue this track or start it immediately.
-  - Queued tracks can be added again or started immediately.
+  - A track can only appear once in the queue at a time.
  */
 import { useTranslation } from 'react-i18next'
-import { PauseIcon, PlayIcon } from './AudioPlayerIcons'
+import { Tooltip } from '../../components/shared/Tooltip'
+import { AddToQueueIcon, PauseIcon, PlayIcon } from './AudioPlayerIcons'
 import {
   useAudioPlayer,
   type AudioPlayCallbacks,
@@ -36,6 +37,7 @@ export function TrackPlayButton({
     track: current,
     isPlaying,
     isEnded,
+    isClosing,
     queue,
     playTrack,
     playNow,
@@ -44,101 +46,76 @@ export function TrackPlayButton({
   } = useAudioPlayer()
   const isCurrent = current?.id === track.id
   const isActive = isCurrent && isPlaying
-  const isQueued = queue.some((item) => item.track.id === track.id)
+  const isQueued =
+    current?.id === track.id || queue.some((item) => item.track.id === track.id)
   const callbacks = { onStart, onEnd }
 
-  if (isCurrent) {
-    const action = isActive ? 'pause' : isEnded ? 'play' : 'resume'
+  const action = isCurrent
+    ? isActive
+      ? 'pause'
+      : isClosing || isEnded
+        ? 'play'
+        : 'resume'
+    : isPlaying
+      ? 'playNow'
+      : 'play'
 
-    return (
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          className="button gap-2"
-          aria-label={t(`audioPlayer.${action}Track`, { title: track.title })}
-          onClick={() =>
-            isActive ? togglePlayback() : playTrack(track, callbacks)
-          }
-        >
-          {isActive ? (
-            <PauseIcon className="size-5" />
-          ) : (
-            <PlayIcon className="size-5" />
-          )}
-          {t(`audioPlayer.${action}`)}
-        </button>
-        <button
-          type="button"
-          className="button-secondary"
-          aria-label={t('audioPlayer.addToQueueTrack', { title: track.title })}
-          onClick={() => addToQueue(track, callbacks)}
-        >
-          {t('audioPlayer.addToQueue')}
-        </button>
-      </div>
-    )
-  }
-
-  if (isQueued) {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <button type="button" className="button-secondary" disabled>
-          {t('audioPlayer.queued')}
-        </button>
-        <button
-          type="button"
-          className="button-secondary"
-          aria-label={t('audioPlayer.addToQueueTrack', { title: track.title })}
-          onClick={() => addToQueue(track, callbacks)}
-        >
-          {t('audioPlayer.addToQueue')}
-        </button>
-        <button
-          type="button"
-          className="button"
-          aria-label={t('audioPlayer.playNowTrack', { title: track.title })}
-          onClick={() => playNow(track, callbacks)}
-        >
-          <PlayIcon className="mr-2 size-5" />
-          {t('audioPlayer.playNow')}
-        </button>
-      </div>
-    )
-  }
-
-  if (current) {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          className="button-secondary"
-          aria-label={t('audioPlayer.addToQueueTrack', { title: track.title })}
-          onClick={() => addToQueue(track, callbacks)}
-        >
-          {t('audioPlayer.addToQueue')}
-        </button>
-        <button
-          type="button"
-          className="button"
-          aria-label={t('audioPlayer.playNowTrack', { title: track.title })}
-          onClick={() => playNow(track, callbacks)}
-        >
-          <PlayIcon className="mr-2 size-5" />
-          {t('audioPlayer.playNow')}
-        </button>
-      </div>
-    )
+  const play = () => {
+    if (isCurrent) {
+      if (isActive) {
+        togglePlayback()
+      } else {
+        playTrack(track, callbacks)
+      }
+    } else if (isQueued || isPlaying) {
+      playNow(track, callbacks)
+    } else {
+      playTrack(track, callbacks)
+    }
   }
 
   return (
-    <button
-      type="button"
-      className="button gap-2"
-      aria-label={t('audioPlayer.playTrack', { title: track.title })}
-      onClick={() => playTrack(track, callbacks)}
-    >
-      <PlayIcon className="size-5" />
-      {t('audioPlayer.play')}
-    </button>
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        className="button gap-2"
+        aria-label={t(
+          action === 'playNow'
+            ? 'audioPlayer.playNowTrack'
+            : `audioPlayer.${action}Track`,
+          { title: track.title },
+        )}
+        onClick={play}
+      >
+        {isActive ? (
+          <PauseIcon className="size-5" />
+        ) : (
+          <PlayIcon className="size-5" />
+        )}
+        {t(`audioPlayer.${action}`)}
+      </button>
+      <Tooltip
+        text={t(
+          isQueued ? 'audioPlayer.alreadyInQueue' : 'audioPlayer.addToQueue',
+        )}
+      >
+        <button
+          type="button"
+          className="button-secondary size-12 p-0 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+          aria-disabled={isQueued}
+          aria-label={t(
+            isQueued
+              ? 'audioPlayer.alreadyInQueueTrack'
+              : 'audioPlayer.addToQueueTrack',
+            { title: track.title },
+          )}
+          onClick={() => {
+            if (!isQueued) addToQueue(track, callbacks)
+          }}
+        >
+          <AddToQueueIcon className="size-5" />
+        </button>
+      </Tooltip>
+    </div>
   )
 }

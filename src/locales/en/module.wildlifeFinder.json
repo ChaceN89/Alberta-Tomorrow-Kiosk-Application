@@ -59,11 +59,21 @@
         },
         "correct": "That's right! Red foxes eat a varied diet that includes small animals and plant foods such as fruit.",
         "tryAgain": "Not quite. Red foxes eat a varied diet, including both animal and plant foods."
+      },
+      "redFoxSound": {
+        "prompt": "Which animal is making this sound?",
+        "options": {
+          "coyoteWrong": "A coyote",
+          "redFoxCorrect": "A red fox",
+          "wolfWrong": "A wolf"
+        },
+        "correct": "That's right! You heard the sound of a red fox.",
+        "tryAgain": "Listen closely to the recording and try again."
       }
     },
     "complete": {
       "title": "Quiz complete!",
-      "description": "You explored the habitats and diets of Alberta's swift and red foxes.",
+      "description": "You explored the habitats, diets, and sounds of Alberta's swift and red foxes.",
       "retry": "Take the quiz again"
     }
   },
@@ -104,6 +114,11 @@
         "id": "red-fox-food",
         "title": "Red fox diet",
         "summary": "Red foxes eat a varied diet that includes small animals and plant foods such as fruit."
+      },
+      {
+        "id": "red-fox-sound-identification",
+        "title": "Recognizing a red fox",
+        "summary": "You identified the sound of a red fox."
       }
     ]
   }

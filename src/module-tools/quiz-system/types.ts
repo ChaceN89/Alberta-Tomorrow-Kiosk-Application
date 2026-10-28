@@ -12,9 +12,12 @@
   Notes:
   - Reusing a question's id as its journal checkpoint id lets Quiz resume where a learner left off.
  */
+import type { ReactNode } from 'react'
+
 export type QuizQuestion = {
   id: string
   prompt: string
+  audio?: ReactNode
   options: readonly string[]
   correctIndex: number
   correctFeedback: string

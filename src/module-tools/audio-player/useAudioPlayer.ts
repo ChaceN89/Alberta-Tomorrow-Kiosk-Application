@@ -43,6 +43,7 @@ type AudioPlayerContextValue = {
   isEnded: boolean
   hasError: boolean
   isPanelOpen: boolean
+  isClosing: boolean
   activePanelTab: 'player' | 'queue'
   currentTime: number
   duration: number
@@ -53,6 +54,7 @@ type AudioPlayerContextValue = {
   playNow: (track: AudioTrack, callbacks?: AudioPlayCallbacks) => void
   addToQueue: (track: AudioTrack, callbacks?: AudioPlayCallbacks) => void
   removeFromQueue: (queueId: number) => void
+  moveInQueue: (queueId: number, direction: 'up' | 'down') => void
   playNext: () => void
   togglePlayback: () => void
   seek: (seconds: number) => void
@@ -61,6 +63,7 @@ type AudioPlayerContextValue = {
   slowDown: () => void
   setPanelOpen: (isOpen: boolean) => void
   setActivePanelTab: (tab: 'player' | 'queue') => void
+  beginClose: () => void
   // Unloads the track and hides the player completely.
   stop: () => void
 }

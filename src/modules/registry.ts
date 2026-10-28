@@ -1,7 +1,7 @@
 /**
   File: registry.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Register discoverable activities/modules without eagerly importing them.
@@ -20,6 +20,8 @@ import { wildlifeCheckpoints } from './wildlife-habitats/checkpoints'
 import type { LearningModule } from './types'
 
 const loadFindHabitat = () => import('./wildlife-habitats/FindHabitat')
+const loadWildlifeJournalEntryAction = () =>
+  import('./wildlife-habitats/WildlifeJournalEntryAction')
 const loadResidentialSchool = () =>
   import('./residential-school/ResidentialSchool')
 const loadGeology = () => import('./geology/Geology')
@@ -31,6 +33,7 @@ export const modules: readonly LearningModule[] = [
     estimatedMinutes: 5,
     checkpoints: wildlifeCheckpoints,
     component: lazy(loadFindHabitat),
+    journalEntryAction: lazy(loadWildlifeJournalEntryAction),
     loadActivity: loadFindHabitat,
   },
   {

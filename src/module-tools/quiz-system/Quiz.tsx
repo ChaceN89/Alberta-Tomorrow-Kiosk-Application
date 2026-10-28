@@ -80,6 +80,7 @@ export function Quiz({
         <legend className="mb-4 text-xl font-semibold">
           {question.prompt}
         </legend>
+        {question.audio && <div className="mb-4">{question.audio}</div>}
         <div className="grid gap-3">
           {question.options.map((option, optionIndex) => (
             <button

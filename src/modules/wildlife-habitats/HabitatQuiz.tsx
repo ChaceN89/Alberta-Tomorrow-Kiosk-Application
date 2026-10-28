@@ -16,7 +16,9 @@
 import { useTranslation } from 'react-i18next'
 import { Quiz } from '../../module-tools/quiz-system/Quiz'
 import type { QuizQuestion } from '../../module-tools/quiz-system/types'
+import { TrackPlayButton } from '../../module-tools/audio-player/TrackPlayButton'
 import type { ModuleActivityProps } from '../types'
+import { wildlifeTracks } from './tracks'
 
 type HabitatQuizProps = ModuleActivityProps & {
   onBackToActivity: () => void
@@ -28,6 +30,7 @@ export function HabitatQuiz({
   onBackToActivity,
 }: HabitatQuizProps) {
   const { t } = useTranslation('wildlifeFinder')
+  const redFoxTrack = wildlifeTracks[2]
 
   // Each question id doubles as its journal checkpoint id.
   const questions: QuizQuestion[] = [
@@ -54,6 +57,30 @@ export function HabitatQuiz({
       correctIndex: 1,
       correctFeedback: t('quiz.questions.redFox.correct'),
       incorrectFeedback: t('quiz.questions.redFox.tryAgain'),
+    },
+    {
+      id: 'red-fox-sound-identification',
+      prompt: t('quiz.questions.redFoxSound.prompt'),
+      audio: (
+        <TrackPlayButton
+          track={{
+            id: redFoxTrack.id,
+            src: redFoxTrack.src,
+            coverArt: redFoxTrack.coverArt,
+            title: t('listen.tracks.redFoxSound.title'),
+            subtitle: t('title'),
+          }}
+          onStart={() => completeCheckpoint(redFoxTrack.startCheckpoint)}
+        />
+      ),
+      options: [
+        t('quiz.questions.redFoxSound.options.coyoteWrong'),
+        t('quiz.questions.redFoxSound.options.redFoxCorrect'),
+        t('quiz.questions.redFoxSound.options.wolfWrong'),
+      ],
+      correctIndex: 1,
+      correctFeedback: t('quiz.questions.redFoxSound.correct'),
+      incorrectFeedback: t('quiz.questions.redFoxSound.tryAgain'),
     },
   ]
 

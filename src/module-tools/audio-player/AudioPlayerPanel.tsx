@@ -17,10 +17,13 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '../../components/shared/Tooltip'
+import { useJournal } from '../../journal/useJournal'
 import {
   CloseIcon,
   FastForwardIcon,
   MusicNoteIcon,
+  MoveDownIcon,
+  MoveUpIcon,
   NextIcon,
   PauseIcon,
   PlayIcon,
@@ -29,6 +32,7 @@ import {
 } from './AudioPlayerIcons'
 import { formatTime } from './formatTime'
 import { useAudioPlayer } from './useAudioPlayer'
+import { createPortal } from 'react-dom'
 
 function EqualizerBars() {
   return (
@@ -46,12 +50,14 @@ function EqualizerBars() {
 
 export function AudioPlayerPanel() {
   const { t } = useTranslation('moduleTools')
+  const { isOpen: isJournalOpen } = useJournal()
   const {
     track,
     isPlaying,
     isEnded,
     hasError,
     isPanelOpen,
+    beginClose,
     activePanelTab,
     currentTime,
     duration,
@@ -65,12 +71,13 @@ export function AudioPlayerPanel() {
     slowDown,
     playNext,
     removeFromQueue,
+    moveInQueue,
     setPanelOpen,
     setActivePanelTab,
     stop,
   } = useAudioPlayer()
   const [isConfirmingClose, setConfirmingClose] = useState(false)
-  const [isClosing, setClosing] = useState(false)
+  const [isAnimatingClose, setAnimatingClose] = useState(false)
   const cancelCloseRef = useRef<HTMLButtonElement>(null)
   const closeAnimationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
@@ -117,17 +124,17 @@ export function AudioPlayerPanel() {
   }
   const closePlayer = () => {
     setConfirmingClose(false)
-    setClosing(true)
+    setAnimatingClose(true)
     const closingTrackId = track.id
 
-    if (isPlaying) togglePlayback()
+    beginClose()
 
     closeAnimationTimeoutRef.current = setTimeout(() => {
       closeAnimationTimeoutRef.current = null
       if (currentTrackIdRef.current === closingTrackId) {
         stop()
       }
-      setClosing(false)
+      setAnimatingClose(false)
     }, 300)
   }
   const requestClose = () => {
@@ -166,11 +173,18 @@ export function AudioPlayerPanel() {
       <QueueListIcon className="size-5" />
     </button>
   )
+  const journalAudioPortalRoot = isJournalOpen
+    ? document.getElementById('journal-audio-player-root')
+    : null
 
-  return (
+  if (isJournalOpen && !journalAudioPortalRoot) {
+    throw new Error('The journal audio player portal root is missing.')
+  }
+
+  const panel = (
     <div
       className={`audio-player-shell audio-panel-enter fixed bottom-4 left-0 z-40 ${
-        isClosing ? 'audio-panel-exit pointer-events-none' : ''
+        isAnimatingClose ? 'audio-panel-exit pointer-events-none' : ''
       }`}
     >
       <div
@@ -341,7 +355,7 @@ export function AudioPlayerPanel() {
             >
               <div className="mb-3 flex items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold">
-                  {t('audioPlayer.queueCount', { count: queue.length })}
+                  {t('audioPlayer.queue')}
                 </h2>
                 <Tooltip text={t('audioPlayer.close')}>
                   <button
@@ -355,8 +369,8 @@ export function AudioPlayerPanel() {
                 </Tooltip>
               </div>
               {queue.length > 0 ? (
-                <ol className="max-h-80 space-y-2 overflow-y-auto">
-                  {queue.map(({ queueId, track: queuedTrack }) => (
+                <ol className="max-h-80 space-y-2 overflow-y-auto scrollbar-thin">
+                  {queue.map(({ queueId, track: queuedTrack }, index) => (
                     <li
                       key={queueId}
                       className="flex min-w-0 items-center gap-2"
@@ -369,6 +383,30 @@ export function AudioPlayerPanel() {
                       <span className="min-w-0 grow truncate text-sm">
                         {queuedTrack.title}
                       </span>
+                      <div className="flex shrink-0">
+                        <button
+                          type="button"
+                          className="flex size-10 items-center justify-center rounded-lg text-muted hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-40"
+                          aria-label={t('audioPlayer.moveUp', {
+                            title: queuedTrack.title,
+                          })}
+                          disabled={index === 0}
+                          onClick={() => moveInQueue(queueId, 'up')}
+                        >
+                          <MoveUpIcon className="size-4" />
+                        </button>
+                        <button
+                          type="button"
+                          className="flex size-10 items-center justify-center rounded-lg text-muted hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-40"
+                          aria-label={t('audioPlayer.moveDown', {
+                            title: queuedTrack.title,
+                          })}
+                          disabled={index === queue.length - 1}
+                          onClick={() => moveInQueue(queueId, 'down')}
+                        >
+                          <MoveDownIcon className="size-4" />
+                        </button>
+                      </div>
                       <button
                         type="button"
                         className="flex size-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-canvas"
@@ -432,4 +470,8 @@ export function AudioPlayerPanel() {
       )}
     </div>
   )
+
+  return isJournalOpen && journalAudioPortalRoot
+    ? createPortal(panel, journalAudioPortalRoot)
+    : panel
 }

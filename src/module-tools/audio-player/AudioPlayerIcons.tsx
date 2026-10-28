@@ -88,6 +88,30 @@ export function QueueListIcon({ className }: IconProps) {
   )
 }
 
+export function AddToQueueIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="M3 5h2v2H3zm4 0h14v2H7zM3 11h2v2H3zm4 0h8v2H7zm-4 6h2v2H3zm4 0h8v2H7zm11-2v3h3v2h-3v3h-2v-3h-3v-2h3v-3z" />
+    </Icon>
+  )
+}
+
+export function MoveUpIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="m12 4 7 7-1.4 1.4L13 7.8V20h-2V7.8l-4.6 4.6L5 11z" />
+    </Icon>
+  )
+}
+
+export function MoveDownIcon({ className }: IconProps) {
+  return (
+    <Icon className={className}>
+      <path d="m12 20-7-7 1.4-1.4 4.6 4.6V4h2v12.2l4.6-4.6L19 13z" />
+    </Icon>
+  )
+}
+
 export function CloseIcon({ className }: IconProps) {
   return (
     <Icon className={className}>

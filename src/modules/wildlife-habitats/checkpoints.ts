@@ -22,4 +22,5 @@ export const wildlifeCheckpoints = [
   'audio-3-started',
   'swift-fox-home',
   'red-fox-food',
+  'red-fox-sound-identification',
 ] as const

@@ -29,6 +29,7 @@ export function Tooltip({ text, children, delay = 850 }: TooltipProps) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const anchorRef = useRef<HTMLSpanElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
   const [position, setPosition] = useState({ left: 0, top: 0 })
 
   useEffect(
@@ -52,6 +53,9 @@ export function Tooltip({ text, children, delay = 850 }: TooltipProps) {
         ),
         top: Math.max(8, rect.top - 8),
       })
+      setPortalTarget(
+        anchorRef.current?.closest('dialog[open]') ?? document.body,
+      )
       setIsVisible(true)
     }, delay)
   }
@@ -90,7 +94,7 @@ export function Tooltip({ text, children, delay = 850 }: TooltipProps) {
           >
             {text}
           </span>,
-          document.body,
+          portalTarget ?? document.body,
         )}
     </span>
   )
