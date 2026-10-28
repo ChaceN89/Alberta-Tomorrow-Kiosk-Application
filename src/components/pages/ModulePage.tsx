@@ -2,18 +2,18 @@
  * File: ModulePage.tsx | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-28
  * Description: Render module details and load activities only when requested.
- * Dependencies: React Suspense, React Router, module registry, journal context.
+ * Dependencies: React Suspense, React Router, module views, journal and preload contexts.
  */
 import { Suspense, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { Loading } from '../components/app-states/Loading'
-import { ModuleOverview } from '../components/modules/ModuleOverview'
-import { ModuleNotFound } from '../components/modules/ModuleNotFound'
-import { useJournal } from '../journal/useJournal'
-import { useModulePreload } from '../modules/useModulePreload'
-import { modules } from '../modules/registry'
-import type { LearningModule } from '../modules/types'
+import { Loading } from '../app-states/Loading'
+import { ModuleNotFound } from '../modules/ModuleNotFound'
+import { ModuleOverview } from '../modules/ModuleOverview'
+import { useJournal } from '../../journal/useJournal'
+import { useModulePreload } from '../../modules/useModulePreload'
+import { modules } from '../../modules/registry'
+import type { LearningModule } from '../../modules/types'
 
 type ModuleActivityProps = {
   module: LearningModule

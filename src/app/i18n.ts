@@ -1,8 +1,11 @@
 /**
  * File: i18n.ts | Author: Chace Nielson
  * Created: 2026-10-23 | Updated: 2026-10-23
+ *
  * Description: Register bundled English and French resources with typed keys.
- * Dependencies: i18next, react-i18next; language selection is session-only.
+ * -Builds the full set of language resources for English and French from the multiple JSON files in the locales directory.
+ * - this might get a little large with improts of json files, but it will keep the actaul text files from getting too big and allowing separation
+ *
  */
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'

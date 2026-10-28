@@ -1,23 +1,20 @@
 /**
- * File: HomePage.tsx | Author: Chace Nielson
- * Created: 2026-10-23 | Updated: 2026-10-28
- * Description: Display available expeditions from the registry with journal progress.
- * Dependencies: React Router, react-i18next, module registry, journal context.
+ * File: ModuleCard.tsx | Author: Chace Nielson
+ * Created: 2026-10-28 | Updated: 2026-10-28
+ * Description: Show expedition details, progress, and actions in the home list.
+ * Dependencies: react-i18next, React Router, journal context, module registry.
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import {
-  ExpeditionPeak,
-  ExpeditionStatusText,
-} from '../components/modules/ExpeditionPeak'
-import { useJournal } from '../journal/useJournal'
-import { modules } from '../modules/registry'
+import { useJournal } from '../../journal/useJournal'
+import { modules } from '../../modules/registry'
+import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
 type ModuleCardProps = {
   module: (typeof modules)[number]
 }
 
-function ModuleCard({ module }: ModuleCardProps) {
+export function ModuleCard({ module }: ModuleCardProps) {
   const { t: tModule } = useTranslation(module.translationNamespace)
   const { t: tHome } = useTranslation('home')
   const { t: tJournal } = useTranslation('journal')
@@ -57,27 +54,5 @@ function ModuleCard({ module }: ModuleCardProps) {
         )}
       </div>
     </li>
-  )
-}
-
-export function HomePage() {
-  const { t } = useTranslation('home')
-
-  return (
-    <section aria-labelledby="home-title" className="space-y-8">
-      <div className="space-y-3">
-        <p className="font-semibold text-pine">{t('eyebrow')}</p>
-        <h1 id="home-title">{t('title')}</h1>
-        <p className="text-lg text-muted">{t('description')}</p>
-      </div>
-      <ul
-        data-tour="expedition-list"
-        className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
-      >
-        {modules.map((module) => (
-          <ModuleCard key={module.id} module={module} />
-        ))}
-      </ul>
-    </section>
   )
 }
