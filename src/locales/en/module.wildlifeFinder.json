@@ -23,7 +23,9 @@
       "subtitle": "Four signs a fox is nearby",
       "body": "1. Tracks: small, oval prints with four toes and tiny claw marks.\n2. Dens: burrows dug into dry, well-drained ground.\n3. Sounds: short barks and yips, often around dusk.\n4. Tails: a bushy tail that helps a fox balance and stay warm.",
       "preview": "Read a short checklist of signs to look for in the field.",
-      "open": "Read the field checklist"
+      "open": "Read the field checklist",
+      "tracksImageAlt": "Two black fox paw prints.",
+      "denImageAlt": "A diagram of a fox den: two entrances, a food chamber, and the den itself, 3 to 6 meters across and 1 to 2.5 meters deep."
     },
     "image": {
       "title": "A fox family",

@@ -81,6 +81,10 @@ export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
                   title: t(foxFieldList.title),
                   subtitle: t(foxFieldList.subtitle),
                   message: t(foxFieldList.message),
+                  images: foxFieldList.images.map((image) => ({
+                    src: image.src,
+                    alt: t(image.alt),
+                  })),
                 },
                 {
                   onOpen: () => completeCheckpoint(foxFieldListCheckpoint),

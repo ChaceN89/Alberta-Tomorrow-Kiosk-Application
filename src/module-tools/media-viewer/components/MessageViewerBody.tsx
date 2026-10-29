@@ -11,6 +11,7 @@
 
   Notes:
   - Line breaks in the message are kept, so short lists can be written as lines.
+  - Optional images are drawn small and side by side at the bottom, like doodles on the note.
   - A note taller than the viewer scrolls inside; on touch screens it then pans vertically
     instead of tilting so it stays readable.
  */
@@ -56,6 +57,19 @@ export function MessageViewerBody({ content }: MessageViewerBodyProps) {
         <p className="whitespace-pre-line text-xl leading-relaxed md:text-2xl">
           {content.message}
         </p>
+        {content.images && content.images.length > 0 && (
+          <div className="media-viewer-note__doodles">
+            {content.images.map((image) => (
+              <img
+                key={image.src}
+                src={image.src}
+                alt={image.alt}
+                draggable={false}
+                className="media-viewer-note__doodle"
+              />
+            ))}
+          </div>
+        )}
       </article>
     </TiltStage>
   )

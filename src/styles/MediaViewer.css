@@ -193,6 +193,36 @@ html.dark .media-viewer-note {
   transform: translateX(-50%) rotate(-2deg);
 }
 
+/* Small drawings at the foot of the note, side by side and each a little off-square. */
+.media-viewer-note__doodles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.media-viewer-note__doodle {
+  display: block;
+  height: clamp(5rem, 16cqh, 8rem);
+  width: auto;
+  max-width: 48%;
+  object-fit: contain;
+  opacity: 0.85;
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+.media-viewer-note__doodle:nth-child(even) {
+  transform: rotate(3deg);
+}
+
+html.dark .media-viewer-note__doodle {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
 .media-viewer-note__body {
   min-height: 0;
   overflow-y: auto;

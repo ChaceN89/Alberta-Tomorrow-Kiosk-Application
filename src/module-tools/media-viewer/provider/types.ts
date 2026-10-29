@@ -16,6 +16,11 @@ export type MessageViewerContent = {
   title: string
   subtitle?: string
   message: string
+  // Small doodles drawn side by side at the bottom of the note.
+  images?: readonly {
+    src: string
+    alt: string
+  }[]
 }
 
 export type ImageViewerContent = {

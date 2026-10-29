@@ -23,7 +23,9 @@
       "subtitle": "Quatre signes de la présence d’un renard",
       "body": "1. Traces : de petites empreintes ovales à quatre doigts, avec de minuscules marques de griffes.\n2. Tanières : des terriers creusés dans un sol sec et bien drainé.\n3. Sons : de courts aboiements et jappements, souvent au crépuscule.\n4. Queues : une queue touffue qui aide le renard à garder son équilibre et à se tenir au chaud.",
       "preview": "Lisez une courte liste de signes à repérer sur le terrain.",
-      "open": "Lire la liste de terrain"
+      "open": "Lire la liste de terrain",
+      "tracksImageAlt": "Deux empreintes noires de pattes de renard.",
+      "denImageAlt": "Un schéma d’une tanière de renard : deux entrées, une chambre à provisions et la tanière elle-même, large de 3 à 6 mètres et profonde de 1 à 2,5 mètres."
     },
     "image": {
       "title": "Une famille de renards",

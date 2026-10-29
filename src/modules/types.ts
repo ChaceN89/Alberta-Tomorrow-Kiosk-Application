@@ -46,7 +46,14 @@ export type JournalEntryActionProps = {
 
 // Translation keys in the module's namespace, matching what the viewer shows.
 export type JournalEntryViewer =
-  | { type: 'message'; title: string; subtitle?: string; message: string }
+  | {
+      type: 'message'
+      title: string
+      subtitle?: string
+      message: string
+      // Each doodle's alt text is a key; its src is the imported file.
+      images?: readonly { src: string; alt: string }[]
+    }
   | { type: 'image'; title: string; description: string; alt: string }
 
 export interface LearningModule {

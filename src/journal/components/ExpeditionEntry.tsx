@@ -75,6 +75,10 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
           title: translate(viewer.title),
           subtitle: viewer.subtitle ? translate(viewer.subtitle) : undefined,
           message: translate(viewer.message),
+          images: viewer.images?.map((image) => ({
+            src: image.src,
+            alt: translate(image.alt),
+          })),
         },
         { origin },
       )
