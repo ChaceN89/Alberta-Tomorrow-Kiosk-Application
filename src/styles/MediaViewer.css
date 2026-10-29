@@ -12,8 +12,8 @@
   Notes:
   - Opening grows the dialog out of the clicked element: the provider sets
     --viewer-dx, --viewer-dy, and --viewer-scale to place its start on that element.
-  - Closing matches the media player's full screen exit; keep its 520ms equal to
-    CLOSE_DURATION_MS in MediaViewerProvider.tsx.
+  - Closing returns to the same element, with the provider re-measuring it first; keep
+    its 320ms equal to CLOSE_DURATION_MS in MediaViewerProvider.tsx.
  */
 @keyframes media-viewer-expand {
   from {
@@ -38,11 +38,12 @@
 
 @keyframes media-viewer-shrink {
   from {
-    transform: translateY(0) scale(1);
+    transform: translate(0, 0) scale(1);
   }
 
   to {
-    transform: translateY(5rem) scale(0.82);
+    transform: translate(var(--viewer-dx, 0px), var(--viewer-dy, 0px))
+      scale(var(--viewer-scale, 0.85));
   }
 }
 
@@ -67,15 +68,16 @@
   animation: media-viewer-fade-in 560ms ease-out both;
 }
 
+/* The dialog stays visible while it travels and only fades out as it arrives. */
 .media-viewer[data-motion='closing'] {
   pointer-events: none;
   animation:
-    media-viewer-shrink 520ms cubic-bezier(0.4, 0, 0.8, 0.2) both,
-    media-viewer-fade-out 520ms ease-in both;
+    media-viewer-shrink 320ms cubic-bezier(0.4, 0, 0.2, 1) both,
+    media-viewer-fade-out 130ms ease-in 190ms both;
 }
 
 .media-viewer[data-motion='closing']::backdrop {
-  animation: media-viewer-fade-out 520ms ease-in both;
+  animation: media-viewer-fade-out 320ms ease-in both;
 }
 
 @media (prefers-reduced-motion: reduce) {

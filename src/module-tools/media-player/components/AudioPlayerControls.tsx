@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerControls.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Render media metadata, volume, seek, playback-rate, and transport controls.
@@ -10,9 +10,9 @@
   - AudioPlayerPanel renders this below the active media viewport.
 
   Notes:
-  - Fullscreen keyboard handling and the volume popover are owned with the controls.
+  - Fullscreen keyboard handling is owned with the controls; the volume popover is VolumeControl.
  */
-import { useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '@/components/shared/Tooltip'
 import { requestMediaPlayerTutorialDismissalForPlayback } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
@@ -24,10 +24,10 @@ import {
   PauseIcon,
   PlayIcon,
   RewindIcon,
-  VolumeIcon,
 } from './AudioPlayerIcons'
-import { formatTime } from './formatTime'
-import { useAudioPlayer } from './useAudioPlayer'
+import { VolumeControl } from './VolumeControl'
+import { formatTime } from '../utils/formatTime'
+import { useAudioPlayer } from '../hooks/useAudioPlayer'
 
 type AudioPlayerControlsProps = {
   trackTitle: string
@@ -60,7 +60,7 @@ export function AudioPlayerControls({
   } = useAudioPlayer()
   const [isVolumeOpen, setVolumeOpen] = useState(false)
   const fullscreenExitRef = useRef<HTMLButtonElement>(null)
-  const volumeControlId = useId()
+  const closeVolume = useCallback(() => setVolumeOpen(false), [])
 
   useEffect(() => {
     if (!isFullscreen) return
@@ -73,17 +73,6 @@ export function AudioPlayerControls({
     document.addEventListener('keydown', exitOnEscape)
     return () => document.removeEventListener('keydown', exitOnEscape)
   }, [isFullscreen, setFullscreen])
-
-  useEffect(() => {
-    if (!isVolumeOpen) return
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setVolumeOpen(false)
-    }
-
-    document.addEventListener('keydown', closeOnEscape)
-    return () => document.removeEventListener('keydown', closeOnEscape)
-  }, [isVolumeOpen])
 
   if (!track) return null
 
@@ -116,52 +105,13 @@ export function AudioPlayerControls({
         {!hasError && (
           <div className="flex shrink-0 items-center gap-2">
             {track.type === 'audio' && (
-              <div className="relative">
-                <Tooltip text={t('audioPlayer.volume')}>
-                  <button
-                    type="button"
-                    className="flex size-10 items-center justify-center rounded-lg text-muted hover:bg-canvas"
-                    aria-label={t('audioPlayer.volume')}
-                    aria-expanded={isVolumeVisible}
-                    aria-controls={volumeControlId}
-                    onClick={() => setVolumeOpen(!isVolumeOpen)}
-                  >
-                    <VolumeIcon className="size-5" />
-                  </button>
-                </Tooltip>
-                {isVolumeVisible && (
-                  <div
-                    id={volumeControlId}
-                    className="absolute right-full top-1/2 z-30 mr-2 flex -translate-y-1/2 flex-col items-center gap-2 rounded-xl border border-line bg-surface p-3 text-ink shadow-xl"
-                  >
-                    <label htmlFor="audio-player-volume" className="sr-only">
-                      {t('audioPlayer.volume')}
-                    </label>
-                    <input
-                      id="audio-player-volume"
-                      type="range"
-                      min={0}
-                      max={1}
-                      step={0.01}
-                      value={volume}
-                      aria-valuetext={t('audioPlayer.volumeValue', {
-                        percent: Math.round(volume * 100),
-                      })}
-                      className="h-32 w-8 cursor-pointer accent-pine"
-                      style={{
-                        writingMode: 'vertical-lr',
-                        direction: 'rtl',
-                      }}
-                      onChange={(event) =>
-                        setVolume(event.target.valueAsNumber)
-                      }
-                    />
-                    <span className="text-xs text-muted tabular-nums">
-                      {Math.round(volume * 100)}%
-                    </span>
-                  </div>
-                )}
-              </div>
+              <VolumeControl
+                isOpen={isVolumeVisible}
+                volume={volume}
+                onToggle={() => setVolumeOpen(!isVolumeOpen)}
+                onClose={closeVolume}
+                onVolumeChange={setVolume}
+              />
             )}
             {isFullscreen ? (
               <Tooltip text={t('audioPlayer.exitFullscreen')}>

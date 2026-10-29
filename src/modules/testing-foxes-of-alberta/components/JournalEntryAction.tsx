@@ -13,7 +13,7 @@
   - Reuses expedition tracks and their existing listening checkpoints.
  */
 import { useTranslation } from 'react-i18next'
-import { TrackPlayButton } from '@/module-tools/media-player/TrackPlayButton'
+import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { JournalEntryActionProps } from '@/modules/types'
 import { getPreloadedFoxAudioSource } from '@/modules/testing-foxes-of-alberta/audioCache'

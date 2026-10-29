@@ -14,7 +14,7 @@
   - Checkpoints are recorded by callbacks the player keeps, even after leaving this page.
  */
 import { useTranslation } from 'react-i18next'
-import { TrackPlayButton } from '@/module-tools/media-player/TrackPlayButton'
+import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import type { ModuleCheckpointProps } from '@/modules/types'
 import { getPreloadedFoxAudioSource } from '@/modules/testing-foxes-of-alberta/audioCache'
 import { foxesVideoCheckpoint } from '@/modules/testing-foxes-of-alberta/checkpoints'

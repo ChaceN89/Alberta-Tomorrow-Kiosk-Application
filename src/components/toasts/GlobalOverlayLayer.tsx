@@ -12,6 +12,8 @@
   Notes:
   - Modal dialogs make everything outside them inert, so the developer-tools and
     notification hosts move into the topmost open dialog without remounting.
+  - Both hosts are top-layer popovers, so they sit above the dialog and ignore its
+    open and close animation instead of becoming part of it.
   - The host never moves into a dialog it contains; render dialogs opened from
     the developer tools outside the host (see StatePreview).
   - Status toasts stay in the page so every dialog and media tool covers them.
@@ -21,11 +23,13 @@ import { createPortal } from 'react-dom'
 import { DisplayTesting } from '@/components/development/dev-tools/DisplayTesting'
 import { ToastLayer } from './ToastLayer'
 
-function createOverlayHosts() {
-  const developerTools = document.createElement('div')
-  developerTools.id = 'global-dev-tools-host'
-  developerTools.setAttribute('popover', 'manual')
-  Object.assign(developerTools.style, {
+// A manual popover renders in the browser's top layer: above modal dialogs, and not
+// scaled, faded, or clipped by the dialog it sits in.
+function createPopoverHost(id: string, zIndex: string) {
+  const host = document.createElement('div')
+  host.id = id
+  host.setAttribute('popover', 'manual')
+  Object.assign(host.style, {
     background: 'transparent',
     border: '0',
     color: 'inherit',
@@ -40,24 +44,39 @@ function createOverlayHosts() {
     position: 'fixed',
     width: '100%',
     // Fallback for browsers without the popover top layer.
-    zIndex: 'var(--z-dev-tools)',
+    zIndex,
   })
 
-  const notifications = document.createElement('div')
-  notifications.id = 'global-notification-host'
-  notifications.className = 'contents'
-
-  return { developerTools, notifications }
+  return host
 }
 
-// Showing the popover again also moves it back to the top of the top layer.
-function showDeveloperTools(host: HTMLElement) {
+function createOverlayHosts() {
+  return {
+    developerTools: createPopoverHost(
+      'global-dev-tools-host',
+      'var(--z-dev-tools)',
+    ),
+    notifications: createPopoverHost(
+      'global-notification-host',
+      'var(--z-notification-toast)',
+    ),
+  }
+}
+
+// Showing a popover again also moves it back to the top of the top layer.
+function showHost(host: HTMLElement) {
   if (
     typeof host.showPopover === 'function' &&
     host.isConnected &&
     !host.matches(':popover-open')
   ) {
     host.showPopover()
+  }
+}
+
+function hideHost(host: HTMLElement) {
+  if (typeof host.hidePopover === 'function' && host.matches(':popover-open')) {
+    host.hidePopover()
   }
 }
 
@@ -68,10 +87,7 @@ function moveHost(host: HTMLElement, target: Element) {
     ? (document.activeElement as HTMLElement)
     : null
 
-  if (typeof host.hidePopover === 'function' && host.matches(':popover-open')) {
-    host.hidePopover()
-  }
-
+  hideHost(host)
   target.appendChild(host)
   focused?.focus({ preventScroll: true })
 }
@@ -120,17 +136,15 @@ export function GlobalOverlayLayer() {
 
     moveHost(hosts.notifications, target)
     moveHost(hosts.developerTools, target)
-    if (isDevelopment) showDeveloperTools(hosts.developerTools)
+    // Shown in layer order: the developer tools end up above the notifications.
+    showHost(hosts.notifications)
+    if (isDevelopment) showHost(hosts.developerTools)
   }, [hosts, isDevelopment, topDialog])
 
   useEffect(
     () => () => {
-      if (
-        typeof hosts.developerTools.hidePopover === 'function' &&
-        hosts.developerTools.matches(':popover-open')
-      ) {
-        hosts.developerTools.hidePopover()
-      }
+      hideHost(hosts.developerTools)
+      hideHost(hosts.notifications)
       hosts.developerTools.remove()
       hosts.notifications.remove()
     },

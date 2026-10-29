@@ -12,7 +12,7 @@
   Notes:
   - YouTube thumbnails use the public hqdefault image endpoint.
  */
-import type { YouTubeTrack } from '@/module-tools/media-player/useAudioPlayer'
+import type { YouTubeTrack } from '@/module-tools/media-player/provider/types'
 
 export const geologyVideos: YouTubeTrack[] = [
   {

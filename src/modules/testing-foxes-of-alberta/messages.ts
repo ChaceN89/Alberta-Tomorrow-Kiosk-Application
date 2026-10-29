@@ -17,3 +17,9 @@ export const foxFieldMessage = {
   subtitle: 'viewer.message.subtitle',
   message: 'viewer.message.body',
 } as const
+
+export const foxFieldList = {
+  title: 'viewer.list.title',
+  subtitle: 'viewer.list.subtitle',
+  message: 'viewer.list.body',
+} as const

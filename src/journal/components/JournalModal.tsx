@@ -15,7 +15,7 @@
 import { useEffect, useId, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '@/journal/useJournal'
-import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
+import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { visibleModules } from '@/modules/registry'
 import { ExpeditionEntry } from './ExpeditionEntry'

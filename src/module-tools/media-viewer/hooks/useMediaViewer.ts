@@ -13,7 +13,7 @@
   - Throws explicitly when used outside its required provider.
  */
 import { useContext } from 'react'
-import { MediaViewerContext } from './MediaViewerContext'
+import { MediaViewerContext } from '../provider/MediaViewerContext'
 
 export function useMediaViewer() {
   const context = useContext(MediaViewerContext)

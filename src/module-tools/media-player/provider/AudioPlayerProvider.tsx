@@ -16,14 +16,14 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { nextFastRate, nextSlowRate, NORMAL_RATE } from './playbackRates'
-import { useAudioPlayerQueue } from './useAudioPlayerQueue'
-import type { YouTubePlayerController } from './YouTubePlayer'
-import {
-  AudioPlayerContext,
-  type MediaTrack,
-  type QueuedAudioTrack,
-} from './useAudioPlayer'
+import { nextFastRate, nextSlowRate, NORMAL_RATE } from '../utils/playbackRates'
+import { useAudioPlayerQueue } from '../hooks/useAudioPlayerQueue'
+import { AudioPlayerContext } from './AudioPlayerContext'
+import type {
+  MediaTrack,
+  QueuedAudioTrack,
+  YouTubePlayerController,
+} from './types'
 
 type AudioPlayerProviderProps = {
   children: ReactNode

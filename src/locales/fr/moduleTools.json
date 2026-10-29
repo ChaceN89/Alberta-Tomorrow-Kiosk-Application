@@ -52,6 +52,8 @@
     "finish": "Terminer le questionnaire"
   },
   "mediaViewer": {
-    "close": "Fermer le visualiseur"
+    "close": "Fermer le visualiseur",
+    "seeMore": "Voir plus",
+    "seeLess": "Voir moins"
   }
 }

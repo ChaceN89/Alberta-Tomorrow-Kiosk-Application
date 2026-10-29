@@ -17,8 +17,8 @@ import type {
   AudioPlayCallbacks,
   MediaTrack,
   QueuedAudioTrack,
-} from './useAudioPlayer'
-import type { YouTubePlayerController } from './YouTubePlayer'
+  YouTubePlayerController,
+} from '../provider/types'
 
 type RefLike<T> = {
   current: T

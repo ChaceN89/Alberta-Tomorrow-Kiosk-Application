@@ -17,11 +17,8 @@
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '@/components/shared/Tooltip'
 import { AddToQueueIcon, PauseIcon, PlayIcon } from './AudioPlayerIcons'
-import {
-  useAudioPlayer,
-  type AudioPlayCallbacks,
-  type MediaTrack,
-} from './useAudioPlayer'
+import { useAudioPlayer } from '../hooks/useAudioPlayer'
+import type { AudioPlayCallbacks, MediaTrack } from '../provider/types'
 
 type TrackPlayButtonProps = AudioPlayCallbacks & {
   track: MediaTrack

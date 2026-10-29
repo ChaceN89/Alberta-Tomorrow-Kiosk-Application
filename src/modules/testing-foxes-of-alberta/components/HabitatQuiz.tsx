@@ -16,7 +16,7 @@
 import { useTranslation } from 'react-i18next'
 import { buildQuizQuestions } from '@/module-tools/quiz-system/buildQuizQuestions'
 import { Quiz } from '@/module-tools/quiz-system/Quiz'
-import { TrackPlayButton } from '@/module-tools/media-player/TrackPlayButton'
+import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import type { ModuleCheckpointProps } from '@/modules/types'
 import { getPreloadedFoxAudioSource } from '@/modules/testing-foxes-of-alberta/audioCache'
 import { foxesOfAlbertaQuizQuestions } from '@/modules/testing-foxes-of-alberta/quiz'

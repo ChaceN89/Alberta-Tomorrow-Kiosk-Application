@@ -10,13 +10,20 @@
   },
   "viewer": {
     "heading": "Read and look closer",
-    "description": "Open a field message or take a closer look at a fox family.",
+    "description": "Open a field message or checklist, or take a closer look at a fox family.",
     "message": {
       "title": "A note from the field",
       "subtitle": "A quiet moment on the prairie",
       "body": "The kits tumble through the grass while their mother watches nearby. They are learning the smells and sounds of home, one small adventure at a time.",
       "preview": "Read a short note about young foxes exploring their home.",
       "open": "Read the field note"
+    },
+    "list": {
+      "title": "A field checklist",
+      "subtitle": "Four signs a fox is nearby",
+      "body": "1. Tracks: small, oval prints with four toes and tiny claw marks.\n2. Dens: burrows dug into dry, well-drained ground.\n3. Sounds: short barks and yips, often around dusk.\n4. Tails: a bushy tail that helps a fox balance and stay warm.",
+      "preview": "Read a short checklist of signs to look for in the field.",
+      "open": "Read the field checklist"
     },
     "image": {
       "title": "A fox family",
@@ -144,6 +151,12 @@
         "section": "Viewer",
         "title": "A note from the field",
         "summary": "You read a quiet field note about young foxes learning their prairie home."
+      },
+      {
+        "id": "fox-field-list-opened",
+        "section": "Viewer",
+        "title": "A field checklist",
+        "summary": "You read a short checklist of signs that a fox is nearby."
       },
       {
         "id": "fox-family-image-opened",

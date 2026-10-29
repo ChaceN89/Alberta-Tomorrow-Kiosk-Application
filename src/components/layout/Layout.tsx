@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { AudioPlayerPanel } from '@/module-tools/media-player/AudioPlayerPanel'
+import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { Footer } from './Footer'
 import { IntroTutorial } from './IntroTutorial'
 import { Navbar } from './Navbar'

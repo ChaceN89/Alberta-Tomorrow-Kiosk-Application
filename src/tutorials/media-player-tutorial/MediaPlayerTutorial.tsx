@@ -21,7 +21,7 @@ import {
   type CSSProperties,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAudioPlayer } from '@/module-tools/media-player/useAudioPlayer'
+import { useAudioPlayer } from '@/module-tools/media-player/hooks/useAudioPlayer'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
 import {
   MEDIA_PLAYER_TUTORIAL_FINISH_REQUEST,

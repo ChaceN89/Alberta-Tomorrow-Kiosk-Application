@@ -44,12 +44,10 @@ export type JournalEntryActionProps = {
   moduleId: string
 }
 
-// Translation keys in the module's namespace, matching the viewer's message content.
-export type JournalEntryMessage = {
-  title: string
-  subtitle?: string
-  message: string
-}
+// Translation keys in the module's namespace, matching what the viewer shows.
+export type JournalEntryViewer =
+  | { type: 'message'; title: string; subtitle?: string; message: string }
+  | { type: 'image'; title: string; description: string; alt: string }
 
 export interface LearningModule {
   visible: boolean
@@ -58,10 +56,11 @@ export interface LearningModule {
   estimatedMinutes: number
   checkpoints: readonly string[]
   component: LazyExoticComponent<ModuleActivityComponent>
-  // Pinned image per journal entry; selecting it opens the image in the viewer.
+  // Pinned image per journal entry; selecting it opens the viewer.
   journalEntryImages?: Readonly<Record<string, string>>
-  // Entries listed here open a message instead, with the pinned image as its picture.
-  journalEntryMessages?: Readonly<Record<string, JournalEntryMessage>>
+  // What an entry's pinned image opens. Without one, the image opens with the
+  // entry's own title, summary, and imageAlt.
+  journalEntryViewers?: Readonly<Record<string, JournalEntryViewer>>
   journalEntryAction?: LazyExoticComponent<
     ComponentType<JournalEntryActionProps>
   >

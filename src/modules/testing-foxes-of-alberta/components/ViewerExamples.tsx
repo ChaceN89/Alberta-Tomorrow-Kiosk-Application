@@ -14,14 +14,18 @@
   - Content and interface copy are localized in module.wildlifeFinder.json.
  */
 import { useTranslation } from 'react-i18next'
-import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
+import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
 import type { ModuleCheckpointProps } from '@/modules/types'
 import {
   foxFamilyImageCheckpoint,
+  foxFieldListCheckpoint,
   foxFieldMessageCheckpoint,
 } from '@/modules/testing-foxes-of-alberta/checkpoints'
 import { foxFamilyImage } from '@/modules/testing-foxes-of-alberta/image'
-import { foxFieldMessage } from '@/modules/testing-foxes-of-alberta/messages'
+import {
+  foxFieldList,
+  foxFieldMessage,
+} from '@/modules/testing-foxes-of-alberta/messages'
 
 type ViewerExamplesProps = ModuleCheckpointProps
 
@@ -35,7 +39,7 @@ export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
         <h2 id="viewer-examples-title">{t('viewer.heading')}</h2>
         <p className="text-muted">{t('viewer.description')}</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <article className="panel flex flex-col items-start gap-4 p-5 md:p-6">
           <div className="space-y-2">
             <h3 className="text-xl font-semibold">
@@ -61,6 +65,31 @@ export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
             }
           >
             {t('viewer.message.open')}
+          </button>
+        </article>
+        <article className="panel flex flex-col items-start gap-4 p-5 md:p-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">{t(foxFieldList.title)}</h3>
+            <p className="text-muted">{t('viewer.list.preview')}</p>
+          </div>
+          <button
+            type="button"
+            className="button mt-auto"
+            onClick={(event) =>
+              openMessage(
+                {
+                  title: t(foxFieldList.title),
+                  subtitle: t(foxFieldList.subtitle),
+                  message: t(foxFieldList.message),
+                },
+                {
+                  onOpen: () => completeCheckpoint(foxFieldListCheckpoint),
+                  origin: event.currentTarget,
+                },
+              )
+            }
+          >
+            {t('viewer.list.open')}
           </button>
         </article>
         <article className="panel flex flex-col items-start gap-4 p-5 md:p-6">

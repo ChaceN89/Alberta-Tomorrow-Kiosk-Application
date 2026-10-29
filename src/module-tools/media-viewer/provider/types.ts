@@ -35,3 +35,13 @@ export type MediaViewerOpenOptions = {
   // The clicked element; the viewer grows out of it and falls back to the center.
   origin?: Element | null
 }
+
+// Where the viewer grows from: the center and size of the clicked element, in viewport pixels.
+export type ViewerOrigin = {
+  x: number
+  y: number
+  width: number
+  height: number
+  // Lets closing return to the element's position at that moment.
+  element?: Element
+}

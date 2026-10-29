@@ -18,9 +18,15 @@ import foxFieldNoteJournalImage from './testing-foxes-of-alberta/assets/field-no
 import geologyLandscapeJournalImage from './testing-geology/assets/natural-landscapes-journal.jpg'
 import {
   foxesOfAlbertaCheckpoints,
+  foxFamilyImageCheckpoint,
+  foxFieldListCheckpoint,
   foxFieldMessageCheckpoint,
 } from './testing-foxes-of-alberta/checkpoints'
-import { foxFieldMessage } from './testing-foxes-of-alberta/messages'
+import { foxFamilyImage } from './testing-foxes-of-alberta/image'
+import {
+  foxFieldList,
+  foxFieldMessage,
+} from './testing-foxes-of-alberta/messages'
 import { geologyCheckpoints } from './testing-geology/checkpoints'
 import { preloadResidentialSchool } from './testing-residential-schools/preload'
 import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
@@ -50,9 +56,18 @@ export const modules: readonly LearningModule[] = [
     journalEntryImages: {
       'habitats-matter': foxHabitatJournalImage,
       [foxFieldMessageCheckpoint]: foxFieldNoteJournalImage,
+      [foxFieldListCheckpoint]: foxFieldNoteJournalImage,
+      [foxFamilyImageCheckpoint]: foxFamilyImage.src,
     },
-    journalEntryMessages: {
-      [foxFieldMessageCheckpoint]: foxFieldMessage,
+    journalEntryViewers: {
+      [foxFieldMessageCheckpoint]: { type: 'message', ...foxFieldMessage },
+      [foxFieldListCheckpoint]: { type: 'message', ...foxFieldList },
+      [foxFamilyImageCheckpoint]: {
+        type: 'image',
+        title: foxFamilyImage.title,
+        description: foxFamilyImage.description,
+        alt: foxFamilyImage.alt,
+      },
     },
     journalEntryAction: lazy(loadFoxesOfAlbertaJournalEntryAction),
     loadActivity: loadFoxesOfAlberta,

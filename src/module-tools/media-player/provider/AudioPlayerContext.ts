@@ -1,57 +1,24 @@
 /**
-  File: useAudioPlayer.ts | Author: Chace Nielson
-  Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  File: AudioPlayerContext.ts | Author: Chace Nielson
+  Date Created: Oct 29, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
-  - Define the shared media player context, track types, callbacks, and consumer hook.
-  - Modules call playTrack with typed media data and optional start/end callbacks.
+  - Define the value shared by the media player provider with its consumers.
 
   Usage:
-  - Modules and module tools call useAudioPlayer; AudioPlayerProvider supplies the value.
+  - Imported by AudioPlayerProvider and useAudioPlayer.
 
   Notes:
-  - onStart and onEnd are registered per playTrack call, so they still fire after the
-    learner leaves the page that started the audio. Finishing includes seeking or
-    speeding through to the end.
+  - Consumers should use the useAudioPlayer hook instead of this context.
  */
-import { createContext, useContext } from 'react'
-import type { YouTubePlayerController } from './YouTubePlayer'
-
-type MediaItemBase = {
-  id: string
-  title: string
-  subtitle?: string
-  coverArt: string
-  translation?: {
-    namespace: 'geology' | 'wildlifeFinder'
-    titleKey: string
-    subtitleKey?: string
-  }
-}
-
-export type AudioTrack = MediaItemBase & {
-  type: 'audio'
-  src: string
-}
-
-export type YouTubeTrack = MediaItemBase & {
-  type: 'youtube'
-  videoId: string
-}
-
-export type MediaTrack = AudioTrack | YouTubeTrack
-
-export type AudioPlayCallbacks = {
-  onStart?: () => void
-  onEnd?: () => void
-}
-
-export type QueuedAudioTrack = {
-  queueId: number
-  track: MediaTrack
-  callbacks: AudioPlayCallbacks
-}
+import { createContext } from 'react'
+import type {
+  AudioPlayCallbacks,
+  MediaTrack,
+  QueuedAudioTrack,
+  YouTubePlayerController,
+} from './types'
 
 type AudioPlayerContextValue = {
   // null means nothing is loaded and the player is fully turned off.
@@ -97,15 +64,3 @@ type AudioPlayerContextValue = {
 export const AudioPlayerContext = createContext<AudioPlayerContextValue | null>(
   null,
 )
-
-export function useAudioPlayer() {
-  const context = useContext(AudioPlayerContext)
-
-  if (!context) {
-    throw new Error(
-      'useAudioPlayer must be used within an AudioPlayerProvider.',
-    )
-  }
-
-  return context
-}

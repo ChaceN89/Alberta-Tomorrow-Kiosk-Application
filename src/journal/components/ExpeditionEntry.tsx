@@ -21,7 +21,7 @@ import {
   ExpeditionStatusText,
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
-import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
+import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
 
@@ -58,24 +58,23 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
     }
   }
 
-  // Entries with a message open it; any other pinned image opens as a picture.
+  // Entries with a viewer definition open it; any other pinned image opens as a picture.
   const openEntryMedia = (
     entry: JournalEntry,
     imageSrc: string,
     imageAlt: string,
     origin: Element,
   ) => {
-    const message = module.journalEntryMessages?.[entry.id]
+    const viewer = module.journalEntryViewers?.[entry.id]
+    const translate = (key: string) =>
+      i18n.t(key, { ns: module.translationNamespace, defaultValue: key })
 
-    if (message) {
-      const translate = (key: string) =>
-        i18n.t(key, { ns: module.translationNamespace, defaultValue: key })
-
+    if (viewer?.type === 'message') {
       openMessage(
         {
-          title: translate(message.title),
-          subtitle: message.subtitle ? translate(message.subtitle) : undefined,
-          message: translate(message.message),
+          title: translate(viewer.title),
+          subtitle: viewer.subtitle ? translate(viewer.subtitle) : undefined,
+          message: translate(viewer.message),
         },
         { origin },
       )
@@ -83,12 +82,19 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
     }
 
     openImage(
-      {
-        title: entry.title,
-        description: entry.summary,
-        src: imageSrc,
-        alt: imageAlt,
-      },
+      viewer
+        ? {
+            title: translate(viewer.title),
+            description: translate(viewer.description),
+            alt: translate(viewer.alt),
+            src: imageSrc,
+          }
+        : {
+            title: entry.title,
+            description: entry.summary,
+            alt: imageAlt,
+            src: imageSrc,
+          },
       { origin },
     )
   }
@@ -153,7 +159,8 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                             <button
                               type="button"
                               aria-label={t(
-                                module.journalEntryMessages?.[entry.id]
+                                module.journalEntryViewers?.[entry.id]?.type ===
+                                  'message'
                                   ? 'openMessage'
                                   : 'openImage',
                                 { title: entry.title },

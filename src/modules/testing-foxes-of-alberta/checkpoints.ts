@@ -1,7 +1,7 @@
 /**
   File: checkpoints.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Journal checkpoint ids for the wildlife habitat expedition, in journal page order.
@@ -16,6 +16,7 @@
  */
 export const foxesVideoCheckpoint = 'foxes-video-finished'
 export const foxFieldMessageCheckpoint = 'fox-field-message-opened'
+export const foxFieldListCheckpoint = 'fox-field-list-opened'
 export const foxFamilyImageCheckpoint = 'fox-family-image-opened'
 
 export const foxesOfAlbertaCheckpoints = [
@@ -26,6 +27,7 @@ export const foxesOfAlbertaCheckpoints = [
   'audio-3-started',
   foxesVideoCheckpoint,
   foxFieldMessageCheckpoint,
+  foxFieldListCheckpoint,
   foxFamilyImageCheckpoint,
   'swift-fox-home',
   'red-fox-food',

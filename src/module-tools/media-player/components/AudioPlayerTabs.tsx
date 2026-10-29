@@ -22,7 +22,7 @@ import {
   PlayIcon,
   QueueListIcon,
 } from './AudioPlayerIcons'
-import { useAudioPlayer } from './useAudioPlayer'
+import { useAudioPlayer } from '../hooks/useAudioPlayer'
 
 type AudioPlayerTabsProps = {
   requestClose: () => void

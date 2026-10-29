@@ -10,13 +10,20 @@
   },
   "viewer": {
     "heading": "Lire et observer de plus près",
-    "description": "Ouvrez une note de terrain ou observez une famille de renards de plus près.",
+    "description": "Ouvrez une note ou une liste de terrain, ou observez une famille de renards de plus près.",
     "message": {
       "title": "Une note de terrain",
       "subtitle": "Un moment tranquille dans la prairie",
       "body": "Les renardeaux roulent dans l’herbe pendant que leur mère les surveille tout près. Ils apprennent les odeurs et les sons de leur milieu, une petite aventure à la fois.",
       "preview": "Lisez une courte note sur de jeunes renards qui explorent leur milieu.",
       "open": "Lire la note de terrain"
+    },
+    "list": {
+      "title": "Une liste de terrain",
+      "subtitle": "Quatre signes de la présence d’un renard",
+      "body": "1. Traces : de petites empreintes ovales à quatre doigts, avec de minuscules marques de griffes.\n2. Tanières : des terriers creusés dans un sol sec et bien drainé.\n3. Sons : de courts aboiements et jappements, souvent au crépuscule.\n4. Queues : une queue touffue qui aide le renard à garder son équilibre et à se tenir au chaud.",
+      "preview": "Lisez une courte liste de signes à repérer sur le terrain.",
+      "open": "Lire la liste de terrain"
     },
     "image": {
       "title": "Une famille de renards",
@@ -144,6 +151,12 @@
         "section": "Visualiseur",
         "title": "Une note de terrain",
         "summary": "Vous avez lu une note sur de jeunes renards qui apprennent à connaître leur prairie."
+      },
+      {
+        "id": "fox-field-list-opened",
+        "section": "Visualiseur",
+        "title": "Une liste de terrain",
+        "summary": "Vous avez lu une courte liste de signes montrant qu’un renard est tout près."
       },
       {
         "id": "fox-family-image-opened",

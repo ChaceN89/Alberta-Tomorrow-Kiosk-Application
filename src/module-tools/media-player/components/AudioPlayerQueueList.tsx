@@ -20,7 +20,7 @@ import {
   MusicNoteIcon,
   VideoIcon,
 } from './AudioPlayerIcons'
-import type { MediaTrack, QueuedAudioTrack } from './useAudioPlayer'
+import type { MediaTrack, QueuedAudioTrack } from '../provider/types'
 
 type AudioPlayerQueueListProps = {
   queue: readonly QueuedAudioTrack[]

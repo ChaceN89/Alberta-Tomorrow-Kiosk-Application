@@ -1,7 +1,7 @@
 /**
   File: YouTubePlayer.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Load YouTube's iframe API and render a controllable embedded video player.
@@ -13,15 +13,7 @@
   - The iframe's native controls provide seeking, volume, captions, and full-screen playback.
  */
 import { useEffect, useRef } from 'react'
-
-export type YouTubePlayerController = {
-  playVideo: () => void
-  pauseVideo: () => void
-  seekTo: (seconds: number, allowSeekAhead: boolean) => void
-  setVolume: (volume: number) => void
-  getIframe: () => HTMLIFrameElement
-  destroy: () => void
-}
+import type { YouTubePlayerController } from '../provider/types'
 
 type YouTubeIframeApi = {
   Player: new (

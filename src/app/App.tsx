@@ -29,8 +29,8 @@ import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/JournalProvider'
 import { ExpeditionProgressProvider } from '@/save-data/ExpeditionProgressProvider'
 import { IntroTutorialProvider } from '@/tutorials/intro-tutorial/IntroTutorialProvider'
-import { AudioPlayerProvider } from '@/module-tools/media-player/AudioPlayerProvider'
-import { MediaViewerProvider } from '@/module-tools/media-viewer/MediaViewerProvider'
+import { AudioPlayerProvider } from '@/module-tools/media-player/provider/AudioPlayerProvider'
+import { MediaViewerProvider } from '@/module-tools/media-viewer/provider/MediaViewerProvider'
 
 export function App() {
   return (
