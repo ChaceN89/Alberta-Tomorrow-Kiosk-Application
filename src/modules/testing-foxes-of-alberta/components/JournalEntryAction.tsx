@@ -1,7 +1,7 @@
 /**
   File: JournalEntryAction.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Offer replay controls for completed wildlife audio and video journal entries.
@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { TrackPlayButton } from '@/module-tools/media-player/TrackPlayButton'
-import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { JournalEntryActionProps } from '@/modules/types'
 import { getPreloadedFoxAudioSource } from '@/modules/testing-foxes-of-alberta/audioCache'
 import { foxesVideoCheckpoint } from '@/modules/testing-foxes-of-alberta/checkpoints'
@@ -26,7 +26,7 @@ export default function JournalEntryAction({
   moduleId,
 }: JournalEntryActionProps) {
   const { t } = useTranslation('wildlifeFinder')
-  const { completeCheckpoint } = useJournal()
+  const { completeCheckpoint } = useExpeditionProgress()
 
   if (entryId === foxesVideoCheckpoint) {
     return (

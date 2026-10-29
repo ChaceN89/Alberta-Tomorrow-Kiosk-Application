@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { ModulePreloadState } from '@/modules/useModulePreload'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { visibleModules } from '@/modules/registry'
@@ -47,7 +47,7 @@ function ModuleStatusItem({
     randomizeModuleCheckpoints,
     restartModule,
     startExpedition,
-  } = useJournal()
+  } = useExpeditionProgress()
   const isCurrent = preloadState.moduleId === module.id
   const status = isCurrent
     ? preloadState.status

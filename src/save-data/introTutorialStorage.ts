@@ -1,40 +1,42 @@
 /**
   File: introTutorialStorage.ts | Author: Chace Nielson
-  Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Created: Oct 29, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
-  - Remember in browser localStorage whether the first-visit tutorial was finished.
+  - Persist whether the first-visit tutorial has been completed.
 
   Usage:
-  - Tutorial internals serve their providers or components.
+  - The intro tutorial feature and development tools use these functions.
 
   Notes:
   - None.
  */
 const STORAGE_KEY = 'alberta-expeditions:intro-tutorial-completed'
 
+// Check whether the first-visit tutorial has been completed.
 export function hasCompletedIntroTutorial(): boolean {
   try {
     return window.localStorage.getItem(STORAGE_KEY) === 'true'
   } catch {
-    // Without storage every visit looks like a first visit.
     return false
   }
 }
 
+// Save that the first-visit tutorial has been completed.
 export function markIntroTutorialCompleted() {
   try {
     window.localStorage.setItem(STORAGE_KEY, 'true')
   } catch {
-    // Ignore storage failures; the tutorial still ends for this page load.
+    // The tutorial still ends for this page load if browser storage is unavailable.
   }
 }
 
+// Clear the saved first-visit tutorial completion flag.
 export function resetIntroTutorial() {
   try {
     window.localStorage.removeItem(STORAGE_KEY)
   } catch {
-    // Ignore storage failures.
+    // Storage may be unavailable.
   }
 }

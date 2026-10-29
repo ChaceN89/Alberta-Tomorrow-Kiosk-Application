@@ -1,7 +1,7 @@
 /**
   File: resetSite.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Clear every saved browser value this app owns and reload as a first visit.
@@ -12,9 +12,9 @@
   Notes:
   - None.
  */
-import { clearJournalStorage } from '@/journal/journalStorage'
-import { resetIntroTutorial } from '@/tutorials/intro-tutorial/introTutorialStorage'
-import { resetMediaPlayerTutorial } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
+import { clearExpeditionProgressStorage } from '@/save-data/expeditionProgressStorage'
+import { resetIntroTutorial } from '@/save-data/introTutorialStorage'
+import { resetMediaPlayerTutorial } from '@/save-data/mediaPlayerTutorialStorage'
 
 export function resetSiteTutorialFlags() {
   resetIntroTutorial()
@@ -22,7 +22,7 @@ export function resetSiteTutorialFlags() {
 }
 
 export function resetSite() {
-  clearJournalStorage()
+  clearExpeditionProgressStorage()
   resetSiteTutorialFlags()
   window.location.assign('/')
 }

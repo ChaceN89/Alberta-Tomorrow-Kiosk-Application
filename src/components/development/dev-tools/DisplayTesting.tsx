@@ -18,10 +18,11 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
 import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
 import { requestMediaPlayerTutorialFinish } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
-import { markMediaPlayerTutorialCompleted } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
+import { markMediaPlayerTutorialCompleted } from '@/save-data/mediaPlayerTutorialStorage'
 import { ApplicationStatePanel } from '../panels/ApplicationStatePanel'
 import { TutorialsPanel } from '../panels/TutorialsPanel'
 import { ModuleStatusPanel } from '../panels/ModuleStatusPanel'
@@ -42,13 +43,13 @@ export function DisplayTesting() {
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
   const { finish: finishIntroTutorial } = useIntroTutorial()
+  const { isOpen: isJournalOpen } = useJournal()
   const {
     completeAllModules,
-    isOpen: isJournalOpen,
     progressAllNextCheckpoints,
-    resetJournal,
+    resetExpeditionProgress,
     startAllExpeditions,
-  } = useJournal()
+  } = useExpeditionProgress()
   const [menuOpen, setMenuOpen] = useState(false)
   const [activePanel, setActivePanel] = useState<ActivePanel>(null)
   const [pendingReset, setPendingReset] = useState<PendingReset>(null)
@@ -141,7 +142,7 @@ export function DisplayTesting() {
 
   const confirmReset = () => {
     if (pendingReset === 'journal') {
-      resetJournal()
+      resetExpeditionProgress()
       toast(t('journalReset'), {
         toasterId: NOTIFICATION_TOASTER_ID,
       })

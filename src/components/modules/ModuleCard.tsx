@@ -1,7 +1,7 @@
 /**
   File: ModuleCard.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Show expedition details, progress, and actions in the home list.
@@ -15,6 +15,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { modules } from '@/modules/registry'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
@@ -26,7 +27,8 @@ export function ModuleCard({ module }: ModuleCardProps) {
   const { t: tModule } = useTranslation(module.translationNamespace)
   const { t: tHome } = useTranslation('home')
   const { t: tJournal } = useTranslation('journal')
-  const { getExpeditionProgress, openJournal } = useJournal()
+  const { getExpeditionProgress } = useExpeditionProgress()
+  const { openJournal } = useJournal()
   const progress = getExpeditionProgress(module)
   const title = tModule('title')
 

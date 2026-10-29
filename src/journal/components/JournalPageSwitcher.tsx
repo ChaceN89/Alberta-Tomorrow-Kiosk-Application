@@ -21,6 +21,7 @@ import {
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
 import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
 
 type JournalPageSwitcherProps = {
@@ -37,7 +38,8 @@ export function JournalPageSwitcher({
   entryCount,
 }: JournalPageSwitcherProps) {
   const { t } = useTranslation('journal')
-  const { getExpeditionProgress, selectExpedition } = useJournal()
+  const { getExpeditionProgress } = useExpeditionProgress()
+  const { selectExpedition } = useJournal()
   const switcherRef = useRef<HTMLDivElement>(null)
   const switcherButtonRef = useRef<HTMLButtonElement>(null)
   const [isListOpen, setIsListOpen] = useState(false)

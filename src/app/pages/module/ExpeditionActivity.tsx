@@ -1,7 +1,7 @@
 /**
   File: ExpeditionActivity.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Start the selected expedition and connect its activity to journal progress.
@@ -15,13 +15,13 @@
  */
 import { Suspense, useCallback, useEffect } from 'react'
 import { Loading } from '@/components/app-states/Loading'
-import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { ModuleActivityProps } from './types'
 
 export function ExpeditionActivity({ module }: ModuleActivityProps) {
   // extract journal functions for managing expedition progress
   const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
-    useJournal()
+    useExpeditionProgress()
 
   // create a callback to record checkpoint completion for the current module
   const recordCheckpoint = useCallback(

@@ -19,7 +19,7 @@ import {
   STATUS_TOASTER_ID,
 } from '@/components/toasts/toasterIds'
 import { JournalToast } from '@/journal/components/JournalToast'
-import type { ExpeditionProgress } from '@/journal/useJournal'
+import type { ExpeditionProgress } from '@/save-data/types'
 
 type ToastPreviewGroupsProps = {
   openJournal: () => void

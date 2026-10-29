@@ -13,37 +13,14 @@
   - None.
  */
 import { createContext, useContext } from 'react'
-import type { LearningModule } from '@/modules/types'
-
-export type ExpeditionStatus = 'notStarted' | 'inProgress' | 'complete'
-
-export type ExpeditionProgress = {
-  completed: number
-  total: number
-  status: ExpeditionStatus
-}
 
 type JournalContextValue = {
   isOpen: boolean
   activeModuleId: string | null
-  isStorageAvailable: boolean
   openJournal: (moduleId?: string) => void
   closeJournal: () => void
   // Passing null selects the journal's title page.
   selectExpedition: (moduleId: string | null) => void
-  startExpedition: (moduleId: string) => void
-  completeCheckpoint: (moduleId: string, checkpointId: string) => void
-  isCheckpointComplete: (moduleId: string, checkpointId: string) => boolean
-  getCompletedCheckpoints: (moduleId: string) => readonly string[]
-  getExpeditionProgress: (module: LearningModule) => ExpeditionProgress
-  resetJournal: () => void
-  startAllExpeditions: () => void
-  progressNextCheckpoint: (moduleId: string) => boolean
-  progressAllNextCheckpoints: () => number
-  completeModule: (moduleId: string) => boolean
-  randomizeModuleCheckpoints: (moduleId: string) => boolean
-  restartModule: (moduleId: string) => boolean
-  completeAllModules: () => void
 }
 
 export const JournalContext = createContext<JournalContextValue | null>(null)

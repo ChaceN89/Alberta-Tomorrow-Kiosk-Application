@@ -1,7 +1,7 @@
 /**
   File: IntroTutorialProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Start the intro tutorial for first-time visitors and control its steps.
@@ -24,7 +24,7 @@ import {
   hasCompletedIntroTutorial,
   markIntroTutorialCompleted,
   resetIntroTutorial,
-} from './introTutorialStorage'
+} from '@/save-data/introTutorialStorage'
 import { introTutorialSteps } from './steps'
 import { IntroTutorialContext } from './useIntroTutorial'
 

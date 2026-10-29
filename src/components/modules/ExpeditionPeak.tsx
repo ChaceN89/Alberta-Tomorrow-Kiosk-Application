@@ -1,7 +1,7 @@
 /**
   File: ExpeditionPeak.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Render a mountain that fills according to expedition checkpoint progress.
@@ -15,7 +15,7 @@
  */
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ExpeditionProgress } from '@/journal/useJournal'
+import type { ExpeditionProgress } from '@/save-data/types'
 
 type ExpeditionPeakProps = {
   progress: ExpeditionProgress

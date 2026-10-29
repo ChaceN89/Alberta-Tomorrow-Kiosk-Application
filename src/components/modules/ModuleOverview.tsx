@@ -1,7 +1,7 @@
 /**
   File: ModuleOverview.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Show reusable module details and navigation before launch.
@@ -16,6 +16,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { useModulePreload } from '@/modules/useModulePreload'
 import type { LearningModule } from '@/modules/types'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
@@ -30,7 +31,8 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
   const { t: tGlobal } = useTranslation('global')
   const { t: tJournal } = useTranslation('journal')
   const { state, preloadModule, isModuleReady } = useModulePreload()
-  const { getExpeditionProgress, openJournal } = useJournal()
+  const { getExpeditionProgress } = useExpeditionProgress()
+  const { openJournal } = useJournal()
   const expeditionProgress = getExpeditionProgress(module)
   const navigate = useNavigate()
   const activityPath = `/modules/${module.id}/expedition`

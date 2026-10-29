@@ -15,6 +15,7 @@
 import { useEffect, useId, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { visibleModules } from '@/modules/registry'
 import { ExpeditionEntry } from './ExpeditionEntry'
 import { JournalPageSwitcher } from './JournalPageSwitcher'
@@ -22,13 +23,8 @@ import { JournalTitlePage } from './JournalTitlePage'
 
 export function JournalModal() {
   const { t } = useTranslation('journal')
-  const {
-    isOpen,
-    closeJournal,
-    activeModuleId,
-    isStorageAvailable,
-    getExpeditionProgress,
-  } = useJournal()
+  const { isOpen, closeJournal, activeModuleId } = useJournal()
+  const { isStorageAvailable, getExpeditionProgress } = useExpeditionProgress()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()

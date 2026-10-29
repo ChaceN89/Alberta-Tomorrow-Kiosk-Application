@@ -1,19 +1,20 @@
 /**
   File: mediaPlayerTutorialStorage.ts | Author: Chace Nielson
-  Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Created: Oct 29, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
-  - Remember whether the first-use media player tutorial has been completed.
+  - Persist whether the first-use media player tutorial has been completed.
 
   Usage:
-  - MediaPlayerTutorial and development tools manage this flag.
+  - The media player tutorial feature and development tools use these functions.
 
   Notes:
-  - The tutorial can still be skipped when browser storage is unavailable.
+  - None.
  */
 const STORAGE_KEY = 'alberta-expeditions:media-player-tutorial-completed'
 
+// Check whether the media player tutorial has been completed.
 export function hasCompletedMediaPlayerTutorial(): boolean {
   try {
     return window.localStorage.getItem(STORAGE_KEY) === 'true'
@@ -22,6 +23,7 @@ export function hasCompletedMediaPlayerTutorial(): boolean {
   }
 }
 
+// Save that the media player tutorial has been completed.
 export function markMediaPlayerTutorialCompleted() {
   try {
     window.localStorage.setItem(STORAGE_KEY, 'true')
@@ -30,10 +32,11 @@ export function markMediaPlayerTutorialCompleted() {
   }
 }
 
+// Clear the saved media player tutorial completion flag.
 export function resetMediaPlayerTutorial() {
   try {
     window.localStorage.removeItem(STORAGE_KEY)
   } catch {
-    // The next page load will still be able to run the tutorial when storage is available.
+    // Storage may be unavailable.
   }
 }

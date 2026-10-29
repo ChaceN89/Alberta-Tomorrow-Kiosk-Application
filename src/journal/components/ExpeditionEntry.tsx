@@ -21,7 +21,7 @@ import {
   ExpeditionStatusText,
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
-import { useJournal } from '@/journal/useJournal'
+import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
 
 type ExpeditionEntryProps = {
@@ -32,7 +32,8 @@ type ExpeditionEntryProps = {
 export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
   const { t: tModule } = useTranslation(module.translationNamespace)
   const { t } = useTranslation('journal')
-  const { getExpeditionProgress, isCheckpointComplete } = useJournal()
+  const { getExpeditionProgress, isCheckpointComplete } =
+    useExpeditionProgress()
   const progress = getExpeditionProgress(module)
   const entries = tModule('journal.entries', { returnObjects: true })
   type JournalEntry = (typeof entries)[number]
