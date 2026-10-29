@@ -1,7 +1,7 @@
 /**
   File: IntroTourPanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Developer controls to reset or restart the first-visit intro tour.
@@ -38,7 +38,6 @@ export function IntroTourPanel({ onClose, onRestarted }: IntroTourPanelProps) {
           onClick={() => {
             resetFlag()
             toast(t('introTourFlagReset'), {
-              id: 'intro-tour-reset',
               toasterId: NOTIFICATION_TOASTER_ID,
             })
           }}
@@ -61,7 +60,6 @@ export function IntroTourPanel({ onClose, onRestarted }: IntroTourPanelProps) {
           onClick={() => {
             resetMediaPlayerTour()
             toast(t('mediaPlayerTourFlagReset'), {
-              id: 'media-player-tour-reset',
               toasterId: NOTIFICATION_TOASTER_ID,
             })
           }}

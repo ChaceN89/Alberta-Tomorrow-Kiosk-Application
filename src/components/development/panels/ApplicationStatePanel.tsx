@@ -1,7 +1,7 @@
 /**
   File: ApplicationStatePanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Preview startup and activity loading/error screens on demand.
@@ -33,8 +33,6 @@ type ApplicationStatePanelProps = {
 type PreviewState =
   'startupLoading' | 'startupError' | 'activityLoading' | 'activityError' | null
 
-const STATUS_PREVIEW_TOAST_ID = 'development-status-preview'
-const NOTIFICATION_PREVIEW_TOAST_ID = 'development-notification-preview'
 const PREVIEW_TOAST_DURATION = 10_000 // preview toast duration in milliseconds
 const SAMPLE_EXPEDITION_PROGRESS: ExpeditionProgress = {
   completed: 2,
@@ -158,7 +156,6 @@ export function ApplicationStatePanel({ onClose }: ApplicationStatePanelProps) {
                 className={STATUS_BUTTON_CLASS}
                 onClick={() =>
                   toast.loading(t('statusToastLoadingMessage'), {
-                    id: STATUS_PREVIEW_TOAST_ID,
                     toasterId: STATUS_TOASTER_ID,
                     duration: PREVIEW_TOAST_DURATION,
                   })
@@ -171,7 +168,6 @@ export function ApplicationStatePanel({ onClose }: ApplicationStatePanelProps) {
                 className={STATUS_BUTTON_CLASS}
                 onClick={() =>
                   toast.success(t('statusToastSuccessMessage'), {
-                    id: STATUS_PREVIEW_TOAST_ID,
                     toasterId: STATUS_TOASTER_ID,
                     duration: PREVIEW_TOAST_DURATION,
                   })
@@ -184,7 +180,6 @@ export function ApplicationStatePanel({ onClose }: ApplicationStatePanelProps) {
                 className={STATUS_BUTTON_CLASS}
                 onClick={() =>
                   toast.error(t('statusToastErrorMessage'), {
-                    id: STATUS_PREVIEW_TOAST_ID,
                     toasterId: STATUS_TOASTER_ID,
                     duration: PREVIEW_TOAST_DURATION,
                   })
@@ -211,7 +206,6 @@ export function ApplicationStatePanel({ onClose }: ApplicationStatePanelProps) {
                       onViewJournal={() => openJournal()}
                     />,
                     {
-                      id: NOTIFICATION_PREVIEW_TOAST_ID,
                       toasterId: NOTIFICATION_TOASTER_ID,
                       duration: PREVIEW_TOAST_DURATION,
                     },
@@ -225,7 +219,6 @@ export function ApplicationStatePanel({ onClose }: ApplicationStatePanelProps) {
                 className={NOTIFICATION_BUTTON_CLASS}
                 onClick={() =>
                   toast.success(t('notificationToastSuccessMessage'), {
-                    id: NOTIFICATION_PREVIEW_TOAST_ID,
                     toasterId: NOTIFICATION_TOASTER_ID,
                     duration: PREVIEW_TOAST_DURATION,
                   })
@@ -238,7 +231,6 @@ export function ApplicationStatePanel({ onClose }: ApplicationStatePanelProps) {
                 className={NOTIFICATION_BUTTON_CLASS}
                 onClick={() =>
                   toast.error(t('notificationToastErrorMessage'), {
-                    id: NOTIFICATION_PREVIEW_TOAST_ID,
                     toasterId: NOTIFICATION_TOASTER_ID,
                     duration: PREVIEW_TOAST_DURATION,
                   })

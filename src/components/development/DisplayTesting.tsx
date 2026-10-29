@@ -135,7 +135,6 @@ export function DisplayTesting() {
     if (pendingReset === 'journal') {
       resetJournal()
       toast(t('journalReset'), {
-        id: 'journal-reset',
         toasterId: NOTIFICATION_TOASTER_ID,
       })
     } else if (pendingReset === 'site') {
@@ -148,7 +147,6 @@ export function DisplayTesting() {
   const handleResetTourFlags = () => {
     resetSiteTourFlags()
     toast(t('tourFlagsReset'), {
-      id: 'site-tour-flags-reset',
       toasterId: NOTIFICATION_TOASTER_ID,
     })
   }
@@ -156,7 +154,6 @@ export function DisplayTesting() {
   const handleCompleteAllModules = () => {
     completeAllModules()
     toast(t('allModulesComplete'), {
-      id: 'all-modules-complete',
       toasterId: NOTIFICATION_TOASTER_ID,
     })
   }
@@ -164,7 +161,6 @@ export function DisplayTesting() {
   const handleStartAllExpeditions = () => {
     startAllExpeditions()
     toast(t('allExpeditionsStarted'), {
-      id: 'all-expeditions-started',
       toasterId: NOTIFICATION_TOASTER_ID,
     })
   }

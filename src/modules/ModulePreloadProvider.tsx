@@ -1,7 +1,7 @@
 /**
   File: ModulePreloadProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Coordinate cancellable module preloads and expose their progress.
@@ -32,12 +32,9 @@ import type { LearningModule } from './types'
 
 type ActivePreload = {
   moduleId: string
-  toastId: string
   controller: AbortController
   promise: Promise<boolean>
 }
-
-const MODULE_PRELOAD_TOAST_ID = 'module-preload'
 
 const idleState: ModulePreloadState = {
   moduleId: null,
@@ -69,7 +66,6 @@ export function ModulePreloadProvider({
     activePreload.current = null
     active.controller.abort()
     toast(t('preload.toastCancelled'), {
-      id: active.toastId,
       duration: 2500,
       toasterId: STATUS_TOASTER_ID,
     })
@@ -94,14 +90,12 @@ export function ModulePreloadProvider({
       if (activePreload.current?.moduleId === module.id) {
         return activePreload.current.promise
       }
-
       cancelPreload()
       const controller = new AbortController()
-      const toastId = MODULE_PRELOAD_TOAST_ID
       const activityName = i18n.t('title', { ns: module.translationNamespace })
       toast.loading(t('preload.toastLoading'), {
-        id: toastId,
         toasterId: STATUS_TOASTER_ID,
+        duration: 2000,
       })
       setState({ moduleId: module.id, status: 'loading', progress: 5 })
 
@@ -136,7 +130,6 @@ export function ModulePreloadProvider({
 
           readyModules.current.add(module.id)
           toast.success(t('preload.toastSuccess', { activityName }), {
-            id: toastId,
             toasterId: STATUS_TOASTER_ID,
           })
           setState({
@@ -152,7 +145,6 @@ export function ModulePreloadProvider({
 
           console.error(`Failed to prepare module "${module.id}".`, error)
           toast.error(t('preload.toastError'), {
-            id: toastId,
             toasterId: STATUS_TOASTER_ID,
           })
           setState({ moduleId: module.id, status: 'error', progress: 0 })
@@ -166,7 +158,6 @@ export function ModulePreloadProvider({
 
       activePreload.current = {
         moduleId: module.id,
-        toastId,
         controller,
         promise,
       }

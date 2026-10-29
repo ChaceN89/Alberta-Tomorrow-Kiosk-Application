@@ -10,7 +10,7 @@
   - Shared by MyToasters and toast calls throughout the app.
 
   Notes:
-  - Toasts must target the same id to update an existing toast in place.
+  - The toasterId selects a container; reuse a toast id only for intentional updates.
  */
 export const STATUS_TOASTER_ID = 'status'
 export const NOTIFICATION_TOASTER_ID = 'notification'

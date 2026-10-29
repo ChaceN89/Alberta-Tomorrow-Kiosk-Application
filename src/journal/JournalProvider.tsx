@@ -26,8 +26,6 @@ import {
 } from './journalStorage'
 import { JournalContext, type ExpeditionProgress } from './useJournal'
 
-const JOURNAL_TOAST_ID = 'journal-update'
-
 function getModuleProgress(
   module: LearningModule,
   journalProgress: JournalProgress,
@@ -67,6 +65,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null)
   // The ref keeps rapid checkpoint calls from reading stale state.
   const progressRef = useRef(progress)
+  const journalToastSequence = useRef(0)
 
   const commitProgress = useCallback((next: JournalProgress) => {
     progressRef.current = next
@@ -92,6 +91,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
     (module: LearningModule, message: string) => {
       const title = i18n.t('title', { ns: module.translationNamespace })
       const progress = getModuleProgress(module, progressRef.current)
+      const toastId = `journal-${journalToastSequence.current++}`
 
       toast(
         <JournalToast
@@ -100,11 +100,11 @@ export function JournalProvider({ children }: JournalProviderProps) {
           progress={progress}
           onViewJournal={() => {
             openJournal(module.id)
-            toast.dismiss(JOURNAL_TOAST_ID, NOTIFICATION_TOASTER_ID)
+            toast.dismiss(toastId, NOTIFICATION_TOASTER_ID)
           }}
         />,
         {
-          id: JOURNAL_TOAST_ID,
+          id: toastId,
           toasterId: NOTIFICATION_TOASTER_ID,
         },
       )

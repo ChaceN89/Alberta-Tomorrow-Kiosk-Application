@@ -108,7 +108,8 @@ accomplished or learned. Activities receive `completedCheckpoints` and a
 only need checkpoint access can use `ModuleCheckpointProps`. Recording a
 checkpoint saves it in browser
 `localStorage` (key `alberta-expeditions:journal`, via
-`src/journal/journalStorage.ts`) and shows a toast. Each expedition also has a
+`src/journal/journalStorage.ts`) and shows its own toast, so rapid journal
+events remain separate instead of overwriting one another. Each expedition also has a
 **started** flag (`startedAt`): opening a module's activity starts it, and
 recording any checkpoint starts it too, for example from a map or 3D scene via
 `useJournal().completeCheckpoint(moduleId, checkpointId)`. Only started
