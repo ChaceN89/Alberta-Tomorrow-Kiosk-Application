@@ -4,30 +4,27 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Question ids, localized-content indexes, and correct answers for wildlife.
+  - Stable question and correct-option ids for wildlife quiz questions.
 
   Usage:
   - HabitatQuiz combines these definitions with localized question content.
 
   Notes:
-  - Definition order matches quiz.questions; ids also identify journal checkpoints.
+  - Question ids also identify their localized content and journal checkpoints.
  */
 import type { QuizQuestionDefinition } from '../../module-tools/quiz-system/types'
 
 export const foxesOfAlbertaQuizQuestions = [
   {
     id: 'swift-fox-home',
-    contentIndex: 0,
-    correctIndex: 1,
+    correctOptionId: 'shortgrass-prairie',
   },
   {
     id: 'red-fox-food',
-    contentIndex: 1,
-    correctIndex: 1,
+    correctOptionId: 'small-animals-and-plants',
   },
   {
     id: 'red-fox-sound-identification',
-    contentIndex: 2,
-    correctIndex: 1,
+    correctOptionId: 'red-fox',
   },
 ] as const satisfies readonly QuizQuestionDefinition[]

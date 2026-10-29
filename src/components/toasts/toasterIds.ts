@@ -14,3 +14,4 @@
  */
 export const STATUS_TOASTER_ID = 'status'
 export const NOTIFICATION_TOASTER_ID = 'notification'
+export const ACTIVITY_PRELOAD_TOAST_ID = 'activity-preload'

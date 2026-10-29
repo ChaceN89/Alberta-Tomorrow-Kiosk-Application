@@ -43,34 +43,38 @@
     "description": "Answer questions about swift and red foxes in Alberta.",
     "start": "Start the quiz",
     "backToActivity": "Back to the activity",
-    "questions": [
-      {
+    "questions": {
+      "swift-fox-home": {
         "prompt": "Which habitat is most closely associated with swift foxes in southeastern Alberta?",
-        "options": [
-          "Boreal forest",
-          "Open shortgrass prairie",
-          "Boreal wetlands"
-        ],
+        "options": {
+          "boreal-forest": "Boreal forest",
+          "shortgrass-prairie": "Open shortgrass prairie",
+          "boreal-wetlands": "Boreal wetlands"
+        },
         "correct": "That's right! Swift foxes are adapted to the open shortgrass prairie of southeastern Alberta.",
         "tryAgain": "Not quite. Look for an open, dry grassland habitat in southern Alberta."
       },
-      {
+      "red-fox-food": {
         "prompt": "What do red foxes eat?",
-        "options": [
-          "Only large animals",
-          "Small animals and plants, including fruit",
-          "Only grass"
-        ],
+        "options": {
+          "large-animals-only": "Only large animals",
+          "small-animals-and-plants": "Small animals and plants, including fruit",
+          "grass-only": "Only grass"
+        },
         "correct": "That's right! Red foxes eat a varied diet that includes small animals and plant foods such as fruit.",
         "tryAgain": "Not quite. Red foxes eat a varied diet, including both animal and plant foods."
       },
-      {
+      "red-fox-sound-identification": {
         "prompt": "Which animal is making this sound?",
-        "options": ["A coyote", "A red fox", "A wolf"],
+        "options": {
+          "coyote": "A coyote",
+          "red-fox": "A red fox",
+          "wolf": "A wolf"
+        },
         "correct": "That's right! You heard the sound of a red fox.",
         "tryAgain": "Listen closely to the recording and try again."
       }
-    ],
+    },
     "complete": {
       "title": "Quiz complete!",
       "description": "You explored the habitats, diets, and sounds of Alberta's swift and red foxes.",

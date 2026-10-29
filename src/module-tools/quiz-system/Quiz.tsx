@@ -11,12 +11,60 @@
   - <Quiz questions completedQuestionIds onQuestionCorrect renderComplete />
 
   Notes:
+  - Preserves question order and shuffles answer choices on entry and restart.
+  - Completed questions are skipped on entry, preserving the learner's place.
   - Wrong answers can be retried; a correct answer locks the options and offers Next or Finish.
-  - Starts at the first question not listed in completedQuestionIds, or at the finish screen if all are.
  */
 import { useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { QuizQuestion } from './types'
+
+function shuffleOptionIds(
+  question: QuizQuestion,
+  previousOrder?: readonly string[],
+) {
+  const shuffledIds = question.options.map((option) => option.id)
+
+  for (let index = shuffledIds.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    const currentId = shuffledIds[index]!
+    shuffledIds[index] = shuffledIds[randomIndex]!
+    shuffledIds[randomIndex] = currentId
+  }
+
+  const previousCorrectPosition = previousOrder?.indexOf(
+    question.correctOptionId,
+  )
+  const correctPosition = shuffledIds.indexOf(question.correctOptionId)
+
+  if (
+    shuffledIds.length > 1 &&
+    previousCorrectPosition !== undefined &&
+    previousCorrectPosition >= 0 &&
+    correctPosition === previousCorrectPosition
+  ) {
+    const newPosition = Math.floor(Math.random() * (shuffledIds.length - 1))
+    const targetPosition =
+      newPosition >= correctPosition ? newPosition + 1 : newPosition
+    const targetOptionId = shuffledIds[targetPosition]!
+    shuffledIds[targetPosition] = shuffledIds[correctPosition]!
+    shuffledIds[correctPosition] = targetOptionId
+  }
+
+  return shuffledIds
+}
+
+function shuffleAnswerOrders(
+  questions: readonly QuizQuestion[],
+  previousOrders?: Readonly<Record<string, readonly string[]>>,
+) {
+  return Object.fromEntries(
+    questions.map((question) => [
+      question.id,
+      shuffleOptionIds(question, previousOrders?.[question.id]),
+    ]),
+  )
+}
 
 type QuizProps = {
   questions: readonly QuizQuestion[]
@@ -32,6 +80,9 @@ export function Quiz({
   renderComplete,
 }: QuizProps) {
   const { t } = useTranslation('moduleTools')
+  const [answerOrders, setAnswerOrders] = useState(() =>
+    shuffleAnswerOrders(questions),
+  )
   const total = questions.length
   const [questionIndex, setQuestionIndex] = useState(() => {
     const firstIncomplete = questions.findIndex(
@@ -43,23 +94,43 @@ export function Quiz({
   const [selected, setSelected] = useState<number | null>(null)
 
   const question = questions[questionIndex]
+  const answerOrder = question
+    ? (answerOrders[question.id] ?? question.options.map((option) => option.id))
+    : []
+  const displayedOptions = question
+    ? answerOrder.map((optionId) => {
+        const option = question.options.find((entry) => entry.id === optionId)
+
+        if (!option) {
+          throw new Error(
+            `Quiz question "${question.id}" references missing option "${optionId}".`,
+          )
+        }
+
+        return option
+      })
+    : []
+  const correctOptionIndex = question
+    ? answerOrder.indexOf(question.correctOptionId)
+    : -1
 
   if (!question) {
     return renderComplete({
       restart: () => {
         setSelected(null)
+        setAnswerOrders(shuffleAnswerOrders(questions, answerOrders))
         setQuestionIndex(0)
       },
     })
   }
 
-  const isCorrect = selected !== null && selected === question.correctIndex
+  const isCorrect = selected !== null && selected === correctOptionIndex
   const isLastQuestion = questionIndex === total - 1
 
   const chooseOption = (optionIndex: number) => {
     setSelected(optionIndex)
 
-    if (optionIndex === question.correctIndex) {
+    if (optionIndex === correctOptionIndex) {
       onQuestionCorrect?.(question)
     }
   }
@@ -82,16 +153,16 @@ export function Quiz({
         </legend>
         {question.media && <div className="mb-4">{question.media}</div>}
         <div className="grid gap-3">
-          {question.options.map((option, optionIndex) => (
+          {displayedOptions.map((option, optionIndex) => (
             <button
-              key={option}
+              key={option.id}
               type="button"
               aria-pressed={selected === optionIndex}
               disabled={isCorrect}
               className="button-secondary"
               onClick={() => chooseOption(optionIndex)}
             >
-              {option}
+              {option.text}
             </button>
           ))}
         </div>

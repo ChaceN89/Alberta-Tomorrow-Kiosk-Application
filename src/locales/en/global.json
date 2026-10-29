@@ -25,7 +25,7 @@
     "errorDescription": "Please try again. If the problem continues, reload the page.",
     "retry": "Retry loading",
     "toastLoading": "Preparing activity…",
-    "toastSuccess": "Activity ready: {{activityName}}.",
+    "toastSuccess": "Activity Ready: {{activityName}}.",
     "toastCancelled": "Activity preparation stopped.",
     "toastError": "Couldn't prepare the activity."
   },

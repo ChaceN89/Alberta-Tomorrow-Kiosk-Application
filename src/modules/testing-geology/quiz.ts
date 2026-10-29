@@ -4,30 +4,27 @@
   Date Updated: Oct 28, 2026
 
   Description:
-  - Localized-content indexes and correct answers for geology quiz questions.
+  - Stable question and correct-option ids for geology quiz questions.
 
   Usage:
   - entry-Geology combines these definitions with localized question content.
 
   Notes:
-  - Definition order matches activity.questions; question ids live in checkpoints.ts.
+  - Question ids also identify their localized content and journal checkpoints.
  */
 import type { QuizQuestionDefinition } from '../../module-tools/quiz-system/types'
 
 export const geologyQuizQuestions = [
   {
     id: 'badlands',
-    contentIndex: 0,
-    correctIndex: 1,
+    correctOptionId: 'red-deer-river-valley',
   },
   {
     id: 'glacial-boulder',
-    contentIndex: 1,
-    correctIndex: 1,
+    correctOptionId: 'glacial-ice',
   },
   {
     id: 'oil-sands',
-    contentIndex: 2,
-    correctIndex: 0,
+    correctOptionId: 'northern-alberta',
   },
 ] as const satisfies readonly QuizQuestionDefinition[]

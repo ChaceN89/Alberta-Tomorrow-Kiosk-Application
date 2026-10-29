@@ -16,23 +16,27 @@ import type { ReactNode } from 'react'
 
 export type QuizQuestionDefinition = {
   id: string
-  contentIndex: number
-  correctIndex: number
+  correctOptionId: string
 }
 
 export type LocalizedQuizQuestion = {
   prompt: string
-  options: readonly string[]
+  options: Readonly<Record<string, string>>
   correct: string
   tryAgain: string
+}
+
+export type QuizOption = {
+  id: string
+  text: string
 }
 
 export type QuizQuestion = {
   id: string
   prompt: string
   media?: ReactNode
-  options: readonly string[]
-  correctIndex: number
+  options: readonly QuizOption[]
+  correctOptionId: string
   correctFeedback: string
   incorrectFeedback: string
 }

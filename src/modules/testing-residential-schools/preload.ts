@@ -14,7 +14,7 @@
  */
 import type { ModulePreloadContext } from '../types'
 
-const FAKE_PRELOAD_DURATION_MS = 3_000
+const FAKE_PRELOAD_DURATION_MS = 2_000
 const PROGRESS_INTERVAL_MS = 100
 
 export function preloadResidentialSchool({

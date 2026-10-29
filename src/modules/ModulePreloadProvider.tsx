@@ -23,7 +23,10 @@ import {
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-hot-toast'
 import { useLocation } from 'react-router-dom'
-import { STATUS_TOASTER_ID } from '../components/toasts/toasterIds'
+import {
+  ACTIVITY_PRELOAD_TOAST_ID,
+  STATUS_TOASTER_ID,
+} from '../components/toasts/toasterIds'
 import {
   ModulePreloadContext,
   type ModulePreloadState,
@@ -66,6 +69,7 @@ export function ModulePreloadProvider({
     activePreload.current = null
     active.controller.abort()
     toast(t('preload.toastCancelled'), {
+      id: ACTIVITY_PRELOAD_TOAST_ID,
       duration: 2500,
       toasterId: STATUS_TOASTER_ID,
     })
@@ -94,8 +98,8 @@ export function ModulePreloadProvider({
       const controller = new AbortController()
       const activityName = i18n.t('title', { ns: module.translationNamespace })
       toast.loading(t('preload.toastLoading'), {
+        id: ACTIVITY_PRELOAD_TOAST_ID,
         toasterId: STATUS_TOASTER_ID,
-        duration: 2000,
       })
       setState({ moduleId: module.id, status: 'loading', progress: 5 })
 
@@ -130,6 +134,7 @@ export function ModulePreloadProvider({
 
           readyModules.current.add(module.id)
           toast.success(t('preload.toastSuccess', { activityName }), {
+            id: ACTIVITY_PRELOAD_TOAST_ID,
             toasterId: STATUS_TOASTER_ID,
           })
           setState({
@@ -145,6 +150,7 @@ export function ModulePreloadProvider({
 
           console.error(`Failed to prepare module "${module.id}".`, error)
           toast.error(t('preload.toastError'), {
+            id: ACTIVITY_PRELOAD_TOAST_ID,
             toasterId: STATUS_TOASTER_ID,
           })
           setState({ moduleId: module.id, status: 'error', progress: 0 })

@@ -10,7 +10,7 @@
   - Call from a module activity before passing questions to the shared Quiz component.
 
   Notes:
-  - Throws when a definition references missing content or an invalid correct answer index.
+  - Question and correct-option ids resolve localized content; throws for missing ids.
  */
 import type { ReactNode } from 'react'
 import type {
@@ -21,24 +21,25 @@ import type {
 
 export function buildQuizQuestions(
   definitions: readonly QuizQuestionDefinition[],
-  localizedQuestions: readonly LocalizedQuizQuestion[],
+  localizedQuestions: Readonly<Record<string, LocalizedQuizQuestion>>,
   mediaByQuestionId: Readonly<Record<string, ReactNode>> = {},
 ): QuizQuestion[] {
   return definitions.map((definition) => {
-    const localizedQuestion = localizedQuestions[definition.contentIndex]
+    const localizedQuestion = localizedQuestions[definition.id]
 
     if (!localizedQuestion) {
       throw new Error(
-        `Quiz question "${definition.id}" references missing localized content at index ${definition.contentIndex}.`,
+        `Quiz question "${definition.id}" references missing localized content.`,
       )
     }
 
-    if (
-      definition.correctIndex < 0 ||
-      definition.correctIndex >= localizedQuestion.options.length
-    ) {
+    const options = Object.entries(localizedQuestion.options).map(
+      ([id, text]) => ({ id, text }),
+    )
+
+    if (!options.some((option) => option.id === definition.correctOptionId)) {
       throw new Error(
-        `Quiz question "${definition.id}" has an invalid correct answer index.`,
+        `Quiz question "${definition.id}" references missing correct option "${definition.correctOptionId}".`,
       )
     }
 
@@ -46,8 +47,8 @@ export function buildQuizQuestions(
       id: definition.id,
       prompt: localizedQuestion.prompt,
       media: mediaByQuestionId[definition.id],
-      options: localizedQuestion.options,
-      correctIndex: definition.correctIndex,
+      options,
+      correctOptionId: definition.correctOptionId,
       correctFeedback: localizedQuestion.correct,
       incorrectFeedback: localizedQuestion.tryAgain,
     }

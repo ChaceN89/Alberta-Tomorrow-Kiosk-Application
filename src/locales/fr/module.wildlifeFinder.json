@@ -43,34 +43,38 @@
     "description": "Répondez à des questions sur les renards véloces et roux de l’Alberta.",
     "start": "Commencer le questionnaire",
     "backToActivity": "Retour à l’activité",
-    "questions": [
-      {
+    "questions": {
+      "swift-fox-home": {
         "prompt": "Quel habitat est le plus caractéristique du renard véloce dans le sud-est de l’Alberta ?",
-        "options": [
-          "Forêt boréale",
-          "Prairie ouverte à herbes courtes",
-          "Milieux humides boréaux"
-        ],
+        "options": {
+          "boreal-forest": "Forêt boréale",
+          "shortgrass-prairie": "Prairie ouverte à herbes courtes",
+          "boreal-wetlands": "Milieux humides boréaux"
+        },
         "correct": "Bravo ! Le renard véloce est adapté aux prairies ouvertes à herbes courtes du sud-est de l’Alberta.",
         "tryAgain": "Pas tout à fait. Pensez à une prairie ouverte et sèche du sud de l’Alberta."
       },
-      {
+      "red-fox-food": {
         "prompt": "Que mangent les renards roux ?",
-        "options": [
-          "Seulement de gros animaux",
-          "De petits animaux et des végétaux, notamment des fruits",
-          "Seulement de l’herbe"
-        ],
+        "options": {
+          "large-animals-only": "Seulement de gros animaux",
+          "small-animals-and-plants": "De petits animaux et des végétaux, notamment des fruits",
+          "grass-only": "Seulement de l’herbe"
+        },
         "correct": "Bravo ! Les renards roux ont une alimentation variée qui comprend de petits animaux et des aliments végétaux comme des fruits.",
         "tryAgain": "Pas tout à fait. Les renards roux ont une alimentation variée qui comprend des aliments d’origine animale et végétale."
       },
-      {
+      "red-fox-sound-identification": {
         "prompt": "Quel animal entend-on dans cet enregistrement ?",
-        "options": ["Un coyote", "Un renard roux", "Un loup"],
+        "options": {
+          "coyote": "Un coyote",
+          "red-fox": "Un renard roux",
+          "wolf": "Un loup"
+        },
         "correct": "Bravo ! Vous avez entendu le cri d’un renard roux.",
         "tryAgain": "Écoutez attentivement l’enregistrement et réessayez."
       }
-    ],
+    },
     "complete": {
       "title": "Questionnaire terminé !",
       "description": "Vous avez découvert les habitats, l’alimentation et les cris des renards véloces et roux de l’Alberta.",
