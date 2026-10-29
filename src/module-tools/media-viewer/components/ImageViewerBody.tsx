@@ -11,9 +11,11 @@
 
   Notes:
   - A long description is clamped; expanding it gives the image less room.
+  - The image is a TiltablePhoto: pressing and dragging tilts it in 3D.
  */
 import type { ImageViewerContent } from '../provider/types'
 import { ExpandableText } from './ExpandableText'
+import { TiltablePhoto } from './TiltablePhoto'
 
 type ImageViewerBodyProps = {
   content: ImageViewerContent
@@ -27,13 +29,7 @@ export function ImageViewerBody({ content }: ImageViewerBodyProps) {
           <ExpandableText text={content.description} />
         </div>
       )}
-      <div className="min-h-0 flex-1 bg-canvas p-3 md:p-5">
-        <img
-          src={content.src}
-          alt={content.alt}
-          className="size-full object-contain"
-        />
-      </div>
+      <TiltablePhoto src={content.src} alt={content.alt} />
     </>
   )
 }

@@ -5,6 +5,7 @@
 
   Description:
   - Define the open and close motion of the shared media viewer dialog.
+  - Define the 3D tilt shared by viewer photos and message notes.
 
   Usage:
   - Imported by MediaViewerProvider.tsx.
@@ -15,6 +16,7 @@
   - Closing returns to the same element, with the provider re-measuring it first; keep
     its 320ms equal to CLOSE_DURATION_MS in MediaViewerProvider.tsx.
   - Opening mirrors closing, so change both together.
+  - The tilt reads --tilt-nx and --tilt-ny (-1 to 1) from useTilt.ts.
  */
 @keyframes media-viewer-expand {
   from {
@@ -86,9 +88,129 @@
   animation: media-viewer-fade-out 320ms ease-in both;
 }
 
+/*
+  Photo tilt. The stage is a size container so the frame can be sized in container
+  units: as wide as it can be without outgrowing the stage in either direction.
+*/
+.media-viewer-stage {
+  display: grid;
+  place-items: center;
+  container-type: size;
+  perspective: 1200px;
+}
+
+.media-viewer-tilt {
+  --tilt-max: 25deg;
+  --tilt-nx: 0;
+  --tilt-ny: 0;
+
+  position: relative;
+  border-radius: 0.375rem;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+  transform: rotateX(calc(var(--tilt-ny) * var(--tilt-max) * -1))
+    rotateY(calc(var(--tilt-nx) * var(--tilt-max)));
+  /* The shadow slides away from the pressed side, like light on a lifted print. */
+  box-shadow: calc(var(--tilt-nx) * -20px) calc(var(--tilt-ny) * -20px + 10px)
+    36px rgb(0 0 0 / 35%);
+  /* Springs back past rest and settles when released. */
+  transition:
+    transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 650ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.media-viewer-tilt[data-pressed='true'] {
+  cursor: grabbing;
+  transform: rotateX(calc(var(--tilt-ny) * var(--tilt-max) * -1))
+    rotateY(calc(var(--tilt-nx) * var(--tilt-max))) scale(0.97);
+  transition:
+    transform 90ms ease-out,
+    box-shadow 90ms ease-out;
+}
+
+.media-viewer-tilt__glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at var(--glare-x, 50%) var(--glare-y, 50%),
+    rgb(255 255 255 / 28%),
+    transparent 60%
+  );
+  transition: opacity 400ms ease;
+}
+
+.media-viewer-tilt[data-pressed='true'] .media-viewer-tilt__glare {
+  opacity: 1;
+  transition-duration: 90ms;
+}
+
+/* Sized to the picture's own proportions, so the tilt hugs the photo. */
+.media-viewer-photo {
+  width: min(100cqw, 100cqh * var(--photo-ratio, 1.5));
+  aspect-ratio: var(--photo-ratio, 1.5);
+  overflow: hidden;
+}
+
+/* A sheet of paper: as wide as a comfortable line, as tall as its text. */
+.media-viewer-note {
+  display: flex;
+  width: min(100cqw, 46rem);
+  /* Even a short note keeps the size of a real sheet; a tall one still scrolls. */
+  min-height: min(24rem, 100cqh);
+  max-height: 100cqh;
+  flex-direction: column;
+  border: 1px solid var(--color-line);
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 55%), transparent 55%),
+    var(--color-surface);
+  color: var(--color-ink);
+  cursor: grab;
+}
+
+html.dark .media-viewer-note {
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 8%), transparent 55%),
+    var(--color-surface);
+}
+
+/* A strip of tape holding the note up. */
+.media-viewer-note::before {
+  position: absolute;
+  top: -0.9rem;
+  left: 50%;
+  width: 6rem;
+  height: 1.8rem;
+  border-radius: 2px;
+  background: rgb(240 220 140 / 65%);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  content: '';
+  transform: translateX(-50%) rotate(-2deg);
+}
+
+.media-viewer-note__body {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Lets a touch drag scroll a note that is too tall instead of tilting it. */
+.media-viewer-note--scrollable {
+  touch-action: pan-y;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .media-viewer[data-motion],
   .media-viewer[data-motion]::backdrop {
     animation: none;
+  }
+
+  .media-viewer-tilt {
+    cursor: default;
+    transition: none;
   }
 }
