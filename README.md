@@ -80,12 +80,24 @@ content (text, files, checkpoint ids) and the tool handles display and interacti
   Full-screen media that ends with an empty queue pauses briefly, then exits by
   shrinking and fading downward; compact audio also closes when it ends. A
   queued track continues playing instead.
-  The full-screen Up Next panel also supports removing queued items and has a
-  compact red close-player button that uses the same fullscreen exit animation.
+  The full-screen player has a small top bar with the media title, an exit
+  full-screen button, and a close button; the Up Next panel sits beside the
+  controls and resizes with the player. Closing is confirmed when media is
+  still queued.
 - **Media viewer** (`media-viewer/`): `MediaViewerProvider` wraps the routes and
   `useMediaViewer` opens a message or image in a modal above other dialogs, such
-  as the journal. Pass an optional `onOpen` callback to grant a checkpoint when
-  content is opened. Modules own the localized content and any image assets.
+  as the journal. Pass `{ onOpen, origin }` as the second argument: `onOpen`
+  grants a checkpoint when content is opened, and `origin` (usually
+  `event.currentTarget`) makes the viewer grow out of the clicked element and
+  shrink back into it on close. Images open as a photo that tilts in 3D when
+  pressed; messages open as a paper note. Modules own the localized content and
+  any image assets (see [Message images](#message-images)).
+
+Both the media player and media viewer use the same layout inside
+`module-tools/`: `components/` for UI, `hooks/` for behavior, `provider/` for the
+provider, context, and types, and `utils/` for small helpers. Keep providers to
+state and put dialogs and bodies in `components/`.
+
 - **Quiz system** (`quiz-system/`): `Quiz` takes `QuizQuestion[]`, records answers
   through `onQuestionCorrect`, and lets the module render its own finish screen.
   Reuse a question's id as its journal checkpoint id so progress resumes.
@@ -144,9 +156,51 @@ label, such as `Media` or `Quiz`, to group consecutive checkpoints under a
 heading. Omit `section` for entries that should remain ungrouped. Keep section
 labels and entry ids aligned in both locale files. Modules can optionally map
 checkpoint ids to imported image URLs with `journalEntryImages`; add a localized
-`imageAlt` to the corresponding journal entry. Entries without an image stay
-text-only. Storage is local only; replace `journalStorage.ts` to sync with save
-data later.
+`imageAlt` to the corresponding journal entry. A pinned image is a button: it
+untilts on hover and opens the shared media viewer, using the entry's title,
+summary, and `imageAlt`. To open something else, add the checkpoint id to
+`journalEntryViewers` with a message or image definition (translation keys, as
+in `messages.ts`); a message entry usually pins a generic note picture. Entries
+without an image stay text-only. Storage is local only; replace
+`journalStorage.ts` to sync with save data later.
+
+#### Message images
+
+A message opened in the viewer can carry small "doodle" images, drawn side by
+side at the bottom of the note. Standardize them like this:
+
+1. **Asset**: put a transparent PNG in the module's `assets/` folder (not a
+   photo with a white or checkerboard background). Draw it in the app ink color
+   `#172e29`, crop it to the artwork, and keep it under about 500px on its long
+   side. Dark mode turns doodles white automatically. Use only images you have
+   the rights to, and never ship a watermarked preview.
+2. **Data**: in the module's `messages.ts`, add an `images` array next to the
+   message keys. Each item is the imported file plus a translation key for its
+   alt text:
+
+   ```ts
+   import tracksImage from './assets/fox-tracks.png'
+
+   export const foxFieldList = {
+     title: 'viewer.list.title',
+     subtitle: 'viewer.list.subtitle',
+     message: 'viewer.list.body',
+     images: [{ src: tracksImage, alt: 'viewer.list.tracksImageAlt' }],
+   } as const
+   ```
+
+3. **Copy**: add the alt text (a short description, not "image of") under the
+   same key in both the English and French module locale files. Line breaks in
+   the message body use `\n`, so short lists can be written as numbered lines.
+4. **Open from the page**: translate the keys and pass them to the viewer:
+   `openMessage({ title, subtitle, message, images: foxFieldList.images.map((image) => ({ src: image.src, alt: t(image.alt) })) }, { onOpen, origin: event.currentTarget })`.
+5. **Open from the journal**: register the same object in the module's
+   `journalEntryViewers` as `{ type: 'message', ...foxFieldList }` and pin a
+   note picture in `journalEntryImages`; the journal translates the keys itself.
+
+Two images fit side by side comfortably; more will wrap onto extra lines.
+Messages without `images` render as plain notes. Sizing and tilt are in
+`src/styles/MediaViewer.css` (`.media-viewer-note__doodle`).
 
 ### First-visit intro tutorial
 
@@ -181,7 +235,7 @@ src/modules/land-use/
   quiz.ts                # optional; question ids, content indexes, correct options
   tracks.ts              # optional; audio track metadata and checkpoint callbacks
   videos.ts              # optional; video metadata and player ids
-  messages.ts            # optional; message viewer content keys
+  messages.ts            # optional; message viewer content keys and doodle images
   image.ts               # optional; image viewer asset and content keys
   preload.ts             # optional; extra cancellable data/media loading
   components/            # optional; module-specific React components

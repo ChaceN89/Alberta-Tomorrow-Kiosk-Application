@@ -205,7 +205,7 @@ html.dark .media-viewer-note {
 
 .media-viewer-note__doodle {
   display: block;
-  height: clamp(5rem, 16cqh, 8rem);
+  height: clamp(7rem, 24cqh, 11rem);
   width: auto;
   max-width: 48%;
   object-fit: contain;
