@@ -12,14 +12,13 @@
   Notes:
   - The origin keeps its element so closing can return to where the element is now,
     for example after the journal scrolled.
-  - --viewer-dx, --viewer-dy, and --viewer-scale are read by MediaViewer.css.
+  - --viewer-dx, --viewer-dy, and --viewer-scale are read by MediaViewer.css; the
+    scale makes the dialog the same size as the origin element when opening and closing.
  */
 import type { ViewerOrigin } from '../provider/types'
 
 const MIN_ORIGIN_SCALE = 0.02
-const MAX_ORIGIN_SCALE = 0.2
-// The popout starts at half the size of the element it grows from.
-const ORIGIN_SIZE_FACTOR = 0.5
+const MAX_ORIGIN_SCALE = 0.5
 const FALLBACK_ORIGIN_SCALE = 0.85
 
 function clamp(value: number, min: number, max: number) {
@@ -56,8 +55,7 @@ export function setOriginVars(
   const centerY = rect.top + rect.height / 2
   const scale = origin
     ? clamp(
-        Math.min(origin.width / rect.width, origin.height / rect.height) *
-          ORIGIN_SIZE_FACTOR,
+        Math.min(origin.width / rect.width, origin.height / rect.height),
         MIN_ORIGIN_SCALE,
         MAX_ORIGIN_SCALE,
       )

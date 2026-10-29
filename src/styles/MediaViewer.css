@@ -14,6 +14,7 @@
     --viewer-dx, --viewer-dy, and --viewer-scale to place its start on that element.
   - Closing returns to the same element, with the provider re-measuring it first; keep
     its 320ms equal to CLOSE_DURATION_MS in MediaViewerProvider.tsx.
+  - Opening mirrors closing, so change both together.
  */
 @keyframes media-viewer-expand {
   from {
@@ -57,15 +58,20 @@
   }
 }
 
-/* The fade finishes early so the dialog is already visible while it is still small. */
+/*
+  Opening is the closing played backwards: the same 320ms, the same path, and mirrored
+  easing. The curve (0.8, 0, 0.6, 1) is the closing curve (0.4, 0, 0.2, 1) reversed, and
+  the fade-in is the fade-out reversed: it fills the first 130ms, while the dialog is
+  still small, instead of the last.
+*/
 .media-viewer[data-motion='opening'] {
   animation:
-    media-viewer-expand 560ms cubic-bezier(0.2, 0.75, 0.2, 1) both,
-    media-viewer-fade-in 220ms ease-out both;
+    media-viewer-expand 320ms cubic-bezier(0.8, 0, 0.6, 1) both,
+    media-viewer-fade-in 130ms ease-out both;
 }
 
 .media-viewer[data-motion='opening']::backdrop {
-  animation: media-viewer-fade-in 560ms ease-out both;
+  animation: media-viewer-fade-in 320ms ease-out both;
 }
 
 /* The dialog stays visible while it travels and only fades out as it arrives. */
