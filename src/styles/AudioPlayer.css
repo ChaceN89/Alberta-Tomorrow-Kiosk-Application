@@ -12,6 +12,15 @@
   Notes:
   - Player sizing and animation timings are intentionally coordinated here.
  */
+/*
+  Opening or closing full screen morphs the frame, top bar, controls, and queue
+  together, so they all share this duration and easing and finish at the same time.
+*/
+.audio-player-stage {
+  --audio-player-morph-duration: 1200ms;
+  --audio-player-morph-ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
 @keyframes audio-panel-exit-collapsed {
   from {
     opacity: 1;
@@ -197,11 +206,11 @@
   height: min(calc(26rem + 10px), calc(100dvh - 2rem));
   pointer-events: auto;
   transition:
-    top 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
-    left 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
-    width 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
-    height 1200ms cubic-bezier(0.2, 0.75, 0.2, 1),
-    transform 1200ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    top var(--audio-player-morph-duration) var(--audio-player-morph-ease),
+    left var(--audio-player-morph-duration) var(--audio-player-morph-ease),
+    width var(--audio-player-morph-duration) var(--audio-player-morph-ease),
+    height var(--audio-player-morph-duration) var(--audio-player-morph-ease),
+    transform var(--audio-player-morph-duration) var(--audio-player-morph-ease);
 }
 
 .audio-player-frame--fullscreen {
@@ -212,13 +221,63 @@
   transform: translateX(-50%);
 }
 
+/*
+  On roomy screens the frame is sized to its content (top bar, 16:9 media,
+  controls), so the media gets all the spare width and no space is left unused.
+*/
+@media (min-width: 48rem) and (min-height: 40rem) {
+  .audio-player-frame--fullscreen {
+    --audio-player-topbar-height: 3rem;
+    --audio-player-lower-height: 14rem;
+    --audio-player-fullscreen-width: min(
+      80rem,
+      100vw - 2rem,
+      (
+          100dvh - 2rem - var(--audio-player-topbar-height) -
+            var(--audio-player-lower-height)
+        ) *
+        16 / 9
+    );
+    --audio-player-fullscreen-height: calc(
+      var(--audio-player-fullscreen-width) * 9 / 16 +
+        var(--audio-player-topbar-height) + var(--audio-player-lower-height)
+    );
+
+    top: calc((100dvh - var(--audio-player-fullscreen-height)) / 2);
+    width: var(--audio-player-fullscreen-width);
+    height: var(--audio-player-fullscreen-height);
+  }
+}
+
 .audio-player-frame--collapsed {
   pointer-events: none;
   transform: translateX(-100%);
 }
 
 .audio-player-card {
-  transition: border-radius 1200ms cubic-bezier(0.2, 0.75, 0.2, 1);
+  transition: border-radius var(--audio-player-morph-duration)
+    var(--audio-player-morph-ease);
+}
+
+.audio-player-topbar {
+  display: flex;
+  height: 0;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding-inline: 1rem;
+  border-bottom: 0 solid var(--color-line);
+  opacity: 0;
+  transition:
+    height var(--audio-player-morph-duration) var(--audio-player-morph-ease),
+    opacity var(--audio-player-morph-duration) var(--audio-player-morph-ease);
+}
+
+.audio-player-topbar--visible {
+  height: var(--audio-player-topbar-height, 3rem);
+  border-bottom-width: 1px;
+  opacity: 1;
 }
 
 .audio-player-media-viewport {
@@ -240,58 +299,60 @@
   margin-inline: auto;
 }
 
-/*  */
+/*
+  The track sizes always add up to 100fr, so the queue column's share of the
+  width grows and shrinks in step with the frame instead of jumping to its final size.
+*/
 .audio-player-fullscreen-lower {
   display: grid;
   min-height: 0;
   flex: 1 1 auto;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) minmax(0, 0fr);
+  grid-template-rows: minmax(0, 100fr) minmax(0, 0fr);
   overflow: visible;
   transition:
-    grid-template-columns 300ms cubic-bezier(0.2, 0.75, 0.2, 1),
-    grid-template-rows 300ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    grid-template-columns var(--audio-player-morph-duration)
+      var(--audio-player-morph-ease),
+    grid-template-rows var(--audio-player-morph-duration)
+      var(--audio-player-morph-ease);
 }
 
-/*  */
 .audio-player-fullscreen-lower--fullscreen {
-  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  transition-duration: 1200ms;
+  grid-template-rows: minmax(0, 50fr) minmax(0, 50fr);
 }
 
-/*  */
 .audio-player-controls {
   transition:
-    gap 300ms cubic-bezier(0.2, 0.75, 0.2, 1),
-    padding 300ms cubic-bezier(0.2, 0.75, 0.2, 1);
+    gap var(--audio-player-morph-duration) var(--audio-player-morph-ease),
+    padding var(--audio-player-morph-duration) var(--audio-player-morph-ease);
 }
 
-.audio-player-fullscreen-lower--fullscreen .audio-player-controls {
-  transition-duration: 1200ms;
-}
-
+/* The queue is a drawer: its column resizes while the content is revealed, not reflowed. */
 .audio-player-queue {
   min-height: 0;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(1rem);
   transition:
-    opacity 60ms ease,
-    transform 80ms cubic-bezier(0.22, 0.75, 0.2, 1),
-    visibility 0s linear 80ms;
+    opacity var(--audio-player-morph-duration) ease-out,
+    visibility 0s linear var(--audio-player-morph-duration);
 }
 
 .audio-player-queue--visible {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(0);
   transition:
-    opacity 500ms ease,
-    transform 700ms cubic-bezier(0.22, 0.75, 0.2, 1),
+    opacity calc(var(--audio-player-morph-duration) * 0.4) ease-out
+      calc(var(--audio-player-morph-duration) * 0.1),
     visibility 0s linear 0s;
+}
+
+.audio-player-queue__panel {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 
 .audio-player-tab {
@@ -314,12 +375,17 @@
 
 @media (min-width: 48rem) {
   .audio-player-fullscreen-lower {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0fr);
+    grid-template-columns: minmax(0, 100fr) minmax(0, 0fr);
     grid-template-rows: minmax(0, 1fr);
   }
 
   .audio-player-fullscreen-lower--fullscreen {
     grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .audio-player-queue__panel {
+    min-width: 18rem;
   }
 }
 
@@ -420,6 +486,7 @@
   .audio-player-frame,
   .audio-player-card,
   .audio-player-media-viewport,
+  .audio-player-topbar,
   .audio-player-fullscreen-lower,
   .audio-player-controls,
   .audio-player-queue,

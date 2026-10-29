@@ -16,9 +16,11 @@
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Tooltip } from '@/components/shared/Tooltip'
 import { useJournal } from '@/journal/useJournal'
 import { MediaPlayerTutorial } from '@/tutorials/media-player-tutorial/MediaPlayerTutorial'
 import { AudioPlayerControls } from './AudioPlayerControls'
+import { CloseIcon, ExitFullscreenIcon } from './AudioPlayerIcons'
 import { AudioPlayerQueueList } from './AudioPlayerQueueList'
 import { AudioPlayerTabs } from './AudioPlayerTabs'
 import '@/styles/AudioPlayer.css'
@@ -242,6 +244,37 @@ export function AudioPlayerPanel() {
                   : 'audio-panel-tab-view--inactive'
               }`}
             >
+              <header
+                aria-hidden={!isFullscreen}
+                inert={!isFullscreen}
+                className={`audio-player-topbar ${
+                  isFullscreen ? 'audio-player-topbar--visible' : ''
+                }`}
+              >
+                <h2 className="min-w-0 flex-1 truncate font-semibold">
+                  {trackTitle}
+                </h2>
+                <Tooltip text={t('audioPlayer.exitFullscreen')}>
+                  <button
+                    type="button"
+                    className="flex size-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-canvas"
+                    aria-label={t('audioPlayer.exitFullscreen')}
+                    onClick={() => setFullscreen(false)}
+                  >
+                    <ExitFullscreenIcon className="size-5" />
+                  </button>
+                </Tooltip>
+                <Tooltip text={t('audioPlayer.close')}>
+                  <button
+                    type="button"
+                    className="flex size-10 shrink-0 items-center justify-center rounded-lg text-muted hover:bg-canvas"
+                    aria-label={t('audioPlayer.close')}
+                    onClick={requestClose}
+                  >
+                    <CloseIcon className="size-5" />
+                  </button>
+                </Tooltip>
+              </header>
               <div
                 className={`audio-player-media-viewport ${
                   isFullscreen
@@ -284,30 +317,24 @@ export function AudioPlayerPanel() {
                   })}
                   aria-hidden={!isFullscreen}
                   inert={!isFullscreen}
-                  className={`audio-player-queue flex min-h-0 min-w-0 flex-col border-t border-line px-4 py-3 md:border-t-0 md:border-l ${
+                  className={`audio-player-queue min-h-0 min-w-0 ${
                     isFullscreen ? 'audio-player-queue--visible' : ''
                   }`}
                 >
-                  {isFullscreen && (
-                    <button
-                      type="button"
-                      className="button-danger mb-3 min-h-10 w-full py-2"
-                      onClick={requestClose}
-                    >
-                      {t('audioPlayer.close')}
-                    </button>
-                  )}
-                  <h2 className="mb-2 shrink-0 text-lg font-semibold">
-                    {t('audioPlayer.queueWithCount', {
-                      count: queue.length,
-                    })}
-                  </h2>
-                  <AudioPlayerQueueList
-                    queue={queue}
-                    getTrackTitle={getTrackTitle}
-                    moveInQueue={moveInQueue}
-                    removeFromQueue={removeFromQueue}
-                  />
+                  {/* Padding lives here so the outer column can shrink to zero width. */}
+                  <div className="audio-player-queue__panel flex flex-col border-t border-line px-4 py-3 md:border-t-0 md:border-l">
+                    <h2 className="mb-2 shrink-0 text-lg font-semibold">
+                      {t('audioPlayer.queueWithCount', {
+                        count: queue.length,
+                      })}
+                    </h2>
+                    <AudioPlayerQueueList
+                      queue={queue}
+                      getTrackTitle={getTrackTitle}
+                      moveInQueue={moveInQueue}
+                      removeFromQueue={removeFromQueue}
+                    />
+                  </div>
                 </section>
               </div>
             </div>
