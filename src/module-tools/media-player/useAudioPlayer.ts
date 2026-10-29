@@ -62,6 +62,7 @@ type AudioPlayerContextValue = {
   isPanelOpen: boolean
   isFullscreen: boolean
   isClosing: boolean
+  isMediaEndClosing: boolean
   activePanelTab: 'player' | 'queue'
   currentTime: number
   duration: number

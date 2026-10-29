@@ -147,6 +147,10 @@ html.dark .button-secondary[aria-pressed='true'] {
     @apply inline-flex min-h-12 items-center justify-center rounded-xl border-2 border-pine bg-surface px-5 py-3 text-center font-semibold text-pine transition-colors hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-50 aria-pressed:bg-pine aria-pressed:text-white motion-reduce:transition-none;
   }
 
+  .button-danger {
+    @apply inline-flex min-h-12 items-center justify-center rounded-xl bg-red-700 px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none;
+  }
+
   .dev-tool-menu-button {
     @apply flex min-h-10 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-ink transition-colors hover:bg-canvas motion-reduce:transition-none;
   }

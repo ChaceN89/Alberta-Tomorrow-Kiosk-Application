@@ -26,6 +26,9 @@ import { useAudioPlayer, type MediaTrack } from './useAudioPlayer'
 import { createPortal } from 'react-dom'
 import { YouTubePlayer } from './YouTubePlayer'
 
+const FULLSCREEN_EXIT_DURATION_MS = 520
+const MEDIA_END_CLOSE_DELAY_MS = 700
+
 export function AudioPlayerPanel() {
   const { t, i18n } = useTranslation('moduleTools')
   const { isOpen: isJournalOpen } = useJournal()
@@ -33,6 +36,7 @@ export function AudioPlayerPanel() {
     track,
     isPanelOpen,
     isFullscreen,
+    isMediaEndClosing,
     setFullscreen,
     beginClose,
     activePanelTab,
@@ -48,6 +52,8 @@ export function AudioPlayerPanel() {
   } = useAudioPlayer()
   const [isConfirmingClose, setConfirmingClose] = useState(false)
   const [isAnimatingClose, setAnimatingClose] = useState(false)
+  const [isAnimatingFullscreenExit, setAnimatingFullscreenExit] =
+    useState(false)
   const cancelCloseRef = useRef<HTMLButtonElement>(null)
   const closeAnimationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
@@ -97,6 +103,23 @@ export function AudioPlayerPanel() {
     [],
   )
 
+  useEffect(() => {
+    if (!isMediaEndClosing) return
+
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    const delay = isFullscreen ? MEDIA_END_CLOSE_DELAY_MS : 0
+    const duration = prefersReducedMotion
+      ? 0
+      : isFullscreen
+        ? FULLSCREEN_EXIT_DURATION_MS
+        : 300
+    const timeoutId = window.setTimeout(stop, delay + duration)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [isFullscreen, isMediaEndClosing, stop])
+
   if (!track) return null
 
   const getTrackTitle = (mediaTrack: MediaTrack) =>
@@ -118,12 +141,29 @@ export function AudioPlayerPanel() {
 
   const closePlayer = () => {
     setConfirmingClose(false)
-    setAnimatingClose(true)
-    setFullscreen(false)
     const closingTrackId = track.id
 
     beginClose()
 
+    if (isFullscreen) {
+      setAnimatingFullscreenExit(true)
+      const duration = window.matchMedia('(prefers-reduced-motion: reduce)')
+        .matches
+        ? 0
+        : FULLSCREEN_EXIT_DURATION_MS
+
+      closeAnimationTimeoutRef.current = setTimeout(() => {
+        closeAnimationTimeoutRef.current = null
+        if (currentTrackIdRef.current === closingTrackId) {
+          stop()
+        }
+        setAnimatingFullscreenExit(false)
+      }, duration)
+      return
+    }
+
+    setAnimatingClose(true)
+    setFullscreen(false)
     closeAnimationTimeoutRef.current = setTimeout(() => {
       closeAnimationTimeoutRef.current = null
       if (currentTrackIdRef.current === closingTrackId) {
@@ -139,13 +179,26 @@ export function AudioPlayerPanel() {
       closePlayer()
     }
   }
-  const stageExitAnimationClass =
-    isAnimatingClose && isPanelOpen ? 'audio-panel-exit' : ''
-  const frameExitAnimationClass = isAnimatingClose
-    ? isPanelOpen
+  const isMediaEndFullscreenExit = isMediaEndClosing && isFullscreen
+  const isCompactCloseAnimation = isAnimatingClose || isMediaEndClosing
+  const isFullscreenCloseAnimation =
+    isAnimatingFullscreenExit || isMediaEndFullscreenExit
+  const stageExitAnimationClass = isFullscreenCloseAnimation
+    ? `audio-player-stage--fullscreen-exit ${
+        isMediaEndFullscreenExit ? 'audio-player-stage--media-end-exit' : ''
+      }`
+    : isCompactCloseAnimation && isPanelOpen
       ? 'audio-panel-exit'
-      : 'audio-panel-exit--collapsed'
-    : ''
+      : ''
+  const frameExitAnimationClass = isFullscreenCloseAnimation
+    ? `audio-player-frame--fullscreen-exit ${
+        isMediaEndFullscreenExit ? 'audio-player-frame--media-end-exit' : ''
+      }`
+    : isCompactCloseAnimation
+      ? isPanelOpen
+        ? 'audio-panel-exit'
+        : 'audio-panel-exit--collapsed'
+      : ''
   const journalAudioPortalRoot = isJournalOpen
     ? document.getElementById('journal-audio-player-root')
     : null
@@ -172,7 +225,7 @@ export function AudioPlayerPanel() {
           aria-label={t('audioPlayer.label')}
           role={isFullscreen ? 'dialog' : undefined}
           aria-modal={isFullscreen ? true : undefined}
-          inert={!isPanelOpen}
+          inert={!isPanelOpen || isMediaEndClosing}
           className={`audio-player-card flex h-full w-full flex-col overflow-hidden border border-line bg-surface text-ink ${
             isFullscreen
               ? 'rounded-2xl shadow-2xl'
@@ -235,6 +288,15 @@ export function AudioPlayerPanel() {
                     isFullscreen ? 'audio-player-queue--visible' : ''
                   }`}
                 >
+                  {isFullscreen && (
+                    <button
+                      type="button"
+                      className="button-danger mb-3 min-h-10 w-full py-2"
+                      onClick={requestClose}
+                    >
+                      {t('audioPlayer.close')}
+                    </button>
+                  )}
                   <h2 className="mb-2 shrink-0 text-lg font-semibold">
                     {t('audioPlayer.queueWithCount', {
                       count: queue.length,
@@ -245,7 +307,6 @@ export function AudioPlayerPanel() {
                     getTrackTitle={getTrackTitle}
                     moveInQueue={moveInQueue}
                     removeFromQueue={removeFromQueue}
-                    showRemoveButton={false}
                   />
                 </section>
               </div>

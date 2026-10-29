@@ -18,6 +18,7 @@ import { buildQuizQuestions } from '../../../module-tools/quiz-system/buildQuizQ
 import { Quiz } from '../../../module-tools/quiz-system/Quiz'
 import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
 import type { ModuleCheckpointProps } from '../../types'
+import { getPreloadedFoxAudioSource } from '../audioCache'
 import { foxesOfAlbertaQuizQuestions } from '../quiz'
 import { foxesOfAlbertaTracks } from '../tracks'
 
@@ -42,7 +43,7 @@ export function HabitatQuiz({
           track={{
             type: 'audio',
             id: redFoxTrack.id,
-            src: redFoxTrack.src,
+            src: getPreloadedFoxAudioSource(redFoxTrack.src),
             coverArt: redFoxTrack.coverArt,
             title: t('listen.tracks.redFoxSound.title'),
             subtitle: t('title'),

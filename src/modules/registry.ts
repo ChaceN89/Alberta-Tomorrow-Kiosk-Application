@@ -17,11 +17,15 @@ import { foxesOfAlbertaCheckpoints } from './testing-foxes-of-alberta/checkpoint
 import { geologyCheckpoints } from './testing-geology/checkpoints'
 import { preloadResidentialSchool } from './testing-residential-schools/preload'
 import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
-import type { LearningModule } from './types'
+import type { LearningModule, ModulePreloadContext } from './types'
 
 // importing all the modules into the appliction
 const loadFoxesOfAlberta = () =>
   import('./testing-foxes-of-alberta/entry-FoxesOfAlberta')
+const preloadFoxesOfAlberta = (context: ModulePreloadContext) =>
+  import('./testing-foxes-of-alberta/preload').then(
+    ({ preloadFoxesOfAlberta }) => preloadFoxesOfAlberta(context),
+  )
 const loadFoxesOfAlbertaJournalEntryAction = () =>
   import('./testing-foxes-of-alberta/components/JournalEntryAction')
 const loadResidentialSchool = () =>
@@ -38,6 +42,7 @@ export const modules: readonly LearningModule[] = [
     component: lazy(loadFoxesOfAlberta),
     journalEntryAction: lazy(loadFoxesOfAlbertaJournalEntryAction),
     loadActivity: loadFoxesOfAlberta,
+    preload: preloadFoxesOfAlberta,
   },
   {
     visible: true,

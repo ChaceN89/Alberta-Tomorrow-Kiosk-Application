@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
 import { useJournal } from '../../../journal/useJournal'
 import type { JournalEntryActionProps } from '../../types'
+import { getPreloadedFoxAudioSource } from '../audioCache'
 import { foxesVideoCheckpoint } from '../checkpoints'
 import { foxesOfAlbertaTracks } from '../tracks'
 import { foxesOfAlbertaVideo } from '../videos'
@@ -65,7 +66,7 @@ export default function JournalEntryAction({
       track={{
         type: 'audio',
         id: track.id,
-        src: track.src,
+        src: getPreloadedFoxAudioSource(track.src),
         coverArt: track.coverArt,
         title: t(`listen.tracks.${track.key}.title`),
         subtitle: t('title'),

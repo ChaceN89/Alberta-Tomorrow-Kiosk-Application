@@ -34,6 +34,26 @@
   }
 }
 
+@keyframes audio-player-stage-fullscreen-exit {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes audio-player-fullscreen-exit {
+  from {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateX(-50%) translateY(5rem) scale(0.82);
+  }
+}
+
 @keyframes audio-player-media-enter {
   from {
     opacity: 0.65;
@@ -97,6 +117,26 @@
 
 .audio-panel-exit--collapsed {
   animation: audio-panel-exit-collapsed 300ms ease-in both;
+}
+
+.audio-player-stage--fullscreen-exit,
+.audio-player-stage--media-end-exit {
+  pointer-events: none;
+  animation: audio-player-stage-fullscreen-exit 520ms ease-in both;
+}
+
+.audio-player-stage--media-end-exit {
+  animation-delay: 700ms;
+}
+
+.audio-player-frame--fullscreen-exit,
+.audio-player-frame--media-end-exit {
+  animation: audio-player-fullscreen-exit 520ms cubic-bezier(0.4, 0, 0.8, 0.2)
+    both;
+}
+
+.audio-player-frame--media-end-exit {
+  animation-delay: 700ms;
 }
 
 .audio-player-stage {
@@ -361,6 +401,10 @@
   .audio-player-tab-enter,
   .audio-close-dialog,
   .audio-panel-exit--collapsed,
+  .audio-player-stage--fullscreen-exit,
+  .audio-player-frame--fullscreen-exit,
+  .audio-player-stage--media-end-exit,
+  .audio-player-frame--media-end-exit,
   .audio-close-dialog__content,
   .audio-bar {
     animation: none;

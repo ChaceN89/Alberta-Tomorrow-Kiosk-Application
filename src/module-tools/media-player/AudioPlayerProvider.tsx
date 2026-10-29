@@ -32,6 +32,8 @@ type AudioPlayerProviderProps = {
 export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const videoPlayerRef = useRef<YouTubePlayerController | null>(null)
+  const isFullscreenRef = useRef(false)
+  const isMediaEndClosingRef = useRef(false)
   const volumeRef = useRef(1)
   const currentItemRef = useRef<QueuedAudioTrack | null>(null)
   const hasStartedRef = useRef(false)
@@ -41,8 +43,9 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const [isEnded, setIsEnded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isPanelOpen, setPanelOpen] = useState(false)
-  const [isFullscreen, setFullscreen] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
+  const [isMediaEndClosing, setIsMediaEndClosing] = useState(false)
   const [activePanelTab, setActivePanelTab] = useState<'player' | 'queue'>(
     'player',
   )
@@ -50,6 +53,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const [duration, setDuration] = useState(0)
   const [playbackRate, setPlaybackRate] = useState(NORMAL_RATE)
   const [volume, setVolumeState] = useState(1)
+
+  const setFullscreen = useCallback((fullscreen: boolean) => {
+    isFullscreenRef.current = fullscreen
+    setIsFullscreen(fullscreen)
+  }, [])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -83,6 +91,8 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       setIsEnded(false)
       setHasError(false)
       setIsClosing(false)
+      isMediaEndClosingRef.current = false
+      setIsMediaEndClosing(false)
       setActivePanelTab('player')
       audio.playbackRate = NORMAL_RATE
       audio.volume = volumeRef.current
@@ -160,13 +170,15 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     setIsEnded(false)
     setHasError(false)
     setIsClosing(false)
+    isMediaEndClosingRef.current = false
+    setIsMediaEndClosing(false)
     setFullscreen(false)
     setActivePanelTab('player')
     setPanelOpen(false)
     setCurrentTime(0)
     setDuration(0)
     setPlaybackRate(NORMAL_RATE)
-  }, [clearQueue])
+  }, [clearQueue, setFullscreen])
 
   const advanceQueue = useCallback(() => {
     const next = takeNext()
@@ -181,16 +193,21 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   }, [advanceQueue])
 
   const onMediaEnded = useCallback(() => {
+    if (isMediaEndClosingRef.current) return
+
     const currentItem = currentItemRef.current
-    currentItem?.callbacks.onEnd?.()
+    if (!currentItem) return
+
+    currentItem.callbacks.onEnd?.()
 
     if (advanceQueue()) return
 
-    if (currentItem?.track.type === 'youtube') {
+    if (currentItem.track.type === 'youtube' && !isFullscreenRef.current) {
       stop()
     } else {
-      setIsPlaying(false)
-      setIsEnded(true)
+      isMediaEndClosingRef.current = true
+      setIsMediaEndClosing(true)
+      setIsClosing(true)
     }
   }, [advanceQueue, stop])
 
@@ -282,7 +299,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
   const beginClose = useCallback(() => {
     setIsClosing(true)
-    audioRef.current?.pause()
+    if (currentItemRef.current?.track.type === 'youtube') {
+      videoPlayerRef.current?.pauseVideo()
+    } else {
+      audioRef.current?.pause()
+    }
   }, [])
 
   const value = useMemo(
@@ -294,6 +315,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isPanelOpen,
       isFullscreen,
       isClosing,
+      isMediaEndClosing,
       activePanelTab,
       currentTime,
       duration,
@@ -334,6 +356,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isClosing,
       isPanelOpen,
       isFullscreen,
+      isMediaEndClosing,
       isPlaying,
       pausePlayback,
       playNow,

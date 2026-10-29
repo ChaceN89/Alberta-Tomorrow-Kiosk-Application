@@ -75,7 +75,12 @@ content (text, files, checkpoint ids) and the tool handles display and interacti
   be removed, advanced to with Next, or played automatically when the current
   track ends. Closing during playback asks for confirmation before unloading the
   track and clearing the queue. The fast and slow buttons cycle speeds listed in
-  `playbackRates.ts`; their tooltips work with hover and keyboard focus.
+  `playbackRates.ts`; their tooltips work with hover and keyboard focus. A
+  Full-screen media that ends with an empty queue pauses briefly, then exits by
+  shrinking and fading downward; compact audio also closes when it ends. A
+  queued track continues playing instead.
+  The full-screen Up Next panel also supports removing queued items and has a
+  compact red close-player button that uses the same fullscreen exit animation.
 - **Quiz system** (`quiz-system/`): `Quiz` takes `QuizQuestion[]`, records answers
   through `onQuestionCorrect`, and lets the module render its own finish screen.
   Reuse a question's id as its journal checkpoint id so progress resumes.
@@ -163,8 +168,9 @@ src/modules/land-use/
   assets/                # optional; local images, audio, video, and other files
 ```
 
-In the current modules, the Alberta foxes module uses all of these except `preload.ts`, geology
-uses `quiz.ts` and `videos.ts`, and residential school uses `preload.ts`. A
+In the current modules, the Alberta foxes module uses all of these, including
+`preload.ts` to download its audio files before launch; geology uses `quiz.ts`
+and `videos.ts`, and residential school uses `preload.ts`. A
 module does **not** need tracks or videos unless it has them, and it does not
 need an `assets/` folder if it only uses remote content. Keep metadata in
 `tracks.ts` and `videos.ts`; put local files in `assets/` and import them from
@@ -176,7 +182,7 @@ The existing files follow that same pattern:
 
 ```text
 testing-foxes-of-alberta/       entry-FoxesOfAlberta.tsx, checkpoints.ts, quiz.ts,
-                                tracks.ts, videos.ts, components/, assets/
+                                tracks.ts, videos.ts, preload.ts, components/, assets/
 testing-geology/                entry-Geology.tsx, checkpoints.ts, quiz.ts, videos.ts
 testing-residential-schools/    entry-ResidentialSchool.tsx, checkpoints.ts, preload.ts
 ```
@@ -239,8 +245,12 @@ Register its exported callback as the module's optional `preload`. The callback
 receives an `AbortSignal` and an `onProgress(percent)` function. It should report
 real progress when possible, stop promptly when aborted, and reject on genuine
 failures; the shared preload provider handles progress UI, cancellation, retry,
-and error notification. The current residential-school callback is simulated
-and is an example of the hook shape, not a requirement for every module.
+and error notification. The residential-school callback is simulated. The
+Alberta foxes test module downloads all three local audio files into in-memory
+Blob URLs before enabling launch, so playback can use the already-downloaded
+data without fetching the files again. This deliberately demonstrates the
+preload flow for future larger assets such as map data; downloading every audio
+file up front is usually not desirable in a production module.
 
 Here is the activity entry shape; its content and interaction are intentionally
 module-specific:
