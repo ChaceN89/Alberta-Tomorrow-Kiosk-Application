@@ -181,6 +181,54 @@ export function JournalProvider({ children }: JournalProviderProps) {
     commitProgress({})
   }, [commitProgress])
 
+  const startAllExpeditions = useCallback(() => {
+    const current = progressRef.current
+    const next: JournalProgress = { ...current }
+    const timestamp = new Date().toISOString()
+    let hasChanges = false
+
+    for (const module of visibleModules) {
+      if (current[module.id]) continue
+
+      next[module.id] = { startedAt: timestamp, checkpoints: {} }
+      hasChanges = true
+    }
+
+    if (hasChanges) commitProgress(next)
+  }, [commitProgress])
+
+  const completeAllModules = useCallback(() => {
+    const current = progressRef.current
+    const next: JournalProgress = { ...current }
+    const timestamp = new Date().toISOString()
+    let hasChanges = false
+
+    for (const module of visibleModules) {
+      if (module.checkpoints.length === 0) continue
+
+      const record = current[module.id]
+      const checkpoints = { ...record?.checkpoints }
+      let moduleHasChanges = !record
+
+      for (const checkpointId of module.checkpoints) {
+        if (checkpoints[checkpointId] === undefined) {
+          checkpoints[checkpointId] = timestamp
+          moduleHasChanges = true
+        }
+      }
+
+      if (!moduleHasChanges) continue
+
+      next[module.id] = {
+        startedAt: record?.startedAt ?? timestamp,
+        checkpoints,
+      }
+      hasChanges = true
+    }
+
+    if (hasChanges) commitProgress(next)
+  }, [commitProgress])
+
   const selectExpedition = useCallback((moduleId: string | null) => {
     setActiveModuleId(
       moduleId !== null && visibleModules.some((entry) => entry.id === moduleId)
@@ -207,10 +255,13 @@ export function JournalProvider({ children }: JournalProviderProps) {
       getCompletedCheckpoints,
       getExpeditionProgress,
       resetJournal,
+      startAllExpeditions,
+      completeAllModules,
     }),
     [
       activeModuleId,
       closeJournal,
+      completeAllModules,
       completeCheckpoint,
       getCompletedCheckpoints,
       getExpeditionProgress,
@@ -219,6 +270,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
       isStorageAvailable,
       openJournal,
       resetJournal,
+      startAllExpeditions,
       selectExpedition,
       startExpedition,
     ],

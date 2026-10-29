@@ -122,17 +122,25 @@ The **Journal** button in the navigation bar and the **View journal** buttons
 open the journal modal, which is always 90% of the viewport height. Its first
 page is a title page explaining the journal, followed by one page per started
 expedition ("Expedition 2 of 3"); the title shows the number of entries. The
-arrows and a floating dropdown switch pages. The development menu has **Reset
-journal progress** and **Reset whole site** (clears the journal and intro tour
-flag, then reloads as a first visit); both ask for a Yes/No confirmation.
+arrows and a floating dropdown switch pages. The development menu groups saved
+state controls under **Site flags**: **Reset whole site** clears the journal and
+both tour flags before reloading as a first visit, **Reset tour flags** clears
+both tour flags, **Reset journal progress** clears saved expedition progress,
+**Start all expeditions** adds every visible expedition to the journal without
+recording checkpoints, and **Set all modules complete** records every
+checkpoint in each visible module. The two reset actions that clear journal
+progress ask for confirmation.
 
 Journal text lives in each module's locale file under `journal.summary` and
 `journal.entries` (`id`, `title`, `summary`); generic journal labels are in
 `journal.json`. A journal entry can also include an optional localized `section`
 label, such as `Media` or `Quiz`, to group consecutive checkpoints under a
 heading. Omit `section` for entries that should remain ungrouped. Keep section
-labels and entry ids aligned in both locale files. Storage is local only;
-replace `journalStorage.ts` to sync with save data later.
+labels and entry ids aligned in both locale files. Modules can optionally map
+checkpoint ids to imported image URLs with `journalEntryImages`; add a localized
+`imageAlt` to the corresponding journal entry. Entries without an image stay
+text-only. Storage is local only; replace `journalStorage.ts` to sync with save
+data later.
 
 ### First-visit intro tour
 

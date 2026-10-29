@@ -1,7 +1,7 @@
 /**
   File: useJournal.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Define the expedition journal context and consumer hook.
@@ -37,6 +37,8 @@ type JournalContextValue = {
   getCompletedCheckpoints: (moduleId: string) => readonly string[]
   getExpeditionProgress: (module: LearningModule) => ExpeditionProgress
   resetJournal: () => void
+  startAllExpeditions: () => void
+  completeAllModules: () => void
 }
 
 export const JournalContext = createContext<JournalContextValue | null>(null)

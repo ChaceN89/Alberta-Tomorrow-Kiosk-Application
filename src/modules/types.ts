@@ -51,6 +51,7 @@ export interface LearningModule {
   estimatedMinutes: number
   checkpoints: readonly string[]
   component: LazyExoticComponent<ModuleActivityComponent>
+  journalEntryImages?: Readonly<Record<string, string>>
   journalEntryAction?: LazyExoticComponent<
     ComponentType<JournalEntryActionProps>
   >

@@ -59,13 +59,15 @@
         "id": "geology-video-started",
         "section": "Médias",
         "title": "Vidéo sur les paysages naturels commencée",
-        "summary": "Vous avez commencé à regarder la vidéo sur les paysages naturels de l’Alberta."
+        "summary": "Vous avez commencé à regarder la vidéo sur les paysages naturels de l’Alberta.",
+        "imageAlt": "Un lac turquoise entouré de conifères et de sommets des Rocheuses sous un ciel bleu."
       },
       {
         "id": "geology-quiz-completed",
         "section": "Questionnaire",
         "title": "Questionnaire de géologie terminé",
-        "summary": "Vous avez terminé le questionnaire de géologie et consigné vos réponses dans votre journal d’expédition."
+        "summary": "Vous avez terminé le questionnaire de géologie et consigné vos réponses dans votre journal d’expédition.",
+        "imageAlt": "Un lac turquoise entouré de conifères et de sommets des Rocheuses sous un ciel bleu."
       },
       {
         "id": "badlands",

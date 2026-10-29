@@ -16,6 +16,7 @@ import { Suspense, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/expedition.svg'
+import { PaperclipIcon } from '../icons/PaperclipIcon'
 import { useJournal } from '../../journal/useJournal'
 import { visibleModules } from '../../modules/registry'
 import type { LearningModule } from '../../modules/types'
@@ -116,14 +117,28 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
           {entryGroups.map((group, index) => {
             const items = (
               <ol className="space-y-3">
-                {group.entries.map((entry) =>
-                  isCheckpointComplete(module.id, entry.id) ? (
+                {group.entries.map((entry) => {
+                  const imageSrc = module.journalEntryImages?.[entry.id]
+                  const imageAlt =
+                    'imageAlt' in entry && typeof entry.imageAlt === 'string'
+                      ? entry.imageAlt
+                      : ''
+
+                  return isCheckpointComplete(module.id, entry.id) ? (
                     <li
                       key={entry.id}
-                      className="rounded-xl border border-pine/40 bg-canvas p-4"
+                      className={`rounded-xl border border-pine/40 bg-canvas ${
+                        imageSrc ? 'py-3 pl-4 pr-0' : 'p-4'
+                      }`}
                     >
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <div className="min-w-0">
+                      <div
+                        className={`flex gap-3 ${
+                          imageSrc
+                            ? 'items-center'
+                            : 'flex-col sm:flex-row sm:items-center sm:justify-between'
+                        }`}
+                      >
+                        <div className="min-w-0 grow">
                           <p className="text-sm font-semibold text-pine">
                             <span aria-hidden="true">✓ </span>
                             {t('recorded')}
@@ -135,6 +150,21 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                           )}
                           <p className="text-muted">{entry.summary}</p>
                         </div>
+                        {imageSrc && (
+                          <div className="relative -my-2 -mr-3 -ml-2 w-52 shrink-0">
+                            <img
+                              src={imageSrc}
+                              alt={imageAlt}
+                              loading="lazy"
+                              decoding="async"
+                              className="h-[8.6rem] w-52 -rotate-5 rounded-md border-2 border-white object-cover shadow-md"
+                            />
+                            <PaperclipIcon
+                              className="absolute -top-3 right-3 size-8 rotate-12 text-ink drop-shadow-md"
+                              hasImage
+                            />
+                          </div>
+                        )}
                         {module.journalEntryAction && (
                           <div className="shrink-0">
                             <Suspense fallback={null}>
@@ -150,13 +180,18 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                   ) : (
                     <li
                       key={entry.id}
-                      className="rounded-xl border border-dashed border-line p-4 text-muted"
+                      className={`rounded-xl border border-dashed border-line p-4 text-muted ${
+                        imageSrc ? 'relative pr-14' : ''
+                      }`}
                     >
                       <p className="font-semibold">{t('locked')}</p>
                       <p className="text-sm">{t('lockedHint')}</p>
+                      {imageSrc && (
+                        <PaperclipIcon className="absolute -top-3 right-3 size-8 rotate-12 text-ink drop-shadow-md" />
+                      )}
                     </li>
-                  ),
-                )}
+                  )
+                })}
               </ol>
             )
 
@@ -294,11 +329,18 @@ export function JournalModal() {
     <dialog
       ref={dialogRef}
       aria-labelledby={titleId}
-      className="m-auto h-[90dvh] w-[min(56rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
+      className="m-auto h-[90dvh] w-[min(64rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
       onClose={handleClose}
       onKeyDown={(event) => {
         // The page-switcher dropdown handles its own Escape key first.
         if (event.key === 'Escape') {
+          if (
+            event.target instanceof Element &&
+            event.target.closest('#journal-dev-tools-root')
+          ) {
+            return
+          }
+
           event.preventDefault()
           handleClose()
         }
@@ -310,6 +352,7 @@ export function JournalModal() {
       }}
     >
       <div className="flex h-full flex-col">
+        <div id="journal-dev-tools-root" className="contents" />
         <div id="journal-audio-player-root" className="contents" />
         <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line p-4 md:px-6">
           <h2 id={titleId} className="text-xl">

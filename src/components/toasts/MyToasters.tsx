@@ -29,7 +29,7 @@ const sharedToastStyle = {
 
 const statusToastOptions = {
   ...sharedToastStyle,
-  duration: 3000,
+  duration: 2000,
   loading: {
     iconTheme: {
       primary: 'var(--color-pine)',

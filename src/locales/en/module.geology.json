@@ -59,13 +59,15 @@
         "id": "geology-video-started",
         "section": "Media",
         "title": "Natural landscapes video started",
-        "summary": "You started watching the video about Alberta's natural landscapes."
+        "summary": "You started watching the video about Alberta's natural landscapes.",
+        "imageAlt": "A turquoise lake surrounded by evergreen trees and Rocky Mountain peaks beneath a blue sky."
       },
       {
         "id": "geology-quiz-completed",
         "section": "Quiz",
         "title": "Geology quiz completed",
-        "summary": "You completed the geology quiz and recorded your answers in your expedition journal."
+        "summary": "You completed the geology quiz and recorded your answers in your expedition journal.",
+        "imageAlt": "A turquoise lake surrounded by evergreen trees and Rocky Mountain peaks beneath a blue sky."
       },
       {
         "id": "badlands",

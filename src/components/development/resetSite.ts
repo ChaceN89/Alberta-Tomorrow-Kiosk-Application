@@ -1,7 +1,7 @@
 /**
   File: resetSite.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Clear every saved browser value this app owns and reload as a first visit.
@@ -16,9 +16,13 @@ import { clearJournalStorage } from '../../journal/journalStorage'
 import { resetIntroTour } from '../../site-tours/intro-tour/introTourStorage'
 import { resetMediaPlayerTour } from '../../site-tours/media-player-tour/mediaPlayerTourStorage'
 
-export function resetSite() {
-  clearJournalStorage()
+export function resetSiteTourFlags() {
   resetIntroTour()
   resetMediaPlayerTour()
+}
+
+export function resetSite() {
+  clearJournalStorage()
+  resetSiteTourFlags()
   window.location.assign('/')
 }

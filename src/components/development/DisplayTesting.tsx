@@ -1,7 +1,7 @@
 /**
   File: DisplayTesting.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Provide the development menu and set the document title and language.
@@ -13,6 +13,7 @@
   - None.
  */
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '../toasts/toasterIds'
@@ -25,9 +26,10 @@ import { ResetConfirmPanel } from './panels/ResetConfirmPanel'
 import { DarkModeTestingToggle } from './DarkModeTestingToggle'
 import { TailwindBreakPoints } from './TailwindBreakPoints'
 import { getCurrentBreakpoint } from './breakpoints'
-import { resetSite } from './resetSite'
+import { resetSite, resetSiteTourFlags } from './resetSite'
+import { SiteFlagsPanel } from './panels/SiteFlagsPanel'
 
-type ActivePanel = 'modules' | 'states' | 'tour' | null
+type ActivePanel = 'modules' | 'states' | 'tour' | 'site' | null
 type PendingReset = 'journal' | 'site' | null
 type BreakpointMode = 'off' | 'guides' | 'indicator'
 
@@ -36,7 +38,12 @@ export function DisplayTesting() {
   const { t } = useTranslation('development')
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
-  const { resetJournal } = useJournal()
+  const {
+    completeAllModules,
+    isOpen: isJournalOpen,
+    resetJournal,
+    startAllExpeditions,
+  } = useJournal()
   const [menuOpen, setMenuOpen] = useState(false)
   const [activePanel, setActivePanel] = useState<ActivePanel>(null)
   const [pendingReset, setPendingReset] = useState<PendingReset>(null)
@@ -63,8 +70,15 @@ export function DisplayTesting() {
     if (!menuOpen && !activePanel && !pendingReset) return
 
     const closeOnEscape = (event: KeyboardEvent) => {
-      // Modal dialogs (journal, intro tour) handle their own Escape key.
-      if (event.key !== 'Escape' || document.querySelector('dialog[open]')) {
+      // Modal dialogs handle Escape outside the developer tools.
+      const isInDeveloperTools =
+        event.target instanceof Element &&
+        Boolean(event.target.closest('#journal-dev-tools-root'))
+
+      if (
+        event.key !== 'Escape' ||
+        (document.querySelector('dialog[open]') && !isInDeveloperTools)
+      ) {
         return
       }
 
@@ -131,9 +145,33 @@ export function DisplayTesting() {
     setPendingReset(null)
   }
 
-  return (
+  const handleResetTourFlags = () => {
+    resetSiteTourFlags()
+    toast(t('tourFlagsReset'), {
+      id: 'site-tour-flags-reset',
+      toasterId: NOTIFICATION_TOASTER_ID,
+    })
+  }
+
+  const handleCompleteAllModules = () => {
+    completeAllModules()
+    toast(t('allModulesComplete'), {
+      id: 'all-modules-complete',
+      toasterId: NOTIFICATION_TOASTER_ID,
+    })
+  }
+
+  const handleStartAllExpeditions = () => {
+    startAllExpeditions()
+    toast(t('allExpeditionsStarted'), {
+      id: 'all-expeditions-started',
+      toasterId: NOTIFICATION_TOASTER_ID,
+    })
+  }
+
+  const tools = (
     <>
-      <div className="fixed top-4 right-4 z-100 flex flex-col items-end gap-2">
+      <div className="fixed top-4 right-4 z-[9999999] flex flex-col items-end gap-2">
         <button
           type="button"
           aria-label={t(
@@ -198,26 +236,18 @@ export function DisplayTesting() {
             <button
               type="button"
               className="dev-tool-menu-button"
+              onClick={() => openPanel('site')}
+            >
+              <span aria-hidden="true">⚑</span>
+              {t('siteFlags')}
+            </button>
+            <button
+              type="button"
+              className="dev-tool-menu-button"
               onClick={() => openPanel('tour')}
             >
               <span aria-hidden="true">?</span>
               {t('introTour')}
-            </button>
-            <button
-              type="button"
-              className="dev-tool-menu-button"
-              onClick={() => askToReset('journal')}
-            >
-              <span aria-hidden="true">↺</span>
-              {t('resetJournal')}
-            </button>
-            <button
-              type="button"
-              className="dev-tool-menu-button"
-              onClick={() => askToReset('site')}
-            >
-              <span aria-hidden="true">⚠</span>
-              {t('resetSite')}
             </button>
             <button
               type="button"
@@ -241,7 +271,7 @@ export function DisplayTesting() {
         )}
       </div>
       {breakpointMode === 'indicator' && (
-        <div className="fixed top-4 right-20 z-100">
+        <div className="fixed top-4 right-20 z-[9999999]">
           <span
             className="flex size-12 items-center justify-center rounded-full bg-gray-800 font-mono text-sm font-bold text-white shadow-lg"
             aria-label={t('currentBreakpoint', {
@@ -260,7 +290,7 @@ export function DisplayTesting() {
         currentBreakpoint={currentBreakpoint}
       />
       {(activePanel || pendingReset) && (
-        <div className="fixed top-20 right-4 z-100 w-[min(28rem,calc(100vw-2rem))] animate-[development-menu-enter_180ms_ease-out_both] motion-reduce:animate-none">
+        <div className="fixed top-20 right-4 z-[9999999] w-[min(28rem,calc(100vw-2rem))] animate-[development-menu-enter_180ms_ease-out_both] motion-reduce:animate-none">
           {activePanel === 'modules' && (
             <ModuleStatusPanel
               preloadState={preloadState}
@@ -272,6 +302,16 @@ export function DisplayTesting() {
           )}
           {activePanel === 'tour' && (
             <IntroTourPanel onClose={closePanel} onRestarted={closeAllTools} />
+          )}
+          {activePanel === 'site' && (
+            <SiteFlagsPanel
+              onClose={closePanel}
+              onResetSite={() => askToReset('site')}
+              onResetJournal={() => askToReset('journal')}
+              onResetTourFlags={handleResetTourFlags}
+              onStartAllExpeditions={handleStartAllExpeditions}
+              onCompleteAllModules={handleCompleteAllModules}
+            />
           )}
           {pendingReset && (
             <ResetConfirmPanel
@@ -293,4 +333,12 @@ export function DisplayTesting() {
       )}
     </>
   )
+
+  if (isJournalOpen) {
+    const journalToolsHost = document.getElementById('journal-dev-tools-root')
+
+    if (journalToolsHost) return createPortal(tools, journalToolsHost)
+  }
+
+  return tools
 }
