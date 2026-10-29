@@ -12,7 +12,7 @@
   Notes:
   - Question ids also identify their localized content and journal checkpoints.
  */
-import type { QuizQuestionDefinition } from '../../module-tools/quiz-system/types'
+import type { QuizQuestionDefinition } from '@/module-tools/quiz-system/types'
 
 export const geologyQuizQuestions = [
   {

@@ -13,7 +13,7 @@
   - This intentionally preloads the test module's audio to demonstrate media readiness.
     Preloading all audio is not generally recommended for production modules.
  */
-import type { ModulePreloadContext } from '../types'
+import type { ModulePreloadContext } from '@/modules/types'
 import { cachePreloadedFoxAudio } from './audioCache'
 import { foxesOfAlbertaTracks } from './tracks'
 

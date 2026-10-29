@@ -13,9 +13,9 @@
   - None.
  */
 import { useParams } from 'react-router-dom'
-import { ModuleNotFound } from '../../components/modules/ModuleNotFound'
-import { ModuleOverview } from '../../components/modules/ModuleOverview'
-import { visibleModules } from '../../modules/registry'
+import { ModuleNotFound } from '@/components/modules/ModuleNotFound'
+import { ModuleOverview } from '@/components/modules/ModuleOverview'
+import { visibleModules } from '@/modules/registry'
 import { ModuleActivity } from './module/ModuleActivity'
 
 export function ModulePage() {

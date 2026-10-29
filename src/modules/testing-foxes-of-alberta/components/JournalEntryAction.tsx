@@ -13,13 +13,13 @@
   - Reuses expedition tracks and their existing listening checkpoints.
  */
 import { useTranslation } from 'react-i18next'
-import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
-import { useJournal } from '../../../journal/useJournal'
-import type { JournalEntryActionProps } from '../../types'
-import { getPreloadedFoxAudioSource } from '../audioCache'
-import { foxesVideoCheckpoint } from '../checkpoints'
-import { foxesOfAlbertaTracks } from '../tracks'
-import { foxesOfAlbertaVideo } from '../videos'
+import { TrackPlayButton } from '@/module-tools/media-player/TrackPlayButton'
+import { useJournal } from '@/journal/useJournal'
+import type { JournalEntryActionProps } from '@/modules/types'
+import { getPreloadedFoxAudioSource } from '@/modules/testing-foxes-of-alberta/audioCache'
+import { foxesVideoCheckpoint } from '@/modules/testing-foxes-of-alberta/checkpoints'
+import { foxesOfAlbertaTracks } from '@/modules/testing-foxes-of-alberta/tracks'
+import { foxesOfAlbertaVideo } from '@/modules/testing-foxes-of-alberta/videos'
 
 export default function JournalEntryAction({
   entryId,

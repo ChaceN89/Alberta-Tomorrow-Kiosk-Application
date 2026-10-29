@@ -1,7 +1,7 @@
 /**
   File: ApplicationStatePanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Preview startup and activity loading/error screens on demand.
@@ -15,15 +15,15 @@
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { Loading } from '../../app-states/Loading'
-import { SplashScreen } from '../../app-states/SplashScreen'
-import { JournalToast } from '../../toasts/JournalToast'
+import { Loading } from '@/components/app-states/Loading'
+import { SplashScreen } from '@/components/app-states/SplashScreen'
+import { JournalToast } from '@/journal/components/JournalToast'
 import {
   NOTIFICATION_TOASTER_ID,
   STATUS_TOASTER_ID,
-} from '../../toasts/toasterIds'
-import { useJournal } from '../../../journal/useJournal'
-import type { ExpeditionProgress } from '../../../journal/useJournal'
+} from '@/components/toasts/toasterIds'
+import { useJournal } from '@/journal/useJournal'
+import type { ExpeditionProgress } from '@/journal/useJournal'
 import { DevPanel } from './DevPanel'
 
 type ApplicationStatePanelProps = {

@@ -14,13 +14,13 @@
   - Question content lives in module.wildlifeFinder.json under activity.
  */
 import { useTranslation } from 'react-i18next'
-import { buildQuizQuestions } from '../../../module-tools/quiz-system/buildQuizQuestions'
-import { Quiz } from '../../../module-tools/quiz-system/Quiz'
-import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
-import type { ModuleCheckpointProps } from '../../types'
-import { getPreloadedFoxAudioSource } from '../audioCache'
-import { foxesOfAlbertaQuizQuestions } from '../quiz'
-import { foxesOfAlbertaTracks } from '../tracks'
+import { buildQuizQuestions } from '@/module-tools/quiz-system/buildQuizQuestions'
+import { Quiz } from '@/module-tools/quiz-system/Quiz'
+import { TrackPlayButton } from '@/module-tools/media-player/TrackPlayButton'
+import type { ModuleCheckpointProps } from '@/modules/types'
+import { getPreloadedFoxAudioSource } from '@/modules/testing-foxes-of-alberta/audioCache'
+import { foxesOfAlbertaQuizQuestions } from '@/modules/testing-foxes-of-alberta/quiz'
+import { foxesOfAlbertaTracks } from '@/modules/testing-foxes-of-alberta/tracks'
 
 type HabitatQuizProps = ModuleCheckpointProps & {
   onBackToActivity: () => void

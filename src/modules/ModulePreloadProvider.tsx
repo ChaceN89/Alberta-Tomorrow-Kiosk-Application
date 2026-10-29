@@ -26,7 +26,7 @@ import { useLocation } from 'react-router-dom'
 import {
   ACTIVITY_PRELOAD_TOAST_ID,
   STATUS_TOASTER_ID,
-} from '../components/toasts/toasterIds'
+} from '@/components/toasts/toasterIds'
 import {
   ModulePreloadContext,
   type ModulePreloadState,

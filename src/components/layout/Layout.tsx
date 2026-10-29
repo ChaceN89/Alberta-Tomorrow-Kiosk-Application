@@ -1,7 +1,7 @@
 /**
   File: Layout.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Compose the skip link, navbar, routed page, footer, and global overlays.
@@ -14,12 +14,12 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { AudioPlayerPanel } from '../../module-tools/media-player/AudioPlayerPanel'
-import { DisplayTesting } from '../development/DisplayTesting'
-import { MyToasters } from '../toasts/MyToasters'
+import { AudioPlayerPanel } from '@/module-tools/media-player/AudioPlayerPanel'
+import { DisplayTesting } from '@/components/development/DisplayTesting'
+import { MyToasters } from '@/components/toasts/MyToasters'
 import { Footer } from './Footer'
 import { IntroTutorial } from './IntroTutorial'
-import { JournalModal } from './JournalModal'
+import { JournalModal } from '@/journal/components/JournalModal'
 import { Navbar } from './Navbar'
 import { OverlayScrollbar } from './OverlayScrollbar'
 

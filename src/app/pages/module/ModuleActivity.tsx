@@ -15,8 +15,8 @@
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Loading } from '../../../components/app-states/Loading'
-import { useModulePreload } from '../../../modules/useModulePreload'
+import { Loading } from '@/components/app-states/Loading'
+import { useModulePreload } from '@/modules/useModulePreload'
 import { ExpeditionActivity } from './ExpeditionActivity'
 import type { ModuleActivityProps } from './types'
 

@@ -14,10 +14,10 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import type { ModulePreloadState } from '../../../modules/useModulePreload'
-import { useModulePreload } from '../../../modules/useModulePreload'
-import { visibleModules } from '../../../modules/registry'
-import type { LearningModule } from '../../../modules/types'
+import type { ModulePreloadState } from '@/modules/useModulePreload'
+import { useModulePreload } from '@/modules/useModulePreload'
+import { visibleModules } from '@/modules/registry'
+import type { LearningModule } from '@/modules/types'
 import { DevPanel } from './DevPanel'
 
 type ModuleStatusPanelProps = {

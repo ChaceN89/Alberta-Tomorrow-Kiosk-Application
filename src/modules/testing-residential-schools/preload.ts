@@ -12,7 +12,7 @@
   Notes:
   - None.
  */
-import type { ModulePreloadContext } from '../types'
+import type { ModulePreloadContext } from '@/modules/types'
 
 const FAKE_PRELOAD_DURATION_MS = 2_000
 const PROGRESS_INTERVAL_MS = 100

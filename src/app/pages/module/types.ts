@@ -12,7 +12,7 @@
   Notes:
   - None.
  */
-import type { LearningModule } from '../../../modules/types'
+import type { LearningModule } from '@/modules/types'
 
 export type ModuleActivityProps = {
   /** The module selected by the current route. */

@@ -16,8 +16,8 @@
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ErrorBoundary } from '../components/app-states/ErrorBoundary'
-import '../styles/global.css'
+import { ErrorBoundary } from '@/components/app-states/ErrorBoundary'
+import '@/styles/global.css'
 import { AppStartup } from './AppStartup'
 import './i18n'
 import { App } from './App'

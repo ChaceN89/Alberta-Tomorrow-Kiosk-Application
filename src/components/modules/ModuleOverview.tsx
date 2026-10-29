@@ -15,9 +15,9 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
-import { useJournal } from '../../journal/useJournal'
-import { useModulePreload } from '../../modules/useModulePreload'
-import type { LearningModule } from '../../modules/types'
+import { useJournal } from '@/journal/useJournal'
+import { useModulePreload } from '@/modules/useModulePreload'
+import type { LearningModule } from '@/modules/types'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
 type ModuleOverviewProps = {

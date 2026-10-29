@@ -15,8 +15,8 @@
  */
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { ErrorScreen } from '../components/app-states/ErrorScreen'
-import { SplashScreen } from '../components/app-states/SplashScreen'
+import { ErrorScreen } from '@/components/app-states/ErrorScreen'
+import { SplashScreen } from '@/components/app-states/SplashScreen'
 import { initializeApp } from './initializeApp'
 
 //

@@ -15,13 +15,13 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
-import logo from '../../assets/expedition.svg'
-import { useIntroTutorial } from '../../tutorials/intro-tutorial/useIntroTutorial'
-import { useJournal } from '../../journal/useJournal'
-import { useModulePreload } from '../../modules/useModulePreload'
-import { Dropdown } from '../shared/Dropdown'
-import { HelpIcon } from '../icons/HelpIcon'
-import { JournalIcon } from '../icons/JournalIcon'
+import logo from '@/assets/expedition.svg'
+import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
+import { useJournal } from '@/journal/useJournal'
+import { useModulePreload } from '@/modules/useModulePreload'
+import { Dropdown } from '@/components/shared/Dropdown'
+import { HelpIcon } from '@/components/icons/HelpIcon'
+import { JournalIcon } from '@/components/icons/JournalIcon'
 
 export function Navbar() {
   const { t, i18n } = useTranslation('global')

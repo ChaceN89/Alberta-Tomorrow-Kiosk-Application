@@ -16,14 +16,14 @@
   - None.
  */
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Layout } from '../components/layout/Layout'
-import { NotFound } from '../components/app-states/NotFound'
+import { Layout } from '@/components/layout/Layout'
+import { NotFound } from '@/components/app-states/NotFound'
 import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
-import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
-import { JournalProvider } from '../journal/JournalProvider'
-import { IntroTutorialProvider } from '../tutorials/intro-tutorial/IntroTutorialProvider'
-import { AudioPlayerProvider } from '../module-tools/media-player/AudioPlayerProvider'
+import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
+import { JournalProvider } from '@/journal/JournalProvider'
+import { IntroTutorialProvider } from '@/tutorials/intro-tutorial/IntroTutorialProvider'
+import { AudioPlayerProvider } from '@/module-tools/media-player/AudioPlayerProvider'
 
 export function App() {
   return (

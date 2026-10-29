@@ -13,8 +13,8 @@
   - None.
  */
 import { useTranslation } from 'react-i18next'
-import { ModuleCard } from '../../components/modules/ModuleCard'
-import { visibleModules } from '../../modules/registry'
+import { ModuleCard } from '@/components/modules/ModuleCard'
+import { visibleModules } from '@/modules/registry'
 
 export function HomePage() {
   const { t } = useTranslation('home')

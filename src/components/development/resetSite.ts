@@ -12,9 +12,9 @@
   Notes:
   - None.
  */
-import { clearJournalStorage } from '../../journal/journalStorage'
-import { resetIntroTutorial } from '../../tutorials/intro-tutorial/introTutorialStorage'
-import { resetMediaPlayerTutorial } from '../../tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
+import { clearJournalStorage } from '@/journal/journalStorage'
+import { resetIntroTutorial } from '@/tutorials/intro-tutorial/introTutorialStorage'
+import { resetMediaPlayerTutorial } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
 
 export function resetSiteTutorialFlags() {
   resetIntroTutorial()

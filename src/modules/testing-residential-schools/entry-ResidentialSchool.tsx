@@ -15,7 +15,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import type { ModuleActivityProps } from '../types'
+import type { ModuleActivityProps } from '@/modules/types'
 
 export default function ResidentialSchool({
   moduleId,

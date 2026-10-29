@@ -1,7 +1,7 @@
 /**
   File: JournalProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Track expedition checkpoints, persist them locally, and control the journal modal.
@@ -15,10 +15,10 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { JournalToast } from '../components/toasts/JournalToast'
-import { NOTIFICATION_TOASTER_ID } from '../components/toasts/toasterIds'
-import { visibleModules } from '../modules/registry'
-import type { LearningModule } from '../modules/types'
+import { JournalToast } from './components/JournalToast'
+import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
+import { visibleModules } from '@/modules/registry'
+import type { LearningModule } from '@/modules/types'
 import {
   loadJournal,
   saveJournal,

@@ -14,9 +14,9 @@
  */
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { NOTIFICATION_TOASTER_ID } from '../../toasts/toasterIds'
-import { useIntroTutorial } from '../../../tutorials/intro-tutorial/useIntroTutorial'
-import { resetMediaPlayerTutorial } from '../../../tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
+import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
+import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
+import { resetMediaPlayerTutorial } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
 import { DevPanel } from './DevPanel'
 
 type TutorialsPanelProps = {

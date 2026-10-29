@@ -41,7 +41,7 @@ const statusToastOptions = {
 
 const notificationToastOptions = {
   ...sharedToastStyle,
-  duration: 3000,
+  duration: 2000,
 }
 
 // exports multiple toaster containers so different toasts can access each type

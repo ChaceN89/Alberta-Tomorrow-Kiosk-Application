@@ -13,7 +13,7 @@
   - None.
  */
 import { useTranslation } from 'react-i18next'
-import type { LearningModule } from '../../modules/types'
+import type { LearningModule } from '@/modules/types'
 
 type ModuleTitleProps = {
   module: LearningModule

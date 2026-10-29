@@ -14,8 +14,8 @@
   - None.
  */
 import { Suspense, useCallback, useEffect } from 'react'
-import { Loading } from '../../../components/app-states/Loading'
-import { useJournal } from '../../../journal/useJournal'
+import { Loading } from '@/components/app-states/Loading'
+import { useJournal } from '@/journal/useJournal'
 import type { ModuleActivityProps } from './types'
 
 export function ExpeditionActivity({ module }: ModuleActivityProps) {

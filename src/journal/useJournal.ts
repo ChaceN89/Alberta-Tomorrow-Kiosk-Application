@@ -13,7 +13,7 @@
   - None.
  */
 import { createContext, useContext } from 'react'
-import type { LearningModule } from '../modules/types'
+import type { LearningModule } from '@/modules/types'
 
 export type ExpeditionStatus = 'notStarted' | 'inProgress' | 'complete'
 

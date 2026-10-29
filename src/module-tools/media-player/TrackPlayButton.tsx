@@ -15,7 +15,7 @@
   - A track can only appear once in the queue at a time.
  */
 import { useTranslation } from 'react-i18next'
-import { Tooltip } from '../../components/shared/Tooltip'
+import { Tooltip } from '@/components/shared/Tooltip'
 import { AddToQueueIcon, PauseIcon, PlayIcon } from './AudioPlayerIcons'
 import {
   useAudioPlayer,

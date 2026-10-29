@@ -13,7 +13,7 @@
   - None.
  */
 import { useTranslation } from 'react-i18next'
-import logo from '../../assets/expedition.svg'
+import logo from '@/assets/expedition.svg'
 import { Loading } from './Loading'
 
 type SplashScreenProps = {

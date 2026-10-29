@@ -1,7 +1,7 @@
 /**
   File: JournalToast.tsx | Author: Chace Nielson
-  Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Created: Oct 29, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Show a journal update with its progress mountain and a journal icon action.
@@ -13,9 +13,9 @@
   - None.
  */
 import { useTranslation } from 'react-i18next'
-import { ExpeditionPeak } from '../modules/ExpeditionPeak'
-import { JournalIcon } from '../icons/JournalIcon'
-import type { ExpeditionProgress } from '../../journal/useJournal'
+import { JournalIcon } from '@/components/icons/JournalIcon'
+import { ExpeditionPeak } from '@/components/modules/ExpeditionPeak'
+import type { ExpeditionProgress } from '@/journal/useJournal'
 
 type JournalToastProps = {
   message: string

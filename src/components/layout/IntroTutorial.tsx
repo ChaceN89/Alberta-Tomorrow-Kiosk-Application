@@ -14,13 +14,13 @@
  */
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
-import logo from '../../assets/expedition.svg'
-import '../../styles/IntroTutorial.css'
+import logo from '@/assets/expedition.svg'
+import '@/styles/IntroTutorial.css'
 import {
   introTutorialSteps,
   type TutorialAnchor,
-} from '../../tutorials/intro-tutorial/steps'
-import { useIntroTutorial } from '../../tutorials/intro-tutorial/useIntroTutorial'
+} from '@/tutorials/intro-tutorial/steps'
+import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
 
 const POPUP_MARGIN = 16
 const POPUP_GAP = 14

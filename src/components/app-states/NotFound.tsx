@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { FunFact } from '../shared/FunFact'
+import { FunFact } from '@/components/shared/FunFact'
 
 export function NotFound() {
   const { t } = useTranslation('global')

@@ -15,7 +15,7 @@
  */
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ExpeditionProgress } from '../../journal/useJournal'
+import type { ExpeditionProgress } from '@/journal/useJournal'
 
 type ExpeditionPeakProps = {
   progress: ExpeditionProgress

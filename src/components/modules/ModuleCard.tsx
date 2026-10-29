@@ -14,8 +14,8 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useJournal } from '../../journal/useJournal'
-import { modules } from '../../modules/registry'
+import { useJournal } from '@/journal/useJournal'
+import { modules } from '@/modules/registry'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
 type ModuleCardProps = {
