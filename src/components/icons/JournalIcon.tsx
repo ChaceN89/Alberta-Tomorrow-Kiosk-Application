@@ -12,25 +12,17 @@
   Notes:
   - None.
  */
+import { Icon } from './Icon'
+
 type JournalIconProps = {
   className?: string
 }
 
 export function JournalIcon({ className = 'size-5' }: JournalIconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <Icon className={className}>
       <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Z" />
       <path d="M5 17a3 3 0 0 1 3-3h11M10 8h5" />
-    </svg>
+    </Icon>
   )
 }

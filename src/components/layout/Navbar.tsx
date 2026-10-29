@@ -20,7 +20,8 @@ import { useIntroTour } from '../../site-tours/intro-tour/useIntroTour'
 import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { Dropdown } from '../shared/Dropdown'
-import { JournalIcon } from '../shared/JournalIcon'
+import { HelpIcon } from '../icons/HelpIcon'
+import { JournalIcon } from '../icons/JournalIcon'
 
 export function Navbar() {
   const { t, i18n } = useTranslation('global')
@@ -72,25 +73,11 @@ export function Navbar() {
             {pathname === '/' && (
               <button
                 type="button"
-                className="button-secondary size-12 shrink-0 rounded-full p-0"
+                className="group inline-flex size-12 shrink-0 items-center justify-center rounded-full p-0 text-pine hover:text-pine-dark"
                 aria-label={t('navigation.startTour')}
                 onClick={restartTour}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  focusable="false"
-                  className="size-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M9.6 9a2.4 2.4 0 1 1 3.8 1.9c-.9.7-1.4 1.1-1.4 2.6" />
-                  <path d="M12 17h.01" />
-                </svg>
+                <HelpIcon className="size-6 transition-transform duration-200 group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none" />
               </button>
             )}
           </nav>
