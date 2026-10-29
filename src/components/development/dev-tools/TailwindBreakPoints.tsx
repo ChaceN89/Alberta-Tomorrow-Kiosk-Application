@@ -46,7 +46,7 @@ export function TailwindBreakPoints({
         <>
           <div
             aria-hidden="true"
-            className="pointer-events-none fixed inset-0 z-90 overflow-hidden"
+            className="pointer-events-none fixed inset-0 z-(--z-dev-guides) overflow-hidden"
           >
             {breakpoints.map((breakpoint) => {
               const colors = breakpointColors[breakpoint.name]
@@ -62,7 +62,7 @@ export function TailwindBreakPoints({
           </div>
           <section
             aria-label={t('breakpointPanel')}
-            className="pointer-events-none fixed inset-0 z-95 flex items-center justify-center p-4"
+            className="pointer-events-none fixed inset-0 z-(--z-dev-guides) flex items-center justify-center p-4"
           >
             <div className="max-h-[calc(100dvh-2rem)] w-full max-w-sm overflow-auto rounded-xl border border-line bg-surface p-4 text-ink shadow-lg">
               <div className="mb-1 flex items-center justify-between gap-4">

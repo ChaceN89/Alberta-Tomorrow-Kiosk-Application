@@ -4,7 +4,7 @@
   Date Updated: Oct 29, 2026
 
   Description:
-  - Compose the skip link, navbar, routed page, footer, and global overlays.
+  - Compose the skip link, navbar, routed page, footer, and route-level overlays.
 
   Usage:
   - Wraps the routed pages registered in App.
@@ -15,11 +15,8 @@
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
 import { AudioPlayerPanel } from '@/module-tools/media-player/AudioPlayerPanel'
-import { DisplayTesting } from '@/components/development/dev-tools/DisplayTesting'
-import { MyToasters } from '@/components/toasts/MyToasters'
 import { Footer } from './Footer'
 import { IntroTutorial } from './IntroTutorial'
-import { JournalModal } from '@/journal/components/JournalModal'
 import { Navbar } from './Navbar'
 import { OverlayScrollbar } from './OverlayScrollbar'
 
@@ -45,14 +42,8 @@ export function Layout() {
         <Outlet />
       </main>
 
-      {/* Footer and global overlays */}
+      {/* Footer */}
       <Footer />
-
-      {/* Development and global overlay components - doens't render if in production */}
-      <DisplayTesting />
-
-      {/* the modal component  */}
-      <JournalModal />
 
       {/* The intro tutorial component renders the guided tutorial dialog. */}
       <IntroTutorial />
@@ -62,9 +53,6 @@ export function Layout() {
 
       {/* Custom overlay scrollbar component */}
       <OverlayScrollbar />
-
-      {/* Separate containers for progress/status and user notifications */}
-      <MyToasters />
     </div>
   )
 }

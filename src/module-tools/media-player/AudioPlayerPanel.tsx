@@ -209,12 +209,10 @@ export function AudioPlayerPanel() {
 
   const panel = (
     <div
-      id="audio-player-toast-root"
       className={`audio-player-stage ${
         isFullscreen ? 'audio-player-stage--fullscreen' : ''
       } ${stageExitAnimationClass}`}
     >
-      <div id="audio-player-dev-tools-root" className="contents" />
       <MediaPlayerTutorial />
       <div
         className={`audio-player-frame ${
@@ -342,7 +340,7 @@ export function AudioPlayerPanel() {
         <AudioPlayerTabs requestClose={requestClose} />
         {isConfirmingClose && (
           <div
-            className={`audio-close-dialog pointer-events-auto absolute inset-0 z-100 grid place-items-center p-4 ${
+            className={`audio-close-dialog pointer-events-auto absolute inset-0 z-(--z-player-dialog) grid place-items-center p-4 ${
               !isPanelOpen && !isFullscreen
                 ? 'audio-close-dialog--collapsed'
                 : 'bg-ink/50'

@@ -141,7 +141,7 @@
 
 .audio-player-stage {
   position: fixed;
-  z-index: 40;
+  z-index: var(--z-media-player);
   inset: 0;
   pointer-events: none;
   background-color: transparent;
@@ -149,7 +149,7 @@
 }
 
 .audio-player-stage--fullscreen {
-  z-index: 100;
+  z-index: var(--z-media-player-fullscreen);
   pointer-events: auto;
   background-color: color-mix(in srgb, var(--color-ink) 50%, transparent);
   -webkit-backdrop-filter: blur(8px);
@@ -158,7 +158,7 @@
 
 .audio-player-tutorial-backdrop {
   position: fixed;
-  z-index: 1;
+  z-index: var(--z-player-tutorial-backdrop);
   inset: 0;
   background-color: rgb(8 24 20 / 16%);
   backdrop-filter: blur(4px);
@@ -167,7 +167,7 @@
 
 .audio-player-tutorial-popup {
   position: fixed;
-  z-index: 3;
+  z-index: var(--z-player-tutorial-popup);
   width: min(28.6rem, calc(100vw - 2rem));
   pointer-events: auto;
 }
@@ -190,7 +190,7 @@
 
 .audio-player-frame {
   position: absolute;
-  z-index: 2;
+  z-index: var(--z-player-frame);
   top: calc(100dvh - min(calc(26rem + 10px), 100dvh - 2rem) - 1rem);
   left: 0;
   width: min(26rem, calc(100vw - 3rem));

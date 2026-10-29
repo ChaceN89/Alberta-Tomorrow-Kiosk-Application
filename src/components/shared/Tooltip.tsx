@@ -1,7 +1,7 @@
 /**
   File: Tooltip.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Show a delayed, viewport-aware tooltip when its control is hovered or focused.
@@ -89,7 +89,7 @@ export function Tooltip({ text, children, delay = 850 }: TooltipProps) {
           <span
             id={tooltipId}
             role="tooltip"
-            className="pointer-events-none fixed z-[200] max-w-64 -translate-x-1/2 -translate-y-full rounded-lg bg-ink px-3 py-2 text-center text-sm text-surface shadow-lg"
+            className="pointer-events-none fixed z-(--z-tooltip) max-w-64 -translate-x-1/2 -translate-y-full rounded-lg bg-ink px-3 py-2 text-center text-sm text-surface shadow-lg"
             style={{ left: position.left, top: position.top }}
           >
             {text}

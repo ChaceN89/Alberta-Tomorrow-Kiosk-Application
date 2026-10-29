@@ -13,16 +13,12 @@
   - None.
  */
 import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
-import { useJournal } from '@/journal/useJournal'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
-import { useAudioPlayer } from '@/module-tools/media-player/useAudioPlayer'
-import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
 import { requestMediaPlayerTutorialFinish } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import { markMediaPlayerTutorialCompleted } from '@/save-data/mediaPlayerTutorialStorage'
 import { ApplicationStatePanel } from '../panels/ApplicationStatePanel'
@@ -44,11 +40,7 @@ export function DisplayTesting() {
   const { t } = useTranslation('development')
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
-  const { finish: finishIntroTutorial, isActive: isIntroTutorialActive } =
-    useIntroTutorial()
-  const { isFullscreen: isPlayerFullscreen } = useAudioPlayer()
-  const { isOpen: isMediaViewerOpen } = useMediaViewer()
-  const { isOpen: isJournalOpen } = useJournal()
+  const { finish: finishIntroTutorial } = useIntroTutorial()
   const {
     completeAllModules,
     progressAllNextCheckpoints,
@@ -114,7 +106,9 @@ export function DisplayTesting() {
   if (!isDevelopment) return null
 
   const toggleTools = () => {
-    setMenuOpen((open) => !open)
+    const toolsAreOpen =
+      menuOpen || activePanel !== null || pendingReset !== null
+    setMenuOpen(!toolsAreOpen)
     setActivePanel(null)
     setPendingReset(null)
   }
@@ -200,7 +194,7 @@ export function DisplayTesting() {
 
   const tools = (
     <>
-      <div className="fixed top-4 right-4 z-9999999 flex flex-col items-end gap-2">
+      <div className="pointer-events-auto fixed top-4 right-4 z-(--z-dev-tools) flex flex-col items-end gap-2">
         <button
           type="button"
           aria-label={t(
@@ -208,9 +202,11 @@ export function DisplayTesting() {
               ? 'closeTools'
               : 'openTools',
           )}
-          aria-expanded={menuOpen}
+          aria-expanded={
+            menuOpen || activePanel !== null || pendingReset !== null
+          }
           aria-haspopup="true"
-          className="flex size-12 items-center justify-center rounded-full bg-gray-800/80 text-xl text-white shadow-lg backdrop-blur-sm transition-transform hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:transition-none"
+          className="flex size-12 items-center justify-center rounded-full bg-gray-800/35 text-xl text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-gray-800/70 hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:transition-none"
           onClick={toggleTools}
         >
           <span aria-hidden="true">
@@ -300,7 +296,7 @@ export function DisplayTesting() {
         )}
       </div>
       {breakpointMode === 'indicator' && (
-        <div className="fixed top-4 right-20 z-9999999">
+        <div className="fixed top-4 right-20 z-(--z-dev-tools)">
           <span
             className="flex size-12 items-center justify-center rounded-full bg-gray-800 font-mono text-sm font-bold text-white shadow-lg"
             aria-label={t('currentBreakpoint', {
@@ -320,7 +316,7 @@ export function DisplayTesting() {
         breakpoints={breakpoints}
       />
       {(activePanel || pendingReset) && (
-        <div className="fixed top-20 right-4 z-9999999 w-[min(28rem,calc(100vw-2rem))] animate-[development-menu-enter_180ms_ease-out_both] motion-reduce:animate-none">
+        <div className="pointer-events-auto fixed top-20 right-4 z-(--z-dev-tools) w-[min(28rem,calc(100vw-2rem))] animate-[development-menu-enter_180ms_ease-out_both] motion-reduce:animate-none">
           {activePanel === 'modules' && (
             <ModuleStatusPanel
               preloadState={preloadState}
@@ -369,25 +365,5 @@ export function DisplayTesting() {
     </>
   )
 
-  const overlayHostId = isMediaViewerOpen
-    ? 'media-viewer-dev-tools-root'
-    : isJournalOpen
-      ? 'journal-dev-tools-root'
-      : isIntroTutorialActive
-        ? 'intro-tutorial-dev-tools-root'
-        : isPlayerFullscreen
-          ? 'audio-player-dev-tools-root'
-          : null
-
-  if (!overlayHostId) return tools
-
-  const overlayHost = document.getElementById(overlayHostId)
-
-  if (!overlayHost) {
-    throw new Error(
-      `The active overlay dev tools root "${overlayHostId}" is missing.`,
-    )
-  }
-
-  return createPortal(tools, overlayHost)
+  return tools
 }

@@ -37,6 +37,33 @@
   --breakpoint-2xl: 96rem;
 }
 
+/*
+  Layer order, lowest to highest. Native modal dialogs (journal, media viewer,
+  tutorials) sit in the browser top layer above every value below, so the
+  notification toasts and developer tools move into the active dialog (see
+  GlobalOverlayLayer) and use these same values to stay above its content.
+
+  page content < status toasts < media player < tooltips < notification toasts
+  < splash screen, with the developer tools above everything but the splash
+  (they only mount once startup finishes). The player-* values only order the
+  parts inside the media player stage, which is its own stacking context.
+*/
+@theme static {
+  --z-content-popover: 10;
+  --z-status-toast: 20;
+  --z-media-player: 40;
+  --z-media-player-fullscreen: 50;
+  --z-tooltip: 60;
+  --z-notification-toast: 70;
+  --z-splash: 100;
+  --z-dev-guides: 1000;
+  --z-dev-tools: 1010;
+  --z-player-tutorial-backdrop: 1;
+  --z-player-frame: 2;
+  --z-player-tutorial-popup: 3;
+  --z-player-dialog: 4;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 html {
@@ -119,6 +146,10 @@ html.dark .button-secondary[aria-pressed='true'] {
     @apply inline-flex min-h-12 items-center justify-center rounded-xl bg-red-700 px-5 py-3 text-center font-semibold text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none;
   }
 
+  .dev-module-button {
+    @apply min-h-10 gap-1 px-1.5 py-2 text-xs leading-tight;
+  }
+
   .dev-tool-menu-button {
     @apply flex min-h-10 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium whitespace-nowrap text-ink transition-colors hover:bg-canvas motion-reduce:transition-none;
   }
@@ -132,6 +163,6 @@ html.dark .button-secondary[aria-pressed='true'] {
   }
 
   .skip-link {
-    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-10 focus:rounded-lg focus:bg-surface focus:p-4;
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-(--z-content-popover) focus:rounded-lg focus:bg-surface focus:p-4;
   }
 }

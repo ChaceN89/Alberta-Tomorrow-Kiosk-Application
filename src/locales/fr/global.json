@@ -49,6 +49,8 @@
   },
   "error": {
     "title": "Un problème est survenu.",
-    "description": "Impossible d'ouvrir cette activité. Retournez à l'accueil et réessayez. Si le problème persiste, vérifiez votre connexion et rechargez la page."
+    "description": "Impossible d'ouvrir cette activité. Retournez à l'accueil et réessayez. Si le problème persiste, vérifiez votre connexion et rechargez la page.",
+    "developmentDetails": "Détails de l’erreur de développement",
+    "componentStack": "Pile des composants React"
   }
 }

@@ -10,9 +10,11 @@
   - Rendered by ApplicationStatePanel when a preview is selected.
 
   Notes:
-  - None.
+  - The dialog is portaled to the body: the developer-tools host moves into the
+    open dialog, so the dialog cannot be inside that host.
  */
 import { useEffect, useId, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import logo from '@/assets/expedition.svg'
 import { Loading } from '@/components/app-states/Loading'
@@ -53,7 +55,7 @@ export function StatePreview({ state, onClose }: StatePreviewProps) {
     }
   }
 
-  return (
+  return createPortal(
     <dialog
       ref={dialogRef}
       aria-labelledby={titleId}
@@ -110,6 +112,7 @@ export function StatePreview({ state, onClose }: StatePreviewProps) {
           )}
         </div>
       </div>
-    </dialog>
+    </dialog>,
+    document.body,
   )
 }

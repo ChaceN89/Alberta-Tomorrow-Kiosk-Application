@@ -1,7 +1,7 @@
 /**
   File: SplashScreen.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Show the branded initial loading screen and fade transition.
@@ -25,7 +25,7 @@ export function SplashScreen({ isExiting }: SplashScreenProps) {
 
   return (
     <div
-      className={`splash-screen fixed inset-0 z-50 grid place-items-center bg-canvas ${
+      className={`splash-screen fixed inset-0 z-(--z-splash) grid place-items-center bg-canvas ${
         isExiting ? 'splash-screen--exiting' : ''
       }`}
     >

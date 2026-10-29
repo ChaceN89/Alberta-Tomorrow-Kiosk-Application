@@ -8,10 +8,10 @@
   - ExpeditionProgressProvider shares saved module progress; JournalProvider controls its UI;
   - IntroTutorialProvider manages onboarding;
   - ModulePreloadProvider tracks activity loading for each of the different module pages/module data.
-  - Layout wraps home, module, and not-found routes with shared application UI.
+  - AppStartup gates route rendering; the global overlays mount once startup is ready.
 
   Usage:
-  - Rendered by AppStartup after initialization succeeds.
+  - Rendered by main.tsx as the root of the routed application.
 
   Notes:
   - None.
@@ -19,8 +19,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
 import { NotFound } from '@/components/app-states/NotFound'
+import { ErrorBoundary } from '@/components/app-states/ErrorBoundary'
+import { GlobalOverlayLayer } from '@/components/toasts/GlobalOverlayLayer'
+import { JournalModal } from '@/journal/components/JournalModal'
 import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
+import { AppStartup } from './AppStartup'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/JournalProvider'
 import { ExpeditionProgressProvider } from '@/save-data/ExpeditionProgressProvider'
@@ -38,16 +42,21 @@ export function App() {
               {/* Above the routes so media keeps playing while learners navigate */}
               <AudioPlayerProvider>
                 <MediaViewerProvider>
-                  <Routes>
-                    <Route element={<Layout />}>
-                      <Route index element={<HomePage />} />
-                      <Route
-                        path="modules/:moduleId/*"
-                        element={<ModulePage />}
-                      />
-                      <Route path="*" element={<NotFound />} />
-                    </Route>
-                  </Routes>
+                  <ErrorBoundary>
+                    <AppStartup overlays={<GlobalOverlayLayer />}>
+                      <Routes>
+                        <Route element={<Layout />}>
+                          <Route index element={<HomePage />} />
+                          <Route
+                            path="modules/:moduleId/*"
+                            element={<ModulePage />}
+                          />
+                          <Route path="*" element={<NotFound />} />
+                        </Route>
+                      </Routes>
+                    </AppStartup>
+                  </ErrorBoundary>
+                  <JournalModal />
                 </MediaViewerProvider>
               </AudioPlayerProvider>
             </ModulePreloadProvider>

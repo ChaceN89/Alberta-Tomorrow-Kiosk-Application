@@ -49,6 +49,8 @@
   },
   "error": {
     "title": "Something went wrong.",
-    "description": "We couldn't open this activity. Please return home and try again. If the problem continues, check your connection and reload."
+    "description": "We couldn't open this activity. Please return home and try again. If the problem continues, check your connection and reload.",
+    "developmentDetails": "Development error details",
+    "componentStack": "React component stack"
   }
 }

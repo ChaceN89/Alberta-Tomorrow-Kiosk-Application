@@ -7,7 +7,7 @@
   - Show the journal dialog and coordinate its active page.
 
   Usage:
-  - Rendered by the application Layout.
+  - Rendered by App inside the journal and media-viewer providers.
 
   Notes:
   - None.
@@ -15,6 +15,7 @@
 import { useEffect, useId, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '@/journal/useJournal'
+import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { visibleModules } from '@/modules/registry'
 import { ExpeditionEntry } from './ExpeditionEntry'
@@ -24,6 +25,7 @@ import { JournalTitlePage } from './JournalTitlePage'
 export function JournalModal() {
   const { t } = useTranslation('journal')
   const { isOpen, closeJournal, activeModuleId } = useJournal()
+  const { isOpen: isMediaViewerOpen } = useMediaViewer()
   const { isStorageAvailable, getExpeditionProgress } = useExpeditionProgress()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -46,15 +48,15 @@ export function JournalModal() {
 
     if (!dialog) return
 
-    if (isOpen && !dialog.open) {
+    if (isOpen && !isMediaViewerOpen && !dialog.open) {
       dialog.showModal()
     } else if (!isOpen && dialog.open) {
       dialog.close()
     }
-  }, [isOpen])
+  }, [isMediaViewerOpen, isOpen])
 
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen || isMediaViewerOpen) return
 
     const root = document.documentElement
     const previousOverflow = root.style.overflow
@@ -64,7 +66,7 @@ export function JournalModal() {
     return () => {
       root.style.overflow = previousOverflow
     }
-  }, [isOpen])
+  }, [isMediaViewerOpen, isOpen])
 
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0 })
@@ -100,7 +102,6 @@ export function JournalModal() {
       }}
     >
       <div className="flex h-full flex-col">
-        <div id="journal-dev-tools-root" className="contents" />
         <div id="journal-audio-player-root" className="contents" />
         <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line p-4 md:px-6">
           <h2 id={titleId} className="text-xl">

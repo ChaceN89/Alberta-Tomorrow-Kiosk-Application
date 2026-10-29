@@ -11,7 +11,7 @@
   - Wrap application routes in MediaViewerProvider and call useMediaViewer in a module.
 
   Notes:
-  - Native modal dialogs place the viewer above other dialogs, including the journal.
+  - The journal stays behind the viewer when both are requested.
  */
 import {
   useCallback,
@@ -113,8 +113,6 @@ function MediaViewerDialog({ content, onClose }: MediaViewerDialogProps) {
         }
       }}
     >
-      <div id="media-viewer-toast-root" className="contents" />
-      <div id="media-viewer-dev-tools-root" className="contents" />
       {content && (
         <div className="flex h-full flex-col">
           <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line p-4 md:px-6">

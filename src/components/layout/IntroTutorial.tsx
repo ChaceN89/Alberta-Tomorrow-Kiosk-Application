@@ -179,7 +179,6 @@ function IntroTutorialDialog() {
         finish()
       }}
     >
-      <div id="intro-tutorial-dev-tools-root" className="contents" />
       {arrow && (
         <span
           aria-hidden="true"

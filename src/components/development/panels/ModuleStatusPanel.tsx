@@ -112,27 +112,39 @@ function ModuleStatusItem({
           />
         </div>
       )}
-      <div className="mt-3 flex flex-nowrap items-center justify-between gap-1 overflow-x-auto">
+      <div className="mt-3 grid grid-cols-3 gap-2">
         <Link
-          className="button-secondary min-h-10 min-w-10 shrink-0 whitespace-nowrap px-2 py-2 text-xs"
+          className="button-secondary dev-module-button"
           to={`/modules/${module.id}`}
           onClick={onClose}
         >
+          <span aria-hidden="true">▤</span>
           {t('moduleOverview')}
         </Link>
         <Link
-          className="button min-h-10 min-w-10 shrink-0 whitespace-nowrap px-2 py-2 text-xs"
+          className="button dev-module-button"
           to={`/modules/${module.id}/expedition`}
           onClick={() => {
             startExpedition(module.id)
             onClose()
           }}
         >
+          <span aria-hidden="true">▶</span>
           {t('moduleStart')}
         </Link>
         <button
           type="button"
-          className="button-secondary min-h-10 min-w-10 shrink-0 whitespace-nowrap px-2 py-2 text-xs"
+          className="button-danger dev-module-button"
+          aria-label={t('restartModuleProgressFor', { title })}
+          disabled={module.checkpoints.length === 0}
+          onClick={() => restartModule(module.id)}
+        >
+          <span aria-hidden="true">↻</span>
+          {t('restartModuleProgress')}
+        </button>
+        <button
+          type="button"
+          className="button-secondary dev-module-button"
           aria-label={t('progressModuleCheckpoint', {
             completed: expeditionProgress.completed,
             total: expeditionProgress.total,
@@ -140,41 +152,31 @@ function ModuleStatusItem({
           disabled={!canProgressCheckpoint}
           onClick={() => progressNextCheckpoint(module.id)}
         >
-          {t('checkpointCount', {
+          <span aria-hidden="true">⏭</span>
+          {t('moduleSimulate', {
             completed: expeditionProgress.completed,
             total: expeditionProgress.total,
           })}
         </button>
         <button
           type="button"
-          className="button flex min-h-10 min-w-10 shrink-0 items-center justify-center px-2 py-2 text-sm"
+          className="button dev-module-button"
           aria-label={t('completeModuleFor', { title })}
-          title={t('completeModuleFor', { title })}
           disabled={!canProgressCheckpoint}
           onClick={() => completeModule(module.id)}
         >
           <span aria-hidden="true">✓</span>
+          {t('moduleComplete')}
         </button>
         <button
           type="button"
-          className="button-secondary flex min-h-10 min-w-10 shrink-0 items-center justify-center px-2 py-2 text-sm"
+          className="button-secondary dev-module-button"
           aria-label={t('randomizeModuleProgressFor', { title })}
-          title={t('randomizeModuleProgressFor', { title })}
           disabled={module.checkpoints.length === 0}
           onClick={() => randomizeModuleCheckpoints(module.id)}
         >
           <span aria-hidden="true">🎲</span>
-        </button>
-        <button
-          type="button"
-          className="button-danger min-h-10 min-w-10 shrink-0 whitespace-nowrap px-2 py-2 text-xs"
-          aria-label={t('restartModuleProgressFor', { title })}
-          title={t('restartModuleProgressFor', { title })}
-          disabled={module.checkpoints.length === 0}
-          onClick={() => restartModule(module.id)}
-        >
-          {/* {t('restartModuleProgress')} */}
-          <span aria-hidden="true">↻</span>
+          {t('moduleRandomize')}
         </button>
       </div>
     </li>

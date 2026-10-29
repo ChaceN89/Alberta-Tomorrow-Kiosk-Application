@@ -1,34 +1,28 @@
 /**
   File: main.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Browser entry point: load translations and global styles, create the React root, and mount the app.
-  - StrictMode checks development behavior; ErrorBoundary provides recovery for render failures.
-  - AppStartup completes initialization and the splash transition before showing App.
+  - StrictMode checks development behavior; App owns startup and render recovery.
+  - Global development tools remain mounted above the startup splash.
 
   Usage:
-  - Loaded by the HTML entry point to start the application in the browser.
+  - Loads translations and styles before mounting App in the browser.
 
   Notes:
   - None.
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ErrorBoundary } from '@/components/app-states/ErrorBoundary'
 import '@/styles/global.css'
 import '@/styles/spashScreen.css'
-import { AppStartup } from './AppStartup'
 import './i18n'
 import { App } from './App'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ErrorBoundary>
-      <AppStartup>
-        <App />
-      </AppStartup>
-    </ErrorBoundary>
+    <App />
   </StrictMode>,
 )

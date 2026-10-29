@@ -1,14 +1,14 @@
 /**
   File: AppStartup.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
-  - Run app-wide initialization while showing the splash screen, then reveal the application.
+  - Gate routed content and the global overlays (developer tools, toasts) on app-wide initialization.
   - Show an error screen when initialization fails and allow retrying with a fresh initialization.
 
   Usage:
-  - Wraps App in the browser entry point before the routed application is shown.
+  - Wraps routed content inside App until initialization and the splash transition finish.
 
   Notes:
   - None.
@@ -25,12 +25,14 @@ type StartupState = 'loading' | 'exiting' | 'ready' | 'error'
 // props for the AppStartup component -
 type AppStartupProps = {
   children: ReactNode
+  // Mounted only once startup is ready, so the splash screen stays in front.
+  overlays?: ReactNode
 }
 
 // Duration for the splash screen fade-out animation. In milliseconds.
 const SPLASH_FADE_DURATION_MS = 250
 
-export function AppStartup({ children }: AppStartupProps) {
+export function AppStartup({ children, overlays }: AppStartupProps) {
   const [state, setState] = useState<StartupState>('loading') // initial startup state - loading
   const [retryCount, setRetryCount] = useState(0) // number of initialization retries attempted
   const initializationRef = useRef<Promise<void> | null>(null)
@@ -79,7 +81,14 @@ export function AppStartup({ children }: AppStartupProps) {
   }
 
   // if ready return the children
-  if (state === 'ready') return children
+  if (state === 'ready') {
+    return (
+      <>
+        {children}
+        {overlays}
+      </>
+    )
+  }
 
   // otherwise, show the splash screen (loading or exiting) no error yet and/or not ready
   return (

@@ -7,7 +7,7 @@
   - Define ids for the application's status and notification toast containers.
 
   Usage:
-  - Shared by MyToasters and toast calls throughout the app.
+  - Shared by GlobalOverlayLayer and toast calls throughout the app.
 
   Notes:
   - The toasterId selects a container; reuse a toast id only for intentional updates.
