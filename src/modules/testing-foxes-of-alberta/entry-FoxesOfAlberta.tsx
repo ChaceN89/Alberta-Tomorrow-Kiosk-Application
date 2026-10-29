@@ -1,5 +1,5 @@
 /**
-  File: FindHabitat.tsx | Author: Chace Nielson
+  File: entry-FoxesOfAlberta.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
   Date Updated: Oct 28, 2026
 
@@ -17,12 +17,13 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import type { ModuleActivityProps } from '../types'
-import { HabitatQuiz } from './HabitatQuiz'
-import { ListenSection } from './ListenSection'
+import { HabitatQuiz } from './components/HabitatQuiz'
+import { ListenSection } from './components/ListenSection'
 
 type View = 'activity' | 'quiz'
 
-export default function FindHabitat({
+export default function FoxesOfAlberta({
+  moduleId,
   completedCheckpoints,
   completeCheckpoint,
 }: ModuleActivityProps) {
@@ -64,7 +65,7 @@ export default function FindHabitat({
           onBackToActivity={showActivity}
         />
       )}
-      <Link to="/modules/wildlife-habitats" className="button-secondary">
+      <Link to={`/modules/${moduleId}`} className="button-secondary">
         {t('backToOverview')}
       </Link>
     </section>

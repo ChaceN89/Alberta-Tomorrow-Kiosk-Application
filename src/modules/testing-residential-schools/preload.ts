@@ -1,20 +1,20 @@
 /**
-  File: preloadResidentialSchool.ts | Author: Chace Nielson
+  File: preload.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
   Date Updated: Oct 23, 2026
 
   Description:
-  - Simulate a cancellable residential-school activity preload.
+  - Simulate an abortable preload for the residential-school activity.
 
   Usage:
-  - Module data files are used by their activity.
+  - Registered as the module's optional preload hook.
 
   Notes:
   - None.
  */
 import type { ModulePreloadContext } from '../types'
 
-const FAKE_PRELOAD_DURATION_MS = 5_000
+const FAKE_PRELOAD_DURATION_MS = 3_000
 const PROGRESS_INTERVAL_MS = 100
 
 export function preloadResidentialSchool({

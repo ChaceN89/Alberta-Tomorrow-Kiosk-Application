@@ -23,9 +23,9 @@
       {
         "prompt": "Quelle région de l’Alberta est célèbre pour ses badlands et ses fossiles de dinosaures ?",
         "options": [
-          { "wrong": "Les sommets des Rocheuses" },
-          { "correct": "La vallée de la rivière Red Deer, près de Drumheller" },
-          { "wrong": "Les tourbières boréales du Nord" }
+          "Les sommets des Rocheuses",
+          "La vallée de la rivière Red Deer, près de Drumheller",
+          "Les tourbières boréales du Nord"
         ],
         "correct": "Bravo ! En 1884, le géologue Joseph Burr Tyrrell a découvert un crâne de dinosaure dans les badlands près de Drumheller. Il a ensuite été nommé Albertosaurus.",
         "tryAgain": "Pas tout à fait. Pensez aux badlands secs et stratifiés où les fossiles apparaissent le long d’une vallée fluviale. Essayez une autre réponse !"
@@ -33,9 +33,9 @@
       {
         "prompt": "Comment l’énorme bloc Big Rock, près d’Okotoks, a-t-il voyagé depuis les Rocheuses ?",
         "options": [
-          { "wrong": "Une éruption volcanique l’a projeté" },
-          { "correct": "La glace d’un glacier l’a transporté" },
-          { "wrong": "Une rivière impétueuse l’a roulé" }
+          "Une éruption volcanique l’a projeté",
+          "La glace d’un glacier l’a transporté",
+          "Une rivière impétueuse l’a roulé"
         ],
         "correct": "Bravo ! La glace d’un glacier a transporté Big Rock hors des Rocheuses et l’a déposé près d’Okotoks.",
         "tryAgain": "Pas tout à fait. Ce bloc est si gros que seule une force immense et lente a pu le déplacer. Essayez une autre réponse !"
@@ -43,9 +43,9 @@
       {
         "prompt": "Dans quelle partie de l’Alberta trouve-t-on principalement les sables bitumineux ?",
         "options": [
-          { "correct": "Le nord de l’Alberta" },
-          { "wrong": "Le sud de l’Alberta, près de la frontière américaine" },
-          { "wrong": "Le long des sommets des Rocheuses" }
+          "Le nord de l’Alberta",
+          "Le sud de l’Alberta, près de la frontière américaine",
+          "Le long des sommets des Rocheuses"
         ],
         "correct": "Bravo ! Les sables bitumineux de l’Alberta se trouvent dans le nord de la province, notamment dans les régions d’Athabasca, de Cold Lake et de Peace River.",
         "tryAgain": "Pas tout à fait. Pensez à la région de Fort McMurray. Essayez une autre réponse !"

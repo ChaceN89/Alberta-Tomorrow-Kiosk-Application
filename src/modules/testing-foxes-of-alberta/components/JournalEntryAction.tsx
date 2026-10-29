@@ -1,5 +1,5 @@
 /**
-  File: WildlifeJournalEntryAction.tsx | Author: Chace Nielson
+  File: JournalEntryAction.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
   Date Updated: Oct 28, 2026
 
@@ -13,15 +13,16 @@
   - Reuses expedition tracks and their existing listening checkpoints.
  */
 import { useTranslation } from 'react-i18next'
-import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
-import { useJournal } from '../../journal/useJournal'
-import type { JournalEntryActionProps } from '../types'
-import { foxesVideoCheckpoint } from './checkpoints'
-import { wildlifeTracks } from './tracks'
-import { foxesOfAlbertaVideo } from './videos'
+import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
+import { useJournal } from '../../../journal/useJournal'
+import type { JournalEntryActionProps } from '../../types'
+import { foxesVideoCheckpoint } from '../checkpoints'
+import { foxesOfAlbertaTracks } from '../tracks'
+import { foxesOfAlbertaVideo } from '../videos'
 
-export default function WildlifeJournalEntryAction({
+export default function JournalEntryAction({
   entryId,
+  moduleId,
 }: JournalEntryActionProps) {
   const { t } = useTranslation('wildlifeFinder')
   const { completeCheckpoint } = useJournal()
@@ -39,14 +40,12 @@ export default function WildlifeJournalEntryAction({
             subtitleKey: 'title',
           },
         }}
-        onEnd={() =>
-          completeCheckpoint('wildlife-habitats', foxesVideoCheckpoint)
-        }
+        onEnd={() => completeCheckpoint(moduleId, foxesVideoCheckpoint)}
       />
     )
   }
 
-  const track = wildlifeTracks.find(
+  const track = foxesOfAlbertaTracks.find(
     (item) =>
       ('startCheckpoint' in item && item.startCheckpoint === entryId) ||
       ('endCheckpoint' in item && item.endCheckpoint === entryId),
@@ -78,12 +77,12 @@ export default function WildlifeJournalEntryAction({
       }}
       onStart={
         'startCheckpoint' in track
-          ? () => completeCheckpoint('wildlife-habitats', track.startCheckpoint)
+          ? () => completeCheckpoint(moduleId, track.startCheckpoint)
           : undefined
       }
       onEnd={
         'endCheckpoint' in track
-          ? () => completeCheckpoint('wildlife-habitats', track.endCheckpoint)
+          ? () => completeCheckpoint(moduleId, track.endCheckpoint)
           : undefined
       }
     />

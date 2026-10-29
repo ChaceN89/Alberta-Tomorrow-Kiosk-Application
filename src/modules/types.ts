@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Define metadata and locale namespace types for learning modules.
@@ -17,9 +17,13 @@ import type { ComponentType, LazyExoticComponent } from 'react'
 export type ModuleTranslationNamespace =
   'geology' | 'residentialSchool' | 'wildlifeFinder'
 
-export type ModuleActivityProps = {
+export type ModuleCheckpointProps = {
   completedCheckpoints: readonly string[]
   completeCheckpoint: (checkpointId: string) => void
+}
+
+export type ModuleActivityProps = ModuleCheckpointProps & {
+  moduleId: string
 }
 
 export type ModuleActivityComponent = ComponentType<ModuleActivityProps>
@@ -37,9 +41,11 @@ export type ModulePreloader = (context: ModulePreloadContext) => Promise<void>
 
 export type JournalEntryActionProps = {
   entryId: string
+  moduleId: string
 }
 
 export interface LearningModule {
+  visible: boolean
   id: string
   translationNamespace: ModuleTranslationNamespace
   estimatedMinutes: number

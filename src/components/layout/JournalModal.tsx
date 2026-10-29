@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/expedition.svg'
 import { useJournal } from '../../journal/useJournal'
-import { modules } from '../../modules/registry'
+import { visibleModules } from '../../modules/registry'
 import type { LearningModule } from '../../modules/types'
 import { ExpeditionPeak, ExpeditionStatusText } from '../modules/ExpeditionPeak'
 import { ModuleTitle } from '../modules/ModuleTitle'
@@ -112,7 +112,10 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                   {module.journalEntryAction && (
                     <div className="shrink-0">
                       <Suspense fallback={null}>
-                        <module.journalEntryAction entryId={entry.id} />
+                        <module.journalEntryAction
+                          entryId={entry.id}
+                          moduleId={module.id}
+                        />
                       </Suspense>
                     </div>
                   )}
@@ -169,7 +172,7 @@ export function JournalModal() {
   const listId = useId()
 
   // Page 0 is the title page; the rest are started expeditions in registry order.
-  const startedModules = modules.filter(
+  const startedModules = visibleModules.filter(
     (entry) => getExpeditionProgress(entry).status !== 'notStarted',
   )
   const pages: JournalPage[] = [null, ...startedModules]

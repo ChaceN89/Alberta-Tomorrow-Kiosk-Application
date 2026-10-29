@@ -1,7 +1,7 @@
 /**
   File: ModuleStatusPanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Show preload status and progress for every registered module.
@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import type { ModulePreloadState } from '../../../modules/useModulePreload'
 import { useModulePreload } from '../../../modules/useModulePreload'
-import { modules } from '../../../modules/registry'
+import { visibleModules } from '../../../modules/registry'
 import type { LearningModule } from '../../../modules/types'
 import { DevPanel } from './DevPanel'
 
@@ -130,7 +130,7 @@ export function ModuleStatusPanel({
     <DevPanel title={t('modules')} onClose={onClose}>
       <p className="mb-3 text-sm text-muted">{t('modulesDescription')}</p>
       <ul className="space-y-2">
-        {modules.map((module) => (
+        {visibleModules.map((module) => (
           <ModuleStatusItem
             key={module.id}
             module={module}

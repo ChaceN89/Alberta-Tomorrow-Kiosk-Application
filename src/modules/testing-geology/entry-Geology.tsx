@@ -1,5 +1,5 @@
 /**
-  File: Geology.tsx | Author: Chace Nielson
+  File: entry-Geology.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
   Date Updated: Oct 28, 2026
 
@@ -15,14 +15,15 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useJournal } from '../../journal/useJournal'
+import { buildQuizQuestions } from '../../module-tools/quiz-system/buildQuizQuestions'
 import { Quiz } from '../../module-tools/quiz-system/Quiz'
-import type { QuizQuestion } from '../../module-tools/quiz-system/types'
 import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
 import type { ModuleActivityProps } from '../types'
-import { geologyVideos } from './media'
-import { geologyCheckpoints, geologyCorrectOptions } from './quiz'
+import { geologyVideos } from './videos'
+import { geologyQuizQuestions } from './quiz'
 
 export default function Geology({
+  moduleId,
   completedCheckpoints,
   completeCheckpoint,
 }: ModuleActivityProps) {
@@ -30,16 +31,10 @@ export default function Geology({
   const { openJournal } = useJournal()
 
   // Each question id doubles as its journal checkpoint id.
-  const questions: QuizQuestion[] = t('activity.questions', {
-    returnObjects: true,
-  }).map((question, index) => ({
-    id: geologyCheckpoints[index],
-    prompt: question.prompt,
-    options: question.options.map((option) => Object.values(option)[0]),
-    correctIndex: geologyCorrectOptions[index],
-    correctFeedback: question.correct,
-    incorrectFeedback: question.tryAgain,
-  }))
+  const questions = buildQuizQuestions(
+    geologyQuizQuestions,
+    t('activity.questions', { returnObjects: true }),
+  )
 
   return (
     <section aria-labelledby="activity-title" className="max-w-3xl space-y-6">
@@ -95,7 +90,7 @@ export default function Geology({
               <button
                 type="button"
                 className="button"
-                onClick={() => openJournal('geology')}
+                onClick={() => openJournal(moduleId)}
               >
                 {t('activity.complete.viewJournal')}
               </button>
@@ -110,7 +105,7 @@ export default function Geology({
           </div>
         )}
       />
-      <Link to="/modules/geology" className="button-secondary">
+      <Link to={`/modules/${moduleId}`} className="button-secondary">
         {t('backToOverview')}
       </Link>
     </section>

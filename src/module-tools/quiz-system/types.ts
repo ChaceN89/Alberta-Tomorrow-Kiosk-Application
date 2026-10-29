@@ -14,10 +14,23 @@
  */
 import type { ReactNode } from 'react'
 
+export type QuizQuestionDefinition = {
+  id: string
+  contentIndex: number
+  correctIndex: number
+}
+
+export type LocalizedQuizQuestion = {
+  prompt: string
+  options: readonly string[]
+  correct: string
+  tryAgain: string
+}
+
 export type QuizQuestion = {
   id: string
   prompt: string
-  audio?: ReactNode
+  media?: ReactNode
   options: readonly string[]
   correctIndex: number
   correctFeedback: string

@@ -13,31 +13,35 @@
   - None.
  */
 import { lazy } from 'react'
-import { geologyCheckpoints } from './geology/quiz'
-import { preloadResidentialSchool } from './residential-school/preloadResidentialSchool'
-import { residentialSchoolCheckpoints } from './residential-school/checkpoints'
-import { wildlifeCheckpoints } from './wildlife-habitats/checkpoints'
+import { foxesOfAlbertaCheckpoints } from './testing-foxes-of-alberta/checkpoints'
+import { geologyCheckpoints } from './testing-geology/checkpoints'
+import { preloadResidentialSchool } from './testing-residential-schools/preload'
+import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
 import type { LearningModule } from './types'
 
-const loadFindHabitat = () => import('./wildlife-habitats/FindHabitat')
-const loadWildlifeJournalEntryAction = () =>
-  import('./wildlife-habitats/WildlifeJournalEntryAction')
+// importing all the modules into the appliction
+const loadFoxesOfAlberta = () =>
+  import('./testing-foxes-of-alberta/entry-FoxesOfAlberta')
+const loadFoxesOfAlbertaJournalEntryAction = () =>
+  import('./testing-foxes-of-alberta/components/JournalEntryAction')
 const loadResidentialSchool = () =>
-  import('./residential-school/ResidentialSchool')
-const loadGeology = () => import('./geology/Geology')
+  import('./testing-residential-schools/entry-ResidentialSchool')
+const loadGeology = () => import('./testing-geology/entry-Geology')
 
 export const modules: readonly LearningModule[] = [
   {
-    id: 'wildlife-habitats',
+    visible: true,
+    id: 'foxes-of-alberta-test',
     translationNamespace: 'wildlifeFinder',
     estimatedMinutes: 5,
-    checkpoints: wildlifeCheckpoints,
-    component: lazy(loadFindHabitat),
-    journalEntryAction: lazy(loadWildlifeJournalEntryAction),
-    loadActivity: loadFindHabitat,
+    checkpoints: foxesOfAlbertaCheckpoints,
+    component: lazy(loadFoxesOfAlberta),
+    journalEntryAction: lazy(loadFoxesOfAlbertaJournalEntryAction),
+    loadActivity: loadFoxesOfAlberta,
   },
   {
-    id: 'residential-school',
+    visible: true,
+    id: 'residential-schools-test',
     translationNamespace: 'residentialSchool',
     estimatedMinutes: 3,
     checkpoints: residentialSchoolCheckpoints,
@@ -46,7 +50,8 @@ export const modules: readonly LearningModule[] = [
     preload: preloadResidentialSchool,
   },
   {
-    id: 'geology',
+    visible: true,
+    id: 'geology-test',
     translationNamespace: 'geology',
     estimatedMinutes: 4,
     checkpoints: geologyCheckpoints,
@@ -54,3 +59,5 @@ export const modules: readonly LearningModule[] = [
     loadActivity: loadGeology,
   },
 ]
+
+export const visibleModules = modules.filter((module) => module.visible)

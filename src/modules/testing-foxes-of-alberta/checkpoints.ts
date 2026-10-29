@@ -16,8 +16,8 @@
  */
 export const foxesVideoCheckpoint = 'foxes-video-finished'
 
-export const wildlifeCheckpoints = [
-  'habitats-matter',
+export const foxesOfAlbertaCheckpoints = [
+  'habitats-matter', // what this is for here ...
   'audio-1-started',
   'audio-1-finished',
   'audio-2-finished',

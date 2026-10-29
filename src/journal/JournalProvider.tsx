@@ -1,7 +1,7 @@
 /**
   File: JournalProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Track expedition checkpoints, persist them locally, and control the journal modal.
@@ -17,7 +17,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { JournalToast } from '../components/toasts/JournalToast'
 import { NOTIFICATION_TOASTER_ID } from '../components/toasts/toasterIds'
-import { modules } from '../modules/registry'
+import { visibleModules } from '../modules/registry'
 import type { LearningModule } from '../modules/types'
 import {
   loadJournal,
@@ -77,7 +77,12 @@ export function JournalProvider({ children }: JournalProviderProps) {
   const openJournal = useCallback((moduleId?: string) => {
     if (moduleId !== undefined) {
       // Only started expeditions have journal pages; others show the title page.
-      setActiveModuleId(progressRef.current[moduleId] ? moduleId : null)
+      setActiveModuleId(
+        visibleModules.some((entry) => entry.id === moduleId) &&
+          progressRef.current[moduleId]
+          ? moduleId
+          : null,
+      )
     }
 
     setIsOpen(true)
@@ -109,7 +114,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
 
   const startExpedition = useCallback(
     (moduleId: string) => {
-      const module = modules.find((entry) => entry.id === moduleId)
+      const module = visibleModules.find((entry) => entry.id === moduleId)
 
       if (!module || progressRef.current[moduleId]) {
         return
@@ -126,7 +131,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
 
   const completeCheckpoint = useCallback(
     (moduleId: string, checkpointId: string) => {
-      const module = modules.find((entry) => entry.id === moduleId)
+      const module = visibleModules.find((entry) => entry.id === moduleId)
 
       if (!module?.checkpoints.includes(checkpointId)) {
         console.warn(
@@ -178,7 +183,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
 
   const selectExpedition = useCallback((moduleId: string | null) => {
     setActiveModuleId(
-      moduleId !== null && modules.some((entry) => entry.id === moduleId)
+      moduleId !== null && visibleModules.some((entry) => entry.id === moduleId)
         ? moduleId
         : null,
     )

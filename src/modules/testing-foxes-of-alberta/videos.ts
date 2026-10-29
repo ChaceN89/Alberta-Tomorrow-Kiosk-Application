@@ -16,7 +16,7 @@ import type { YouTubeTrack } from '../../module-tools/media-player/useAudioPlaye
 
 export const foxesOfAlbertaVideo: YouTubeTrack = {
   type: 'youtube',
-  id: 'wildlife-habitats-foxes-of-alberta',
+  id: 'foxes-of-alberta-video',
   videoId: '1VJBWTypVNU',
   title: 'Foxes of Alberta',
   subtitle: 'Alberta Tomorrow',

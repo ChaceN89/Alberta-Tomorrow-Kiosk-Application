@@ -20,10 +20,10 @@ import narrationSrc from './assets/audio-narration.m4a'
 import redFoxSrc from './assets/audio-red-fox.mp3'
 import songSrc from './assets/audio-song.mp3'
 
-export const wildlifeTracks = [
+export const foxesOfAlbertaTracks = [
   {
     key: 'song',
-    id: 'wildlife-habitats-song',
+    id: 'foxes-of-alberta-song',
     src: songSrc,
     coverArt: songCover,
     startCheckpoint: 'audio-1-started',
@@ -31,14 +31,14 @@ export const wildlifeTracks = [
   },
   {
     key: 'narration',
-    id: 'wildlife-habitats-narration',
+    id: 'foxes-of-alberta-narration',
     src: narrationSrc,
     coverArt: narrationCover,
     endCheckpoint: 'audio-2-finished',
   },
   {
     key: 'redFoxSound',
-    id: 'wildlife-habitats-red-fox-sound',
+    id: 'foxes-of-alberta-red-fox-sound',
     src: redFoxSrc,
     coverArt: redFoxCover,
     startCheckpoint: 'audio-3-started',

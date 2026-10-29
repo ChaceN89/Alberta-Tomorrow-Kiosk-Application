@@ -8,19 +8,20 @@
   - Supplies translated fox questions and records their journal checkpoints when answered correctly.
 
   Usage:
-  - Rendered by FindHabitat after the learner chooses to start the quiz.
+  - Rendered by entry-FoxesOfAlberta after the learner starts the quiz.
 
   Notes:
   - Question content lives in module.wildlifeFinder.json under activity.
  */
 import { useTranslation } from 'react-i18next'
-import { Quiz } from '../../module-tools/quiz-system/Quiz'
-import type { QuizQuestion } from '../../module-tools/quiz-system/types'
-import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
-import type { ModuleActivityProps } from '../types'
-import { wildlifeTracks } from './tracks'
+import { buildQuizQuestions } from '../../../module-tools/quiz-system/buildQuizQuestions'
+import { Quiz } from '../../../module-tools/quiz-system/Quiz'
+import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
+import type { ModuleCheckpointProps } from '../../types'
+import { foxesOfAlbertaQuizQuestions } from '../quiz'
+import { foxesOfAlbertaTracks } from '../tracks'
 
-type HabitatQuizProps = ModuleActivityProps & {
+type HabitatQuizProps = ModuleCheckpointProps & {
   onBackToActivity: () => void
 }
 
@@ -30,38 +31,13 @@ export function HabitatQuiz({
   onBackToActivity,
 }: HabitatQuizProps) {
   const { t } = useTranslation('wildlifeFinder')
-  const redFoxTrack = wildlifeTracks[2]
+  const redFoxTrack = foxesOfAlbertaTracks[2]
 
-  // Each question id doubles as its journal checkpoint id.
-  const questions: QuizQuestion[] = [
+  const questions = buildQuizQuestions(
+    foxesOfAlbertaQuizQuestions,
+    t('quiz.questions', { returnObjects: true }),
     {
-      id: 'swift-fox-home',
-      prompt: t('quiz.questions.swiftFox.prompt'),
-      options: [
-        t('quiz.questions.swiftFox.options.borealWrong'),
-        t('quiz.questions.swiftFox.options.shortgrassPrairieCorrect'),
-        t('quiz.questions.swiftFox.options.wetlandsWrong'),
-      ],
-      correctIndex: 1,
-      correctFeedback: t('quiz.questions.swiftFox.correct'),
-      incorrectFeedback: t('quiz.questions.swiftFox.tryAgain'),
-    },
-    {
-      id: 'red-fox-food',
-      prompt: t('quiz.questions.redFox.prompt'),
-      options: [
-        t('quiz.questions.redFox.options.onlyLargeAnimalsWrong'),
-        t('quiz.questions.redFox.options.smallAnimalsAndPlantsCorrect'),
-        t('quiz.questions.redFox.options.onlyGrassWrong'),
-      ],
-      correctIndex: 1,
-      correctFeedback: t('quiz.questions.redFox.correct'),
-      incorrectFeedback: t('quiz.questions.redFox.tryAgain'),
-    },
-    {
-      id: 'red-fox-sound-identification',
-      prompt: t('quiz.questions.redFoxSound.prompt'),
-      audio: (
+      'red-fox-sound-identification': (
         <TrackPlayButton
           track={{
             type: 'audio',
@@ -79,16 +55,8 @@ export function HabitatQuiz({
           onStart={() => completeCheckpoint(redFoxTrack.startCheckpoint)}
         />
       ),
-      options: [
-        t('quiz.questions.redFoxSound.options.coyoteWrong'),
-        t('quiz.questions.redFoxSound.options.redFoxCorrect'),
-        t('quiz.questions.redFoxSound.options.wolfWrong'),
-      ],
-      correctIndex: 1,
-      correctFeedback: t('quiz.questions.redFoxSound.correct'),
-      incorrectFeedback: t('quiz.questions.redFoxSound.tryAgain'),
     },
-  ]
+  )
 
   return (
     <div className="space-y-6">

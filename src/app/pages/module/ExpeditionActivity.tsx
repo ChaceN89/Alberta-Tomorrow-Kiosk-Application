@@ -43,6 +43,7 @@ export function ExpeditionActivity({ module }: ModuleActivityProps) {
     <Suspense fallback={<Loading />}>
       <Activity
         key={module.id}
+        moduleId={module.id}
         completedCheckpoints={getCompletedCheckpoints(module.id)}
         completeCheckpoint={recordCheckpoint}
       />

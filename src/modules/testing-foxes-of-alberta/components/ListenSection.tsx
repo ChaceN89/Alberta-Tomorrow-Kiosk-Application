@@ -8,19 +8,19 @@
   - Track start and finish callbacks record the clip's configured journal checkpoints.
 
   Usage:
-  - Rendered in the activity view of FindHabitat.
+  - Rendered in the activity view of entry-FoxesOfAlberta.
 
   Notes:
   - Checkpoints are recorded by callbacks the player keeps, even after leaving this page.
  */
 import { useTranslation } from 'react-i18next'
-import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton'
-import type { ModuleActivityProps } from '../types'
-import { foxesVideoCheckpoint } from './checkpoints'
-import { wildlifeTracks } from './tracks'
-import { foxesOfAlbertaVideo } from './videos'
+import { TrackPlayButton } from '../../../module-tools/media-player/TrackPlayButton'
+import type { ModuleCheckpointProps } from '../../types'
+import { foxesVideoCheckpoint } from '../checkpoints'
+import { foxesOfAlbertaTracks } from '../tracks'
+import { foxesOfAlbertaVideo } from '../videos'
 
-type ListenSectionProps = ModuleActivityProps
+type ListenSectionProps = ModuleCheckpointProps
 
 export function ListenSection({
   completedCheckpoints,
@@ -33,7 +33,7 @@ export function ListenSection({
       <h2 id="listen-title">{t('listen.heading')}</h2>
       <p className="text-muted">{t('listen.description')}</p>
       <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {wildlifeTracks.map((track) => {
+        {foxesOfAlbertaTracks.map((track) => {
           const steps = [
             ...('startCheckpoint' in track
               ? ([['started', track.startCheckpoint]] as const)

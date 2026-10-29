@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npm run check:locales && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "check:locales": "node scripts/check-locales.mjs",
     "typecheck": "tsc -b --pretty",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

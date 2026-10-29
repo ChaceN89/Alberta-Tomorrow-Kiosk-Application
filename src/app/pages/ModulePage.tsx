@@ -1,7 +1,7 @@
 /**
   File: ModulePage.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Render module details and load activities only when requested.
@@ -15,12 +15,12 @@
 import { useParams } from 'react-router-dom'
 import { ModuleNotFound } from '../../components/modules/ModuleNotFound'
 import { ModuleOverview } from '../../components/modules/ModuleOverview'
-import { modules } from '../../modules/registry'
+import { visibleModules } from '../../modules/registry'
 import { ModuleActivity } from './module/ModuleActivity'
 
 export function ModulePage() {
   const { moduleId, '*': modulePath } = useParams()
-  const module = modules.find((entry) => entry.id === moduleId)
+  const module = visibleModules.find((entry) => entry.id === moduleId)
 
   // if no module is found, render the not found component
   if (!module) {

@@ -1,7 +1,7 @@
 /**
   File: HomePage.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
   - Display available expeditions from the registry with journal progress.
@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { ModuleCard } from '../../components/modules/ModuleCard'
-import { modules } from '../../modules/registry'
+import { visibleModules } from '../../modules/registry'
 
 export function HomePage() {
   const { t } = useTranslation('home')
@@ -30,7 +30,7 @@ export function HomePage() {
         data-tour="expedition-list"
         className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
       >
-        {modules.map((module) => (
+        {visibleModules.map((module) => (
           <ModuleCard key={module.id} module={module} />
         ))}
       </ul>

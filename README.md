@@ -2,7 +2,8 @@
 
 A lightweight, bilingual educational app from Alberta Tomorrow. Each module is an
 "expedition" with its own mountain on the home page and entries in a field journal.
-The app currently includes wildlife, residential-school, and geology expeditions;
+The app currently includes test expeditions about Alberta foxes, residential
+schools, and geology;
 future independent modules can explore land use, energy, climate events, and more.
 
 ## Setup
@@ -18,7 +19,7 @@ npm run dev
 ```
 
 Open the local URL printed by Vite. The example is at
-`/modules/wildlife-habitats`. The tracked `.env.development` enables development-only
+`/modules/foxes-of-alberta-test`. The tracked `.env.development` enables development-only
 visual testing tools during `npm run dev`; do not put secrets in Vite environment
 files because `VITE_` variables are included in client code.
 Install the recommended VS Code Prettier and ESLint extensions; the committed
@@ -26,17 +27,19 @@ settings enable Prettier formatting on save for all supported file types.
 
 ## Commands
 
-| Command                | Purpose                                   |
-| ---------------------- | ----------------------------------------- |
-| `npm run dev`          | Start the development server              |
-| `npm run build`        | Strict TypeScript check and build `dist/` |
-| `npm run preview`      | Preview the production build locally      |
-| `npm run lint`         | Run ESLint                                |
-| `npm run typecheck`    | Check app and tooling TypeScript projects |
-| `npm run format`       | Format supported files with Prettier      |
-| `npm run format:check` | Check formatting without changing files   |
+| Command                 | Purpose                                   |
+| ----------------------- | ----------------------------------------- |
+| `npm run dev`           | Start the development server              |
+| `npm run build`         | Strict TypeScript check and build `dist/` |
+| `npm run preview`       | Preview the production build locally      |
+| `npm run lint`          | Run ESLint                                |
+| `npm run typecheck`     | Check app and tooling TypeScript projects |
+| `npm run check:locales` | Check English/French JSON resource parity |
+| `npm run format`        | Format supported files with Prettier      |
+| `npm run format:check`  | Check formatting without changing files   |
 
 Commit `package-lock.json`; use `npm ci` for reproducible installs.
+`npm run build` runs the locale check before TypeScript and Vite builds.
 
 ## Structure
 
@@ -77,11 +80,13 @@ content (text, files, checkpoint ids) and the tool handles display and interacti
   through `onQuestionCorrect`, and lets the module render its own finish screen.
   Reuse a question's id as its journal checkpoint id so progress resumes.
 
-Opening a module overview preloads its activity and
-shows progress in the navigation bar. Preloads are cancelled when leaving that
-module. The residential-school module currently uses a five-second simulated
-preload; replace it with real asset or data loading when those resources exist.
-`Suspense` announces loading, and the application error
+Opening a module overview loads its activity code and then runs its optional
+module-specific preload hook. Preloads are cancelled when leaving that module.
+Only modules that need additional data or media setup need a `preload.ts`;
+ordinary JavaScript code-splitting happens for every module through the registry.
+The residential-school module currently uses a five-second simulated preload;
+replace it with real asset or data loading when those resources exist. The
+activity route also has a `Suspense` loading fallback, and the application error
 boundary handles rendering or activity-download failures. Unknown page URLs show
 a playful 404 with an Alberta fun fact; missing modules or invalid paths beneath
 `/modules/` show a module-specific recovery message. English is the initial
@@ -93,8 +98,10 @@ activity state, but the expedition journal is kept (see below).
 
 Each module declares journal **checkpoints**: ids for things a learner
 accomplished or learned. Activities receive `completedCheckpoints` and a
-`completeCheckpoint(id)` callback as props (`ModuleActivityProps` in
-`src/modules/types.ts`). Recording a checkpoint saves it in browser
+`completeCheckpoint(id)` callback, plus the current `moduleId`, through
+`ModuleActivityProps` in `src/modules/types.ts`. Nested module components that
+only need checkpoint access can use `ModuleCheckpointProps`. Recording a
+checkpoint saves it in browser
 `localStorage` (key `alberta-expeditions:journal`, via
 `src/journal/journalStorage.ts`) and shows a toast. Each expedition also has a
 **started** flag (`startedAt`): opening a module's activity starts it, and
@@ -134,38 +141,217 @@ flag is missing and the visitor is on the home page. Steps live in
 
 ### Add a module
 
-1. Create a folder under `src/modules/`, such as `land-use/`.
-2. Add a default-exported React activity component. Keep its components, state,
-   and logic in that folder. Import reusable UI from `src/components/` and include
-   a translated link back to the module overview.
-3. Add a matching module resource in both `src/locales/en/<namespace>.json` and
-   `src/locales/fr/<namespace>.json`. Include `title`, `description`, `category`,
-   and any activity-specific text. Register the namespace in `src/app/i18n.ts`
-   and `ModuleTranslationNamespace` in `src/modules/types.ts`.
-4. Add a `LearningModule` entry to `src/modules/registry.ts`: a unique URL-safe
-   `id`, its `translationNamespace`, estimated minutes, and
-   `lazy(() => import('./land-use/LandUse'))`. Also add `checkpoints` (ids kept in
-   a small file in the module folder) and matching `journal.summary` and
-   `journal.entries` in both locale files. The activity receives
-   `completedCheckpoints` and `completeCheckpoint` props.
-5. Run the checks below. The home card, module overview, and expedition route are
-   automatic.
+Modules share an integration contract, not a prescribed activity design. The
+registry supplies the home card, overview, route, and journal metadata; each
+module decides how learners explore its subject.
+
+#### Module folder organization
+
+Use the same file names and roles for every module so the entry point, quiz
+configuration, media, and loading behavior are easy to find. Start with this
+shape and include optional files only when the module needs them:
+
+```text
+src/modules/land-use/
+  entry-LandUse.tsx      # required; default-exported activity entry point
+  checkpoints.ts         # required; stable journal checkpoint ids
+  quiz.ts                # optional; question ids, content indexes, correct options
+  tracks.ts              # optional; audio track metadata and checkpoint callbacks
+  videos.ts              # optional; video metadata and player ids
+  preload.ts             # optional; extra cancellable data/media loading
+  components/            # optional; module-specific React components
+  assets/                # optional; local images, audio, video, and other files
+```
+
+In the current modules, the Alberta foxes module uses all of these except `preload.ts`, geology
+uses `quiz.ts` and `videos.ts`, and residential school uses `preload.ts`. A
+module does **not** need tracks or videos unless it has them, and it does not
+need an `assets/` folder if it only uses remote content. Keep metadata in
+`tracks.ts` and `videos.ts`; put local files in `assets/` and import them from
+the metadata files. Module-only React UI goes in `components/`; it does not
+need to follow a shared layout beyond the activity props and integration
+contract.
+
+The existing files follow that same pattern:
+
+```text
+testing-foxes-of-alberta/       entry-FoxesOfAlberta.tsx, checkpoints.ts, quiz.ts,
+                                tracks.ts, videos.ts, components/, assets/
+testing-geology/                entry-Geology.tsx, checkpoints.ts, quiz.ts, videos.ts
+testing-residential-schools/    entry-ResidentialSchool.tsx, checkpoints.ts, preload.ts
+```
+
+The registry IDs intentionally mark these as test expeditions:
+
+| Module folder                  | Registry ID                |
+| ------------------------------ | -------------------------- |
+| `testing-foxes-of-alberta/`    | `foxes-of-alberta-test`    |
+| `testing-geology/`             | `geology-test`             |
+| `testing-residential-schools/` | `residential-schools-test` |
+
+Registry IDs are also used as route and journal-storage keys. These renamed test
+modules start with fresh journal progress; progress stored under their previous
+IDs is not migrated.
+
+The default-exported entry file should be named `entry-<ModuleName>.tsx`, for
+example `entry-ResidentialSchool.tsx` or `entry-LandUse.tsx`. The registry
+imports this file lazily. Additional module components stay in `components/`
+and use descriptive names such as `ListenSection.tsx` or `HabitatQuiz.tsx`.
+
+#### Quiz convention
+
+Every quiz module uses the same optional `quiz.ts` data shape. Each definition
+has a stable checkpoint `id`, a `contentIndex` into its translated question
+array, and a zero-based `correctIndex`. Keep the translated content in both
+locale files as an ordered array of objects with `prompt`, `options` (an array
+of strings), `correct`, and `tryAgain`. Keep English and French question order
+aligned; `npm run check:locales` checks their shape and array lengths. The shared
+`buildQuizQuestions` helper combines definitions and localized content and
+validates their indexes before the shared `Quiz` displays them.
+
+Use the optional `media` slot on a `QuizQuestion` when a question needs more than
+text: it accepts any React content, such as an image, a `TrackPlayButton`, a
+video/player component, or a module-specific media UI. The quiz data and
+answer-handling format remain consistent while each module chooses which
+questions have media and what that media does.
+
+Pass media to `buildQuizQuestions` by question id. For example, an image, audio
+track, or video can be attached without changing the shared quiz layout:
+
+```tsx
+buildQuizQuestions(quizDefinitions, translatedQuestions, {
+  'habitat-image': <img src={habitatImage} alt={t('quiz.imageDescription')} />,
+  'animal-call': <TrackPlayButton track={animalCallTrack} />,
+  'landscape-video': <TrackPlayButton track={landscapeVideo} />,
+})
+```
+
+#### Module loading and optional preloading
+
+Every registry entry uses a lazy entry component and a loader for that component.
+Opening the module overview starts `loadActivity`, which imports the activity
+code before the learner launches it. The module page keeps a `Suspense` fallback
+for loading and error recovery. You do not need a `preload.ts` just to get
+code-splitting or the overview loading state.
+
+Add `preload.ts` only when the module must prepare additional data or media.
+Register its exported callback as the module's optional `preload`. The callback
+receives an `AbortSignal` and an `onProgress(percent)` function. It should report
+real progress when possible, stop promptly when aborted, and reject on genuine
+failures; the shared preload provider handles progress UI, cancellation, retry,
+and error notification. The current residential-school callback is simulated
+and is an example of the hook shape, not a requirement for every module.
+
+Here is the activity entry shape; its content and interaction are intentionally
+module-specific:
+
+```tsx
+export default function LandUse({
+  moduleId,
+  completedCheckpoints,
+  completeCheckpoint,
+}: ModuleActivityProps) {
+  const { t } = useTranslation('landUse')
+  const checkpointId = 'land-use-discovery'
+  const isComplete = completedCheckpoints.includes(checkpointId)
+
+  return (
+    <section aria-labelledby="activity-title" className="max-w-3xl space-y-6">
+      <p className="font-semibold text-pine">{t('category')}</p>
+      <h1 id="activity-title">{t('title')}</h1>
+      <p className="text-lg text-muted">{t('activity.introduction')}</p>
+
+      {isComplete ? (
+        <p role="status">{t('activity.completed')}</p>
+      ) : (
+        <button
+          type="button"
+          className="button"
+          onClick={() => completeCheckpoint(checkpointId)}
+        >
+          {t('activity.complete')}
+        </button>
+      )}
+
+      <Link to={`/modules/${moduleId}`} className="button-secondary">
+        {t('backToOverview')}
+      </Link>
+    </section>
+  )
+}
+```
+
+The snippet uses `ModuleActivityProps`, `useTranslation`, and `Link` from the
+usual React/i18next/router imports. Choose checkpoint ids that are stable after
+release: journal progress is stored by module id and checkpoint id in the
+browser, so renaming an id can orphan a learner's saved progress.
+
+#### Integration checklist
+
+1. Pick a unique, URL-safe kebab-case module id (for example, `land-use`) and a
+   TypeScript/i18next namespace (for example, `landUse`). Create matching
+   resources at `src/locales/en/module.landUse.json` and
+   `src/locales/fr/module.landUse.json`.
+2. Add the namespace to `ModuleTranslationNamespace` in
+   `src/modules/types.ts`. Register both JSON imports in `src/app/i18n.ts`, add
+   the English resource to `CustomTypeOptions.resources`, add both languages to
+   `resources`, and include the namespace in `ns`.
+3. Implement `entry-<ModuleName>.tsx` as a default-exported activity using
+   `ModuleActivityProps`.
+   It receives `moduleId`, `completedCheckpoints`, and `completeCheckpoint`.
+   Build links from `moduleId` rather than hardcoding a route; use it for journal
+   actions too. Keep this module's own UI, data, and state in its module folder.
+4. Define the module's checkpoint ids in its folder and add matching
+   `journal.entries` with the same ids in both locale resources. Add
+   `journal.summary` and the overview/activity copy, including `title`,
+   `description`, `category`, `launch`, and `backToOverview`.
+5. Add a `LearningModule` entry to `src/modules/registry.ts` with the id,
+   `visible: true`, namespace, estimated minutes, checkpoint list, lazy entry
+   component, and activity loader. Add `preload` and `journalEntryAction` only
+   if needed.
+6. Run `npm run check:locales` and the regular project checks. Home cards,
+   module overviews, and expedition routes are generated from the registry.
+
+#### Module visibility
+
+Set `visible: false` on a registry entry to temporarily take a module out of
+the app without deleting its code. The derived `visibleModules` list controls
+home cards, direct module routes, journal pages and actions, and the development
+module-status panel. A hidden module's URLs show the normal module-not-found
+recovery UI. Existing journal data is retained in local storage; making the
+module visible again restores access to that saved progress.
+
+#### Keep the activity unique
+
+The contract above is deliberately small. A module can be a quiz, archive,
+guided listening activity, map, sequence of steps, media experience, or a
+combination. Use `Quiz` or the media player from `src/module-tools/` when they
+fit; do not make a module behave like a quiz just to match another module.
+Keep one-off visuals and interactions inside the module. Promote something to
+`src/module-tools/<tool>/` only when it is reusable independently by multiple
+modules, with a typed API and its own shared behavior.
+
+Shared panels, buttons, theme tokens, navigation, and journal progress already
+have common implementations. Compose those instead of copying their styling or
+state logic. The activity's content order, explanatory copy, interaction model,
+media, and module-specific components remain free to differ.
 
 ### Add or change translations
 
 Keep shared interface text in `global.json`, homepage content in `home.json`,
 and fun-fact content in `funfacts.json` inside each language folder under
-`src/locales/`. Give every module its own JSON namespace file, such as
-`wildlifeFinder.json` or `residentialSchool.json`, and keep matching English and
-French keys, including `launch` for the overview action. Use
-`useTranslation('home')`, `useTranslation('global')`, and the module's
-namespace as appropriate. English resources define the TypeScript
+`src/locales/`. Give every module its own `module.<namespace>.json` file in
+both `en/` and `fr/`, and keep matching keys, arrays, and interpolation
+placeholders. `npm run check:locales` checks resource file parity, JSON shape,
+array lengths, and interpolation placeholders; `npm run build` runs this check
+automatically. Use `useTranslation('home')`, `useTranslation('global')`, and
+the module's namespace as appropriate. English resources define the TypeScript
 translation-key types. Use i18next interpolation rather than concatenating
 translated sentences.
 
 To add another language, add its resource file, register it and its language code
 in `src/app/i18n.ts`, and add its translated name and option to the language
-selector in `src/components/Layout.tsx`.
+selector in `src/components/layout/Navbar.tsx`.
 
 ### Styling and conventions
 
@@ -232,8 +418,8 @@ There is no automated test framework yet. Before adding a module, manually check
 - Home cards and navigation at desktop and tablet sizes.
 - Both languages on home, in the activity, and on the not-found page.
 - Incorrect and correct answers, reset, return home, and browser back/forward.
-- Direct loading and refreshing `/modules/wildlife-habitats` and
-  `/modules/wildlife-habitats/expedition`.
+- Direct loading and refreshing `/modules/foxes-of-alberta-test` and
+  `/modules/foxes-of-alberta-test/expedition`.
 - Unknown URLs and module IDs, such as `/missing` and `/modules/missing`.
 - Keyboard navigation, focus visibility, and the skip-to-content link.
 - Loading feedback with a delayed activity request, and error recovery with a
@@ -244,7 +430,7 @@ There is no automated test framework yet. Before adding a module, manually check
 Build with `npm ci && npm run build` and serve `dist/` from the site root using a
 static host. **Configure an SPA fallback:** requests that do not match static
 files must serve `index.html` with a successful response, so direct navigation to
-`/modules/wildlife-habitats/expedition` works. For example, an nginx location can use
+`/modules/foxes-of-alberta-test/expedition` works. For example, an nginx location can use
 `try_files $uri $uri/ /index.html;`. Keep real asset requests working normally.
 Vite's development/preview servers provide the fallback locally; `npm run preview`
 is not a production server.
