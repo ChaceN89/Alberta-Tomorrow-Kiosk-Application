@@ -1,18 +1,18 @@
 /*
-  File: IntroTour.css | Author: Chace Nielson
+  File: IntroTutorial.css | Author: Chace Nielson
   Date Created: Oct 28, 2026
   Date Updated: Oct 28, 2026
 
   Description:
-  - Define the intro tour dialog entrance and backdrop animations.
+  - Define the intro tutorial dialog entrance and backdrop animations.
 
   Usage:
-  - Imported by IntroTour.tsx.
+  - Imported by IntroTutorial.tsx.
 
   Notes:
   - The two popup animation names allow consecutive steps to restart the animation.
  */
-@keyframes tour-pop-a {
+@keyframes tutorial-pop-a {
   0% {
     opacity: 0;
     transform: translateY(4.5rem) scale(0.9);
@@ -33,7 +33,7 @@
   }
 }
 
-@keyframes tour-pop-b {
+@keyframes tutorial-pop-b {
   0% {
     opacity: 0;
     transform: translateY(4.5rem) scale(0.9);
@@ -54,7 +54,7 @@
   }
 }
 
-@keyframes tour-backdrop-in {
+@keyframes tutorial-backdrop-in {
   from {
     opacity: 0;
   }
@@ -64,24 +64,24 @@
   }
 }
 
-.tour-pop-a {
-  animation: tour-pop-a 750ms ease-out both;
+.tutorial-pop-a {
+  animation: tutorial-pop-a 750ms ease-out both;
 }
 
-.tour-pop-b {
-  animation: tour-pop-b 750ms ease-out both;
+.tutorial-pop-b {
+  animation: tutorial-pop-b 750ms ease-out both;
 }
 
-.tour-pop-a::backdrop,
-.tour-pop-b::backdrop {
-  animation: tour-backdrop-in 500ms ease-out both;
+.tutorial-pop-a::backdrop,
+.tutorial-pop-b::backdrop {
+  animation: tutorial-backdrop-in 500ms ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tour-pop-a,
-  .tour-pop-b,
-  .tour-pop-a::backdrop,
-  .tour-pop-b::backdrop {
+  .tutorial-pop-a,
+  .tutorial-pop-b,
+  .tutorial-pop-a::backdrop,
+  .tutorial-pop-b::backdrop {
     animation: none;
   }
 }

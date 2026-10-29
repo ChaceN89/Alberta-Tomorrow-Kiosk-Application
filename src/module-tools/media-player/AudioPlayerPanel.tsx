@@ -17,7 +17,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '../../journal/useJournal'
-import { MediaPlayerTour } from '../../site-tours/media-player-tour/MediaPlayerTour'
+import { MediaPlayerTutorial } from '../../tutorials/media-player-tutorial/MediaPlayerTutorial'
 import { AudioPlayerControls } from './AudioPlayerControls'
 import { AudioPlayerQueueList } from './AudioPlayerQueueList'
 import { AudioPlayerTabs } from './AudioPlayerTabs'
@@ -213,7 +213,7 @@ export function AudioPlayerPanel() {
         isFullscreen ? 'audio-player-stage--fullscreen' : ''
       } ${stageExitAnimationClass}`}
     >
-      <MediaPlayerTour />
+      <MediaPlayerTutorial />
       <div
         className={`audio-player-frame ${
           isFullscreen ? 'audio-player-frame--fullscreen' : ''

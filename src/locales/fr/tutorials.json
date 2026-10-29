@@ -1,5 +1,5 @@
 {
-  "stepCount": "Étape {{current}} sur {{total}}",
+  "tutorialStepCount": "Étape {{current}} sur {{total}}",
   "next": "Suivant",
   "skip": "Passer la visite",
   "welcome": {

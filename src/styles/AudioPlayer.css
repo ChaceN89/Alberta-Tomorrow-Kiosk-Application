@@ -154,7 +154,7 @@
   background-color: color-mix(in srgb, var(--color-ink) 95%, transparent);
 }
 
-.audio-player-tour-backdrop {
+.audio-player-tutorial-backdrop {
   position: fixed;
   z-index: 1;
   inset: 0;
@@ -163,18 +163,18 @@
   pointer-events: auto;
 }
 
-.audio-player-tour-popup {
+.audio-player-tutorial-popup {
   position: fixed;
   z-index: 3;
   width: min(28.6rem, calc(100vw - 2rem));
   pointer-events: auto;
 }
 
-.audio-player-tour-popup--visible {
-  animation: audio-player-tour-pop 300ms ease-out both;
+.audio-player-tutorial-popup--visible {
+  animation: audio-player-tutorial-pop 300ms ease-out both;
 }
 
-@keyframes audio-player-tour-pop {
+@keyframes audio-player-tutorial-pop {
   from {
     opacity: 0;
     transform: translateY(0.5rem) scale(0.98);
@@ -396,7 +396,7 @@
 @media (prefers-reduced-motion: reduce) {
   .audio-panel-exit,
   .audio-player-media-content,
-  .audio-player-tour-popup--visible,
+  .audio-player-tutorial-popup--visible,
   .audio-panel-tab-view,
   .audio-player-tab-enter,
   .audio-close-dialog,

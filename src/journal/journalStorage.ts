@@ -7,7 +7,7 @@
   - Read and write expedition journal progress in browser localStorage.
 
   Usage:
-  - Journal and intro-tour internals serve their providers or components.
+  - Journal internals serve their providers or components; tutorials use their own providers.
 
   Notes:
   - None.

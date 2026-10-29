@@ -1,10 +1,10 @@
 /**
-  File: IntroTour.tsx | Author: Chace Nielson
+  File: IntroTutorial.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 3, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
-  - Show the first-visit tour in a click-blocking dialog with anchored arrows.
+  - Show the first-visit tutorial in a click-blocking dialog with anchored arrows.
 
   Usage:
   - Layout components render in the app shell.
@@ -15,16 +15,19 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import logo from '../../assets/expedition.svg'
-import '../../styles/IntroTour.css'
-import { tourSteps, type TourAnchor } from '../../site-tours/intro-tour/steps'
-import { useIntroTour } from '../../site-tours/intro-tour/useIntroTour'
+import '../../styles/IntroTutorial.css'
+import {
+  introTutorialSteps,
+  type TutorialAnchor,
+} from '../../tutorials/intro-tutorial/steps'
+import { useIntroTutorial } from '../../tutorials/intro-tutorial/useIntroTutorial'
 
 const POPUP_MARGIN = 16
 const POPUP_GAP = 14
 const ARROW_INSET = 28
 
 type MeasuredAnchor = {
-  anchor: TourAnchor
+  anchor: TutorialAnchor
   rect: DOMRect
   width: number
   height: number
@@ -34,16 +37,16 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
-function IntroTourDialog() {
-  const { t } = useTranslation('introTour')
-  const { stepIndex, next, finish } = useIntroTour()
+function IntroTutorialDialog() {
+  const { t } = useTranslation('tutorials')
+  const { stepIndex, next, finish } = useIntroTutorial()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [measured, setMeasured] = useState<MeasuredAnchor | null>(null)
   const titleId = useId()
   const descriptionId = useId()
-  const step = tourSteps[stepIndex]
+  const step = introTutorialSteps[stepIndex]
   const anchor = step && 'anchor' in step ? step.anchor : null
-  const isLastStep = stepIndex === tourSteps.length - 1
+  const isLastStep = stepIndex === introTutorialSteps.length - 1
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -56,7 +59,7 @@ function IntroTourDialog() {
   useEffect(() => {
     if (!anchor) return
 
-    const selector = `[data-tour="${anchor}"]`
+    const selector = `[data-tutorial="${anchor}"]`
     let frame = 0
     const measure = () => {
       const element = document.querySelector(selector)
@@ -157,7 +160,11 @@ function IntroTourDialog() {
       } ${isMeasuring ? 'opacity-0' : ''} ${
         // Alternating names restart the animation on every step; pointer steps
         // wait until they are positioned so they don't animate in the wrong spot.
-        isMeasuring ? '' : stepIndex % 2 === 0 ? 'tour-pop-a' : 'tour-pop-b'
+        isMeasuring
+          ? ''
+          : stepIndex % 2 === 0
+            ? 'tutorial-pop-a'
+            : 'tutorial-pop-b'
       }`}
       onCancel={(event) => {
         event.preventDefault()
@@ -178,7 +185,10 @@ function IntroTourDialog() {
       <div className="relative space-y-4 p-5 md:p-6">
         {isCentered && <img src={logo} alt="" className="size-14" />}
         <p className="text-xs font-semibold text-muted">
-          {t('stepCount', { current: stepIndex + 1, total: tourSteps.length })}
+          {t('tutorialStepCount', {
+            current: stepIndex + 1,
+            total: introTutorialSteps.length,
+          })}
         </p>
         <h2 id={titleId} className="text-xl">
           {t(`${step.id}.title`)}
@@ -213,8 +223,8 @@ function IntroTourDialog() {
   )
 }
 
-export function IntroTour() {
-  const { isActive } = useIntroTour()
+export function IntroTutorial() {
+  const { isActive } = useIntroTutorial()
 
-  return isActive ? <IntroTourDialog /> : null
+  return isActive ? <IntroTutorialDialog /> : null
 }

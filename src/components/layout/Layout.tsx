@@ -18,7 +18,7 @@ import { AudioPlayerPanel } from '../../module-tools/media-player/AudioPlayerPan
 import { DisplayTesting } from '../development/DisplayTesting'
 import { MyToasters } from '../toasts/MyToasters'
 import { Footer } from './Footer'
-import { IntroTour } from './IntroTour'
+import { IntroTutorial } from './IntroTutorial'
 import { JournalModal } from './JournalModal'
 import { Navbar } from './Navbar'
 import { OverlayScrollbar } from './OverlayScrollbar'
@@ -54,8 +54,8 @@ export function Layout() {
       {/* the modal component  */}
       <JournalModal />
 
-      {/* the intro tour component - create modals for the guided tour */}
-      <IntroTour />
+      {/* The intro tutorial component renders the guided tutorial dialog. */}
+      <IntroTutorial />
 
       {/* Corner media player shared by every module tool */}
       <AudioPlayerPanel />

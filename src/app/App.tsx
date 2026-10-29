@@ -5,7 +5,7 @@
 
   Description:
   - Compose the route tree under BrowserRouter, enabling client-side navigation and deep links.
-  - JournalProvider shares expedition progress; IntroTourProvider manages onboarding;
+  - JournalProvider shares expedition progress; IntroTutorialProvider manages onboarding;
   - ModulePreloadProvider tracks activity loading for each of the different module pages/module data.
   - Layout wraps home, module, and not-found routes with shared application UI.
 
@@ -22,14 +22,14 @@ import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
 import { ModulePreloadProvider } from '../modules/ModulePreloadProvider'
 import { JournalProvider } from '../journal/JournalProvider'
-import { IntroTourProvider } from '../site-tours/intro-tour/IntroTourProvider'
+import { IntroTutorialProvider } from '../tutorials/intro-tutorial/IntroTutorialProvider'
 import { AudioPlayerProvider } from '../module-tools/media-player/AudioPlayerProvider'
 
 export function App() {
   return (
     <BrowserRouter>
       <JournalProvider>
-        <IntroTourProvider>
+        <IntroTutorialProvider>
           <ModulePreloadProvider>
             {/* Above the routes so media keeps playing while learners navigate */}
             <AudioPlayerProvider>
@@ -42,7 +42,7 @@ export function App() {
               </Routes>
             </AudioPlayerProvider>
           </ModulePreloadProvider>
-        </IntroTourProvider>
+        </IntroTutorialProvider>
       </JournalProvider>
     </BrowserRouter>
   )

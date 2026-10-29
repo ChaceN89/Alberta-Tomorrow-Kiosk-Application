@@ -1,10 +1,10 @@
 /**
-  File: IntroTourProvider.tsx | Author: Chace Nielson
+  File: IntroTutorialProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 28, 2026
 
   Description:
-  - Start the intro tour for first-time visitors and control its steps.
+  - Start the intro tutorial for first-time visitors and control its steps.
 
   Usage:
   - Providers supply or wrap state.
@@ -21,33 +21,35 @@ import {
   type ReactNode,
 } from 'react'
 import {
-  hasCompletedIntroTour,
-  markIntroTourCompleted,
-  resetIntroTour,
-} from './introTourStorage'
-import { tourSteps } from './steps'
-import { IntroTourContext } from './useIntroTour'
+  hasCompletedIntroTutorial,
+  markIntroTutorialCompleted,
+  resetIntroTutorial,
+} from './introTutorialStorage'
+import { introTutorialSteps } from './steps'
+import { IntroTutorialContext } from './useIntroTutorial'
 
-// Gives the splash screen time to finish fading before the tour appears. A little delay ensures smooth transition.
+// Gives the splash screen time to finish fading before the tutorial appears. A little delay ensures smooth transition.
 const START_DELAY_MS = 350
 
 // props for this component - the children to be wrapped by the provider
-type IntroTourProviderProps = {
+type IntroTutorialProviderProps = {
   children: ReactNode
 }
 
-export function IntroTourProvider({ children }: IntroTourProviderProps) {
+export function IntroTutorialProvider({
+  children,
+}: IntroTutorialProviderProps) {
   // extract the current pathname and navigation functions from the router
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [stepIndex, setStepIndex] = useState<number | null>(null) // step along the intro tour
+  const [stepIndex, setStepIndex] = useState<number | null>(null) // step along the intro tutorial
 
   // Decided once per page load, so resetting the flag only affects the next load.
   const [isAutoStartPending, setIsAutoStartPending] = useState(
-    () => !hasCompletedIntroTour(),
+    () => !hasCompletedIntroTutorial(),
   )
 
-  // determine if the current page is the home page (root path) if not home, the tour should not auto-start
+  // Determine if the current page is the home page; tutorials only auto-start there.
   const isHome = pathname === '/'
 
   useEffect(() => {
@@ -63,22 +65,24 @@ export function IntroTourProvider({ children }: IntroTourProviderProps) {
 
   const next = useCallback(() => {
     setStepIndex((current) =>
-      current === null ? null : Math.min(current + 1, tourSteps.length - 1),
+      current === null
+        ? null
+        : Math.min(current + 1, introTutorialSteps.length - 1),
     )
   }, [])
 
   const finish = useCallback(() => {
-    markIntroTourCompleted()
+    markIntroTutorialCompleted()
     setIsAutoStartPending(false)
     setStepIndex(null)
   }, [])
 
   const resetFlag = useCallback(() => {
-    resetIntroTour()
+    resetIntroTutorial()
   }, [])
 
-  const restartTour = useCallback(() => {
-    resetIntroTour()
+  const restartTutorial = useCallback(() => {
+    resetIntroTutorial()
     setIsAutoStartPending(false)
     navigate('/')
     setStepIndex(0)
@@ -91,14 +95,14 @@ export function IntroTourProvider({ children }: IntroTourProviderProps) {
       next,
       finish,
       resetFlag,
-      restartTour,
+      restartTutorial,
     }),
-    [finish, isHome, next, resetFlag, restartTour, stepIndex],
+    [finish, isHome, next, resetFlag, restartTutorial, stepIndex],
   )
 
   return (
-    <IntroTourContext.Provider value={contextValue}>
+    <IntroTutorialContext.Provider value={contextValue}>
       {children}
-    </IntroTourContext.Provider>
+    </IntroTutorialContext.Provider>
   )
 }

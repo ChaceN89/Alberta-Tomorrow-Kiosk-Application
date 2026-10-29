@@ -51,6 +51,7 @@ src/
   modules/      Typed registry, shared types, and individual module folders
   module-tools/ Reusable module tools (audio-player, quiz-system) shared by modules
   locales/      en/ and fr/ with global, home, journal, development, funfacts, moduleTools, and module.* JSON files
+  tutorials/    First-visit and media-player tutorials
   styles/       Global CSS and centralized theme tokens
   assets/       Bundled local assets
 ```
@@ -125,8 +126,8 @@ page is a title page explaining the journal, followed by one page per started
 expedition ("Expedition 2 of 3"); the title shows the number of entries. The
 arrows and a floating dropdown switch pages. The development menu groups saved
 state controls under **Site flags**: **Reset whole site** clears the journal and
-both tour flags before reloading as a first visit, **Reset tour flags** clears
-both tour flags, **Reset journal progress** clears saved expedition progress,
+both tutorial flags before reloading as a first visit, **Reset tutorial flags** clears
+both tutorial flags, **Reset journal progress** clears saved expedition progress,
 **Start all expeditions** adds every visible expedition to the journal without
 recording checkpoints, and **Set all modules complete** records every
 checkpoint in each visible module. The two reset actions that clear journal
@@ -143,18 +144,19 @@ checkpoint ids to imported image URLs with `journalEntryImages`; add a localized
 text-only. Storage is local only; replace `journalStorage.ts` to sync with save
 data later.
 
-### First-visit intro tour
+### First-visit intro tutorial
 
-First-time visitors get a short tour on the home page: a welcome dialog, a
+First-time visitors get a short tutorial on the home page: a welcome dialog, a
 pointer above the expedition cards, a pointer to the Journal button, and a
 closing message. It uses a native modal `<dialog>`, so the page behind it can't
 be clicked, and **Skip tour** or Escape ends it. Finishing or skipping saves
-`alberta-expeditions:intro-tour-completed` in `localStorage`
-(`src/tour/introTourStorage.ts`); the tour only starts automatically when that
-flag is missing and the visitor is on the home page. Steps live in
-`src/tour/steps.ts`, anchors are `data-tour` attributes, and the text is in
-`introTour.json`. The development menu's **Intro tour** panel can reset the flag
-(the tour then starts on the next page load) or restart the tour immediately.
+`alberta-expeditions:intro-tutorial-completed` in `localStorage`
+(`src/tutorials/intro-tutorial/introTutorialStorage.ts`). The tutorial only
+starts automatically when that flag is missing and the visitor is on the home page.
+Steps live in `src/tutorials/intro-tutorial/steps.ts`, anchors are
+`data-tutorial` attributes, and the text is in `tutorials.json`. The development
+menu's **Tutorials** panel can reset the flag (the tutorial then starts on the
+next page load) or restart it immediately.
 
 ### Add a module
 
@@ -388,7 +390,7 @@ Prefer utilities and the small shared component classes. Controls have
 touch-friendly targets, visible keyboard focus, and reduced-motion support.
 
 Development tools (the gear menu: breakpoint guides, dark mode, module status,
-state previews, intro tour, and resets) live in `src/components/development/`.
+state previews, tutorials, and resets) live in `src/components/development/`.
 They render only when `VITE_ENVIRONMENT=development`, and the browser tab title
 is then prefixed with `Dev | `. The variable is read at **build time**, so
 change it in the Netlify environment settings and redeploy (clear the build

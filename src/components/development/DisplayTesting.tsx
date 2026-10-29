@@ -20,16 +20,16 @@ import { NOTIFICATION_TOASTER_ID } from '../toasts/toasterIds'
 import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { ApplicationStatePanel } from './panels/ApplicationStatePanel'
-import { IntroTourPanel } from './panels/IntroTourPanel'
+import { TutorialsPanel } from './panels/TutorialsPanel'
 import { ModuleStatusPanel } from './panels/ModuleStatusPanel'
 import { ResetConfirmPanel } from './panels/ResetConfirmPanel'
 import { DarkModeTestingToggle } from './DarkModeTestingToggle'
 import { TailwindBreakPoints } from './TailwindBreakPoints'
 import { getCurrentBreakpoint } from './breakpoints'
-import { resetSite, resetSiteTourFlags } from './resetSite'
+import { resetSite, resetSiteTutorialFlags } from './resetSite'
 import { SiteFlagsPanel } from './panels/SiteFlagsPanel'
 
-type ActivePanel = 'modules' | 'states' | 'tour' | 'site' | null
+type ActivePanel = 'modules' | 'states' | 'tutorials' | 'site' | null
 type PendingReset = 'journal' | 'site' | null
 type BreakpointMode = 'off' | 'guides' | 'indicator'
 
@@ -144,9 +144,9 @@ export function DisplayTesting() {
     setPendingReset(null)
   }
 
-  const handleResetTourFlags = () => {
-    resetSiteTourFlags()
-    toast(t('tourFlagsReset'), {
+  const handleResetTutorialFlags = () => {
+    resetSiteTutorialFlags()
+    toast(t('tutorialFlagsReset'), {
       toasterId: NOTIFICATION_TOASTER_ID,
     })
   }
@@ -240,10 +240,10 @@ export function DisplayTesting() {
             <button
               type="button"
               className="dev-tool-menu-button"
-              onClick={() => openPanel('tour')}
+              onClick={() => openPanel('tutorials')}
             >
               <span aria-hidden="true">?</span>
-              {t('introTour')}
+              {t('tutorials')}
             </button>
             <button
               type="button"
@@ -296,15 +296,15 @@ export function DisplayTesting() {
           {activePanel === 'states' && (
             <ApplicationStatePanel onClose={closePanel} />
           )}
-          {activePanel === 'tour' && (
-            <IntroTourPanel onClose={closePanel} onRestarted={closeAllTools} />
+          {activePanel === 'tutorials' && (
+            <TutorialsPanel onClose={closePanel} onRestarted={closeAllTools} />
           )}
           {activePanel === 'site' && (
             <SiteFlagsPanel
               onClose={closePanel}
               onResetSite={() => askToReset('site')}
               onResetJournal={() => askToReset('journal')}
-              onResetTourFlags={handleResetTourFlags}
+              onResetTutorialFlags={handleResetTutorialFlags}
               onStartAllExpeditions={handleStartAllExpeditions}
               onCompleteAllModules={handleCompleteAllModules}
             />

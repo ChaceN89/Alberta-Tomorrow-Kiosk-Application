@@ -5,7 +5,7 @@
 
   Description:
   - Render the app brand, navigation actions, language switcher, and module preload progress.
-  - Keep journal access available throughout the app and tour access on the home page.
+  - Keep journal access available throughout the app and tutorial access on the home page.
 
   Usage:
   - Rendered by Layout above the routed page content.
@@ -16,7 +16,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../../assets/expedition.svg'
-import { useIntroTour } from '../../site-tours/intro-tour/useIntroTour'
+import { useIntroTutorial } from '../../tutorials/intro-tutorial/useIntroTutorial'
 import { useJournal } from '../../journal/useJournal'
 import { useModulePreload } from '../../modules/useModulePreload'
 import { Dropdown } from '../shared/Dropdown'
@@ -29,7 +29,7 @@ export function Navbar() {
   const { pathname } = useLocation()
   const { state: preloadState } = useModulePreload()
   const { openJournal } = useJournal()
-  const { restartTour } = useIntroTour()
+  const { restartTutorial } = useIntroTutorial()
   const languages = [
     { id: 'en', label: t('language.en') },
     { id: 'fr', label: t('language.fr') },
@@ -60,7 +60,7 @@ export function Navbar() {
             </Link>
             <button
               type="button"
-              data-tour="journal-button"
+              data-tutorial="journal-button"
               className="button-secondary min-h-12 gap-2 px-4 py-2"
               aria-label={tJournal('openLabel')}
               onClick={() =>
@@ -74,8 +74,8 @@ export function Navbar() {
               <button
                 type="button"
                 className="group inline-flex size-12 shrink-0 items-center justify-center rounded-full p-0 text-pine hover:text-pine-dark"
-                aria-label={t('navigation.startTour')}
-                onClick={restartTour}
+                aria-label={t('navigation.startTutorial')}
+                onClick={restartTutorial}
               >
                 <HelpIcon className="size-6 transition-transform duration-200 group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none" />
               </button>

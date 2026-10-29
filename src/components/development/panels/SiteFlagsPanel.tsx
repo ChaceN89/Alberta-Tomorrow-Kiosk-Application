@@ -19,7 +19,7 @@ type SiteFlagsPanelProps = {
   onClose: () => void
   onResetSite: () => void
   onResetJournal: () => void
-  onResetTourFlags: () => void
+  onResetTutorialFlags: () => void
   onStartAllExpeditions: () => void
   onCompleteAllModules: () => void
 }
@@ -28,7 +28,7 @@ export function SiteFlagsPanel({
   onClose,
   onResetSite,
   onResetJournal,
-  onResetTourFlags,
+  onResetTutorialFlags,
   onStartAllExpeditions,
   onCompleteAllModules,
 }: SiteFlagsPanelProps) {
@@ -47,9 +47,9 @@ export function SiteFlagsPanel({
         <button
           type="button"
           className="button-secondary w-full"
-          onClick={onResetTourFlags}
+          onClick={onResetTutorialFlags}
         >
-          {t('resetTourFlags')}
+          {t('resetTutorialFlags')}
         </button>
         <button
           type="button"

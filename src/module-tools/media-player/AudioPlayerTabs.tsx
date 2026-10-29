@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '../../components/shared/Tooltip'
-import { requestMediaPlayerTourDismissalForPlayback } from '../../site-tours/media-player-tour/mediaPlayerTourEvents'
+import { requestMediaPlayerTutorialDismissalForPlayback } from '../../tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import {
   CloseIcon,
   MusicNoteIcon,
@@ -65,7 +65,7 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
     setPanelOpen(true)
   }
   const handlePlaybackRequest = () => {
-    if (!isPlaying) requestMediaPlayerTourDismissalForPlayback()
+    if (!isPlaying) requestMediaPlayerTutorialDismissalForPlayback()
     togglePlayback()
   }
   const playerTabLabel = t(
@@ -149,34 +149,34 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
       {[
         {
           className: 'bottom-55',
-          tourAnchor: 'player-tabs',
+          tutorialAnchor: 'player-tabs',
           button: closeTab,
           label: t('audioPlayer.close'),
         },
         {
           className: 'bottom-38',
-          tourAnchor: undefined,
+          tutorialAnchor: undefined,
           button: playbackTab,
           label: playbackTabLabel,
         },
         {
           className: 'bottom-21',
-          tourAnchor: 'player-tab',
+          tutorialAnchor: 'player-tab',
           button: playerTab,
           label: playerTabLabel,
         },
         {
           className: 'bottom-4',
-          tourAnchor: undefined,
+          tutorialAnchor: undefined,
           button: queueTab,
           label: queueTabLabel,
         },
-      ].map(({ className, tourAnchor, button, label }) => (
+      ].map(({ className, tutorialAnchor, button, label }) => (
         <div
           key={className}
           inert={isFullscreen}
           aria-hidden={isFullscreen}
-          data-media-player-tour={tourAnchor}
+          data-media-player-tutorial={tutorialAnchor}
           className={`audio-player-tab absolute ${className} left-full ${sideTabClass}`}
         >
           {isPanelOpen ? button : <Tooltip text={label}>{button}</Tooltip>}

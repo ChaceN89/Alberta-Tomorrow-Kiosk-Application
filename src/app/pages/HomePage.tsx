@@ -27,7 +27,7 @@ export function HomePage() {
         <p className="text-lg text-muted">{t('description')}</p>
       </div>
       <ul
-        data-tour="expedition-list"
+        data-tutorial="expedition-list"
         className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
       >
         {visibleModules.map((module) => (

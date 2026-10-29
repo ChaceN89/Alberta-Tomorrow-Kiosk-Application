@@ -15,7 +15,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '../../components/shared/Tooltip'
-import { requestMediaPlayerTourDismissalForPlayback } from '../../site-tours/media-player-tour/mediaPlayerTourEvents'
+import { requestMediaPlayerTutorialDismissalForPlayback } from '../../tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import {
   ExitFullscreenIcon,
   FastForwardIcon,
@@ -91,7 +91,7 @@ export function AudioPlayerControls({
   const isVolumeVisible = isVolumeOpen && !isClosing
   const handlePlaybackRequest = () => {
     setVolumeOpen(false)
-    if (!isPlaying) requestMediaPlayerTourDismissalForPlayback()
+    if (!isPlaying) requestMediaPlayerTutorialDismissalForPlayback()
     togglePlayback()
   }
 
@@ -104,7 +104,7 @@ export function AudioPlayerControls({
             }`
           : 'justify-start gap-2 p-2'
       }`}
-      data-media-player-tour="player-controls"
+      data-media-player-tutorial="player-controls"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">

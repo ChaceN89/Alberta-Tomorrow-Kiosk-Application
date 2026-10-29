@@ -13,16 +13,16 @@
   - None.
  */
 import { clearJournalStorage } from '../../journal/journalStorage'
-import { resetIntroTour } from '../../site-tours/intro-tour/introTourStorage'
-import { resetMediaPlayerTour } from '../../site-tours/media-player-tour/mediaPlayerTourStorage'
+import { resetIntroTutorial } from '../../tutorials/intro-tutorial/introTutorialStorage'
+import { resetMediaPlayerTutorial } from '../../tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
 
-export function resetSiteTourFlags() {
-  resetIntroTour()
-  resetMediaPlayerTour()
+export function resetSiteTutorialFlags() {
+  resetIntroTutorial()
+  resetMediaPlayerTutorial()
 }
 
 export function resetSite() {
   clearJournalStorage()
-  resetSiteTourFlags()
+  resetSiteTutorialFlags()
   window.location.assign('/')
 }

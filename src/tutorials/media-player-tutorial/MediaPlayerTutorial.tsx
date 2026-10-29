@@ -1,16 +1,16 @@
 /**
-  File: MediaPlayerTour.tsx | Author: Chace Nielson
+  File: MediaPlayerTutorial.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
   Date Updated: Oct 28, 2026
 
   Description:
-  - Guide learners through the shared media player the first time they use it.
+  - Guide learners through the shared media player tutorial the first time they use it.
 
   Usage:
   - Render inside AudioPlayerPanel's stage so the player remains interactive.
 
   Notes:
-  - The backdrop blocks the page while keeping the player and tour actions usable.
+  - The backdrop blocks the page while keeping the player and tutorial actions usable.
  */
 import {
   useCallback,
@@ -22,21 +22,24 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAudioPlayer } from '../../module-tools/media-player/useAudioPlayer'
-import { useIntroTour } from '../intro-tour/useIntroTour'
-import { MEDIA_PLAYER_TOUR_PLAY_REQUEST } from './mediaPlayerTourEvents'
+import { useIntroTutorial } from '../intro-tutorial/useIntroTutorial'
+import { MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST } from './mediaPlayerTutorialEvents'
 import {
-  hasCompletedMediaPlayerTour,
-  markMediaPlayerTourCompleted,
-} from './mediaPlayerTourStorage'
-import { mediaPlayerTourSteps, type MediaPlayerTourAnchor } from './steps'
+  hasCompletedMediaPlayerTutorial,
+  markMediaPlayerTutorialCompleted,
+} from './mediaPlayerTutorialStorage'
+import {
+  mediaPlayerTutorialSteps,
+  type MediaPlayerTutorialAnchor,
+} from './steps'
 
 const POPUP_MARGIN = 16
 const POPUP_GAP = 14
 const ARROW_INSET = 28
 const PLAYER_TRANSITION_MS = 1300
 
-type MeasuredTourPosition = {
-  anchor: MediaPlayerTourAnchor
+type MeasuredTutorialPosition = {
+  anchor: MediaPlayerTutorialAnchor
   style: CSSProperties
   arrow: { left: number; above: boolean }
 }
@@ -45,8 +48,8 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
-export function MediaPlayerTour() {
-  const { t } = useTranslation('introTour')
+export function MediaPlayerTutorial() {
+  const { t } = useTranslation('tutorials')
   const {
     track,
     isPlaying,
@@ -58,33 +61,38 @@ export function MediaPlayerTour() {
     pausePlayback,
     resumePlayback,
   } = useAudioPlayer()
-  const { isActive: isIntroTourActive } = useIntroTour()
-  const [hasCompletedTour, setHasCompletedTour] = useState(
-    hasCompletedMediaPlayerTour,
+  const { isActive: isIntroTutorialActive } = useIntroTutorial()
+  const [hasCompletedTutorial, setHasCompletedTutorial] = useState(
+    hasCompletedMediaPlayerTutorial,
   )
   const [requestedStepIndex, setRequestedStepIndex] = useState<number | null>(
     null,
   )
-  const [measured, setMeasured] = useState<MeasuredTourPosition | null>(null)
+  const [measured, setMeasured] = useState<MeasuredTutorialPosition | null>(
+    null,
+  )
   const popupRef = useRef<HTMLElement>(null)
   const pausedTrackIdRef = useRef<string | null>(null)
   const previousLayoutRef = useRef({ isFullscreen, isPanelOpen })
   const titleId = useId()
   const descriptionId = useId()
   const hasTrack = track !== null
-  const isTourEligible = hasTrack && !hasCompletedTour && !isIntroTourActive
-  const requestedTourStepIndex = isTourEligible
+  const isTutorialEligible =
+    hasTrack && !hasCompletedTutorial && !isIntroTutorialActive
+  const requestedTutorialStepIndex = isTutorialEligible
     ? (requestedStepIndex ?? 0)
     : null
   const stepIndex =
-    requestedTourStepIndex === 1 && isPanelOpen && activePanelTab === 'player'
+    requestedTutorialStepIndex === 1 &&
+    isPanelOpen &&
+    activePanelTab === 'player'
       ? 2
-      : requestedTourStepIndex
-  const step = stepIndex === null ? null : mediaPlayerTourSteps[stepIndex]
+      : requestedTutorialStepIndex
+  const step = stepIndex === null ? null : mediaPlayerTutorialSteps[stepIndex]
   const anchor =
     stepIndex === 0 && isFullscreen ? 'player-controls' : (step?.anchor ?? null)
   const isPositioned = anchor !== null && measured?.anchor === anchor
-  const isLastStep = stepIndex === mediaPlayerTourSteps.length - 1
+  const isLastStep = stepIndex === mediaPlayerTutorialSteps.length - 1
 
   const finish = useCallback(
     (resumePausedPlayback = true) => {
@@ -94,8 +102,8 @@ export function MediaPlayerTour() {
 
       if (shouldResumePlayback) resumePlayback()
 
-      markMediaPlayerTourCompleted()
-      setHasCompletedTour(true)
+      markMediaPlayerTutorialCompleted()
+      setHasCompletedTutorial(true)
       setRequestedStepIndex(null)
     },
     [resumePlayback, track?.id],
@@ -118,10 +126,13 @@ export function MediaPlayerTour() {
 
     const finishOnPlayback = () => finish(false)
 
-    window.addEventListener(MEDIA_PLAYER_TOUR_PLAY_REQUEST, finishOnPlayback)
+    window.addEventListener(
+      MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST,
+      finishOnPlayback,
+    )
     return () =>
       window.removeEventListener(
-        MEDIA_PLAYER_TOUR_PLAY_REQUEST,
+        MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST,
         finishOnPlayback,
       )
   }, [finish, stepIndex])
@@ -137,7 +148,7 @@ export function MediaPlayerTour() {
     previousLayoutRef.current = { isFullscreen, isPanelOpen }
     const measure = () => {
       const target = document.querySelector(
-        `[data-media-player-tour="${anchor}"]`,
+        `[data-media-player-tutorial="${anchor}"]`,
       )
       const popup = popupRef.current
 
@@ -165,7 +176,7 @@ export function MediaPlayerTour() {
             window.innerHeight - height - POPUP_MARGIN,
           )
 
-      const nextMeasured: MeasuredTourPosition = {
+      const nextMeasured: MeasuredTutorialPosition = {
         anchor,
         style: { inset: 'auto', margin: 0, left, top },
         arrow: {
@@ -236,7 +247,7 @@ export function MediaPlayerTour() {
 
   return (
     <>
-      <div aria-hidden="true" className="audio-player-tour-backdrop" />
+      <div aria-hidden="true" className="audio-player-tutorial-backdrop" />
       <section
         ref={popupRef}
         role="dialog"
@@ -248,8 +259,8 @@ export function MediaPlayerTour() {
             : { inset: 'auto', margin: 0, left: 0, top: 0 }),
           visibility: isPositioned ? 'visible' : 'hidden',
         }}
-        className={`audio-player-tour-popup overflow-visible rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl ${
-          isPositioned ? 'audio-player-tour-popup--visible' : ''
+        className={`audio-player-tutorial-popup overflow-visible rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl ${
+          isPositioned ? 'audio-player-tutorial-popup--visible' : ''
         }`}
       >
         {isPositioned && (
@@ -265,9 +276,9 @@ export function MediaPlayerTour() {
         )}
         <div className="relative space-y-4 p-5 md:p-6">
           <p className="text-xs font-semibold text-muted">
-            {t('stepCount', {
+            {t('tutorialStepCount', {
               current: stepIndex + 1,
-              total: mediaPlayerTourSteps.length,
+              total: mediaPlayerTutorialSteps.length,
             })}
           </p>
           <h2 id={titleId} className="text-xl">

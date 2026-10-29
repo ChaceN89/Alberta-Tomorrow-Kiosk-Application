@@ -7,7 +7,7 @@
   - Define the expedition journal context and consumer hook.
 
   Usage:
-  - Journal and intro-tour internals serve their providers or components.
+  - Journal internals serve their providers or components; tutorials use their own providers.
 
   Notes:
   - None.

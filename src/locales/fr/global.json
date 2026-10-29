@@ -10,7 +10,7 @@
   "navigation": {
     "home": "Accueil",
     "returnHome": "Retour à l'accueil",
-    "startTour": "Lancer la visite guidée",
+    "startTutorial": "Lancer la visite guidée",
     "skip": "Aller au contenu principal",
     "label": "Navigation principale"
   },
