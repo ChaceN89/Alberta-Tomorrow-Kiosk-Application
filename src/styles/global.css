@@ -1,7 +1,7 @@
 /*
   File: global.css | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Tailwind entry point, centralized theme, and shared touch-friendly UI.
@@ -24,9 +24,17 @@
   --color-line: #b5c6bd;
   --color-focus: #075ed1;
   --color-flag: #c2410c;
-  --breakpoint-xs: 24rem;
   --font-sans: 'Segoe UI', system-ui, sans-serif;
   --spacing: 0.25rem;
+}
+
+@theme static {
+  --breakpoint-xs: 24rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -40,46 +48,6 @@ html::-webkit-scrollbar {
   display: none;
   width: 0;
   height: 0;
-}
-
-@keyframes splash-fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes splash-fade-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes development-menu-enter {
-  from {
-    opacity: 0;
-    transform: translateY(-0.5rem) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.splash-screen {
-  animation: splash-fade-in 350ms ease-out both;
-}
-
-.splash-screen--exiting {
-  animation: splash-fade-out 250ms ease-in both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -152,7 +120,11 @@ html.dark .button-secondary[aria-pressed='true'] {
   }
 
   .dev-tool-menu-button {
-    @apply flex min-h-10 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-ink transition-colors hover:bg-canvas motion-reduce:transition-none;
+    @apply flex min-h-10 w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium whitespace-nowrap text-ink transition-colors hover:bg-canvas motion-reduce:transition-none;
+  }
+
+  .dev-tool-menu-button > span:first-child {
+    @apply flex size-5 shrink-0 items-center justify-center;
   }
 
   .text-link {

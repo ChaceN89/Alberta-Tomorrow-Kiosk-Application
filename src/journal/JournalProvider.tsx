@@ -161,6 +161,28 @@ export function JournalProvider({ children }: JournalProviderProps) {
     [commitProgress, showJournalToast, t],
   )
 
+  const progressNextCheckpoint = useCallback(
+    (moduleId: string) => {
+      const module = visibleModules.find((entry) => entry.id === moduleId)
+
+      if (!module) {
+        console.warn(`Unknown journal module "${moduleId}".`)
+        return false
+      }
+
+      const currentCheckpoints = progressRef.current[moduleId]?.checkpoints
+      const checkpointId = module.checkpoints.find(
+        (id) => currentCheckpoints?.[id] === undefined,
+      )
+
+      if (!checkpointId) return false
+
+      completeCheckpoint(moduleId, checkpointId)
+      return true
+    },
+    [completeCheckpoint],
+  )
+
   const isCheckpointComplete = useCallback(
     (moduleId: string, checkpointId: string) =>
       Boolean(progress[moduleId]?.checkpoints[checkpointId]),
@@ -196,6 +218,142 @@ export function JournalProvider({ children }: JournalProviderProps) {
 
     if (hasChanges) commitProgress(next)
   }, [commitProgress])
+
+  const progressAllNextCheckpoints = useCallback(() => {
+    const current = progressRef.current
+    const next: JournalProgress = { ...current }
+    const timestamp = new Date().toISOString()
+    let progressed = 0
+
+    for (const module of visibleModules) {
+      const record = current[module.id]
+      const checkpointId = module.checkpoints.find(
+        (id) => record?.checkpoints[id] === undefined,
+      )
+
+      if (!checkpointId) continue
+
+      next[module.id] = {
+        startedAt: record?.startedAt ?? timestamp,
+        checkpoints: { ...record?.checkpoints, [checkpointId]: timestamp },
+      }
+      progressed += 1
+    }
+
+    if (progressed > 0) commitProgress(next)
+    return progressed
+  }, [commitProgress])
+
+  const completeModule = useCallback(
+    (moduleId: string) => {
+      const module = visibleModules.find((entry) => entry.id === moduleId)
+
+      if (!module) {
+        console.warn(`Unknown journal module "${moduleId}".`)
+        return false
+      }
+
+      if (module.checkpoints.length === 0) return false
+
+      const current = progressRef.current
+      const record = current[moduleId]
+      const timestamp = new Date().toISOString()
+      const checkpoints = { ...record?.checkpoints }
+      let hasChanges = !record
+
+      for (const checkpointId of module.checkpoints) {
+        if (checkpoints[checkpointId] !== undefined) continue
+
+        checkpoints[checkpointId] = timestamp
+        hasChanges = true
+      }
+
+      if (!hasChanges) return false
+
+      commitProgress({
+        ...current,
+        [moduleId]: {
+          startedAt: record?.startedAt ?? timestamp,
+          checkpoints,
+        },
+      })
+      showJournalToast(module, t('toastUpdated'))
+      return true
+    },
+    [commitProgress, showJournalToast, t],
+  )
+
+  const randomizeModuleCheckpoints = useCallback(
+    (moduleId: string) => {
+      const module = visibleModules.find((entry) => entry.id === moduleId)
+
+      if (!module) {
+        console.warn(`Unknown journal module "${moduleId}".`)
+        return false
+      }
+
+      if (module.checkpoints.length === 0) return false
+
+      const current = progressRef.current
+      const record = current[moduleId]
+      const timestamp = new Date().toISOString()
+      const checkpoints: Record<string, string> = {}
+
+      for (const checkpointId of module.checkpoints) {
+        if (Math.random() < 0.5) checkpoints[checkpointId] = timestamp
+      }
+
+      const isUnchanged = module.checkpoints.every(
+        (checkpointId) =>
+          Boolean(checkpoints[checkpointId]) ===
+          Boolean(record?.checkpoints[checkpointId]),
+      )
+
+      if (isUnchanged) {
+        const index = Math.floor(Math.random() * module.checkpoints.length)
+        const checkpointId = module.checkpoints[index]
+
+        if (checkpoints[checkpointId] !== undefined) {
+          delete checkpoints[checkpointId]
+        } else {
+          checkpoints[checkpointId] = timestamp
+        }
+      }
+
+      commitProgress({
+        ...current,
+        [moduleId]: {
+          startedAt: record?.startedAt ?? timestamp,
+          checkpoints,
+        },
+      })
+      showJournalToast(module, t('toastUpdated'))
+      return true
+    },
+    [commitProgress, showJournalToast, t],
+  )
+
+  const restartModule = useCallback(
+    (moduleId: string) => {
+      const module = visibleModules.find((entry) => entry.id === moduleId)
+
+      if (!module) {
+        console.warn(`Unknown journal module "${moduleId}".`)
+        return false
+      }
+
+      if (module.checkpoints.length === 0) return false
+
+      const timestamp = new Date().toISOString()
+      commitProgress({
+        ...progressRef.current,
+        [moduleId]: { startedAt: timestamp, checkpoints: {} },
+      })
+      showJournalToast(module, t('toastUpdated'))
+      return true
+    },
+    [commitProgress, showJournalToast, t],
+  )
 
   const completeAllModules = useCallback(() => {
     const current = progressRef.current
@@ -256,12 +414,18 @@ export function JournalProvider({ children }: JournalProviderProps) {
       getExpeditionProgress,
       resetJournal,
       startAllExpeditions,
+      progressNextCheckpoint,
+      progressAllNextCheckpoints,
+      completeModule,
+      randomizeModuleCheckpoints,
+      restartModule,
       completeAllModules,
     }),
     [
       activeModuleId,
       closeJournal,
       completeAllModules,
+      completeModule,
       completeCheckpoint,
       getCompletedCheckpoints,
       getExpeditionProgress,
@@ -269,6 +433,10 @@ export function JournalProvider({ children }: JournalProviderProps) {
       isOpen,
       isStorageAvailable,
       openJournal,
+      progressAllNextCheckpoints,
+      progressNextCheckpoint,
+      randomizeModuleCheckpoints,
+      restartModule,
       resetJournal,
       startAllExpeditions,
       selectExpedition,

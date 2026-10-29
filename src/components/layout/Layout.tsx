@@ -15,7 +15,7 @@
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
 import { AudioPlayerPanel } from '@/module-tools/media-player/AudioPlayerPanel'
-import { DisplayTesting } from '@/components/development/DisplayTesting'
+import { DisplayTesting } from '@/components/development/dev-tools/DisplayTesting'
 import { MyToasters } from '@/components/toasts/MyToasters'
 import { Footer } from './Footer'
 import { IntroTutorial } from './IntroTutorial'

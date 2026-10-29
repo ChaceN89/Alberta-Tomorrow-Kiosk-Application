@@ -1,7 +1,7 @@
 /**
   File: MediaPlayerTutorial.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Guide learners through the shared media player tutorial the first time they use it.
@@ -23,7 +23,11 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useAudioPlayer } from '@/module-tools/media-player/useAudioPlayer'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
-import { MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST } from './mediaPlayerTutorialEvents'
+import {
+  MEDIA_PLAYER_TUTORIAL_FINISH_REQUEST,
+  MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST,
+  MEDIA_PLAYER_TUTORIAL_START_REQUEST,
+} from './mediaPlayerTutorialEvents'
 import {
   hasCompletedMediaPlayerTutorial,
   markMediaPlayerTutorialCompleted,
@@ -136,6 +140,34 @@ export function MediaPlayerTutorial() {
         finishOnPlayback,
       )
   }, [finish, stepIndex])
+
+  useEffect(() => {
+    const finishOnRequest = () => finish()
+
+    window.addEventListener(
+      MEDIA_PLAYER_TUTORIAL_FINISH_REQUEST,
+      finishOnRequest,
+    )
+    return () =>
+      window.removeEventListener(
+        MEDIA_PLAYER_TUTORIAL_FINISH_REQUEST,
+        finishOnRequest,
+      )
+  }, [finish])
+
+  useEffect(() => {
+    const startOnRequest = () => {
+      setHasCompletedTutorial(false)
+      setRequestedStepIndex(0)
+    }
+
+    window.addEventListener(MEDIA_PLAYER_TUTORIAL_START_REQUEST, startOnRequest)
+    return () =>
+      window.removeEventListener(
+        MEDIA_PLAYER_TUTORIAL_START_REQUEST,
+        startOnRequest,
+      )
+  }, [])
 
   useEffect(() => {
     if (!anchor) return

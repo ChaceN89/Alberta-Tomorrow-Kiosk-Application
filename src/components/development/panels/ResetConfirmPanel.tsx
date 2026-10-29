@@ -1,7 +1,7 @@
 /**
   File: ResetConfirmPanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Ask for a Yes/No confirmation in the developer tools panel style.
@@ -38,10 +38,14 @@ export function ResetConfirmPanel({
   }, [])
 
   return (
-    <DevPanel title={title} onClose={onCancel}>
+    <DevPanel title={title} onBack={onCancel}>
       <p className="mb-3 text-sm text-muted">{description}</p>
       <div className="grid gap-2">
-        <button type="button" className="button w-full" onClick={onConfirm}>
+        <button
+          type="button"
+          className="button-danger w-full"
+          onClick={onConfirm}
+        >
           {t('confirmYes')}
         </button>
         <button

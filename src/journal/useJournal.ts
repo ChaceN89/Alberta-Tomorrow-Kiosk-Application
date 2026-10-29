@@ -1,7 +1,7 @@
 /**
   File: useJournal.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Define the expedition journal context and consumer hook.
@@ -38,6 +38,11 @@ type JournalContextValue = {
   getExpeditionProgress: (module: LearningModule) => ExpeditionProgress
   resetJournal: () => void
   startAllExpeditions: () => void
+  progressNextCheckpoint: (moduleId: string) => boolean
+  progressAllNextCheckpoints: () => number
+  completeModule: (moduleId: string) => boolean
+  randomizeModuleCheckpoints: (moduleId: string) => boolean
+  restartModule: (moduleId: string) => boolean
   completeAllModules: () => void
 }
 

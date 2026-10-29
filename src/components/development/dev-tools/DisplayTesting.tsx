@@ -1,7 +1,7 @@
 /**
   File: DisplayTesting.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Provide the development menu and set the document title and language.
@@ -19,15 +19,18 @@ import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
 import { useJournal } from '@/journal/useJournal'
 import { useModulePreload } from '@/modules/useModulePreload'
-import { ApplicationStatePanel } from './panels/ApplicationStatePanel'
-import { TutorialsPanel } from './panels/TutorialsPanel'
-import { ModuleStatusPanel } from './panels/ModuleStatusPanel'
-import { ResetConfirmPanel } from './panels/ResetConfirmPanel'
+import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
+import { requestMediaPlayerTutorialFinish } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
+import { markMediaPlayerTutorialCompleted } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialStorage'
+import { ApplicationStatePanel } from '../panels/ApplicationStatePanel'
+import { TutorialsPanel } from '../panels/TutorialsPanel'
+import { ModuleStatusPanel } from '../panels/ModuleStatusPanel'
+import { ResetConfirmPanel } from '../panels/ResetConfirmPanel'
+import { SiteFlagsPanel } from '../panels/SiteFlagsPanel'
 import { DarkModeTestingToggle } from './DarkModeTestingToggle'
 import { TailwindBreakPoints } from './TailwindBreakPoints'
-import { getCurrentBreakpoint } from './breakpoints'
+import { getCurrentBreakpoint, getTailwindBreakpoints } from './breakpoints'
 import { resetSite, resetSiteTutorialFlags } from './resetSite'
-import { SiteFlagsPanel } from './panels/SiteFlagsPanel'
 
 type ActivePanel = 'modules' | 'states' | 'tutorials' | 'site' | null
 type PendingReset = 'journal' | 'site' | null
@@ -38,9 +41,11 @@ export function DisplayTesting() {
   const { t } = useTranslation('development')
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
+  const { finish: finishIntroTutorial } = useIntroTutorial()
   const {
     completeAllModules,
     isOpen: isJournalOpen,
+    progressAllNextCheckpoints,
     resetJournal,
     startAllExpeditions,
   } = useJournal()
@@ -48,9 +53,12 @@ export function DisplayTesting() {
   const [activePanel, setActivePanel] = useState<ActivePanel>(null)
   const [pendingReset, setPendingReset] = useState<PendingReset>(null)
   const [breakpointMode, setBreakpointMode] = useState<BreakpointMode>('off')
+  const [breakpoints] = useState(() =>
+    isDevelopment ? getTailwindBreakpoints() : [],
+  )
   const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth)
   const currentLanguage = i18n.resolvedLanguage ?? 'en'
-  const currentBreakpoint = getCurrentBreakpoint(viewportWidth)
+  const currentBreakpoint = getCurrentBreakpoint(viewportWidth, breakpoints)
 
   // Runs in every build (this component always mounts); only the prefix is dev-only.
   useEffect(() => {
@@ -158,6 +166,25 @@ export function DisplayTesting() {
     })
   }
 
+  const handleProgressAllNextCheckpoints = () => {
+    const progressed = progressAllNextCheckpoints()
+    toast(
+      progressed > 0
+        ? t('expeditionsAdvanced', { count: progressed })
+        : t('allExpeditionsAlreadyComplete'),
+      { toasterId: NOTIFICATION_TOASTER_ID },
+    )
+  }
+
+  const handleCompleteAllTutorials = () => {
+    finishIntroTutorial()
+    markMediaPlayerTutorialCompleted()
+    requestMediaPlayerTutorialFinish()
+    toast(t('allTutorialsComplete'), {
+      toasterId: NOTIFICATION_TOASTER_ID,
+    })
+  }
+
   const handleStartAllExpeditions = () => {
     startAllExpeditions()
     toast(t('allExpeditionsStarted'), {
@@ -167,7 +194,7 @@ export function DisplayTesting() {
 
   const tools = (
     <>
-      <div className="fixed top-4 right-4 z-[9999999] flex flex-col items-end gap-2">
+      <div className="fixed top-4 right-4 z-9999999 flex flex-col items-end gap-2">
         <button
           type="button"
           aria-label={t(
@@ -177,7 +204,7 @@ export function DisplayTesting() {
           )}
           aria-expanded={menuOpen}
           aria-haspopup="true"
-          className="flex size-12 items-center justify-center rounded-full bg-gray-800 text-xl text-white shadow-lg transition-transform hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:transition-none"
+          className="flex size-12 items-center justify-center rounded-full bg-gray-800/80 text-xl text-white shadow-lg backdrop-blur-sm transition-transform hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:transition-none"
           onClick={toggleTools}
         >
           <span aria-hidden="true">
@@ -187,11 +214,45 @@ export function DisplayTesting() {
         {menuOpen && (
           <nav
             aria-label={t('tools')}
-            className="max-h-[calc(100dvh-6rem)] w-72 origin-top-right animate-[development-menu-enter_180ms_ease-out_both] space-y-2 overflow-y-auto rounded-2xl border border-line bg-surface/75 p-3 text-ink shadow-xl backdrop-blur-md motion-reduce:animate-none"
+            className="max-h-[calc(100dvh-6rem)] w-72 origin-top-right animate-[development-menu-enter_180ms_ease-out_both] space-y-2 overflow-y-auto rounded-2xl border border-line bg-surface p-3 text-ink shadow-xl motion-reduce:animate-none"
           >
             <p className="px-2 pb-1 text-sm font-semibold text-muted">
               {t('tools')}
             </p>
+            <button
+              type="button"
+              className="dev-tool-menu-button"
+              onClick={() => openPanel('site')}
+            >
+              <span aria-hidden="true">⚑</span>
+              {t('siteFlags')}
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="dev-tool-menu-button"
+              onClick={() => openPanel('modules')}
+            >
+              <span aria-hidden="true">◉</span>
+              {t('modules')}
+            </button>
+            <button
+              type="button"
+              className="dev-tool-menu-button"
+              onClick={() => openPanel('tutorials')}
+            >
+              <span aria-hidden="true">?</span>
+              {t('tutorials')}
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="dev-tool-menu-button"
+              onClick={() => openPanel('states')}
+            >
+              <span aria-hidden="true">▶</span>
+              {t('applicationStates')}
+            </button>
             <button
               type="button"
               aria-pressed={breakpointMode !== 'off'}
@@ -215,40 +276,6 @@ export function DisplayTesting() {
               type="button"
               role="menuitem"
               className="dev-tool-menu-button"
-              onClick={() => openPanel('modules')}
-            >
-              <span aria-hidden="true">◉</span>
-              {t('modules')}
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="dev-tool-menu-button"
-              onClick={() => openPanel('states')}
-            >
-              <span aria-hidden="true">▶</span>
-              {t('applicationStates')}
-            </button>
-            <button
-              type="button"
-              className="dev-tool-menu-button"
-              onClick={() => openPanel('site')}
-            >
-              <span aria-hidden="true">⚑</span>
-              {t('siteFlags')}
-            </button>
-            <button
-              type="button"
-              className="dev-tool-menu-button"
-              onClick={() => openPanel('tutorials')}
-            >
-              <span aria-hidden="true">?</span>
-              {t('tutorials')}
-            </button>
-            <button
-              type="button"
-              role="menuitem"
-              className="dev-tool-menu-button"
               aria-label={t('switchLanguage', {
                 language: tGlobal(
                   currentLanguage === 'en' ? 'language.fr' : 'language.en',
@@ -267,7 +294,7 @@ export function DisplayTesting() {
         )}
       </div>
       {breakpointMode === 'indicator' && (
-        <div className="fixed top-4 right-20 z-[9999999]">
+        <div className="fixed top-4 right-20 z-9999999">
           <span
             className="flex size-12 items-center justify-center rounded-full bg-gray-800 font-mono text-sm font-bold text-white shadow-lg"
             aria-label={t('currentBreakpoint', {
@@ -284,9 +311,10 @@ export function DisplayTesting() {
       <TailwindBreakPoints
         visible={breakpointMode === 'guides'}
         currentBreakpoint={currentBreakpoint}
+        breakpoints={breakpoints}
       />
       {(activePanel || pendingReset) && (
-        <div className="fixed top-20 right-4 z-[9999999] w-[min(28rem,calc(100vw-2rem))] animate-[development-menu-enter_180ms_ease-out_both] motion-reduce:animate-none">
+        <div className="fixed top-20 right-4 z-9999999 w-[min(28rem,calc(100vw-2rem))] animate-[development-menu-enter_180ms_ease-out_both] motion-reduce:animate-none">
           {activePanel === 'modules' && (
             <ModuleStatusPanel
               preloadState={preloadState}
@@ -297,15 +325,20 @@ export function DisplayTesting() {
             <ApplicationStatePanel onClose={closePanel} />
           )}
           {activePanel === 'tutorials' && (
-            <TutorialsPanel onClose={closePanel} onRestarted={closeAllTools} />
+            <TutorialsPanel
+              onClose={closePanel}
+              onTutorialStarted={closeAllTools}
+              onResetAllTutorialFlags={handleResetTutorialFlags}
+              onCompleteAllTutorials={handleCompleteAllTutorials}
+            />
           )}
           {activePanel === 'site' && (
             <SiteFlagsPanel
               onClose={closePanel}
               onResetSite={() => askToReset('site')}
               onResetJournal={() => askToReset('journal')}
-              onResetTutorialFlags={handleResetTutorialFlags}
               onStartAllExpeditions={handleStartAllExpeditions}
+              onProgressAllNextCheckpoints={handleProgressAllNextCheckpoints}
               onCompleteAllModules={handleCompleteAllModules}
             />
           )}
