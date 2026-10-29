@@ -12,6 +12,7 @@
   Notes:
   - Question text lives in module.geology.json; ids and correct answers live in ./quiz.ts.
  */
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useJournal } from '../../journal/useJournal'
@@ -21,6 +22,48 @@ import { TrackPlayButton } from '../../module-tools/media-player/TrackPlayButton
 import type { ModuleActivityProps } from '../types'
 import { geologyVideos } from './videos'
 import { geologyQuizQuestions } from './quiz'
+import {
+  geologyQuizCompletedCheckpoint,
+  geologyVideoStartedCheckpoint,
+} from './checkpoints'
+
+type GeologyQuizCompleteProps = {
+  moduleId: string
+  restart: () => void
+  completeCheckpoint: ModuleActivityProps['completeCheckpoint']
+}
+
+function GeologyQuizComplete({
+  moduleId,
+  restart,
+  completeCheckpoint,
+}: GeologyQuizCompleteProps) {
+  const { t } = useTranslation('geology')
+  const { openJournal } = useJournal()
+
+  useEffect(() => {
+    completeCheckpoint(geologyQuizCompletedCheckpoint)
+  }, [completeCheckpoint])
+
+  return (
+    <div className="panel space-y-4">
+      <h2>{t('activity.complete.title')}</h2>
+      <p className="text-muted">{t('activity.complete.description')}</p>
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="button"
+          className="button"
+          onClick={() => openJournal(moduleId)}
+        >
+          {t('activity.complete.viewJournal')}
+        </button>
+        <button type="button" className="button-secondary" onClick={restart}>
+          {t('activity.complete.retry')}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 export default function Geology({
   moduleId,
@@ -28,7 +71,6 @@ export default function Geology({
   completeCheckpoint,
 }: ModuleActivityProps) {
   const { t } = useTranslation('geology')
-  const { openJournal } = useJournal()
 
   // Each question id doubles as its journal checkpoint id.
   const questions = buildQuizQuestions(
@@ -73,6 +115,9 @@ export default function Geology({
                     subtitleKey: 'title',
                   },
                 }}
+                onStart={() =>
+                  completeCheckpoint(geologyVideoStartedCheckpoint)
+                }
               />
             </li>
           ))}
@@ -83,26 +128,11 @@ export default function Geology({
         completedQuestionIds={completedCheckpoints}
         onQuestionCorrect={(question) => completeCheckpoint(question.id)}
         renderComplete={({ restart }) => (
-          <div className="panel space-y-4">
-            <h2>{t('activity.complete.title')}</h2>
-            <p className="text-muted">{t('activity.complete.description')}</p>
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                className="button"
-                onClick={() => openJournal(moduleId)}
-              >
-                {t('activity.complete.viewJournal')}
-              </button>
-              <button
-                type="button"
-                className="button-secondary"
-                onClick={restart}
-              >
-                {t('activity.complete.retry')}
-              </button>
-            </div>
-          </div>
+          <GeologyQuizComplete
+            moduleId={moduleId}
+            restart={restart}
+            completeCheckpoint={completeCheckpoint}
+          />
         )}
       />
       <Link to={`/modules/${moduleId}`} className="button-secondary">

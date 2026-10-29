@@ -1,7 +1,7 @@
 {
   "title": "Rocks, fossils, and landforms",
   "description": "Test what you know about Alberta's fossils, boulders, and oil sands with a three-question quiz.",
-  "overviewDescription": "Answer three multiple-choice questions about Alberta's badlands, glacial boulders, and oil sands. Each correct answer adds a note to your expedition journal.",
+  "overviewDescription": "Answer three multiple-choice questions about Alberta's badlands, glacial boulders, and oil sands. Correct answers, starting the video, and completing the quiz are recorded in your expedition journal.",
   "category": "Geology",
   "launch": "Start the quiz",
   "backToOverview": "Back to expedition details",
@@ -15,7 +15,7 @@
     },
     "complete": {
       "title": "Quiz complete!",
-      "description": "You added three geology discoveries to your expedition journal.",
+      "description": "Your three geology discoveries and quiz completion are recorded in your expedition journal.",
       "viewJournal": "View journal entry",
       "retry": "Take the quiz again"
     },
@@ -56,17 +56,32 @@
     "summary": "Field notes on the fossils, boulders, and rocks that tell Alberta's story.",
     "entries": [
       {
+        "id": "geology-video-started",
+        "section": "Media",
+        "title": "Natural landscapes video started",
+        "summary": "You started watching the video about Alberta's natural landscapes."
+      },
+      {
+        "id": "geology-quiz-completed",
+        "section": "Quiz",
+        "title": "Geology quiz completed",
+        "summary": "You completed the geology quiz and recorded your answers in your expedition journal."
+      },
+      {
         "id": "badlands",
+        "section": "Quiz",
         "title": "Badlands and dinosaur bones",
         "summary": "The Red Deer River valley near Drumheller has badlands where a dinosaur skull was found in 1884. It was later named Albertosaurus."
       },
       {
         "id": "glacial-boulder",
+        "section": "Quiz",
         "title": "A boulder carried by ice",
         "summary": "Glacial ice carried Big Rock out of the Rocky Mountains to its resting place near Okotoks."
       },
       {
         "id": "oil-sands",
+        "section": "Quiz",
         "title": "Oil sands in the north",
         "summary": "Alberta's oil sands are found in northern Alberta, including the Athabasca, Cold Lake, and Peace River areas."
       }

@@ -87,41 +87,49 @@
       },
       {
         "id": "audio-1-started",
+        "section": "Media",
         "title": "Listening begins",
         "summary": "You started listening to the expedition's test song. Sounds can tell us a lot about a place."
       },
       {
         "id": "audio-1-finished",
+        "section": "Media",
         "title": "The whole song",
         "summary": "You listened to the test song all the way to the end."
       },
       {
         "id": "audio-2-finished",
+        "section": "Media",
         "title": "A voice from the field",
         "summary": "You finished listening to the test narration."
       },
       {
         "id": "audio-3-started",
+        "section": "Media",
         "title": "A fox in the field",
         "summary": "You started listening to a red fox sound recording."
       },
       {
         "id": "foxes-video-finished",
+        "section": "Media",
         "title": "Foxes of Alberta video",
         "summary": "You watched the video about Alberta's foxes to the end."
       },
       {
         "id": "swift-fox-home",
+        "section": "Quiz",
         "title": "Swift fox habitat",
         "summary": "Swift foxes are adapted to the open shortgrass prairie of southeastern Alberta."
       },
       {
         "id": "red-fox-food",
+        "section": "Quiz",
         "title": "Red fox diet",
         "summary": "Red foxes eat a varied diet that includes small animals and plant foods such as fruit."
       },
       {
         "id": "red-fox-sound-identification",
+        "section": "Quiz",
         "title": "Recognizing a red fox",
         "summary": "You identified the sound of a red fox."
       }

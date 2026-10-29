@@ -14,6 +14,11 @@
  */
 import { geologyQuizQuestions } from './quiz'
 
-export const geologyCheckpoints = geologyQuizQuestions.map(
-  (question) => question.id,
-)
+export const geologyVideoStartedCheckpoint = 'geology-video-started'
+export const geologyQuizCompletedCheckpoint = 'geology-quiz-completed'
+
+export const geologyCheckpoints = [
+  geologyVideoStartedCheckpoint,
+  geologyQuizCompletedCheckpoint,
+  ...geologyQuizQuestions.map((question) => question.id), // map from quiz questions
+]

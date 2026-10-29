@@ -87,41 +87,49 @@
       },
       {
         "id": "audio-1-started",
+        "section": "Médias",
         "title": "L’écoute commence",
         "summary": "Vous avez commencé à écouter la chanson d’essai de l’expédition. Les sons nous en apprennent beaucoup sur un lieu."
       },
       {
         "id": "audio-1-finished",
+        "section": "Médias",
         "title": "La chanson en entier",
         "summary": "Vous avez écouté la chanson d’essai jusqu’à la fin."
       },
       {
         "id": "audio-2-finished",
+        "section": "Médias",
         "title": "Une voix du terrain",
         "summary": "Vous avez terminé l’écoute de la narration d’essai."
       },
       {
         "id": "audio-3-started",
+        "section": "Médias",
         "title": "Un renard dans son milieu",
         "summary": "Vous avez commencé à écouter un enregistrement du cri d’un renard roux."
       },
       {
         "id": "foxes-video-finished",
+        "section": "Médias",
         "title": "Vidéo sur les renards de l’Alberta",
         "summary": "Vous avez regardé jusqu’à la fin la vidéo sur les renards de l’Alberta."
       },
       {
         "id": "swift-fox-home",
+        "section": "Questionnaire",
         "title": "L’habitat du renard véloce",
         "summary": "Le renard véloce est adapté aux prairies ouvertes à herbes courtes du sud-est de l’Alberta."
       },
       {
         "id": "red-fox-food",
+        "section": "Questionnaire",
         "title": "L’alimentation du renard roux",
         "summary": "Les renards roux ont une alimentation variée qui comprend de petits animaux et des aliments végétaux comme des fruits."
       },
       {
         "id": "red-fox-sound-identification",
+        "section": "Questionnaire",
         "title": "Reconnaître le renard roux",
         "summary": "Vous avez reconnu le cri d’un renard roux."
       }

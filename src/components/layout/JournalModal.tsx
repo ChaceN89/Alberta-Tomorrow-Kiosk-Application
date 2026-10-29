@@ -74,6 +74,25 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
   const { getExpeditionProgress, isCheckpointComplete } = useJournal()
   const progress = getExpeditionProgress(module)
   const entries = tModule('journal.entries', { returnObjects: true })
+  type JournalEntry = (typeof entries)[number]
+  const entryGroups: {
+    section: string | null
+    entries: JournalEntry[]
+  }[] = []
+
+  for (const entry of entries) {
+    const section =
+      'section' in entry && typeof entry.section === 'string'
+        ? entry.section
+        : null
+    const previousGroup = entryGroups[entryGroups.length - 1]
+
+    if (previousGroup?.section === section) {
+      previousGroup.entries.push(entry)
+    } else {
+      entryGroups.push({ section, entries: [entry] })
+    }
+  }
 
   return (
     <article className="space-y-5">
@@ -93,45 +112,74 @@ function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
         <h4 id={`notes-${module.id}`} className="text-base font-semibold">
           {t('notebook')}
         </h4>
-        <ol className="space-y-3">
-          {entries.map((entry) =>
-            isCheckpointComplete(module.id, entry.id) ? (
-              <li
-                key={entry.id}
-                className="rounded-xl border border-pine/40 bg-canvas p-4"
+        <div className="space-y-5">
+          {entryGroups.map((group, index) => {
+            const items = (
+              <ol className="space-y-3">
+                {group.entries.map((entry) =>
+                  isCheckpointComplete(module.id, entry.id) ? (
+                    <li
+                      key={entry.id}
+                      className="rounded-xl border border-pine/40 bg-canvas p-4"
+                    >
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-pine">
+                            <span aria-hidden="true">✓ </span>
+                            {t('recorded')}
+                          </p>
+                          {group.section ? (
+                            <h6 className="font-semibold">{entry.title}</h6>
+                          ) : (
+                            <h5 className="font-semibold">{entry.title}</h5>
+                          )}
+                          <p className="text-muted">{entry.summary}</p>
+                        </div>
+                        {module.journalEntryAction && (
+                          <div className="shrink-0">
+                            <Suspense fallback={null}>
+                              <module.journalEntryAction
+                                entryId={entry.id}
+                                moduleId={module.id}
+                              />
+                            </Suspense>
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  ) : (
+                    <li
+                      key={entry.id}
+                      className="rounded-xl border border-dashed border-line p-4 text-muted"
+                    >
+                      <p className="font-semibold">{t('locked')}</p>
+                      <p className="text-sm">{t('lockedHint')}</p>
+                    </li>
+                  ),
+                )}
+              </ol>
+            )
+
+            if (!group.section) {
+              return <div key={`unsectioned-${index}`}>{items}</div>
+            }
+
+            const sectionId = `journal-${module.id}-section-${index}`
+
+            return (
+              <section
+                key={`${group.section}-${index}`}
+                aria-labelledby={sectionId}
+                className="space-y-3"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-pine">
-                      <span aria-hidden="true">✓ </span>
-                      {t('recorded')}
-                    </p>
-                    <h5 className="font-semibold">{entry.title}</h5>
-                    <p className="text-muted">{entry.summary}</p>
-                  </div>
-                  {module.journalEntryAction && (
-                    <div className="shrink-0">
-                      <Suspense fallback={null}>
-                        <module.journalEntryAction
-                          entryId={entry.id}
-                          moduleId={module.id}
-                        />
-                      </Suspense>
-                    </div>
-                  )}
-                </div>
-              </li>
-            ) : (
-              <li
-                key={entry.id}
-                className="rounded-xl border border-dashed border-line p-4 text-muted"
-              >
-                <p className="font-semibold">{t('locked')}</p>
-                <p className="text-sm">{t('lockedHint')}</p>
-              </li>
-            ),
-          )}
-        </ol>
+                <h5 id={sectionId} className="text-lg font-semibold text-pine">
+                  {group.section}
+                </h5>
+                {items}
+              </section>
+            )
+          })}
+        </div>
       </section>
       <div className="flex flex-wrap gap-3">
         <Link

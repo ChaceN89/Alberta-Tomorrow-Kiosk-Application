@@ -128,8 +128,11 @@ flag, then reloads as a first visit); both ask for a Yes/No confirmation.
 
 Journal text lives in each module's locale file under `journal.summary` and
 `journal.entries` (`id`, `title`, `summary`); generic journal labels are in
-`journal.json`. Storage is local only; replace `journalStorage.ts` to sync with
-save data later.
+`journal.json`. A journal entry can also include an optional localized `section`
+label, such as `Media` or `Quiz`, to group consecutive checkpoints under a
+heading. Omit `section` for entries that should remain ungrouped. Keep section
+labels and entry ids aligned in both locale files. Storage is local only;
+replace `journalStorage.ts` to sync with save data later.
 
 ### First-visit intro tour
 

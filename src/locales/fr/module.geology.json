@@ -1,7 +1,7 @@
 {
   "title": "Roches, fossiles et reliefs",
   "description": "Testez vos connaissances sur les fossiles, les blocs rocheux et les sables bitumineux de l’Alberta avec un questionnaire de trois questions.",
-  "overviewDescription": "Répondez à trois questions à choix multiples sur les badlands, les blocs transportés par les glaciers et les sables bitumineux de l’Alberta. Chaque bonne réponse ajoute une note à votre journal d’expédition.",
+  "overviewDescription": "Répondez à trois questions à choix multiples sur les badlands, les blocs transportés par les glaciers et les sables bitumineux de l’Alberta. Les bonnes réponses, le début du visionnement de la vidéo et la fin du questionnaire sont consignés dans votre journal d’expédition.",
   "category": "Géologie",
   "launch": "Commencer le questionnaire",
   "backToOverview": "Retour aux détails de l’expédition",
@@ -15,7 +15,7 @@
     },
     "complete": {
       "title": "Questionnaire terminé !",
-      "description": "Vous avez ajouté trois découvertes géologiques à votre journal d’expédition.",
+      "description": "Vos trois découvertes géologiques et la fin du questionnaire sont consignées dans votre journal d’expédition.",
       "viewJournal": "Voir la page du journal",
       "retry": "Refaire le questionnaire"
     },
@@ -56,17 +56,32 @@
     "summary": "Notes de terrain sur les fossiles, les blocs et les roches qui racontent l’histoire de l’Alberta.",
     "entries": [
       {
+        "id": "geology-video-started",
+        "section": "Médias",
+        "title": "Vidéo sur les paysages naturels commencée",
+        "summary": "Vous avez commencé à regarder la vidéo sur les paysages naturels de l’Alberta."
+      },
+      {
+        "id": "geology-quiz-completed",
+        "section": "Questionnaire",
+        "title": "Questionnaire de géologie terminé",
+        "summary": "Vous avez terminé le questionnaire de géologie et consigné vos réponses dans votre journal d’expédition."
+      },
+      {
         "id": "badlands",
+        "section": "Questionnaire",
         "title": "Badlands et ossements de dinosaures",
         "summary": "La vallée de la rivière Red Deer, près de Drumheller, compte des badlands où un crâne de dinosaure a été découvert en 1884. Il a ensuite été nommé Albertosaurus."
       },
       {
         "id": "glacial-boulder",
+        "section": "Questionnaire",
         "title": "Un bloc transporté par la glace",
         "summary": "La glace d’un glacier a transporté Big Rock hors des Rocheuses jusqu’à son emplacement actuel près d’Okotoks."
       },
       {
         "id": "oil-sands",
+        "section": "Questionnaire",
         "title": "Les sables bitumineux du Nord",
         "summary": "Les sables bitumineux de l’Alberta se trouvent dans le nord de la province, notamment dans les régions d’Athabasca, de Cold Lake et de Peace River."
       }
