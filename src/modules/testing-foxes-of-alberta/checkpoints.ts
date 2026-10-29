@@ -15,6 +15,8 @@
   - Ids must match journal.entries in module.wildlifeFinder.json.
  */
 export const foxesVideoCheckpoint = 'foxes-video-finished'
+export const foxFieldMessageCheckpoint = 'fox-field-message-opened'
+export const foxFamilyImageCheckpoint = 'fox-family-image-opened'
 
 export const foxesOfAlbertaCheckpoints = [
   'habitats-matter', // what this is for here ...
@@ -23,6 +25,8 @@ export const foxesOfAlbertaCheckpoints = [
   'audio-2-finished',
   'audio-3-started',
   foxesVideoCheckpoint,
+  foxFieldMessageCheckpoint,
+  foxFamilyImageCheckpoint,
   'swift-fox-home',
   'red-fox-food',
   'red-fox-sound-identification',

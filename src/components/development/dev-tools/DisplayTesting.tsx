@@ -21,6 +21,8 @@ import { useJournal } from '@/journal/useJournal'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
+import { useAudioPlayer } from '@/module-tools/media-player/useAudioPlayer'
+import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
 import { requestMediaPlayerTutorialFinish } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import { markMediaPlayerTutorialCompleted } from '@/save-data/mediaPlayerTutorialStorage'
 import { ApplicationStatePanel } from '../panels/ApplicationStatePanel'
@@ -42,7 +44,10 @@ export function DisplayTesting() {
   const { t } = useTranslation('development')
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
-  const { finish: finishIntroTutorial } = useIntroTutorial()
+  const { finish: finishIntroTutorial, isActive: isIntroTutorialActive } =
+    useIntroTutorial()
+  const { isFullscreen: isPlayerFullscreen } = useAudioPlayer()
+  const { isOpen: isMediaViewerOpen } = useMediaViewer()
   const { isOpen: isJournalOpen } = useJournal()
   const {
     completeAllModules,
@@ -82,7 +87,7 @@ export function DisplayTesting() {
       // Modal dialogs handle Escape outside the developer tools.
       const isInDeveloperTools =
         event.target instanceof Element &&
-        Boolean(event.target.closest('#journal-dev-tools-root'))
+        Boolean(event.target.closest('[id$="-dev-tools-root"]'))
 
       if (
         event.key !== 'Escape' ||
@@ -364,11 +369,25 @@ export function DisplayTesting() {
     </>
   )
 
-  if (isJournalOpen) {
-    const journalToolsHost = document.getElementById('journal-dev-tools-root')
+  const overlayHostId = isMediaViewerOpen
+    ? 'media-viewer-dev-tools-root'
+    : isJournalOpen
+      ? 'journal-dev-tools-root'
+      : isIntroTutorialActive
+        ? 'intro-tutorial-dev-tools-root'
+        : isPlayerFullscreen
+          ? 'audio-player-dev-tools-root'
+          : null
 
-    if (journalToolsHost) return createPortal(tools, journalToolsHost)
+  if (!overlayHostId) return tools
+
+  const overlayHost = document.getElementById(overlayHostId)
+
+  if (!overlayHost) {
+    throw new Error(
+      `The active overlay dev tools root "${overlayHostId}" is missing.`,
+    )
   }
 
-  return tools
+  return createPortal(tools, overlayHost)
 }

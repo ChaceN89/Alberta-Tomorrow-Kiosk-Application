@@ -8,6 +8,24 @@
   "activity": {
     "introduction": "Les renards dépendent de leur habitat pour se nourrir, boire et s’abriter. Découvrez les renards véloces et roux de l’Alberta grâce à des extraits audio, une vidéo et un questionnaire."
   },
+  "viewer": {
+    "heading": "Lire et observer de plus près",
+    "description": "Ouvrez une note de terrain ou observez une famille de renards de plus près.",
+    "message": {
+      "title": "Une note de terrain",
+      "subtitle": "Un moment tranquille dans la prairie",
+      "body": "Les renardeaux roulent dans l’herbe pendant que leur mère les surveille tout près. Ils apprennent les odeurs et les sons de leur milieu, une petite aventure à la fois.",
+      "preview": "Lisez une courte note sur de jeunes renards qui explorent leur milieu.",
+      "open": "Lire la note de terrain"
+    },
+    "image": {
+      "title": "Une famille de renards",
+      "description": "Quatre jeunes renards s’arrêtent ensemble sous la douce lumière de la prairie. En restant proches, les renardeaux peuvent se reposer en sécurité tout en explorant leur environnement.",
+      "alt": "Quatre jeunes renards assis ensemble dans l’herbe sèche.",
+      "preview": "Observez une famille de jeunes renards qui se repose dans l’herbe.",
+      "open": "Voir la famille de renards"
+    }
+  },
   "listen": {
     "heading": "Écouter et explorer",
     "description": "Lisez des extraits audio ou vidéo de l’expédition. Le lecteur multimédia continue pendant que vous explorez d’autres pages.",
@@ -119,6 +137,18 @@
         "section": "Médias",
         "title": "Vidéo sur les renards de l’Alberta",
         "summary": "Vous avez regardé jusqu’à la fin la vidéo sur les renards de l’Alberta."
+      },
+      {
+        "id": "fox-field-message-opened",
+        "section": "Visualiseur",
+        "title": "Une note de terrain",
+        "summary": "Vous avez lu une note sur de jeunes renards qui apprennent à connaître leur prairie."
+      },
+      {
+        "id": "fox-family-image-opened",
+        "section": "Visualiseur",
+        "title": "Une famille de renards",
+        "summary": "Vous avez observé de près une famille de jeunes renards qui se repose ensemble."
       },
       {
         "id": "swift-fox-home",

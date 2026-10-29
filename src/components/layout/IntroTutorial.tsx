@@ -1,7 +1,7 @@
 /**
   File: IntroTutorial.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Show the first-visit tutorial in a click-blocking dialog with anchored arrows.
@@ -168,9 +168,18 @@ function IntroTutorialDialog() {
       }`}
       onCancel={(event) => {
         event.preventDefault()
+
+        if (
+          document.activeElement instanceof Element &&
+          document.activeElement.closest('[id$="-dev-tools-root"]')
+        ) {
+          return
+        }
+
         finish()
       }}
     >
+      <div id="intro-tutorial-dev-tools-root" className="contents" />
       {arrow && (
         <span
           aria-hidden="true"

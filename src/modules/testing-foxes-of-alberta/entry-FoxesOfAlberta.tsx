@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import type { ModuleActivityProps } from '@/modules/types'
 import { HabitatQuiz } from './components/HabitatQuiz'
 import { ListenSection } from './components/ListenSection'
+import { ViewerExamples } from './components/ViewerExamples'
 
 type View = 'activity' | 'quiz'
 
@@ -47,6 +48,10 @@ export default function FoxesOfAlberta({
       {view === 'activity' ? (
         <>
           <ListenSection
+            completedCheckpoints={completedCheckpoints}
+            completeCheckpoint={completeCheckpoint}
+          />
+          <ViewerExamples
             completedCheckpoints={completedCheckpoints}
             completeCheckpoint={completeCheckpoint}
           />

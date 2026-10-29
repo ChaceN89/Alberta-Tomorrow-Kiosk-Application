@@ -84,7 +84,7 @@ export function JournalModal() {
         if (event.key === 'Escape') {
           if (
             event.target instanceof Element &&
-            event.target.closest('#journal-dev-tools-root')
+            event.target.closest('[id$="-dev-tools-root"]')
           ) {
             return
           }

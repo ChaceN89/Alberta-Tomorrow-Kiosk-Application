@@ -1,7 +1,7 @@
 /*
   File: AudioPlayer.css | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Define layout, transitions, and reduced-motion behavior for the shared player.
@@ -151,7 +151,9 @@
 .audio-player-stage--fullscreen {
   z-index: 100;
   pointer-events: auto;
-  background-color: color-mix(in srgb, var(--color-ink) 95%, transparent);
+  background-color: color-mix(in srgb, var(--color-ink) 50%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .audio-player-tutorial-backdrop {

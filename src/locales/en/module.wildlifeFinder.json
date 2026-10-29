@@ -8,6 +8,24 @@
   "activity": {
     "introduction": "Foxes depend on their habitats for food, water, and shelter. Explore Alberta's swift and red foxes through audio, video, and a quiz."
   },
+  "viewer": {
+    "heading": "Read and look closer",
+    "description": "Open a field message or take a closer look at a fox family.",
+    "message": {
+      "title": "A note from the field",
+      "subtitle": "A quiet moment on the prairie",
+      "body": "The kits tumble through the grass while their mother watches nearby. They are learning the smells and sounds of home, one small adventure at a time.",
+      "preview": "Read a short note about young foxes exploring their home.",
+      "open": "Read the field note"
+    },
+    "image": {
+      "title": "A fox family",
+      "description": "Four young foxes pause together in the warm prairie light. Staying close gives the kits a safe place to rest while they explore their surroundings.",
+      "alt": "Four young foxes sitting together in dry grass.",
+      "preview": "View a family of young foxes resting in the grass.",
+      "open": "View the fox family"
+    }
+  },
   "listen": {
     "heading": "Listen and explore",
     "description": "Play audio or video from the expedition. The media player keeps going while you explore other pages.",
@@ -119,6 +137,18 @@
         "section": "Media",
         "title": "Foxes of Alberta video",
         "summary": "You watched the video about Alberta's foxes to the end."
+      },
+      {
+        "id": "fox-field-message-opened",
+        "section": "Viewer",
+        "title": "A note from the field",
+        "summary": "You read a quiet field note about young foxes learning their prairie home."
+      },
+      {
+        "id": "fox-family-image-opened",
+        "section": "Viewer",
+        "title": "A fox family",
+        "summary": "You looked closely at a family of young foxes resting together."
       },
       {
         "id": "swift-fox-home",

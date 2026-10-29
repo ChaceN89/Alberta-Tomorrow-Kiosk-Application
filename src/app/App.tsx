@@ -26,6 +26,7 @@ import { JournalProvider } from '@/journal/JournalProvider'
 import { ExpeditionProgressProvider } from '@/save-data/ExpeditionProgressProvider'
 import { IntroTutorialProvider } from '@/tutorials/intro-tutorial/IntroTutorialProvider'
 import { AudioPlayerProvider } from '@/module-tools/media-player/AudioPlayerProvider'
+import { MediaViewerProvider } from '@/module-tools/media-viewer/MediaViewerProvider'
 
 export function App() {
   return (
@@ -36,16 +37,18 @@ export function App() {
             <ModulePreloadProvider>
               {/* Above the routes so media keeps playing while learners navigate */}
               <AudioPlayerProvider>
-                <Routes>
-                  <Route element={<Layout />}>
-                    <Route index element={<HomePage />} />
-                    <Route
-                      path="modules/:moduleId/*"
-                      element={<ModulePage />}
-                    />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
+                <MediaViewerProvider>
+                  <Routes>
+                    <Route element={<Layout />}>
+                      <Route index element={<HomePage />} />
+                      <Route
+                        path="modules/:moduleId/*"
+                        element={<ModulePage />}
+                      />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
+                  </Routes>
+                </MediaViewerProvider>
               </AudioPlayerProvider>
             </ModulePreloadProvider>
           </IntroTutorialProvider>

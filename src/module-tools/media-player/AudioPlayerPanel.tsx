@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerPanel.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Shared audio and video player with a media queue and full-screen playback.
@@ -209,10 +209,12 @@ export function AudioPlayerPanel() {
 
   const panel = (
     <div
+      id="audio-player-toast-root"
       className={`audio-player-stage ${
         isFullscreen ? 'audio-player-stage--fullscreen' : ''
       } ${stageExitAnimationClass}`}
     >
+      <div id="audio-player-dev-tools-root" className="contents" />
       <MediaPlayerTutorial />
       <div
         className={`audio-player-frame ${

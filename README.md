@@ -49,7 +49,7 @@ src/
   components/   Shared UI and reusable components used across modules
   journal/      Journal progress state, localStorage persistence, and context
   modules/      Typed registry, shared types, and individual module folders
-  module-tools/ Reusable module tools (audio-player, quiz-system) shared by modules
+  module-tools/ Reusable module tools (audio-player, quiz-system, media-viewer) shared by modules
   locales/      en/ and fr/ with global, home, journal, development, funfacts, moduleTools, and module.* JSON files
   tutorials/    First-visit and media-player tutorials
   styles/       Global CSS and centralized theme tokens
@@ -82,6 +82,10 @@ content (text, files, checkpoint ids) and the tool handles display and interacti
   queued track continues playing instead.
   The full-screen Up Next panel also supports removing queued items and has a
   compact red close-player button that uses the same fullscreen exit animation.
+- **Media viewer** (`media-viewer/`): `MediaViewerProvider` wraps the routes and
+  `useMediaViewer` opens a message or image in a modal above other dialogs, such
+  as the journal. Pass an optional `onOpen` callback to grant a checkpoint when
+  content is opened. Modules own the localized content and any image assets.
 - **Quiz system** (`quiz-system/`): `Quiz` takes `QuizQuestion[]`, records answers
   through `onQuestionCorrect`, and lets the module render its own finish screen.
   Reuse a question's id as its journal checkpoint id so progress resumes.
@@ -177,6 +181,8 @@ src/modules/land-use/
   quiz.ts                # optional; question ids, content indexes, correct options
   tracks.ts              # optional; audio track metadata and checkpoint callbacks
   videos.ts              # optional; video metadata and player ids
+  messages.ts            # optional; message viewer content keys
+  image.ts               # optional; image viewer asset and content keys
   preload.ts             # optional; extra cancellable data/media loading
   components/            # optional; module-specific React components
   assets/                # optional; local images, audio, video, and other files
@@ -184,11 +190,14 @@ src/modules/land-use/
 
 In the current modules, the Alberta foxes module uses all of these, including
 `preload.ts` to download its audio files before launch; geology uses `quiz.ts`
-and `videos.ts`, and residential school uses `preload.ts`. A
+and `videos.ts`, and residential school uses `preload.ts`. The fox module also
+uses `messages.ts` and `image.ts` for its message and image viewer examples; the
+display copy lives in the English and French module locale files, and the image
+file lives in that module's `assets/` folder. A
 module does **not** need tracks or videos unless it has them, and it does not
 need an `assets/` folder if it only uses remote content. Keep metadata in
 `tracks.ts` and `videos.ts`; put local files in `assets/` and import them from
-the metadata files. Module-only React UI goes in `components/`; it does not
+the module data files. Module-only React UI goes in `components/`; it does not
 need to follow a shared layout beyond the activity props and integration
 contract.
 
@@ -196,7 +205,8 @@ The existing files follow that same pattern:
 
 ```text
 testing-foxes-of-alberta/       entry-FoxesOfAlberta.tsx, checkpoints.ts, quiz.ts,
-                                tracks.ts, videos.ts, preload.ts, components/, assets/
+                                tracks.ts, videos.ts, messages.ts, image.ts,
+                                preload.ts, components/, assets/
 testing-geology/                entry-Geology.tsx, checkpoints.ts, quiz.ts, videos.ts
 testing-residential-schools/    entry-ResidentialSchool.tsx, checkpoints.ts, preload.ts
 ```

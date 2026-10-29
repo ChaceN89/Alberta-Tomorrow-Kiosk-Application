@@ -50,5 +50,8 @@
     "progress": "Question {{current}} sur {{total}}",
     "next": "Question suivante",
     "finish": "Terminer le questionnaire"
+  },
+  "mediaViewer": {
+    "close": "Fermer le visualiseur"
   }
 }

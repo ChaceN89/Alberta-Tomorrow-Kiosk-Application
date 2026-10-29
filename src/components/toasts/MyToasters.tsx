@@ -1,19 +1,22 @@
 /**
   File: MyToasters.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Configure separate status and notification toast containers.
-  - Keep shared toast styling in one place while each container uses its own position.
+  - Portal them into the active overlay so toasts stay above modal and fullscreen UI.
 
   Usage:
   - Rendered once by Layout; toast calls select a container by toasterId.
 
   Notes:
-  - Status toasts appear at the top center; notifications appear at the bottom right.
+  - Native modal dialogs require toast content to be inside the dialog's top layer.
  */
 import { Toaster } from 'react-hot-toast'
+import { createPortal } from 'react-dom'
+import { useAudioPlayer } from '@/module-tools/media-player/useAudioPlayer'
+import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
 import { NOTIFICATION_TOASTER_ID, STATUS_TOASTER_ID } from './toasterIds'
 
 const sharedToastStyle = {
@@ -46,7 +49,22 @@ const notificationToastOptions = {
 
 // exports multiple toaster containers so different toasts can access each type
 export function MyToasters() {
-  return (
+  const { isFullscreen } = useAudioPlayer()
+  const { isOpen: isMediaViewerOpen } = useMediaViewer()
+  const toastRootId = isMediaViewerOpen
+    ? 'media-viewer-toast-root'
+    : isFullscreen
+      ? 'audio-player-toast-root'
+      : null
+  const toastRoot = toastRootId ? document.getElementById(toastRootId) : null
+
+  if (toastRootId && !toastRoot) {
+    throw new Error(
+      `The active overlay toast root "${toastRootId}" is missing.`,
+    )
+  }
+
+  const toasters = (
     <>
       <Toaster
         toasterId={STATUS_TOASTER_ID}
@@ -62,4 +80,6 @@ export function MyToasters() {
       />
     </>
   )
+
+  return toastRoot ? createPortal(toasters, toastRoot) : toasters
 }
