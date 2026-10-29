@@ -21,6 +21,7 @@ import {
   ExpeditionStatusText,
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
+import { useMediaViewer } from '@/module-tools/media-viewer/useMediaViewer'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
 
@@ -30,8 +31,9 @@ type ExpeditionEntryProps = {
 }
 
 export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
-  const { t: tModule } = useTranslation(module.translationNamespace)
+  const { t: tModule, i18n } = useTranslation(module.translationNamespace)
   const { t } = useTranslation('journal')
+  const { openImage, openMessage } = useMediaViewer()
   const { getExpeditionProgress, isCheckpointComplete } =
     useExpeditionProgress()
   const progress = getExpeditionProgress(module)
@@ -54,6 +56,41 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
     } else {
       entryGroups.push({ section, entries: [entry] })
     }
+  }
+
+  // Entries with a message open it; any other pinned image opens as a picture.
+  const openEntryMedia = (
+    entry: JournalEntry,
+    imageSrc: string,
+    imageAlt: string,
+    origin: Element,
+  ) => {
+    const message = module.journalEntryMessages?.[entry.id]
+
+    if (message) {
+      const translate = (key: string) =>
+        i18n.t(key, { ns: module.translationNamespace, defaultValue: key })
+
+      openMessage(
+        {
+          title: translate(message.title),
+          subtitle: message.subtitle ? translate(message.subtitle) : undefined,
+          message: translate(message.message),
+        },
+        { origin },
+      )
+      return
+    }
+
+    openImage(
+      {
+        title: entry.title,
+        description: entry.summary,
+        src: imageSrc,
+        alt: imageAlt,
+      },
+      { origin },
+    )
   }
 
   return (
@@ -113,15 +150,34 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                         </div>
                         {imageSrc && (
                           <div className="relative -my-2 -mr-3 -ml-2 w-52 shrink-0">
-                            <img
-                              src={imageSrc}
-                              alt={imageAlt}
-                              loading="lazy"
-                              decoding="async"
-                              className="h-[8.6rem] w-52 -rotate-5 rounded-md border-2 border-white object-cover shadow-md"
-                            />
+                            <button
+                              type="button"
+                              aria-label={t(
+                                module.journalEntryMessages?.[entry.id]
+                                  ? 'openMessage'
+                                  : 'openImage',
+                                { title: entry.title },
+                              )}
+                              className="group block cursor-zoom-in rounded-md"
+                              onClick={(event) =>
+                                openEntryMedia(
+                                  entry,
+                                  imageSrc,
+                                  imageAlt,
+                                  event.currentTarget,
+                                )
+                              }
+                            >
+                              <img
+                                src={imageSrc}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                                className="h-[8.6rem] w-52 -rotate-5 rounded-md border-2 border-white object-cover shadow-md transition-transform duration-200 group-hover:rotate-0 group-hover:scale-105 group-focus-visible:rotate-0 group-focus-visible:scale-105 motion-reduce:transition-none"
+                              />
+                            </button>
                             <PaperclipIcon
-                              className="absolute -top-3 right-3 size-8 rotate-12 text-ink drop-shadow-md"
+                              className="pointer-events-none absolute -top-3 right-3 size-8 rotate-12 text-ink drop-shadow-md"
                               hasImage
                             />
                           </div>

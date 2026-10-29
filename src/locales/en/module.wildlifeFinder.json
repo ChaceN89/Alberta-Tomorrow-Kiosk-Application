@@ -140,6 +140,7 @@
       },
       {
         "id": "fox-field-message-opened",
+        "imageAlt": "A sheet of lined note paper with a short list.",
         "section": "Viewer",
         "title": "A note from the field",
         "summary": "You read a quiet field note about young foxes learning their prairie home."

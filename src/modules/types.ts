@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Define metadata and locale namespace types for learning modules.
@@ -44,6 +44,13 @@ export type JournalEntryActionProps = {
   moduleId: string
 }
 
+// Translation keys in the module's namespace, matching the viewer's message content.
+export type JournalEntryMessage = {
+  title: string
+  subtitle?: string
+  message: string
+}
+
 export interface LearningModule {
   visible: boolean
   id: string
@@ -51,7 +58,10 @@ export interface LearningModule {
   estimatedMinutes: number
   checkpoints: readonly string[]
   component: LazyExoticComponent<ModuleActivityComponent>
+  // Pinned image per journal entry; selecting it opens the image in the viewer.
   journalEntryImages?: Readonly<Record<string, string>>
+  // Entries listed here open a message instead, with the pinned image as its picture.
+  journalEntryMessages?: Readonly<Record<string, JournalEntryMessage>>
   journalEntryAction?: LazyExoticComponent<
     ComponentType<JournalEntryActionProps>
   >

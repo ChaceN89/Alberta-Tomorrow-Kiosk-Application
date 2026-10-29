@@ -140,6 +140,7 @@
       },
       {
         "id": "fox-field-message-opened",
+        "imageAlt": "Une feuille de papier ligné avec une courte liste.",
         "section": "Visualiseur",
         "title": "Une note de terrain",
         "summary": "Vous avez lu une note sur de jeunes renards qui apprennent à connaître leur prairie."

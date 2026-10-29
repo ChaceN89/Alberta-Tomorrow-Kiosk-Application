@@ -35,6 +35,8 @@
   "notebook": "Notes de terrain",
   "locked": "Pas encore découvert",
   "lockedHint": "Poursuivez cette expédition pour ajouter cette note.",
+  "openImage": "Ouvrir l’image : {{title}}",
+  "openMessage": "Ouvrir le message : {{title}}",
   "recorded": "Consignée",
   "continue": "Poursuivre l’expédition",
   "revisit": "Revisiter l’expédition",

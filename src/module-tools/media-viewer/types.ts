@@ -28,3 +28,10 @@ export type ImageViewerContent = {
 export type MediaViewerContent =
   | ({ type: 'message' } & MessageViewerContent)
   | ({ type: 'image' } & ImageViewerContent)
+
+export type MediaViewerOpenOptions = {
+  // Runs when the viewer opens, e.g. to complete a checkpoint.
+  onOpen?: () => void
+  // The clicked element; the viewer grows out of it and falls back to the center.
+  origin?: Element | null
+}

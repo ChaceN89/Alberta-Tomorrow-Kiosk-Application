@@ -13,12 +13,22 @@
   - Consumers should use the useMediaViewer hook instead of this context.
  */
 import { createContext } from 'react'
-import type { ImageViewerContent, MessageViewerContent } from './types'
+import type {
+  ImageViewerContent,
+  MediaViewerOpenOptions,
+  MessageViewerContent,
+} from './types'
 
 export type MediaViewerContextValue = {
   isOpen: boolean
-  openMessage: (content: MessageViewerContent, onOpen?: () => void) => void
-  openImage: (content: ImageViewerContent, onOpen?: () => void) => void
+  openMessage: (
+    content: MessageViewerContent,
+    options?: MediaViewerOpenOptions,
+  ) => void
+  openImage: (
+    content: ImageViewerContent,
+    options?: MediaViewerOpenOptions,
+  ) => void
 }
 
 export const MediaViewerContext = createContext<MediaViewerContextValue | null>(

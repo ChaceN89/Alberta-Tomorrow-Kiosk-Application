@@ -46,14 +46,17 @@ export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
           <button
             type="button"
             className="button mt-auto"
-            onClick={() =>
+            onClick={(event) =>
               openMessage(
                 {
                   title: t(foxFieldMessage.title),
                   subtitle: t(foxFieldMessage.subtitle),
                   message: t(foxFieldMessage.message),
                 },
-                () => completeCheckpoint(foxFieldMessageCheckpoint),
+                {
+                  onOpen: () => completeCheckpoint(foxFieldMessageCheckpoint),
+                  origin: event.currentTarget,
+                },
               )
             }
           >
@@ -68,7 +71,7 @@ export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
           <button
             type="button"
             className="button mt-auto"
-            onClick={() =>
+            onClick={(event) =>
               openImage(
                 {
                   title: t(foxFamilyImage.title),
@@ -76,7 +79,10 @@ export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
                   alt: t(foxFamilyImage.alt),
                   src: foxFamilyImage.src,
                 },
-                () => completeCheckpoint(foxFamilyImageCheckpoint),
+                {
+                  onOpen: () => completeCheckpoint(foxFamilyImageCheckpoint),
+                  origin: event.currentTarget,
+                },
               )
             }
           >

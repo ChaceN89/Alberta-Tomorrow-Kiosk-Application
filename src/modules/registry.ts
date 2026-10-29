@@ -1,7 +1,7 @@
 /**
   File: registry.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Register discoverable activities/modules without eagerly importing them.
@@ -14,8 +14,13 @@
  */
 import { lazy } from 'react'
 import foxHabitatJournalImage from './testing-foxes-of-alberta/assets/cover-song.jpg'
+import foxFieldNoteJournalImage from './testing-foxes-of-alberta/assets/field-note.svg'
 import geologyLandscapeJournalImage from './testing-geology/assets/natural-landscapes-journal.jpg'
-import { foxesOfAlbertaCheckpoints } from './testing-foxes-of-alberta/checkpoints'
+import {
+  foxesOfAlbertaCheckpoints,
+  foxFieldMessageCheckpoint,
+} from './testing-foxes-of-alberta/checkpoints'
+import { foxFieldMessage } from './testing-foxes-of-alberta/messages'
 import { geologyCheckpoints } from './testing-geology/checkpoints'
 import { preloadResidentialSchool } from './testing-residential-schools/preload'
 import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
@@ -44,6 +49,10 @@ export const modules: readonly LearningModule[] = [
     component: lazy(loadFoxesOfAlberta),
     journalEntryImages: {
       'habitats-matter': foxHabitatJournalImage,
+      [foxFieldMessageCheckpoint]: foxFieldNoteJournalImage,
+    },
+    journalEntryMessages: {
+      [foxFieldMessageCheckpoint]: foxFieldMessage,
     },
     journalEntryAction: lazy(loadFoxesOfAlbertaJournalEntryAction),
     loadActivity: loadFoxesOfAlberta,
