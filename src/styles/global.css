@@ -1,7 +1,7 @@
 /*
   File: global.css | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Tailwind entry point, centralized theme, and shared touch-friendly UI.
@@ -43,15 +43,17 @@
   notification toasts and developer tools move into the active dialog (see
   GlobalOverlayLayer) and use these same values to stay above its content.
 
-  page content < status toasts < media player < tooltips < notification toasts
-  < splash screen, with the developer tools above everything but the splash
-  (they only mount once startup finishes). The player-* values only order the
-  parts inside the media player stage, which is its own stacking context.
+  page content < status toasts < media player < map info panel < full-screen
+  player < tooltips < notification toasts < splash screen, with the developer
+  tools above everything but the splash (they only mount once startup finishes).
+  The player-* values only order the parts inside the media player stage, which
+  is its own stacking context.
 */
 @theme static {
   --z-content-popover: 10;
   --z-status-toast: 20;
   --z-media-player: 40;
+  --z-map-info-panel: 45;
   --z-media-player-fullscreen: 50;
   --z-tooltip: 60;
   --z-notification-toast: 70;

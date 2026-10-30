@@ -7,7 +7,7 @@
   - Define the default Alberta points of interest and camera destinations.
 
   Usage:
-  - Imported by AlbertaMap and MapActionControls.
+  - Imported by AlbertaMap and the map camera controls.
 
   Notes:
   - Coordinates use longitude, latitude order.
@@ -24,11 +24,13 @@ export const DEFAULT_POI_SETTINGS = [
       pitch: 65,
       bearing: 0,
     },
-    // name, abd some infoamtion to read about it, including option images and thigns, not everything here needs a ton, but fill out some options here, maybe jsut some html for custom content
   },
   {
     id: 'banff',
     labelKey: 'view.defaultPois.banff',
+    descriptionKey: 'view.defaultPoiInfo.banff.description',
+    imageKey: 'banff',
+    imageAltKey: 'view.defaultPoiInfo.banff.imageAlt',
     view: {
       center: [-115.5708, 51.1784] as [number, number],
       zoom: 12,
@@ -39,6 +41,7 @@ export const DEFAULT_POI_SETTINGS = [
   {
     id: 'calgary',
     labelKey: 'view.defaultPois.calgary',
+    descriptionKey: 'view.defaultPoiInfo.calgary.description',
     view: {
       center: [-114.0719, 51.0447] as [number, number],
       zoom: 11,
@@ -59,6 +62,9 @@ export const DEFAULT_POI_SETTINGS = [
   {
     id: 'dinosaurProvincialPark',
     labelKey: 'view.defaultPois.dinosaurProvincialPark',
+    descriptionKey: 'view.defaultPoiInfo.dinosaurProvincialPark.description',
+    imageKey: 'dinosaurProvincialPark',
+    imageAltKey: 'view.defaultPoiInfo.dinosaurProvincialPark.imageAlt',
     view: {
       center: [-111.528, 50.7566] as [number, number],
       zoom: 12,
@@ -79,6 +85,7 @@ export const DEFAULT_POI_SETTINGS = [
   {
     id: 'edmonton',
     labelKey: 'view.defaultPois.edmonton',
+    descriptionKey: 'view.defaultPoiInfo.edmonton.description',
     view: {
       center: [-113.4938, 53.5461] as [number, number],
       zoom: 11,
@@ -99,6 +106,7 @@ export const DEFAULT_POI_SETTINGS = [
   {
     id: 'jasper',
     labelKey: 'view.defaultPois.jasper',
+    descriptionKey: 'view.defaultPoiInfo.jasper.description',
     view: {
       center: [-118.0814, 52.8737] as [number, number],
       zoom: 11,
@@ -119,6 +127,9 @@ export const DEFAULT_POI_SETTINGS = [
   {
     id: 'watertonLakes',
     labelKey: 'view.defaultPois.watertonLakes',
+    descriptionKey: 'view.defaultPoiInfo.watertonLakes.description',
+    imageKey: 'watertonLakes',
+    imageAltKey: 'view.defaultPoiInfo.watertonLakes.imageAlt',
     view: {
       center: [-113.9179, 49.052] as [number, number],
       zoom: 12,

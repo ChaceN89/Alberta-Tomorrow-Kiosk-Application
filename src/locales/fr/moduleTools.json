@@ -55,5 +55,8 @@
     "close": "Fermer le visualiseur",
     "seeMore": "Voir plus",
     "seeLess": "Voir moins"
+  },
+  "mapInfoPanel": {
+    "close": "Fermer les détails du lieu"
   }
 }

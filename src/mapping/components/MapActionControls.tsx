@@ -1,10 +1,10 @@
 /**
   File: MapActionControls.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026 - CN - Replace POI shortcuts with a dropdown.
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Render the terrain mode switch and an Alberta point-of-interest selector.
+  - Render the terrain mode switch for the explore map.
 
   Usage:
   - Rendered at the bottom-left of each explore map.
@@ -12,12 +12,7 @@
   Notes:
   - Map actions are provided by AlbertaMap through MapControlsContext.
  */
-import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  DEFAULT_POI_SETTINGS,
-  isDefaultPoiId,
-} from '../map-settings/defaultPOISettings'
 import { useMapControls } from './MapControlsContext'
 
 export function MapActionControls() {
@@ -27,11 +22,8 @@ export function MapActionControls() {
     isTerrainEnabled,
     isTerrainTransitioning,
     onToggleTerrain,
-    onNavigateToPoi,
   } = useMapControls()
   const { t } = useTranslation('mapping')
-  const poiSelectId = useId()
-  const [selectedPoi, setSelectedPoi] = useState('')
   const isDisabled = !isMapReady || isStyleLoading || isTerrainTransitioning
   const switchLabel = t(
     isTerrainEnabled ? 'terrain.switchTo2d' : 'terrain.switchTo3d',
@@ -76,30 +68,6 @@ export function MapActionControls() {
         )}
         <span>{t(isTerrainEnabled ? 'view.mode2d' : 'view.mode3d')}</span>
       </button>
-
-      <div className="mapping-actions__poi-picker">
-        <label className="sr-only" htmlFor={poiSelectId}>
-          {t('view.poiLabel')}
-        </label>
-        <select
-          id={poiSelectId}
-          className="mapping-actions__poi-select"
-          value={selectedPoi}
-          disabled={isDisabled}
-          onChange={(event) => {
-            const poiId = event.currentTarget.value
-            setSelectedPoi('')
-            if (isDefaultPoiId(poiId)) onNavigateToPoi(poiId)
-          }}
-        >
-          <option value="">{t('view.poiLabel')}</option>
-          {DEFAULT_POI_SETTINGS.map((poi) => (
-            <option key={poi.id} value={poi.id}>
-              {t(poi.labelKey)}
-            </option>
-          ))}
-        </select>
-      </div>
     </section>
   )
 }

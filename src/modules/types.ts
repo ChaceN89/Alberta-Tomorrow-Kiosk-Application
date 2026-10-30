@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Define metadata and locale namespace types for learning modules.
@@ -56,12 +56,24 @@ export type JournalEntryViewer =
     }
   | { type: 'image'; title: string; description: string; alt: string }
 
+export type ModuleMapPoi = {
+  id: string
+  coordinates: [number, number]
+}
+
+export type ModuleMapSettings = {
+  pois: readonly ModuleMapPoi[]
+  defaultPoisVisible?: boolean
+  modulePoisVisible?: boolean
+}
+
 export interface LearningModule {
   visible: boolean
   id: string
   translationNamespace: ModuleTranslationNamespace
   estimatedMinutes: number
   checkpoints: readonly string[]
+  map?: ModuleMapSettings
   component: LazyExoticComponent<ModuleActivityComponent>
   // Pinned image per journal entry; selecting it opens the viewer.
   journalEntryImages?: Readonly<Record<string, string>>

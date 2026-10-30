@@ -24,6 +24,10 @@ export function getModuleActivityPath(moduleId: string) {
   return `${moduleRouteBase(moduleId)}/activity`
 }
 
+export function getModuleActivityExplorePath(moduleId: string) {
+  return `${getModuleActivityPath(moduleId)}/explore`
+}
+
 export function getModuleExplorePath(moduleId: string) {
   return `${moduleRouteBase(moduleId)}/explore`
 }

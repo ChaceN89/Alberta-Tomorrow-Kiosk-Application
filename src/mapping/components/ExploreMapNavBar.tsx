@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { JournalIcon } from '@/components/icons/JournalIcon'
 import { useJournal } from '@/journal/useJournal'
-import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
+import { getModuleOverviewPath } from '@/modules/routes'
 
 type ExploreMapNavigationProps = {
   moduleId?: string
@@ -63,7 +63,7 @@ export function ExploreMapNavBar({ moduleId }: ExploreMapNavigationProps) {
 
   return (
     <>
-      <div className="absolute top-4 left-4 z-(--z-content-popover) flex gap-2">
+      <div className="absolute top-4 left-4 z-(--z-content-popover) flex flex-col gap-2">
         <button
           ref={triggerRef}
           type="button"
@@ -148,34 +148,23 @@ export function ExploreMapNavBar({ moduleId }: ExploreMapNavigationProps) {
           <ul className="space-y-2">
             <li>
               <Link
-                to="/"
+                to={moduleId ? '/explore' : '/'}
                 className={navigationLinkClassName}
                 onClick={() => setIsOpen(false)}
               >
-                {t('navigation.home')}
+                {moduleId ? t('navigation.defaultMap') : t('navigation.home')}
               </Link>
             </li>
             {moduleId && (
-              <>
-                <li>
-                  <Link
-                    to={getModuleActivityPath(moduleId)}
-                    className={navigationLinkClassName}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t('navigation.moduleActivity')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to={getModuleOverviewPath(moduleId)}
-                    className={navigationLinkClassName}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {t('navigation.moduleOverview')}
-                  </Link>
-                </li>
-              </>
+              <li>
+                <Link
+                  to={getModuleOverviewPath(moduleId)}
+                  className={navigationLinkClassName}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {t('navigation.moduleOverview')}
+                </Link>
+              </li>
             )}
           </ul>
         </nav>

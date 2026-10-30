@@ -1,22 +1,13 @@
 {
   "title": "Les pensionnats autochtones en Alberta",
   "description": "Découvrez trois pensionnats autochtones de l’Alberta, leur emplacement et leurs années de fonctionnement, avec des liens vers les archives du Centre national pour la vérité et la réconciliation.",
-  "overviewDescription": "La liste présente St. Mary's, sur la réserve de la Nation Kainai (Blood), St. Albert (Youville) et Lesser Slave Lake (St. Peter's). Chaque fiche indique les années de fonctionnement consignées et renvoie au dossier d’archives correspondant pour approfondir le sujet.",
+  "overviewDescription": "La carte indique St. Mary's, sur la réserve de la Nation Kainai (Blood), St. Albert (Youville) et Lesser Slave Lake (St. Peter's). Sélectionnez un lieu pour découvrir son emplacement, ses années de fonctionnement et son dossier d’archives.",
   "category": "Histoire",
-  "launch": "Voir la liste des écoles",
-  "backToOverview": "Retour aux détails du module",
+  "launch": "Explorer la carte des écoles",
   "activity": {
-    "heading": "Trois pensionnats autochtones en Alberta",
-    "introduction": "Les pensionnats autochtones ont séparé des enfants autochtones de leurs familles et de leurs communautés. Cette liste présente des renseignements de base sur trois pensionnats de l’Alberta et renvoie aux archives du Centre national pour la vérité et la réconciliation.",
     "location": "Emplacement :",
     "operatingYears": "Années de fonctionnement :",
     "sourceLabel": "Consulter le dossier dans les archives du CNVR",
-    "sourceLink": "Consulter le dossier d’archives de {{name}} au Centre national pour la vérité et la réconciliation",
-    "addToJournal": "Ajouter au journal",
-    "addToJournalHint": "Ouvrez d’abord le dossier d’archives pour ajouter cette école à votre journal.",
-    "addToJournalLabel": "Ajouter {{name}} à mon journal",
-    "addedToJournal": "Ajouté au journal",
-    "addedToJournalLabel": "{{name}} figure dans mon journal",
     "schools": [
       {
         "id": "st-marys-blood",
@@ -24,6 +15,7 @@
         "location": "Cardston (réserve Blood), Alberta",
         "operatingYears": "1898–1988",
         "description": "L’école se trouvait sur la réserve Blood de la Nation Kainai, au sud-ouest de Lethbridge.",
+        "imageAlt": "Illustration du piémont du sud de l’Alberta; il ne s’agit pas d’une photographie historique de l’école.",
         "source": "https://archives.nctr.ca/index.php/St-Marys-Residential-School-Blood"
       },
       {
@@ -32,6 +24,7 @@
         "location": "St. Albert, Alberta",
         "operatingYears": "1873–1948",
         "description": "L’école se trouvait à St. Albert, au nord-ouest d’Edmonton, dans le territoire du Traité no 6.",
+        "imageAlt": "Illustration de la vallée près de St. Albert; il ne s’agit pas d’une photographie historique de l’école.",
         "source": "https://archives.nctr.ca/index.php/St-Albert-Residential-School-Youville"
       },
       {
@@ -40,6 +33,7 @@
         "location": "Lesser Slave Lake, Alberta",
         "operatingYears": "1895–1932",
         "description": "L’école se trouvait dans le nord de l’Alberta, au nord-ouest d’Edmonton, et était administrée par l’Église anglicane.",
+        "imageAlt": "Illustration du bord du lac dans le nord de l’Alberta; il ne s’agit pas d’une photographie historique de l’école.",
         "source": "https://archives.nctr.ca/index.php/Lesser-Slave-Lake-Residential-School"
       }
     ]
@@ -50,17 +44,20 @@
       {
         "id": "st-marys-blood",
         "title": "St. Mary's Residential School (Blood)",
-        "summary": "L’école a fonctionné de 1898 à 1988 sur la réserve Blood de la Nation Kainai, au sud-ouest de Lethbridge."
+        "summary": "L’école a fonctionné de 1898 à 1988 sur la réserve Blood de la Nation Kainai, au sud-ouest de Lethbridge.",
+        "imageAlt": "Illustration du piémont du sud de l’Alberta; il ne s’agit pas d’une photographie historique de l’école."
       },
       {
         "id": "st-albert-youville",
         "title": "St. Albert Residential School (Youville)",
-        "summary": "L’école a fonctionné de 1873 à 1948 à St. Albert, au nord-ouest d’Edmonton, dans le territoire du Traité no 6."
+        "summary": "L’école a fonctionné de 1873 à 1948 à St. Albert, au nord-ouest d’Edmonton, dans le territoire du Traité no 6.",
+        "imageAlt": "Illustration de la vallée près de St. Albert; il ne s’agit pas d’une photographie historique de l’école."
       },
       {
         "id": "lesser-slave-lake",
         "title": "Lesser Slave Lake Residential School (St. Peter's)",
-        "summary": "L’école a fonctionné de 1895 à 1932 dans le nord de l’Alberta, au nord-ouest d’Edmonton, sous l’administration de l’Église anglicane."
+        "summary": "L’école a fonctionné de 1895 à 1932 dans le nord de l’Alberta, au nord-ouest d’Edmonton, sous l’administration de l’Église anglicane.",
+        "imageAlt": "Illustration du bord du lac dans le nord de l’Alberta; il ne s’agit pas d’une photographie historique de l’école."
       }
     ]
   }

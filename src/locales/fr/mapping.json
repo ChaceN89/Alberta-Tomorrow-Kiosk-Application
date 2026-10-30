@@ -3,7 +3,6 @@
   "mapLabel": "Carte de l’Alberta",
   "moduleTitle": "Explorer {{moduleName}}",
   "moduleMapLabel": "Carte : {{moduleName}}",
-  "moduleMapStatus": "Les lieux et les interactions propres à ce module ne sont pas encore connectés.",
   "view": {
     "title": "Vue de la carte",
     "controls": "Paramètres de la vue de la carte",
@@ -14,6 +13,10 @@
     "basemapHelp": "Modifie les couleurs, les routes, les étiquettes, l’eau et l’apparence des terres.",
     "albertaBoundaryLabel": "Limite de l’Alberta",
     "albertaBoundaryHelp": "Afficher ou masquer la limite provinciale de l’Alberta.",
+    "defaultPoisLabel": "Lieux d’intérêt par défaut",
+    "defaultPoisHelp": "Afficher ou masquer les lieux de l’Alberta présents sur toutes les cartes.",
+    "modulePoisLabel": "Lieux d’intérêt du module",
+    "modulePoisHelp": "Afficher ou masquer les lieux propres à ce module d’apprentissage.",
     "basemapPlacesLabel": "Lieux intégrés à la carte",
     "basemapPlacesHelp": "Afficher ou masquer les icônes et les noms fournis par le fond de carte pour les commerces, les stationnements, les parcs et autres lieux.",
     "basemapStyles": {
@@ -36,7 +39,6 @@
     "zoomLabel": "Zoom",
     "zoomValue": "{{value}}",
     "zoomHelp": "Règle la distance de la caméra.",
-    "poiLabel": "Visiter un lieu d’intérêt",
     "defaultPois": {
       "athabascaFalls": "Chutes Athabasca",
       "banff": "Banff",
@@ -51,6 +53,29 @@
       "watertonLakes": "Parc national des Lacs-Waterton",
       "woodBuffalo": "Parc national Wood Buffalo",
       "writingOnStone": "Parc provincial Writing-on-Stone"
+    },
+    "defaultPoiInfo": {
+      "banff": {
+        "description": "Banff est une ville de montagne du parc national Banff, entourée des Rocheuses canadiennes et située dans la vallée de la Bow.",
+        "imageAlt": "Illustration d’un lac de montagne et des Rocheuses canadiennes près de Banff; il ne s’agit pas d’une photographie documentaire."
+      },
+      "calgary": {
+        "description": "Calgary se trouve au confluent des rivières Bow et Elbow, là où la prairie rejoint les contreforts des Rocheuses."
+      },
+      "dinosaurProvincialPark": {
+        "description": "Le parc provincial Dinosaur protège des paysages de badlands et des fossiles. Il est inscrit au patrimoine mondial de l’UNESCO.",
+        "imageAlt": "Illustration des badlands de l’Alberta près du parc provincial Dinosaur; il ne s’agit pas d’une photographie documentaire."
+      },
+      "edmonton": {
+        "description": "La capitale de l’Alberta longe la rivière Saskatchewan Nord, dont la vallée forme un vaste corridor vert à travers la ville."
+      },
+      "jasper": {
+        "description": "Jasper est une localité de montagne située dans le parc national Jasper, qui fait partie du site du patrimoine mondial des parcs des montagnes Rocheuses canadiennes."
+      },
+      "watertonLakes": {
+        "description": "Le parc national des Lacs-Waterton réunit des écosystèmes de prairie et de montagne à la frontière sud de l’Alberta et fait partie du parc international de la paix Waterton-Glacier.",
+        "imageAlt": "Illustration d’un lac alpin et de montagnes dans le parc national des Lacs-Waterton; il ne s’agit pas d’une photographie documentaire."
+      }
     }
   },
   "terrain": {
@@ -58,12 +83,19 @@
     "switchTo2d": "Passer à la carte 2D",
     "loadError": "Certaines données cartographiques n’ont pas pu être chargées. Vérifiez votre connexion et rechargez la page. Les détails techniques sont disponibles dans la console du navigateur."
   },
+  "poiCycle": {
+    "label": "Sélecteur de lieu d’intérêt",
+    "listLabel": "Choisir un lieu d’intérêt visible",
+    "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}}",
+    "previous": "Aller au lieu d’intérêt précédent à partir de {{name}}",
+    "next": "Aller au lieu d’intérêt suivant à partir de {{name}}"
+  },
   "navigation": {
     "label": "Navigation de la carte",
     "open": "Ouvrir la navigation de la carte",
     "close": "Fermer la navigation de la carte",
     "home": "Accueil",
-    "moduleActivity": "Retour à l’activité de l’expédition",
+    "defaultMap": "Carte générale de l’Alberta",
     "moduleOverview": "Retour aux détails de l’expédition"
   }
 }

@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026 - CN - Expose map feature layer controls.
+  Date Updated: Oct 30, 2026
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -28,6 +28,9 @@ export type MapControlsProps = {
   isSatelliteEnabled: boolean
   isBasemapPlacesEnabled: boolean
   isAlbertaBoundaryEnabled: boolean
+  defaultPoisVisible?: boolean
+  modulePoisVisible?: boolean
+  hasModulePois?: boolean
   cameraPitch: number
   cameraZoom: number
   onTerrainExaggerationChange: (exaggeration: number) => void
@@ -36,6 +39,8 @@ export type MapControlsProps = {
   onSatelliteChange: (enabled: boolean) => void
   onBasemapPlacesChange: (enabled: boolean) => void
   onAlbertaBoundaryChange: (enabled: boolean) => void
+  onDefaultPoisChange?: (enabled: boolean) => void
+  onModulePoisChange?: (enabled: boolean) => void
   onCameraPitchChange: (pitch: number) => void
   onCameraZoomChange: (zoom: number) => void
   onToggleTerrain: () => void

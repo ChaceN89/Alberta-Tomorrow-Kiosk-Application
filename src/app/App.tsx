@@ -34,6 +34,7 @@ import { ExpeditionProgressProvider } from '@/save-data/ExpeditionProgressProvid
 import { IntroTutorialProvider } from '@/tutorials/intro-tutorial/IntroTutorialProvider'
 import { AudioPlayerProvider } from '@/module-tools/media-player/provider/AudioPlayerProvider'
 import { MediaViewerProvider } from '@/module-tools/media-viewer/provider/MediaViewerProvider'
+import { MapInfoPanelProvider } from '@/module-tools/map-info-panel/provider/MapInfoPanelProvider'
 
 const ExploreMap = lazy(() =>
   import('./pages/ExploreMap').then(({ ExploreMap }) => ({
@@ -58,30 +59,36 @@ export function App() {
               <AudioPlayerProvider>
                 <MediaViewerProvider>
                   <ErrorBoundary>
-                    <AppStartup overlays={<GlobalOverlayLayer />}>
-                      <>
-                        <Routes>
-                          <Route path="explore" element={exploreMapPage} />
-                          <Route
-                            path="expeditions/:moduleId/explore"
-                            element={exploreMapPage}
-                          />
-                          <Route element={<Layout />}>
-                            <Route index element={<HomePage />} />
+                    <MapInfoPanelProvider>
+                      <AppStartup overlays={<GlobalOverlayLayer />}>
+                        <>
+                          <Routes>
+                            <Route path="explore" element={exploreMapPage} />
                             <Route
-                              path="expeditions/modules/*"
-                              element={<NotFound />}
+                              path="expeditions/:moduleId/explore"
+                              element={exploreMapPage}
                             />
                             <Route
-                              path="expeditions/:moduleId/*"
-                              element={<ModulePage />}
+                              path="expeditions/:moduleId/activity/explore"
+                              element={exploreMapPage}
                             />
-                            <Route path="*" element={<NotFound />} />
-                          </Route>
-                        </Routes>
-                        <AudioPlayerPanel />
-                      </>
-                    </AppStartup>
+                            <Route element={<Layout />}>
+                              <Route index element={<HomePage />} />
+                              <Route
+                                path="expeditions/modules/*"
+                                element={<NotFound />}
+                              />
+                              <Route
+                                path="expeditions/:moduleId/*"
+                                element={<ModulePage />}
+                              />
+                              <Route path="*" element={<NotFound />} />
+                            </Route>
+                          </Routes>
+                          <AudioPlayerPanel />
+                        </>
+                      </AppStartup>
+                    </MapInfoPanelProvider>
                   </ErrorBoundary>
                   <JournalModal />
                 </MediaViewerProvider>

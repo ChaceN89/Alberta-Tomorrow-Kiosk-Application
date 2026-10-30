@@ -12,11 +12,12 @@
   Notes:
   - None.
  */
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { ModuleNotFound } from '@/components/modules/ModuleNotFound'
 import { ModuleOverview } from '@/components/modules/ModuleOverview'
 import { visibleModules } from '@/modules/registry'
 import { ModuleActivity } from './module/ModuleActivity'
+import { getModuleActivityExplorePath } from '@/modules/routes'
 
 export function ModulePage() {
   const { moduleId, '*': modulePath } = useParams()
@@ -35,6 +36,10 @@ export function ModulePage() {
   // if the module path is not recognized, render the not found component
   if (modulePath !== 'activity') {
     return <ModuleNotFound />
+  }
+
+  if (module.map) {
+    return <Navigate to={getModuleActivityExplorePath(module.id)} replace />
   }
 
   // final check - return the actual module activity component - quiz, list, images etc - specific data to the module

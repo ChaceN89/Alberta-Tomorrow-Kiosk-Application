@@ -1,10 +1,10 @@
 /*
   File: mapping.css | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026 - CN - Add spacing around the POI dropdown arrow.
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Style the map view disclosure and its settings controls.
+  - Style the map view disclosure, its settings controls, and POI markers.
 
   Usage:
   - Imported by src/app/main.tsx.
@@ -13,7 +13,40 @@
   - Colors use the shared theme tokens from global.css.
  */
 .mapping-controls {
-  margin-top: 0.75rem;
+  margin: 0;
+}
+
+.mapping-controls--floating {
+  position: absolute;
+  top: 1rem;
+  left: 4.75rem;
+  z-index: var(--z-content-popover);
+  width: min(16rem, calc(100vw - 6rem));
+}
+
+.mapping-module-title-bar {
+  position: absolute;
+  top: 1rem;
+  inset-inline-end: 1rem;
+  z-index: var(--z-content-popover);
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: 28dvh;
+  overflow-y: auto;
+  text-align: center;
+  animation: mapping-module-title-enter 850ms cubic-bezier(0.2, 0.75, 0.2, 1)
+    1000ms both;
+}
+
+@keyframes mapping-module-title-enter {
+  from {
+    opacity: 0.85;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .mapping-controls__disclosure {
@@ -140,7 +173,7 @@
   bottom: 1rem;
   z-index: var(--z-content-popover);
   display: flex;
-  width: min(42rem, calc(100% - 2rem));
+  width: auto;
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -180,16 +213,17 @@
 }
 
 .mapping-actions__button:focus-visible,
-.mapping-actions__poi-select:focus-visible,
 .mapping-controls__select:focus-visible,
 .mapping-controls__range:focus-visible,
-.mapping-controls__check input:focus-visible {
+.mapping-controls__check input:focus-visible,
+.mapping-poi-selector__button:focus-visible,
+.mapping-poi-selector__active:focus-visible,
+.mapping-poi-selector__option:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 
 .mapping-actions__button:disabled,
-.mapping-actions__poi-select:disabled,
 .mapping-controls__select:disabled,
 .mapping-controls__range:disabled,
 .mapping-controls__check input:disabled {
@@ -203,46 +237,125 @@
   flex: 0 0 auto;
 }
 
-.mapping-actions__poi-picker {
-  position: relative;
-  display: flex;
-  flex: 0 1 auto;
-  align-items: center;
-}
-
-.mapping-actions__poi-picker::after {
+.mapping-poi-selector {
   position: absolute;
-  top: 50%;
-  inset-inline-end: 1.125rem;
-  width: 0.45rem;
-  height: 0.45rem;
-  transform: translateY(-70%) rotate(45deg);
-  border: solid currentColor;
-  border-width: 0 2px 2px 0;
-  content: '';
-  pointer-events: none;
-}
-
-.mapping-actions__poi-select {
-  width: min(17rem, calc(100vw - 8rem));
+  inset-inline-start: 50%;
+  bottom: 1rem;
+  z-index: var(--z-content-popover);
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) 2.25rem;
+  gap: 0.375rem;
+  width: min(24rem, calc(100vw - 2rem));
   min-height: 3rem;
-  appearance: none;
+  align-items: center;
+  transform: translateX(-50%);
   border: 1px solid var(--color-line);
   border-radius: 9999px;
   background: var(--color-surface);
-  padding: 0.625rem 3rem 0.625rem 1rem;
-  color: var(--color-pine);
-  box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    background-color 150ms ease,
-    border-color 150ms ease;
+  padding: 0.375rem 0.5rem;
+  color: var(--color-ink);
+  box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 20%);
 }
 
-.mapping-actions__poi-select:hover:not(:disabled) {
+.mapping-poi-selector__button {
+  display: flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  color: var(--color-pine);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.mapping-poi-selector__button:hover,
+.mapping-poi-selector__active:hover,
+.mapping-poi-selector__option:hover {
   background: var(--color-canvas);
+}
+
+.mapping-poi-selector__arrow {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.mapping-poi-selector__active {
+  display: flex;
+  min-width: 0;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0 0.5rem;
+  color: var(--color-pine);
+  font: inherit;
+  font-weight: 700;
+}
+
+.mapping-poi-selector__active-title {
+  overflow: hidden;
+  min-width: 0;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.mapping-poi-selector__chevron {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 auto;
+  transition: transform 150ms ease;
+}
+
+.mapping-poi-selector__active[aria-expanded='true']
+  .mapping-poi-selector__chevron {
+  transform: rotate(180deg);
+}
+
+.mapping-poi-selector__list {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  max-height: min(22rem, 55dvh);
+  overflow-y: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  background: var(--color-surface);
+  padding: 0.375rem;
+  color: var(--color-ink);
+  box-shadow: 0 0.75rem 1.75rem rgb(23 46 41 / 24%);
+}
+
+.mapping-poi-selector__option {
+  display: flex;
+  width: 100%;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--color-ink);
+  font: inherit;
+  text-align: start;
+}
+
+.mapping-poi-selector__option[aria-pressed='true'] {
+  background: var(--color-canvas);
+  color: var(--color-pine);
+  font-weight: 700;
+}
+
+.mapping-poi-selector__option-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mapping-controls__error {
@@ -257,10 +370,122 @@
   font-size: 0.875rem;
 }
 
+.mapping-poi-marker {
+  position: relative;
+  display: inline-flex;
+  min-width: 5rem;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.mapping-poi-marker__shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0.4rem 0.75rem rgb(23 46 41 / 24%));
+  pointer-events: none;
+}
+
+.mapping-poi-marker__bubble {
+  fill: var(--color-surface);
+  stroke: var(--color-line);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.mapping-poi-marker__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.4rem;
+  transform: translateY(-0.375rem);
+}
+
+.mapping-poi-marker:hover .mapping-poi-marker__bubble {
+  fill: var(--color-canvas);
+}
+
+.mapping-poi-marker[data-active='true'] .mapping-poi-marker__shape {
+  filter: drop-shadow(0 0 0.12rem var(--color-pine))
+    drop-shadow(0 0.4rem 0.75rem rgb(23 46 41 / 24%));
+}
+
+.mapping-poi-marker[data-active='true'] .mapping-poi-marker__bubble {
+  stroke: var(--color-pine);
+  stroke-width: 2.5;
+}
+
+.mapping-poi-marker:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.mapping-poi-marker__pin {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-pine);
+  box-shadow: 0 0 0 2px var(--color-pine);
+}
+
+.mapping-poi-marker__title {
+  max-width: 13rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mapping-poi-marker__complete {
+  color: var(--color-pine);
+  font-size: 0.875rem;
+}
+
+.mapping-poi-info-image {
+  display: block;
+  width: 100%;
+  max-height: 18rem;
+  border-radius: 0.875rem;
+  object-fit: cover;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mapping-controls__chevron,
   .mapping-actions__button,
-  .mapping-actions__poi-select {
+  .mapping-poi-selector__chevron {
     transition: none;
+  }
+
+  .mapping-module-title-bar {
+    animation: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .mapping-module-title-bar {
+    max-height: 22dvh;
+  }
+
+  .mapping-actions {
+    bottom: 4.5rem;
+  }
+}
+
+@media (max-width: 64rem) {
+  .mapping-module-title-bar {
+    top: 5.25rem;
   }
 }

@@ -1,7 +1,7 @@
 /**
   File: MapControls.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026 - CN - Support the full camera pitch range.
+  Date Updated: Oct 30, 2026
 
   Description:
   - Render accessible controls for map appearance and camera settings.
@@ -37,6 +37,9 @@ export function MapControls() {
     isSatelliteEnabled,
     isBasemapPlacesEnabled,
     isAlbertaBoundaryEnabled,
+    defaultPoisVisible,
+    modulePoisVisible,
+    hasModulePois,
     cameraPitch,
     cameraZoom,
     onTerrainExaggerationChange,
@@ -45,6 +48,8 @@ export function MapControls() {
     onSatelliteChange,
     onBasemapPlacesChange,
     onAlbertaBoundaryChange,
+    onDefaultPoisChange,
+    onModulePoisChange,
     onCameraPitchChange,
     onCameraZoomChange,
   } = controls
@@ -57,13 +62,18 @@ export function MapControls() {
   const satelliteId = useId()
   const basemapPlacesId = useId()
   const albertaBoundaryId = useId()
+  const defaultPoisId = useId()
+  const modulePoisId = useId()
   const pitchId = useId()
   const zoomId = useId()
   const isDisabled = !isMapReady || isStyleLoading
   const isTerrainControlDisabled = isDisabled || isTerrainTransitioning
 
   return (
-    <section className="mapping-controls" aria-label={t('view.controls')}>
+    <section
+      className="mapping-controls mapping-controls--floating"
+      aria-label={t('view.controls')}
+    >
       {hasMapError && (
         <p className="mapping-controls__error" role="alert">
           {t('terrain.loadError')}
@@ -136,6 +146,48 @@ export function MapControls() {
               </span>
             </span>
           </label>
+
+          <label className="mapping-controls__check" htmlFor={defaultPoisId}>
+            <input
+              id={defaultPoisId}
+              type="checkbox"
+              checked={defaultPoisVisible ?? true}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onDefaultPoisChange?.(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.defaultPoisLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.defaultPoisHelp')}
+              </span>
+            </span>
+          </label>
+
+          {hasModulePois && (
+            <label className="mapping-controls__check" htmlFor={modulePoisId}>
+              <input
+                id={modulePoisId}
+                type="checkbox"
+                checked={modulePoisVisible ?? true}
+                disabled={isDisabled}
+                onChange={(event) =>
+                  onModulePoisChange?.(event.currentTarget.checked)
+                }
+              />
+              <span className="mapping-controls__check-copy">
+                <span className="mapping-controls__label">
+                  {t('view.modulePoisLabel')}
+                </span>
+                <span className="mapping-controls__help">
+                  {t('view.modulePoisHelp')}
+                </span>
+              </span>
+            </label>
+          )}
 
           <label className="mapping-controls__check" htmlFor={hillshadeId}>
             <input

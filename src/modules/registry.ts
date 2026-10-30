@@ -1,7 +1,7 @@
 /**
   File: registry.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Register discoverable activities/modules without eagerly importing them.
@@ -16,6 +16,9 @@ import { lazy } from 'react'
 import foxHabitatJournalImage from './testing-foxes-of-alberta/assets/cover-song.jpg'
 import foxFieldNoteJournalImage from './testing-foxes-of-alberta/assets/field-note.svg'
 import geologyLandscapeJournalImage from './testing-geology/assets/natural-landscapes-journal.jpg'
+import residentialSchoolBloodImage from './testing-residential-schools/assets/st-marys-landscape.jpg'
+import residentialSchoolStAlbertImage from './testing-residential-schools/assets/st-albert-river-valley.jpg'
+import residentialSchoolLesserSlaveLakeImage from './testing-residential-schools/assets/lesser-slave-lake.jpg'
 import {
   foxesOfAlbertaCheckpoints,
   foxFamilyImageCheckpoint,
@@ -30,6 +33,7 @@ import {
 import { geologyCheckpoints } from './testing-geology/checkpoints'
 import { preloadResidentialSchool } from './testing-residential-schools/preload'
 import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
+import { residentialSchoolMapSettings } from './testing-residential-schools/mapSettings'
 import type { LearningModule, ModulePreloadContext } from './types'
 
 // importing all the modules into the appliction
@@ -79,7 +83,13 @@ export const modules: readonly LearningModule[] = [
     translationNamespace: 'residentialSchool',
     estimatedMinutes: 3,
     checkpoints: residentialSchoolCheckpoints,
+    map: residentialSchoolMapSettings,
     component: lazy(loadResidentialSchool),
+    journalEntryImages: {
+      'st-marys-blood': residentialSchoolBloodImage,
+      'st-albert-youville': residentialSchoolStAlbertImage,
+      'lesser-slave-lake': residentialSchoolLesserSlaveLakeImage,
+    },
     loadActivity: loadResidentialSchool,
     preload: preloadResidentialSchool,
   },

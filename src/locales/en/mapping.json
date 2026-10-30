@@ -3,7 +3,6 @@
   "mapLabel": "Map of Alberta",
   "moduleTitle": "Explore {{moduleName}}",
   "moduleMapLabel": "{{moduleName}} map",
-  "moduleMapStatus": "Module-specific map locations and interactions are not connected yet.",
   "view": {
     "title": "Map view",
     "controls": "Map view settings",
@@ -14,6 +13,10 @@
     "basemapHelp": "Changes the colours, roads, labels, water, and land appearance.",
     "albertaBoundaryLabel": "Alberta boundary",
     "albertaBoundaryHelp": "Show or hide the provincial outline of Alberta.",
+    "defaultPoisLabel": "Default points of interest",
+    "defaultPoisHelp": "Show or hide Alberta places available on every map.",
+    "modulePoisLabel": "Module points of interest",
+    "modulePoisHelp": "Show or hide locations for this learning module.",
     "basemapPlacesLabel": "Built-in map places",
     "basemapPlacesHelp": "Show or hide built-in icons and labels for businesses, parking, parks, and other places.",
     "basemapStyles": {
@@ -36,7 +39,6 @@
     "zoomLabel": "Zoom",
     "zoomValue": "{{value}}",
     "zoomHelp": "Changes the camera distance from the map.",
-    "poiLabel": "Visit a point of interest",
     "defaultPois": {
       "athabascaFalls": "Athabasca Falls",
       "banff": "Banff",
@@ -51,6 +53,29 @@
       "watertonLakes": "Waterton Lakes National Park",
       "woodBuffalo": "Wood Buffalo National Park",
       "writingOnStone": "Writing-on-Stone Provincial Park"
+    },
+    "defaultPoiInfo": {
+      "banff": {
+        "description": "Banff is a mountain town in Banff National Park, surrounded by the Canadian Rockies and connected by the Bow Valley.",
+        "imageAlt": "Illustration of a mountain lake and the Canadian Rockies near Banff; not a documentary photograph."
+      },
+      "calgary": {
+        "description": "Calgary sits at the meeting of the Bow and Elbow rivers, where prairie meets the foothills."
+      },
+      "dinosaurProvincialPark": {
+        "description": "Dinosaur Provincial Park preserves badlands landscapes and fossils. It is recognized as a UNESCO World Heritage Site.",
+        "imageAlt": "Illustration of the Alberta badlands near Dinosaur Provincial Park; not a documentary photograph."
+      },
+      "edmonton": {
+        "description": "Alberta's capital city sits along the North Saskatchewan River, whose valley forms a broad green corridor through the city."
+      },
+      "jasper": {
+        "description": "Jasper is a mountain community in Jasper National Park and part of the Canadian Rocky Mountain Parks UNESCO World Heritage Site."
+      },
+      "watertonLakes": {
+        "description": "Waterton Lakes National Park brings together prairie and mountain ecosystems at Alberta's southern border and forms part of Waterton-Glacier International Peace Park.",
+        "imageAlt": "Illustration of an alpine lake and mountain landscape in Waterton Lakes National Park; not a documentary photograph."
+      }
     }
   },
   "terrain": {
@@ -58,12 +83,19 @@
     "switchTo2d": "Switch to 2D map",
     "loadError": "Some map data could not load. Check your connection and reload. Technical details are available in the browser console."
   },
+  "poiCycle": {
+    "label": "Point of interest selector",
+    "listLabel": "Choose a visible point of interest",
+    "select": "Choose a point of interest; currently {{name}}",
+    "previous": "Go to the previous point of interest from {{name}}",
+    "next": "Go to the next point of interest from {{name}}"
+  },
   "navigation": {
     "label": "Map navigation",
     "open": "Open map navigation",
     "close": "Close map navigation",
     "home": "Home",
-    "moduleActivity": "Back to expedition activity",
+    "defaultMap": "Default Alberta map",
     "moduleOverview": "Back to expedition overview"
   }
 }

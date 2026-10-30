@@ -1,7 +1,7 @@
 /**
   File: ModuleActivity.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Preload the selected activity and show loading or retry UI as needed.
@@ -52,9 +52,11 @@ export function ModuleActivity({ module }: ModuleActivityProps) {
 
   return (
     <div className="space-y-6">
-      <Link className="button-secondary" to={getModuleExplorePath(module.id)}>
-        {t('explore.openActivity')}
-      </Link>
+      {module.map && (
+        <Link className="button-secondary" to={getModuleExplorePath(module.id)}>
+          {t('explore.openActivity')}
+        </Link>
+      )}
       <ExpeditionActivity module={module} />
     </div>
   )

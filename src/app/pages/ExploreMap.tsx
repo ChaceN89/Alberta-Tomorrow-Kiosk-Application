@@ -16,7 +16,8 @@ import { ModuleNotFound } from '@/components/modules/ModuleNotFound'
 import { BaseExploreMap } from '@/mapping/BaseExploreMap'
 import { ModuleExploreMap } from '@/mapping/ModuleExploreMap'
 import { visibleModules } from '@/modules/registry'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
+import { getModuleActivityPath } from '@/modules/routes'
 
 export function ExploreMap() {
   const { moduleId } = useParams()
@@ -32,6 +33,10 @@ export function ExploreMap() {
   // not found if the module isnt in the visibleModules registry
   if (!module) {
     return <ModuleNotFound />
+  }
+
+  if (!module.map) {
+    return <Navigate to={getModuleActivityPath(module.id)} replace />
   }
 
   // module found, render the module explore map with the module's specific settings
