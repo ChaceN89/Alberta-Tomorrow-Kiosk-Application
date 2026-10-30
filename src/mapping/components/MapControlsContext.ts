@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026 - CN - Expose point-of-interest layer visibility.
+  Date Updated: Oct 30, 2026 - CN - Expose map feature layer controls.
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -26,14 +26,16 @@ export type MapControlsProps = {
   basemapStyleId: BasemapStyleId
   isHillshadeEnabled: boolean
   isSatelliteEnabled: boolean
-  isPoiLayerEnabled: boolean
+  isBasemapPlacesEnabled: boolean
+  isAlbertaBoundaryEnabled: boolean
   cameraPitch: number
   cameraZoom: number
   onTerrainExaggerationChange: (exaggeration: number) => void
   onBasemapStyleChange: (styleId: string) => void
   onHillshadeChange: (enabled: boolean) => void
   onSatelliteChange: (enabled: boolean) => void
-  onPoiLayerChange: (enabled: boolean) => void
+  onBasemapPlacesChange: (enabled: boolean) => void
+  onAlbertaBoundaryChange: (enabled: boolean) => void
   onCameraPitchChange: (pitch: number) => void
   onCameraZoomChange: (zoom: number) => void
   onToggleTerrain: () => void

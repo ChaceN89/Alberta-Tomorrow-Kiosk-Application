@@ -12,8 +12,10 @@
     "mode3d": "3D",
     "basemapLabel": "Style de fond de carte",
     "basemapHelp": "Modifie les couleurs, les routes, les étiquettes, l’eau et l’apparence des terres.",
-    "poiLayerLabel": "Lieux d’intérêt",
-    "poiLayerHelp": "Afficher ou masquer les icônes et les noms des commerces, stationnements, parcs et autres lieux.",
+    "albertaBoundaryLabel": "Limite de l’Alberta",
+    "albertaBoundaryHelp": "Afficher ou masquer la limite provinciale de l’Alberta.",
+    "basemapPlacesLabel": "Lieux intégrés à la carte",
+    "basemapPlacesHelp": "Afficher ou masquer les icônes et les noms fournis par le fond de carte pour les commerces, les stationnements, les parcs et autres lieux.",
     "basemapStyles": {
       "liberty": "Standard",
       "bright": "Vif",

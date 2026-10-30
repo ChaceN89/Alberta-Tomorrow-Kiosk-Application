@@ -35,14 +35,16 @@ export function MapControls() {
     basemapStyleId,
     isHillshadeEnabled,
     isSatelliteEnabled,
-    isPoiLayerEnabled,
+    isBasemapPlacesEnabled,
+    isAlbertaBoundaryEnabled,
     cameraPitch,
     cameraZoom,
     onTerrainExaggerationChange,
     onBasemapStyleChange,
     onHillshadeChange,
     onSatelliteChange,
-    onPoiLayerChange,
+    onBasemapPlacesChange,
+    onAlbertaBoundaryChange,
     onCameraPitchChange,
     onCameraZoomChange,
   } = controls
@@ -53,7 +55,8 @@ export function MapControls() {
   const exaggerationHelpId = useId()
   const hillshadeId = useId()
   const satelliteId = useId()
-  const poiLayerId = useId()
+  const basemapPlacesId = useId()
+  const albertaBoundaryId = useId()
   const pitchId = useId()
   const zoomId = useId()
   const isDisabled = !isMapReady || isStyleLoading
@@ -111,6 +114,29 @@ export function MapControls() {
             </p>
           </div>
 
+          <label
+            className="mapping-controls__check"
+            htmlFor={albertaBoundaryId}
+          >
+            <input
+              id={albertaBoundaryId}
+              type="checkbox"
+              checked={isAlbertaBoundaryEnabled}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onAlbertaBoundaryChange(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.albertaBoundaryLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.albertaBoundaryHelp')}
+              </span>
+            </span>
+          </label>
+
           <label className="mapping-controls__check" htmlFor={hillshadeId}>
             <input
               id={hillshadeId}
@@ -131,22 +157,22 @@ export function MapControls() {
             </span>
           </label>
 
-          <label className="mapping-controls__check" htmlFor={poiLayerId}>
+          <label className="mapping-controls__check" htmlFor={basemapPlacesId}>
             <input
-              id={poiLayerId}
+              id={basemapPlacesId}
               type="checkbox"
-              checked={isPoiLayerEnabled}
+              checked={isBasemapPlacesEnabled}
               disabled={isDisabled}
               onChange={(event) =>
-                onPoiLayerChange(event.currentTarget.checked)
+                onBasemapPlacesChange(event.currentTarget.checked)
               }
             />
             <span className="mapping-controls__check-copy">
               <span className="mapping-controls__label">
-                {t('view.poiLayerLabel')}
+                {t('view.basemapPlacesLabel')}
               </span>
               <span className="mapping-controls__help">
-                {t('view.poiLayerHelp')}
+                {t('view.basemapPlacesHelp')}
               </span>
             </span>
           </label>
