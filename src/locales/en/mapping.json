@@ -1,0 +1,15 @@
+{
+  "title": "Explore Alberta",
+  "mapLabel": "Map of Alberta",
+  "moduleTitle": "Explore {{moduleName}}",
+  "moduleMapLabel": "{{moduleName}} map",
+  "moduleMapStatus": "Module-specific map locations and interactions are not connected yet.",
+  "navigation": {
+    "label": "Map navigation",
+    "open": "Open map navigation",
+    "close": "Close map navigation",
+    "home": "Home",
+    "moduleActivity": "Back to expedition activity",
+    "moduleOverview": "Back to expedition overview"
+  }
+}

@@ -1,7 +1,7 @@
 /**
   File: App.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Compose the route tree under BrowserRouter, enabling client-side navigation and deep links.
@@ -16,15 +16,16 @@
   Notes:
   - None.
  */
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
 import { NotFound } from '@/components/app-states/NotFound'
 import { ErrorBoundary } from '@/components/app-states/ErrorBoundary'
+import { Loading } from '@/components/app-states/Loading'
 import { GlobalOverlayLayer } from '@/components/toasts/GlobalOverlayLayer'
 import { JournalModal } from '@/journal/components/JournalModal'
 import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
-import { ExploreMap } from './pages/ExploreMap'
 import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { AppStartup } from './AppStartup'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
@@ -34,7 +35,19 @@ import { IntroTutorialProvider } from '@/tutorials/intro-tutorial/IntroTutorialP
 import { AudioPlayerProvider } from '@/module-tools/media-player/provider/AudioPlayerProvider'
 import { MediaViewerProvider } from '@/module-tools/media-viewer/provider/MediaViewerProvider'
 
+const ExploreMap = lazy(() =>
+  import('./pages/ExploreMap').then(({ ExploreMap }) => ({
+    default: ExploreMap,
+  })),
+)
+
 export function App() {
+  const exploreMapPage = (
+    <Suspense fallback={<Loading />}>
+      <ExploreMap />
+    </Suspense>
+  )
+
   return (
     <BrowserRouter>
       <ExpeditionProgressProvider>
@@ -48,10 +61,10 @@ export function App() {
                     <AppStartup overlays={<GlobalOverlayLayer />}>
                       <>
                         <Routes>
-                          <Route path="explore" element={<ExploreMap />} />
+                          <Route path="explore" element={exploreMapPage} />
                           <Route
                             path="expeditions/modules/:moduleId/explore"
-                            element={<ExploreMap />}
+                            element={exploreMapPage}
                           />
                           <Route element={<Layout />}>
                             <Route index element={<HomePage />} />

@@ -1,27 +1,28 @@
 /**
   File: ExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Show a placeholder for default or module-specific Alberta map exploration.
+  - Route the shared explore page to the default or selected module map.
 
   Usage:
   - Rendered by /explore and /expeditions/modules/:moduleId/explore.
 
   Notes:
-  - Map rendering and activity-specific map configuration will be added later.
+  - Map rendering and module map details live in src/mapping.
  */
-import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 import { ModuleNotFound } from '@/components/modules/ModuleNotFound'
+import { DefaultExploreMap } from '@/mapping/DefaultExploreMap'
+import { ModuleExploreMap } from '@/mapping/ModuleExploreMap'
 import { visibleModules } from '@/modules/registry'
+import { useParams } from 'react-router-dom'
 
 export function ExploreMap() {
   const { moduleId } = useParams()
 
   if (!moduleId) {
-    return <DefaultExplorePlaceholder />
+    return <DefaultExploreMap />
   }
 
   const module = visibleModules.find((entry) => entry.id === moduleId)
@@ -30,37 +31,5 @@ export function ExploreMap() {
     return <ModuleNotFound />
   }
 
-  return <ModuleExplorePlaceholder moduleId={module.id} />
-}
-
-function DefaultExplorePlaceholder() {
-  const { t } = useTranslation('global')
-
-  return (
-    <section aria-labelledby="explore-title" className="max-w-3xl space-y-4">
-      <h1 id="explore-title">{t('explore.title')}</h1>
-      <p className="text-lg text-muted">{t('explore.defaultPlaceholder')}</p>
-    </section>
-  )
-}
-
-function ModuleExplorePlaceholder({ moduleId }: { moduleId: string }) {
-  const module = visibleModules.find((entry) => entry.id === moduleId)
-
-  if (!module) {
-    throw new Error(`Explore route references unknown module "${moduleId}".`)
-  }
-
-  const { t } = useTranslation('global')
-  const { t: tModule } = useTranslation(module.translationNamespace)
-  const moduleName = tModule('title')
-
-  return (
-    <section aria-labelledby="explore-title" className="max-w-3xl space-y-4">
-      <h1 id="explore-title">{t('explore.moduleTitle', { moduleName })}</h1>
-      <p className="text-lg text-muted">
-        {t('explore.modulePlaceholder', { moduleName })}
-      </p>
-    </section>
-  )
+  return <ModuleExploreMap module={module} />
 }

@@ -1,0 +1,15 @@
+{
+  "title": "Explorer l’Alberta",
+  "mapLabel": "Carte de l’Alberta",
+  "moduleTitle": "Explorer {{moduleName}}",
+  "moduleMapLabel": "Carte : {{moduleName}}",
+  "moduleMapStatus": "Les lieux et les interactions propres à ce module ne sont pas encore connectés.",
+  "navigation": {
+    "label": "Navigation de la carte",
+    "open": "Ouvrir la navigation de la carte",
+    "close": "Fermer la navigation de la carte",
+    "home": "Accueil",
+    "moduleActivity": "Retour à l’activité de l’expédition",
+    "moduleOverview": "Retour aux détails de l’expédition"
+  }
+}
