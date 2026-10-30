@@ -13,13 +13,38 @@
   - Coordinates use longitude, latitude order.
  */
 import type { ModuleMapSettings } from '../types'
+import {
+  bloodSchoolAudioCheckpoint,
+  bloodSchoolPhotoCheckpoint,
+  lesserSlaveLakeAudioCheckpoint,
+  stAlbertMessageCheckpoint,
+  stAlbertVideoCheckpoint,
+} from './checkpoints'
 
 export const residentialSchoolMapSettings: ModuleMapSettings = {
   defaultPoisVisible: false,
   modulePoisVisible: true,
   pois: [
-    { id: 'st-marys-blood', coordinates: [-113.45, 49.2] },
-    { id: 'st-albert-youville', coordinates: [-113.625, 53.63] },
-    { id: 'lesser-slave-lake', coordinates: [-116.126, 55.515] },
+    {
+      id: 'st-marys-blood',
+      coordinates: [-113.45, 49.2],
+      additionalCompletionCheckpoints: [
+        bloodSchoolPhotoCheckpoint,
+        bloodSchoolAudioCheckpoint,
+      ],
+    },
+    {
+      id: 'st-albert-youville',
+      coordinates: [-113.625, 53.63],
+      additionalCompletionCheckpoints: [
+        stAlbertVideoCheckpoint,
+        stAlbertMessageCheckpoint,
+      ],
+    },
+    {
+      id: 'lesser-slave-lake',
+      coordinates: [-116.126, 55.515],
+      additionalCompletionCheckpoints: [lesserSlaveLakeAudioCheckpoint],
+    },
   ],
 }

@@ -91,6 +91,7 @@
     "label": "Point of interest selector",
     "listLabel": "Choose a visible point of interest",
     "select": "Choose a point of interest; currently {{name}}",
+    "goToActive": "Go to the active point of interest: {{name}}",
     "previous": "Go to the previous point of interest from {{name}}",
     "next": "Go to the next point of interest from {{name}}"
   },

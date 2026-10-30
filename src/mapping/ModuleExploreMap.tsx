@@ -20,6 +20,7 @@ import type { MapPoi } from './components/MapPoiMarker'
 import stMarysLandscape from '@/modules/testing-residential-schools/assets/st-marys-landscape.jpg'
 import stAlbertRiverValley from '@/modules/testing-residential-schools/assets/st-albert-river-valley.jpg'
 import lesserSlaveLakeLandscape from '@/modules/testing-residential-schools/assets/lesser-slave-lake.jpg'
+import { ResidentialSchoolPoiInfo } from '@/modules/testing-residential-schools/ResidentialSchoolPoiInfo'
 import { AlbertaMap } from './AlbertaMap'
 import { MapActionControls } from './components/MapActionControls'
 import { ExploreMapNavBar } from './components/ExploreMapNavBar'
@@ -64,37 +65,20 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
           id: poi.id,
           coordinates: poi.coordinates,
           title: school.name,
-          isComplete: completedCheckpoints.includes(poi.id),
+          isComplete:
+            completedCheckpoints.includes(poi.id) &&
+            (poi.additionalCompletionCheckpoints ?? []).every((checkpointId) =>
+              completedCheckpoints.includes(checkpointId),
+            ),
           onActivate: () => completeCheckpoint(module.id, poi.id),
           info: (
-            <div className="space-y-4">
-              <img
-                src={image}
-                alt={school.imageAlt}
-                className="mapping-poi-info-image"
-              />
-              <p>
-                <span className="font-semibold">
-                  {tResidentialSchool('activity.location')}
-                </span>{' '}
-                {school.location}
-              </p>
-              <p>
-                <span className="font-semibold">
-                  {tResidentialSchool('activity.operatingYears')}
-                </span>{' '}
-                {school.operatingYears}
-              </p>
-              <p className="text-muted">{school.description}</p>
-              <a
-                href={school.source}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block font-semibold text-pine underline underline-offset-4"
-              >
-                {tResidentialSchool('activity.sourceLabel')}
-              </a>
-            </div>
+            <ResidentialSchoolPoiInfo
+              school={school}
+              schoolImage={image}
+              onComplete={(checkpointId) =>
+                completeCheckpoint(module.id, checkpointId)
+              }
+            />
           ),
         },
       ]

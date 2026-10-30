@@ -1,7 +1,7 @@
 /**
   File: PlayerMedia.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Show the current track's video, or its cover art for audio.
@@ -15,6 +15,7 @@
 import { useAudioPlayer } from '../hooks/useAudioPlayer'
 import type { MediaTrack } from '../provider/types'
 import { YouTubePlayer } from './YouTubePlayer'
+import defaultAudioCover from '@/assets/default-audio-cover.svg'
 
 type PlayerMediaProps = {
   track: MediaTrack
@@ -50,7 +51,7 @@ export function PlayerMedia({ track, isFullscreen }: PlayerMediaProps) {
         />
       ) : (
         <img
-          src={track.coverArt}
+          src={track.coverArt ?? defaultAudioCover}
           alt=""
           className="audio-player-media-content size-full object-contain"
         />

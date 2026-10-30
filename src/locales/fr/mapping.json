@@ -91,6 +91,7 @@
     "label": "Sélecteur de lieu d’intérêt",
     "listLabel": "Choisir un lieu d’intérêt visible",
     "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}}",
+    "goToActive": "Aller au lieu d’intérêt actif : {{name}}",
     "previous": "Aller au lieu d’intérêt précédent à partir de {{name}}",
     "next": "Aller au lieu d’intérêt suivant à partir de {{name}}"
   },

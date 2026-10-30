@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerQueueList.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Render queued media items with reorder and optional remove controls.
@@ -21,6 +21,7 @@ import {
   VideoIcon,
 } from './AudioPlayerIcons'
 import type { MediaTrack, QueuedAudioTrack } from '../provider/types'
+import defaultAudioCover from '@/assets/default-audio-cover.svg'
 
 type AudioPlayerQueueListProps = {
   queue: readonly QueuedAudioTrack[]
@@ -51,7 +52,7 @@ export function AudioPlayerQueueList({
         return (
           <li key={queueId} className="flex min-w-0 items-center gap-2">
             <img
-              src={track.coverArt}
+              src={track.coverArt ?? defaultAudioCover}
               alt=""
               className="size-10 shrink-0 rounded object-cover"
             />

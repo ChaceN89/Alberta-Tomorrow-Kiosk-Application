@@ -1,7 +1,7 @@
 /**
   File: useTrackText.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Resolve a media track's title and subtitle in the current language.
@@ -14,24 +14,22 @@
  */
 import { useTranslation } from 'react-i18next'
 import type { MediaTrack } from '../provider/types'
+import { getTrackTranslationText } from '../utils/getTrackTranslationText'
 
 export function useTrackText() {
   const { i18n } = useTranslation('moduleTools')
 
   const getTrackTitle = (track: MediaTrack) =>
-    track.translation
-      ? i18n.t(track.translation.titleKey, {
-          ns: track.translation.namespace,
-          defaultValue: track.title,
-        })
-      : track.title
+    getTrackTranslationText(i18n, track, 'titleKey', track.title)
 
   const getTrackSubtitle = (track: MediaTrack) =>
     track.translation?.subtitleKey
-      ? i18n.t(track.translation.subtitleKey, {
-          ns: track.translation.namespace,
-          defaultValue: track.subtitle ?? '',
-        })
+      ? getTrackTranslationText(
+          i18n,
+          track,
+          'subtitleKey',
+          track.subtitle ?? '',
+        )
       : track.subtitle
 
   return { getTrackTitle, getTrackSubtitle }

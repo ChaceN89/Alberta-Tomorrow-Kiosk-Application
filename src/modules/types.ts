@@ -59,6 +59,7 @@ export type JournalEntryViewer =
 export type ModuleMapPoi = {
   id: string
   coordinates: [number, number]
+  additionalCompletionCheckpoints?: readonly string[]
 }
 
 export type ModuleMapSettings = {

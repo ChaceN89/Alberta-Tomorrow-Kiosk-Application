@@ -91,12 +91,6 @@ export function AlbertaMap({
     onMapError,
   } = useAlbertaMapController()
 
-  useEffect(() => {
-    if (controls.isMapReady || controls.hasMapError) {
-      startupMapGate?.markMapReady()
-    }
-  }, [controls.hasMapError, controls.isMapReady, startupMapGate])
-
   const mapRefCallback = useCallback(
     (map: MapRef | null) => {
       mapRef.current = map
@@ -167,6 +161,19 @@ export function AlbertaMap({
     poiClusterRadius,
     visiblePois,
   ])
+  const isPoiDataReady =
+    mapInstance !== null && (visiblePois.length === 0 || poiGroups.length > 0)
+
+  useEffect(() => {
+    if (controls.isMapReady || controls.hasMapError || isPoiDataReady) {
+      startupMapGate?.markMapReady()
+    }
+  }, [
+    controls.hasMapError,
+    controls.isMapReady,
+    isPoiDataReady,
+    startupMapGate,
+  ])
 
   useEffect(() => {
     if (!mapInstance) return
@@ -185,7 +192,7 @@ export function AlbertaMap({
     }
   }, [mapInstance])
 
-  const navigateToPoi = (poi: MapPoi) => {
+  const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
     setActivePoiId(poi.id)
     if (isDefaultPoiId(poi.id)) {
       controls.onNavigateToPoi(poi.id)
@@ -200,7 +207,7 @@ export function AlbertaMap({
     }
 
     if (poi.info) {
-      openPanel({ title: poi.title, content: poi.info })
+      openPanel({ title: poi.title, content: poi.info }, { origin })
     } else {
       closePanel({ restoreFocus: false })
     }
@@ -284,15 +291,7 @@ export function AlbertaMap({
                 key={group.id}
                 {...poi}
                 isActive={visibleActivePoiId === poi.id}
-                onActivate={() => {
-                  if (isDefaultPoiId(poi.id)) {
-                    navigateToPoi(poi)
-                    return
-                  }
-
-                  setActivePoiId(poi.id)
-                  poi.onActivate?.()
-                }}
+                onActivate={(origin) => navigateToPoi(poi, origin)}
               />
             )
           })}

@@ -14,7 +14,6 @@
  */
 import { Marker } from 'react-map-gl/maplibre'
 import type { ReactNode } from 'react'
-import { useMapInfoPanel } from '@/module-tools/map-info-panel/hooks/useMapInfoPanel'
 
 export type MapPoi = {
   id: string
@@ -23,20 +22,17 @@ export type MapPoi = {
   info?: ReactNode
   isActive?: boolean
   isComplete?: boolean
-  onActivate?: () => void
+  onActivate?: (origin?: Element | null) => void
 }
 
 export function MapPoiMarker({
   id,
   coordinates,
   title,
-  info,
   isActive = false,
   isComplete = false,
   onActivate,
 }: MapPoi) {
-  const { openPanel, closePanel } = useMapInfoPanel()
-
   return (
     <Marker
       longitude={coordinates[0]}
@@ -53,12 +49,7 @@ export function MapPoiMarker({
         aria-label={title}
         title={title}
         onClick={(event) => {
-          onActivate?.()
-          if (info) {
-            openPanel({ title, content: info }, { origin: event.currentTarget })
-          } else {
-            closePanel({ restoreFocus: false })
-          }
+          onActivate?.(event.currentTarget)
         }}
       >
         <span className="mapping-poi-marker__shape" aria-hidden="true">

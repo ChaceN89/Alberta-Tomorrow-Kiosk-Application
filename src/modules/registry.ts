@@ -19,6 +19,9 @@ import geologyLandscapeJournalImage from './testing-geology/assets/natural-lands
 import residentialSchoolBloodImage from './testing-residential-schools/assets/st-marys-landscape.jpg'
 import residentialSchoolStAlbertImage from './testing-residential-schools/assets/st-albert-river-valley.jpg'
 import residentialSchoolLesserSlaveLakeImage from './testing-residential-schools/assets/lesser-slave-lake.jpg'
+import residentialSchoolChildrenImage from './testing-residential-schools/assets/blood-school-children.png'
+import residentialSchoolStAlbertPhoto from './testing-residential-schools/assets/st-albert-school-photo.png'
+import lesserSlaveLakeAudioCover from './testing-residential-schools/assets/lesser-slave-lake-audio-cover.jpg'
 import {
   foxesOfAlbertaCheckpoints,
   foxFamilyImageCheckpoint,
@@ -33,7 +36,15 @@ import {
 import { geologyCheckpoints } from './testing-geology/checkpoints'
 import { preloadResidentialSchool } from './testing-residential-schools/preload'
 import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
+import {
+  bloodSchoolPhotoCheckpoint,
+  lesserSlaveLakeAudioCheckpoint,
+  stAlbertMessageCheckpoint,
+  stAlbertVideoCheckpoint,
+} from './testing-residential-schools/checkpoints'
 import { residentialSchoolMapSettings } from './testing-residential-schools/mapSettings'
+import { stAlbertSampleMessage } from './testing-residential-schools/messages'
+import { stAlbertYouTubeThumbnail } from './testing-residential-schools/videos'
 import type { LearningModule, ModulePreloadContext } from './types'
 
 // importing all the modules into the appliction
@@ -47,6 +58,8 @@ const loadFoxesOfAlbertaJournalEntryAction = () =>
   import('./testing-foxes-of-alberta/components/JournalEntryAction')
 const loadResidentialSchool = () =>
   import('./testing-residential-schools/entry-ResidentialSchool')
+const loadResidentialSchoolJournalEntryAction = () =>
+  import('./testing-residential-schools/JournalEntryAction')
 const loadGeology = () => import('./testing-geology/entry-Geology')
 
 export const modules: readonly LearningModule[] = [
@@ -89,7 +102,24 @@ export const modules: readonly LearningModule[] = [
       'st-marys-blood': residentialSchoolBloodImage,
       'st-albert-youville': residentialSchoolStAlbertImage,
       'lesser-slave-lake': residentialSchoolLesserSlaveLakeImage,
+      [bloodSchoolPhotoCheckpoint]: residentialSchoolChildrenImage,
+      [stAlbertVideoCheckpoint]: stAlbertYouTubeThumbnail,
+      [stAlbertMessageCheckpoint]: residentialSchoolStAlbertPhoto,
+      [lesserSlaveLakeAudioCheckpoint]: lesserSlaveLakeAudioCover,
     },
+    journalEntryViewers: {
+      [bloodSchoolPhotoCheckpoint]: {
+        type: 'image',
+        title: 'activity.media.bloodPhoto.title',
+        description: 'activity.media.bloodPhoto.description',
+        alt: 'activity.media.bloodPhoto.alt',
+      },
+      [stAlbertMessageCheckpoint]: {
+        type: 'message',
+        ...stAlbertSampleMessage,
+      },
+    },
+    journalEntryAction: lazy(loadResidentialSchoolJournalEntryAction),
     loadActivity: loadResidentialSchool,
     preload: preloadResidentialSchool,
   },

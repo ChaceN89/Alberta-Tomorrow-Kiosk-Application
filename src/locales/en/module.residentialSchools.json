@@ -1,6 +1,6 @@
 {
   "title": "Residential schools in Alberta",
-  "description": "Explore three Alberta residential schools, where they were located, and the years they operated, with links to records from the National Centre for Truth and Reconciliation.",
+  "description": "Explore the various residential schools in Alberta and their histories.",
   "overviewDescription": "The map marks St. Mary's on the Blood (Kainai Nation) reserve, St. Albert (Youville), and Lesser Slave Lake (St. Peter's). Select a point to learn about its location, operating years, and archival record.",
   "category": "History",
   "launch": "Explore the school map",
@@ -8,6 +8,31 @@
     "location": "Location:",
     "operatingYears": "Operating years:",
     "sourceLabel": "Read the NCTR archive record",
+    "media": {
+      "heading": "Media for this location",
+      "bloodAudio": {
+        "title": "Instrumental music"
+      },
+      "bloodPhoto": {
+        "title": "Photograph supplied for viewing",
+        "description": "This black-and-white photo was supplied to test the image viewer. Its date, location, and connection to this school have not been verified.",
+        "alt": "Black-and-white photo showing children and adults standing together outdoors.",
+        "open": "View the supplied photo"
+      },
+      "stAlbertVideo": {
+        "title": "Residential school video"
+      },
+      "stAlbertMessage": {
+        "title": "Sample message",
+        "subtitle": "Fictional example for testing",
+        "body": "This note is fictional and is included only to test the message viewer. The attached photo was supplied for this demo; its date, location, and connection to this school have not been verified. This is not a historical record or a survivor's testimony.",
+        "open": "Open the sample message",
+        "imageAlt": "Black-and-white photo of a large brick building with people gathered outside. The photo's date, location, and connection to this school have not been verified."
+      },
+      "lesserSlaveLakeAudio": {
+        "title": "Ambient instrumental"
+      }
+    },
     "schools": [
       {
         "id": "st-marys-blood",
@@ -48,16 +73,44 @@
         "imageAlt": "Illustrative southern Alberta foothills landscape; not a historical photograph of the school."
       },
       {
+        "id": "st-marys-blood-photo-viewed",
+        "title": "Photograph viewed: St. Mary's",
+        "summary": "You opened the supplied black-and-white photo in the image viewer. Its date, location, and connection to the school have not been verified.",
+        "imageAlt": "Black-and-white photo showing children and adults standing together outdoors."
+      },
+      {
+        "id": "st-marys-blood-audio-finished",
+        "title": "Instrumental track finished: St. Mary's",
+        "summary": "You finished the instrumental track from the St. Mary's map information panel."
+      },
+      {
         "id": "st-albert-youville",
         "title": "St. Albert Residential School (Youville)",
         "summary": "The school operated from 1873 to 1948 in St. Albert, northwest of Edmonton, within Treaty 6 territory.",
         "imageAlt": "Illustrative river valley landscape near St. Albert; not a historical photograph of the school."
       },
       {
+        "id": "st-albert-youville-video-finished",
+        "title": "Video finished: St. Albert",
+        "summary": "You finished the YouTube video opened from the St. Albert map information panel."
+      },
+      {
+        "id": "st-albert-youville-message-opened",
+        "title": "Sample message opened: St. Albert",
+        "summary": "You opened a fictional sample message in the message viewer. It is not a historical record or a survivor's testimony.",
+        "imageAlt": "Black-and-white photo of a large brick building with people gathered outside. The photo's date, location, and connection to this school have not been verified."
+      },
+      {
         "id": "lesser-slave-lake",
         "title": "Lesser Slave Lake Residential School (St. Peter's)",
         "summary": "The school operated from 1895 to 1932 in northern Alberta, northwest of Edmonton, under Anglican Church administration.",
         "imageAlt": "Illustrative northern Alberta lakeshore landscape; not a historical photograph of the school."
+      },
+      {
+        "id": "lesser-slave-lake-audio-finished",
+        "title": "Ambient track finished: Lesser Slave Lake",
+        "summary": "You finished the ambient instrumental from the Lesser Slave Lake map information panel.",
+        "imageAlt": "Generated cover art showing a quiet northern Alberta lakeshore at first light."
       }
     ]
   }

@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Define the media track, queue, and YouTube controller types shared by the player.
@@ -27,9 +27,9 @@ type MediaItemBase = {
   id: string
   title: string
   subtitle?: string
-  coverArt: string
+  coverArt?: string
   translation?: {
-    namespace: 'geology' | 'wildlifeFinder'
+    namespace: string
     titleKey: string
     subtitleKey?: string
   }

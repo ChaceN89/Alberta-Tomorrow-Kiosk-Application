@@ -1,7 +1,7 @@
 /**
   File: TrackPlayButton.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Offer concise playback and queue actions for module media.
@@ -19,6 +19,7 @@ import { Tooltip } from '@/components/shared/Tooltip'
 import { AddToQueueIcon, PauseIcon, PlayIcon } from './AudioPlayerIcons'
 import { useAudioPlayer } from '../hooks/useAudioPlayer'
 import type { AudioPlayCallbacks, MediaTrack } from '../provider/types'
+import { getTrackTranslationText } from '../utils/getTrackTranslationText'
 
 type TrackPlayButtonProps = AudioPlayCallbacks & {
   track: MediaTrack
@@ -77,12 +78,12 @@ export function TrackPlayButton({
       setFullscreen(true)
     }
   }
-  const localizedTitle = track.translation
-    ? i18n.t(track.translation.titleKey, {
-        ns: track.translation.namespace,
-        defaultValue: track.title,
-      })
-    : track.title
+  const localizedTitle = getTrackTranslationText(
+    i18n,
+    track,
+    'titleKey',
+    track.title,
+  )
 
   return (
     <div className="flex flex-wrap items-center gap-2">
