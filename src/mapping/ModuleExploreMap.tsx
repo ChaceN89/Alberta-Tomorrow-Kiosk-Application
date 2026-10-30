@@ -36,7 +36,11 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
 
   return (
     <main className="relative h-dvh w-full overflow-hidden">
-      <AlbertaMap ariaLabel={t('moduleMapLabel', { moduleName })} />
+      {/* the map component given module ID and the modile name  */}
+      <AlbertaMap
+        ariaLabel={t('moduleMapLabel', { moduleName })}
+        moduleId={module.id}
+      />
       <ExploreMapNavigation moduleId={module.id} />
 
       {/* section about the module itself, might appear and then fade away or the user will interact with it to have it go away so they can start, mayube it locks the map interactions until dismissed, lots of options here for it*/}

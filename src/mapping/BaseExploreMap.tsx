@@ -1,5 +1,5 @@
 /**
-  File: DefaultExploreMap.tsx | Author: Chace Nielson
+  File: BaseExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
   Date Updated: Oct 30, 2026
 
@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { AlbertaMap } from './AlbertaMap'
 import { ExploreMapNavigation } from './components/ExploreMapNavigation'
 
-export function DefaultExploreMap() {
+export function BaseExploreMap() {
   const { t } = useTranslation('mapping')
 
   return (
@@ -24,7 +24,7 @@ export function DefaultExploreMap() {
       <AlbertaMap ariaLabel={t('mapLabel')} />
       <ExploreMapNavigation />
 
-      {/* // info about the map here, might end up being removed or part of nav bar */}
+      {/* // info about the map here, might end up being removed or part of nav bar, or dissmis popup in future */}
       <section
         aria-labelledby="explore-title"
         className="panel absolute top-20 left-4 w-[calc(100%-2rem)] max-w-sm space-y-2 bg-surface/95 p-4 shadow-xl backdrop-blur"

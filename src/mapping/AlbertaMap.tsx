@@ -27,9 +27,10 @@ maplibregl.setWorkerUrl(mapWorkerUrl)
 
 type AlbertaMapProps = {
   ariaLabel: string
+  moduleId?: string
 }
 
-export function AlbertaMap({ ariaLabel }: AlbertaMapProps) {
+export function AlbertaMap({ ariaLabel, moduleId }: AlbertaMapProps) {
   const { t } = useTranslation('mapping')
   const [isTerrainEnabled, setIsTerrainEnabled] = useState(false)
   const mapRef = useRef<MapRef>(null)
@@ -44,7 +45,12 @@ export function AlbertaMap({ ariaLabel }: AlbertaMapProps) {
   }
 
   return (
-    <div role="region" aria-label={ariaLabel} className="absolute inset-0">
+    <div
+      role="region"
+      aria-label={ariaLabel}
+      data-module-id={moduleId}
+      className="absolute inset-0"
+    >
       <Map
         ref={mapRef}
         mapLib={maplibregl}
