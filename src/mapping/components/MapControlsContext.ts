@@ -31,6 +31,7 @@ export type MapControlsProps = {
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
   hasModulePois?: boolean
+  poiClusterRadius: number
   cameraPitch: number
   cameraZoom: number
   onTerrainExaggerationChange: (exaggeration: number) => void
@@ -41,11 +42,17 @@ export type MapControlsProps = {
   onAlbertaBoundaryChange: (enabled: boolean) => void
   onDefaultPoisChange?: (enabled: boolean) => void
   onModulePoisChange?: (enabled: boolean) => void
+  onPoiClusterRadiusChange: (radius: number) => void
   onCameraPitchChange: (pitch: number) => void
   onCameraZoomChange: (zoom: number) => void
   onToggleTerrain: () => void
   onNavigateToPoi: (poiId: DefaultPoiId) => void
 }
+
+export type MapControllerControlsProps = Omit<
+  MapControlsProps,
+  'poiClusterRadius' | 'onPoiClusterRadiusChange'
+>
 
 export const MapControlsContext = createContext<MapControlsProps | null>(null)
 

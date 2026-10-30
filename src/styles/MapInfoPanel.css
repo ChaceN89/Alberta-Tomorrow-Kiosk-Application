@@ -19,7 +19,7 @@
   z-index: var(--z-map-info-panel);
   display: flex;
   width: min(38rem, calc(100vw - 2rem));
-  height: min(75dvh, 48rem);
+  height: min(66.6667dvh, 48rem);
   max-height: calc(100dvh - 2rem);
   flex-direction: column;
   overflow: hidden;
@@ -59,12 +59,6 @@
   to {
     opacity: 0;
     transform: translateX(100%);
-  }
-}
-
-@media (max-height: 34rem) {
-  .map-info-panel {
-    height: calc(100dvh - 2rem);
   }
 }
 

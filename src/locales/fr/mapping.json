@@ -17,6 +17,10 @@
     "defaultPoisHelp": "Afficher ou masquer les lieux de l’Alberta présents sur toutes les cartes.",
     "modulePoisLabel": "Lieux d’intérêt du module",
     "modulePoisHelp": "Afficher ou masquer les lieux propres à ce module d’apprentissage.",
+    "poiClusterRadiusLabel": "Rayon de regroupement des lieux",
+    "poiClusterRadiusValue": "{{value}} px",
+    "poiClusterRadiusOff": "Désactivé",
+    "poiClusterRadiusHelp": "Regrouper les marqueurs proches selon cette distance à l’écran. Sélectionnez un groupe pour zoomer et séparer ses lieux.",
     "basemapPlacesLabel": "Lieux intégrés à la carte",
     "basemapPlacesHelp": "Afficher ou masquer les icônes et les noms fournis par le fond de carte pour les commerces, les stationnements, les parcs et autres lieux.",
     "basemapStyles": {
@@ -89,6 +93,9 @@
     "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}}",
     "previous": "Aller au lieu d’intérêt précédent à partir de {{name}}",
     "next": "Aller au lieu d’intérêt suivant à partir de {{name}}"
+  },
+  "poiCluster": {
+    "select": "{{count}} lieux d’intérêt à proximité. Zoomez pour les séparer."
   },
   "navigation": {
     "label": "Navigation de la carte",

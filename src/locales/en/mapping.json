@@ -17,6 +17,10 @@
     "defaultPoisHelp": "Show or hide Alberta places available on every map.",
     "modulePoisLabel": "Module points of interest",
     "modulePoisHelp": "Show or hide locations for this learning module.",
+    "poiClusterRadiusLabel": "POI cluster radius",
+    "poiClusterRadiusValue": "{{value}} px",
+    "poiClusterRadiusOff": "Off",
+    "poiClusterRadiusHelp": "Combine nearby markers within this screen distance. Select a group to zoom in and separate its points.",
     "basemapPlacesLabel": "Built-in map places",
     "basemapPlacesHelp": "Show or hide built-in icons and labels for businesses, parking, parks, and other places.",
     "basemapStyles": {
@@ -89,6 +93,9 @@
     "select": "Choose a point of interest; currently {{name}}",
     "previous": "Go to the previous point of interest from {{name}}",
     "next": "Go to the next point of interest from {{name}}"
+  },
+  "poiCluster": {
+    "select": "{{count}} nearby points of interest. Zoom in to separate them."
   },
   "navigation": {
     "label": "Map navigation",

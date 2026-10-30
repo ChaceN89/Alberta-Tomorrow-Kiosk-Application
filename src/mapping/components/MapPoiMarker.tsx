@@ -61,17 +61,21 @@ export function MapPoiMarker({
           }
         }}
       >
-        <svg
-          className="mapping-poi-marker__shape"
-          viewBox="0 0 320 56"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path
-            className="mapping-poi-marker__bubble"
-            d="M18 1h284c9.4 0 17 7.6 17 17v8c0 9.4-7.6 17-17 17H177l-17 12-17-12H18C8.6 43 1 35.4 1 26v-8C1 8.6 8.6 1 18 1Z"
-          />
-        </svg>
+        <span className="mapping-poi-marker__shape" aria-hidden="true">
+          <span className="mapping-poi-marker__tail">
+            <svg viewBox="0 0 28 16" aria-hidden="true">
+              <path
+                className="mapping-poi-marker__tail-fill"
+                d="M0 0h28L14 16Z"
+              />
+              <path
+                className="mapping-poi-marker__tail-outline"
+                d="M0 2 14 16 28 2"
+              />
+            </svg>
+          </span>
+          <span className="mapping-poi-marker__bubble" />
+        </span>
         <span className="mapping-poi-marker__content">
           <span className="mapping-poi-marker__pin" aria-hidden="true" />
           <span className="mapping-poi-marker__title">{title}</span>

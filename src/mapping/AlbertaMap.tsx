@@ -13,20 +13,27 @@
   Notes:
   - Map state and behavior are managed by useAlbertaMapController.
  */
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Map, NavigationControl } from 'react-map-gl/maplibre'
 import * as maplibregl from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { MapControlsContext } from './components/MapControlsContext'
+import { MapPoiClusterMarker } from './components/MapPoiClusterMarker'
 import { MapPoiMarker, type MapPoi } from './components/MapPoiMarker'
 import { MapPoiSelector } from './components/MapPoiSelector'
+import { clusterMapPois } from './map-functions/clusterMapPois'
 import {
   DEFAULT_POI_SETTINGS,
   isDefaultPoiId,
   POI_NAVIGATION_DURATION,
 } from './map-settings/defaultPOISettings'
+import {
+  DEFAULT_POI_CLUSTER_RADIUS,
+  POI_CLUSTER_ZOOM_OVERSHOOT,
+  POI_CLUSTER_ZOOM_DURATION,
+} from './map-settings/poiClusterSettings'
 import banffLandscape from './assets/banff-landscape.jpg'
 import dinosaurBadlands from './assets/dinosaur-badlands.jpg'
 import watertonLakes from './assets/waterton-lakes.jpg'
@@ -59,11 +66,19 @@ export function AlbertaMap({
     useState(defaultPoisVisible)
   const [areModulePoisVisible, setAreModulePoisVisible] =
     useState(modulePoisVisible)
+  const [poiClusterRadius, setPoiClusterRadius] = useState(
+    DEFAULT_POI_CLUSTER_RADIUS,
+  )
+  const [clusterViewport, setClusterViewport] = useState<{
+    zoom: number
+    center: [number, number]
+  } | null>(null)
   const [activePoiId, setActivePoiId] = useState<string | null>(null)
   const { openPanel, closePanel } = useMapInfoPanel()
   const {
     controls,
     mapRef,
+    mapInstance,
     initialMapView,
     mapStyle,
     minZoom,
@@ -118,6 +133,33 @@ export function AlbertaMap({
   const visibleActivePoiId = visiblePois.some((poi) => poi.id === activePoiId)
     ? activePoiId
     : (visiblePois[0]?.id ?? null)
+  const poiGroups = useMemo(
+    () =>
+      clusterMapPois(
+        visiblePois,
+        mapInstance,
+        poiClusterRadius,
+        clusterViewport?.zoom,
+      ),
+    [clusterViewport, mapInstance, poiClusterRadius, visiblePois],
+  )
+
+  useEffect(() => {
+    if (!mapInstance) return
+
+    const updateClusterViewport = () => {
+      const { lng, lat } = mapInstance.getCenter()
+      setClusterViewport({
+        zoom: mapInstance.getZoom(),
+        center: [lng, lat],
+      })
+    }
+
+    mapInstance.on('moveend', updateClusterViewport)
+    return () => {
+      mapInstance.off('moveend', updateClusterViewport)
+    }
+  }, [mapInstance])
 
   const navigateToPoi = (poi: MapPoi) => {
     setActivePoiId(poi.id)
@@ -145,8 +187,24 @@ export function AlbertaMap({
     defaultPoisVisible: areDefaultPoisVisible,
     modulePoisVisible: areModulePoisVisible,
     hasModulePois: modulePois.length > 0,
+    poiClusterRadius,
     onDefaultPoisChange: setAreDefaultPoisVisible,
     onModulePoisChange: setAreModulePoisVisible,
+    onPoiClusterRadiusChange: setPoiClusterRadius,
+  }
+
+  const zoomToPoiCluster = (
+    coordinates: [number, number],
+    expansionZoom: number,
+  ) => {
+    const map = mapRef.current?.getMap()
+    if (!map) return
+
+    map.easeTo({
+      center: coordinates,
+      zoom: Math.min(maxZoom, expansionZoom + POI_CLUSTER_ZOOM_OVERSHOOT),
+      duration: POI_CLUSTER_ZOOM_DURATION,
+    })
   }
 
   return (
@@ -165,7 +223,12 @@ export function AlbertaMap({
           minZoom={minZoom}
           maxZoom={maxZoom}
           style={{ width: '100%', height: '100%' }}
-          onLoad={(event) => onMapLoad(event.target)}
+          onLoad={(event) => {
+            const map = event.target
+            const { lng, lat } = map.getCenter()
+            setClusterViewport({ zoom: map.getZoom(), center: [lng, lat] })
+            onMapLoad(map)
+          }}
           onError={(event) => onMapError(event.error)}
         >
           <NavigationControl
@@ -173,27 +236,42 @@ export function AlbertaMap({
             showCompass
             visualizePitch
           />
-          {areDefaultPoisVisible &&
-            defaultPois.map((poi) => (
+          {poiGroups.map((group) => {
+            if (group.type === 'cluster') {
+              return (
+                <MapPoiClusterMarker
+                  key={group.id}
+                  coordinates={group.coordinates}
+                  count={group.pois.length}
+                  isActive={group.pois.some(
+                    (poi) => poi.id === visibleActivePoiId,
+                  )}
+                  onClick={() =>
+                    zoomToPoiCluster(group.coordinates, group.expansionZoom)
+                  }
+                />
+              )
+            }
+
+            const { poi } = group
+
+            return (
               <MapPoiMarker
-                key={poi.id}
-                {...poi}
-                isActive={visibleActivePoiId === poi.id}
-                onActivate={() => navigateToPoi(poi)}
-              />
-            ))}
-          {areModulePoisVisible &&
-            modulePois.map((poi) => (
-              <MapPoiMarker
-                key={poi.id}
+                key={group.id}
                 {...poi}
                 isActive={visibleActivePoiId === poi.id}
                 onActivate={() => {
+                  if (isDefaultPoiId(poi.id)) {
+                    navigateToPoi(poi)
+                    return
+                  }
+
                   setActivePoiId(poi.id)
                   poi.onActivate?.()
                 }}
               />
-            ))}
+            )
+          })}
         </Map>
 
         <MapPoiSelector

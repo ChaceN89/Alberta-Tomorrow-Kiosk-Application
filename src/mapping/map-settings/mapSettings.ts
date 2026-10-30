@@ -22,7 +22,7 @@ export const CAMERA_MOVE_DURATION = 200 // in milliseconds
 export const INITIAL_VIEW = {
   longitude: -114.0719,
   latitude: 53.5461,
-  zoom: 5.25,
+  zoom: 5.4,
   pitch: 0,
   bearing: 0,
 }

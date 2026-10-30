@@ -15,7 +15,7 @@
 import { useRef, useState } from 'react'
 import type { MapRef } from 'react-map-gl/maplibre'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import type { MapControlsProps } from '../components/MapControlsContext'
+import type { MapControllerControlsProps } from '../components/MapControlsContext'
 import { getBasemapStyle } from '../map-settings/baseMapSettings'
 import {
   INITIAL_VIEW,
@@ -31,6 +31,7 @@ import { useTerrainControls } from './useTerrainControls'
 // Function: Coordinate map state and control hooks for the Alberta map.
 export function useAlbertaMapController() {
   const mapRef = useRef<MapRef>(null)
+  const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null)
   const [isMapReady, setIsMapReady] = useState(false)
   const [isStyleLoading, setIsStyleLoading] = useState(false)
   const [hasMapError, setHasMapError] = useState(false)
@@ -85,6 +86,7 @@ export function useAlbertaMapController() {
     try {
       layerControls.initializeMapLayers(map)
       terrainControls.initializeTerrain(map)
+      setMapInstance(map)
 
       // Function: Keep camera controls synchronized with map movement.
       const handleMapMoveEnd = () => cameraControls.handleMapMoveEnd(map)
@@ -102,7 +104,7 @@ export function useAlbertaMapController() {
     setIsStyleLoading(false)
   }
 
-  const controls: MapControlsProps = {
+  const controls: MapControllerControlsProps = {
     hasMapError,
     isMapReady,
     isStyleLoading,
@@ -131,6 +133,7 @@ export function useAlbertaMapController() {
   return {
     controls,
     mapRef,
+    mapInstance,
     initialMapView,
     mapStyle: getBasemapStyle(layerControls.basemapStyleId).url,
     minZoom: ZOOM_MIN,

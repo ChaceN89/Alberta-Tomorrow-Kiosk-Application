@@ -21,6 +21,11 @@ import {
   TERRAIN_EXAGGERATION_MAX,
   TERRAIN_EXAGGERATION_MIN,
 } from '../map-settings/terrainSettings'
+import {
+  MAX_POI_CLUSTER_RADIUS,
+  MIN_POI_CLUSTER_RADIUS,
+  POI_CLUSTER_RADIUS_STEP,
+} from '../map-settings/poiClusterSettings'
 import { useMapControls } from './MapControlsContext'
 
 export function MapControls() {
@@ -40,6 +45,7 @@ export function MapControls() {
     defaultPoisVisible,
     modulePoisVisible,
     hasModulePois,
+    poiClusterRadius,
     cameraPitch,
     cameraZoom,
     onTerrainExaggerationChange,
@@ -50,6 +56,7 @@ export function MapControls() {
     onAlbertaBoundaryChange,
     onDefaultPoisChange,
     onModulePoisChange,
+    onPoiClusterRadiusChange,
     onCameraPitchChange,
     onCameraZoomChange,
   } = controls
@@ -64,6 +71,7 @@ export function MapControls() {
   const albertaBoundaryId = useId()
   const defaultPoisId = useId()
   const modulePoisId = useId()
+  const poiClusterRadiusId = useId()
   const pitchId = useId()
   const zoomId = useId()
   const isDisabled = !isMapReady || isStyleLoading
@@ -188,6 +196,40 @@ export function MapControls() {
               </span>
             </label>
           )}
+
+          <div className="mapping-controls__field">
+            <div className="mapping-controls__range-heading">
+              <label
+                className="mapping-controls__label"
+                htmlFor={poiClusterRadiusId}
+              >
+                {t('view.poiClusterRadiusLabel')}
+              </label>
+              <output htmlFor={poiClusterRadiusId}>
+                {poiClusterRadius === 0
+                  ? t('view.poiClusterRadiusOff')
+                  : t('view.poiClusterRadiusValue', {
+                      value: poiClusterRadius,
+                    })}
+              </output>
+            </div>
+            <input
+              id={poiClusterRadiusId}
+              className="mapping-controls__range"
+              type="range"
+              min={MIN_POI_CLUSTER_RADIUS}
+              max={MAX_POI_CLUSTER_RADIUS}
+              step={POI_CLUSTER_RADIUS_STEP}
+              value={poiClusterRadius}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onPoiClusterRadiusChange(Number(event.currentTarget.value))
+              }
+            />
+            <p className="mapping-controls__help">
+              {t('view.poiClusterRadiusHelp')}
+            </p>
+          </div>
 
           <label className="mapping-controls__check" htmlFor={hillshadeId}>
             <input
