@@ -1,7 +1,7 @@
 /**
   File: JournalModal.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Show the journal dialog and coordinate its active page.
@@ -12,7 +12,7 @@
   Notes:
   - None.
  */
-import { useEffect, useId, useRef } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '@/journal/useJournal'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
@@ -30,6 +30,7 @@ export function JournalModal() {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
+  const [isClosing, setIsClosing] = useState(false)
 
   // Page 0 is the title page; the rest are started expeditions in registry order.
   const startedModules = visibleModules.filter(
@@ -49,8 +50,10 @@ export function JournalModal() {
     if (!dialog) return
 
     if (isOpen && !isMediaViewerOpen && !dialog.open) {
+      setIsClosing(false)
       dialog.showModal()
     } else if (!isOpen && dialog.open) {
+      setIsClosing(false)
       dialog.close()
     }
   }, [isMediaViewerOpen, isOpen])
@@ -73,15 +76,32 @@ export function JournalModal() {
   }, [activePage?.id])
 
   const handleClose = () => {
-    closeJournal()
+    if (isClosing) return
+
+    setIsClosing(true)
   }
 
   return (
     <dialog
       ref={dialogRef}
       aria-labelledby={titleId}
-      className="m-auto h-[90dvh] w-[min(64rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
-      onClose={handleClose}
+      className={`journal-modal m-auto h-[90dvh] w-[min(64rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/50 backdrop:backdrop-blur-sm ${
+        isClosing ? 'journal-modal--closing' : ''
+      }`}
+      onClose={() => {
+        if (isOpen) closeJournal()
+        setIsClosing(false)
+      }}
+      onAnimationEnd={(event) => {
+        if (
+          event.target === event.currentTarget &&
+          event.animationName === 'journal-slide-out' &&
+          isClosing
+        ) {
+          setIsClosing(false)
+          closeJournal()
+        }
+      }}
       onKeyDown={(event) => {
         if (event.key === 'Escape') {
           if (
@@ -99,6 +119,10 @@ export function JournalModal() {
         if (event.target === event.currentTarget) {
           handleClose()
         }
+      }}
+      onCancel={(event) => {
+        event.preventDefault()
+        handleClose()
       }}
     >
       <div className="flex h-full flex-col">

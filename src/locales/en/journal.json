@@ -43,5 +43,6 @@
   "details": "Expedition details",
   "toastStarted": "Expedition added to your journal.",
   "toastUpdated": "Journal updated.",
+  "toastCompleted": "Expedition completed!",
   "storageUnavailable": "Progress can't be saved in this browser, so it will be lost when you leave this page."
 }

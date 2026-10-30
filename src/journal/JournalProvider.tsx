@@ -1,7 +1,7 @@
 /**
   File: JournalProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Control journal navigation and present notifications for progress changes.
@@ -61,7 +61,11 @@ export function JournalProvider({ children }: JournalProviderProps) {
     (module: LearningModule, change: ExpeditionProgressChange) => {
       const title = i18n.t('title', { ns: module.translationNamespace })
       const message =
-        change.kind === 'started' ? t('toastStarted') : t('toastUpdated')
+        change.kind === 'started'
+          ? t('toastStarted')
+          : change.progress.status === 'complete'
+            ? t('toastCompleted')
+            : t('toastUpdated')
       const toastId = `journal-${journalToastSequence.current++}`
 
       toast(

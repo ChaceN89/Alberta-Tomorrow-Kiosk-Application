@@ -43,5 +43,6 @@
   "details": "Détails de l’expédition",
   "toastStarted": "Expédition ajoutée à votre journal.",
   "toastUpdated": "Journal mis à jour.",
+  "toastCompleted": "Expédition terminée !",
   "storageUnavailable": "La progression ne peut pas être enregistrée dans ce navigateur; elle sera perdue quand vous quitterez cette page."
 }
