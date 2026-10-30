@@ -22,6 +22,7 @@ export type MapControlsProps = {
   isStyleLoading: boolean
   isTerrainEnabled: boolean
   isTerrainTransitioning: boolean
+  isFlyoverEnabled: boolean
   terrainExaggeration: number
   basemapStyleId: BasemapStyleId
   isHillshadeEnabled: boolean
@@ -46,6 +47,7 @@ export type MapControlsProps = {
   onCameraPitchChange: (pitch: number) => void
   onCameraZoomChange: (zoom: number) => void
   onToggleTerrain: () => void
+  onToggleFlyover: () => void
   onNavigateToPoi: (poiId: DefaultPoiId) => void
 }
 

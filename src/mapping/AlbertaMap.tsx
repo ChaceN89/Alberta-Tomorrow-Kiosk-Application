@@ -297,11 +297,13 @@ export function AlbertaMap({
           })}
         </Map>
 
-        <MapPoiSelector
-          pois={visiblePois}
-          activePoiId={visibleActivePoiId}
-          onSelect={navigateToPoi}
-        />
+        {!controls.isFlyoverEnabled && (
+          <MapPoiSelector
+            pois={visiblePois}
+            activePoiId={visibleActivePoiId}
+            onSelect={navigateToPoi}
+          />
+        )}
         {children}
       </div>
     </MapControlsContext.Provider>

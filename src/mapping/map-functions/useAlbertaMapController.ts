@@ -35,6 +35,7 @@ export function useAlbertaMapController() {
   const [isMapReady, setIsMapReady] = useState(false)
   const [isStyleLoading, setIsStyleLoading] = useState(false)
   const [hasMapError, setHasMapError] = useState(false)
+  const [isFlyoverEnabled, setIsFlyoverEnabled] = useState(false)
 
   // Function: Log map failures and expose them to the map settings UI.
   const reportError = (error: unknown) => {
@@ -115,6 +116,7 @@ export function useAlbertaMapController() {
     isStyleLoading,
     isTerrainEnabled: terrainControls.isTerrainEnabled,
     isTerrainTransitioning: terrainControls.isTerrainTransitioning,
+    isFlyoverEnabled,
     terrainExaggeration: terrainControls.terrainExaggeration,
     basemapStyleId: layerControls.basemapStyleId,
     isHillshadeEnabled: layerControls.isHillshadeEnabled,
@@ -132,6 +134,7 @@ export function useAlbertaMapController() {
     onCameraPitchChange: cameraControls.changeCameraPitch,
     onCameraZoomChange: cameraControls.changeCameraZoom,
     onToggleTerrain: terrainControls.toggleTerrain,
+    onToggleFlyover: () => setIsFlyoverEnabled((enabled) => !enabled),
     onNavigateToPoi: cameraControls.navigateToPoi,
   }
 

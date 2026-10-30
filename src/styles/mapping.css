@@ -173,9 +173,9 @@
   bottom: 1rem;
   z-index: var(--z-content-popover);
   display: flex;
+  flex-direction: column;
   width: auto;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 0.5rem;
 }
 
@@ -199,11 +199,18 @@
   transition:
     background-color 150ms ease,
     color 150ms ease,
-    border-color 150ms ease;
+    border-color 150ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .mapping-actions__button:hover:not(:disabled) {
   background: var(--color-canvas);
+}
+
+.mapping-actions__flyover[aria-pressed='false']:hover:not(:disabled) {
+  transform: translateY(-0.15rem) scale(1.03);
+  box-shadow: 0 0.75rem 1.5rem rgb(23 46 41 / 24%);
 }
 
 .mapping-actions__button[aria-pressed='true'] {
