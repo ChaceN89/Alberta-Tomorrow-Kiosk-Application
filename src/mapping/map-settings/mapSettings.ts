@@ -44,10 +44,10 @@ export const ALBERTA_BOUNDARY_DEFAULT = true
 export const ALBERTA_BOUNDARY_SOURCE_ID = 'alberta-boundary'
 export const ALBERTA_BOUNDARY_FILL_LAYER_ID = 'alberta-boundary-fill'
 export const ALBERTA_BOUNDARY_OUTLINE_LAYER_ID = 'alberta-boundary-outline'
-export const ALBERTA_BOUNDARY_COLOR = '#285C45'
-export const ALBERTA_BOUNDARY_FILL_OPACITY = 0.04
-export const ALBERTA_BOUNDARY_LINE_OPACITY = 0.95
-export const ALBERTA_BOUNDARY_LINE_WIDTH = 3
+export const ALBERTA_BOUNDARY_COLOR = '#204a37'
+export const ALBERTA_BOUNDARY_FILL_OPACITY = 0 // Fully transparent by default.
+export const ALBERTA_BOUNDARY_LINE_OPACITY = 0.95 // Mostly opaque by default.
+export const ALBERTA_BOUNDARY_LINE_WIDTH = 4
 export const ALBERTA_BOUNDARY_URL =
   'https://services2.arcgis.com/jQV6VMr2Loovu7GU/arcgis/rest/services/Provincial_Boundary_FGDB/FeatureServer/0/query' +
   '?where=1%3D1&outFields=OBJECTID&returnGeometry=true&outSR=4326&f=geojson'

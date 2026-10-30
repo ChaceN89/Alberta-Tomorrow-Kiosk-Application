@@ -24,6 +24,7 @@ export const DEFAULT_POI_SETTINGS = [
       pitch: 65,
       bearing: 0,
     },
+    // name, abd some infoamtion to read about it, including option images and thigns, not everything here needs a ton, but fill out some options here, maybe jsut some html for custom content
   },
   {
     id: 'banff',
