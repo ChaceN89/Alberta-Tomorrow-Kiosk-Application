@@ -1,21 +1,24 @@
 {
   "title": "Roches, fossiles et reliefs",
   "description": "Testez vos connaissances sur les fossiles, les blocs rocheux et les sables bitumineux de l’Alberta avec un questionnaire de trois questions.",
-  "overviewDescription": "Répondez à trois questions à choix multiples sur les badlands, les blocs transportés par les glaciers et les sables bitumineux de l’Alberta. Les bonnes réponses, le début du visionnement de la vidéo et la fin du questionnaire sont consignés dans votre journal d’expédition.",
+  "overviewDescription": "Explorez un baril de pétrole texturé en 3D et répondez à trois questions à choix multiples sur les badlands, les blocs transportés par les glaciers et les sables bitumineux de l’Alberta. Les bonnes réponses, l’ouverture du modèle, le début du visionnement et la fin du questionnaire sont consignés dans votre journal d’expédition.",
   "category": "Géologie",
   "launch": "Commencer le questionnaire",
   "backToOverview": "Retour aux détails de l’expédition",
   "activity": {
-    "introduction": "Le paysage de l’Alberta renferme des indices sur la vie ancienne et la puissance des glaces. Répondez à trois questions pour ajouter chaque découverte à votre journal.",
+    "introduction": "Le paysage de l’Alberta renferme des indices sur la vie ancienne, la puissance des glaces et le pétrole. Explorez le baril et répondez à trois questions pour ajouter chaque découverte à votre journal.",
     "media": {
       "heading": "Regarder et explorer",
-      "description": "Regardez une vidéo sur les paysages naturels de l’Alberta.",
+      "description": "Regardez une vidéo sur les paysages naturels de l’Alberta et explorez un baril de pétrole texturé en 3D.",
       "videoTitle": "Paysages naturels | Alberta Tomorrow",
-      "videoDescription": "Les paysages naturels de l’Alberta, présentés par Alberta Tomorrow."
+      "videoDescription": "Les paysages naturels de l’Alberta, présentés par Alberta Tomorrow.",
+      "oilBarrelTitle": "Modèle de baril de pétrole",
+      "oilBarrelDescription": "Ouvrez et faites pivoter un baril de pétrole texturé en 3D tout en découvrant les sables bitumineux de l’Alberta.",
+      "openOilBarrel": "Ouvrir le modèle 3D du baril de pétrole"
     },
     "complete": {
       "title": "Questionnaire terminé !",
-      "description": "Vos trois découvertes géologiques et la fin du questionnaire sont consignées dans votre journal d’expédition.",
+      "description": "Votre découverte du baril, vos trois découvertes géologiques et la fin du questionnaire sont consignées dans votre journal d’expédition.",
       "viewJournal": "Voir la page du journal",
       "retry": "Refaire le questionnaire"
     },
@@ -53,8 +56,15 @@
     }
   },
   "journal": {
-    "summary": "Notes de terrain sur les fossiles, les blocs et les roches qui racontent l’histoire de l’Alberta.",
+    "summary": "Notes de terrain sur les sables bitumineux, les fossiles, les blocs et les roches de l’Alberta.",
     "entries": [
+      {
+        "id": "geology-oil-barrel-viewed",
+        "section": "Médias",
+        "title": "Modèle de baril exploré",
+        "summary": "Vous avez ouvert un modèle texturé de baril de pétrole en découvrant les sables bitumineux de l’Alberta.",
+        "imageAlt": "Un baril de pétrole bleu patiné portant l’inscription OIL."
+      },
       {
         "id": "geology-video-started",
         "section": "Médias",

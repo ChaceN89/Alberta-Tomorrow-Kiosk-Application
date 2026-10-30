@@ -44,6 +44,7 @@
   "lockedHint": "Poursuivez cette expédition pour ajouter cette note.",
   "openImage": "Ouvrir l’image : {{title}}",
   "openMessage": "Ouvrir le message : {{title}}",
+  "openModel": "Ouvrir le modèle 3D : {{title}}",
   "recorded": "Consignée",
   "continue": "Poursuivre l’expédition",
   "revisit": "Revisiter l’expédition",

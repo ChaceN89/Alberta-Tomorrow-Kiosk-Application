@@ -37,6 +37,7 @@ export function JournalTitlePage({
   const assetsId = useId()
   const steps = t('about.steps', { returnObjects: true })
   const aircraft: ModelViewerContent = {
+    format: 'fbx',
     title: t('assets.planeTitle'),
     description: t('assets.planeDescription'),
     src: planeModelUrl,

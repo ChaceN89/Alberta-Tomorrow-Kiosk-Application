@@ -4,13 +4,13 @@
   Date Updated: Oct 30, 2026
 
   Description:
-  - Render an FBX model with mouse and touch orbit controls.
+  - Render FBX and OBJ models with mouse and touch orbit controls.
 
   Usage:
   - Rendered by ModelViewerBody for content opened in the shared media viewer.
 
   Notes:
-  - External PSD references in FBX files are redirected to the optional PNG texture.
+  - FBX PSD references and OBJ material texture filenames use supplied asset URLs.
  */
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +30,8 @@ import {
 } from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js'
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js'
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js'
 import type { ModelViewerContent } from '../provider/types'
 import { ExpandableText } from './ExpandableText'
 
@@ -38,13 +40,18 @@ type ModelViewerCanvasProps = {
 }
 
 type ModelLoadState =
-  | { src: string; textureUrl?: string; status: 'loaded' }
-  | {
-      src: string
-      textureUrl?: string
-      status: 'error'
-      message: string
-    }
+  | { assetKey: string; status: 'loaded' }
+  | { assetKey: string; status: 'error'; message: string }
+
+function getModelAssetKey(content: ModelViewerContent) {
+  if (content.format === 'fbx') {
+    return `fbx:${content.src}:${content.textureUrl ?? ''}`
+  }
+
+  return `obj:${content.src}:${content.mtlUrl ?? ''}:${JSON.stringify(
+    content.textureUrls ?? {},
+  )}`
+}
 
 function disposeModel(model: Group) {
   model.traverse((child) => {
@@ -69,9 +76,14 @@ export function ModelViewerCanvas({ content }: ModelViewerCanvasProps) {
   const stageRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [loadState, setLoadState] = useState<ModelLoadState | null>(null)
-  const isCurrentLoadState =
-    loadState?.src === content.src &&
-    loadState.textureUrl === content.textureUrl
+  const assetKey = getModelAssetKey(content)
+  const format = content.format
+  const modelSrc = content.src
+  const fbxTextureUrl =
+    content.format === 'fbx' ? content.textureUrl : undefined
+  const mtlUrl = content.format === 'obj' ? content.mtlUrl : undefined
+  const textureUrls = content.format === 'obj' ? content.textureUrls : undefined
+  const isCurrentLoadState = loadState?.assetKey === assetKey
   const isLoaded = isCurrentLoadState && loadState.status === 'loaded'
   const loadError =
     isCurrentLoadState && loadState.status === 'error'
@@ -87,7 +99,7 @@ export function ModelViewerCanvas({ content }: ModelViewerCanvasProps) {
     let isDisposed = false
     let frameId = 0
     let model: Group | null = null
-    let hasTextureError = false
+    let hasAssetError = false
     let renderer: WebGLRenderer
 
     try {
@@ -98,8 +110,7 @@ export function ModelViewerCanvas({ content }: ModelViewerCanvasProps) {
         if (isDisposed) return
 
         setLoadState({
-          src: content.src,
-          textureUrl: content.textureUrl,
+          assetKey,
           status: 'error',
           message: t('mediaViewer.modelUnavailable'),
         })
@@ -124,6 +135,7 @@ export function ModelViewerCanvas({ content }: ModelViewerCanvasProps) {
     const controls = new OrbitControls(camera, canvas)
     controls.enableDamping = true
     controls.enablePan = false
+    controls.cursorStyle = 'grab'
     controls.minDistance = 3
     controls.maxDistance = 6
 
@@ -142,106 +154,143 @@ export function ModelViewerCanvas({ content }: ModelViewerCanvasProps) {
     resize()
 
     const manager = new LoadingManager()
-    const textureUrl = content.textureUrl
-    if (textureUrl) {
+    if (format === 'fbx' && fbxTextureUrl) {
       manager.setURLModifier((url) =>
-        url.toLowerCase().endsWith('.psd') ? textureUrl : url,
+        url.toLowerCase().endsWith('.psd') ? fbxTextureUrl : url,
       )
+    } else if (format === 'obj' && textureUrls) {
+      const textureFiles = new Map(
+        Object.entries(textureUrls).map(([name, url]) => [
+          name.toLowerCase(),
+          url,
+        ]),
+      )
+      manager.setURLModifier((url) => {
+        const fileName = url
+          .split(/[?#]/)[0]
+          .split(/[\\/]/)
+          .pop()
+          ?.toLowerCase()
+
+        return fileName ? (textureFiles.get(fileName) ?? url) : url
+      })
     }
     manager.onError = (url) => {
       if (isDisposed) return
 
-      hasTextureError = true
-      const error = new Error(`Unable to load 3D model texture: ${url}`)
+      hasAssetError = true
+      const error = new Error(`Unable to load 3D model asset: ${url}`)
       console.error(error)
       setLoadState({
-        src: content.src,
-        textureUrl: content.textureUrl,
+        assetKey,
         status: 'error',
         message: t('mediaViewer.modelError'),
       })
     }
 
-    const loader = new FBXLoader(manager)
-    loader.load(
-      content.src,
-      (loadedModel) => {
-        if (isDisposed) {
-          disposeModel(loadedModel)
-          return
-        }
+    const handleModelLoaded = (loadedModel: Group) => {
+      if (isDisposed) {
+        disposeModel(loadedModel)
+        return
+      }
 
-        const bounds = new Box3().setFromObject(loadedModel)
-        const size = bounds.getSize(new Vector3())
-        const center = bounds.getCenter(new Vector3())
-        const maxDimension = Math.max(size.x, size.y, size.z)
+      const bounds = new Box3().setFromObject(loadedModel)
+      const size = bounds.getSize(new Vector3())
+      const center = bounds.getCenter(new Vector3())
+      const maxDimension = Math.max(size.x, size.y, size.z)
 
-        if (!Number.isFinite(maxDimension) || maxDimension <= 0) {
-          const error = new Error('The 3D model has invalid dimensions.')
-          console.error(error)
-          disposeModel(loadedModel)
-          setLoadState({
-            src: content.src,
-            textureUrl: content.textureUrl,
-            status: 'error',
-            message: t('mediaViewer.modelError'),
-          })
-          return
-        }
-
-        loadedModel.traverse((child) => {
-          if (!(child instanceof Mesh)) return
-
-          child.castShadow = true
-          child.receiveShadow = true
-          const materials = Array.isArray(child.material)
-            ? child.material
-            : [child.material]
-
-          for (const material of materials) {
-            if ('map' in material && material.map instanceof Texture) {
-              material.map.colorSpace = SRGBColorSpace
-            }
-          }
-        })
-
-        const scale = 3 / maxDimension
-        loadedModel.scale.setScalar(scale)
-        loadedModel.position.set(
-          -center.x * scale,
-          -center.y * scale,
-          -center.z * scale,
-        )
-        scene.add(loadedModel)
-        model = loadedModel
-
-        camera.position.set(4.5, 3.2, 5.5)
-        camera.lookAt(0, 0, 0)
-        controls.target.set(0, 0, 0)
-        controls.update()
-        controls.saveState()
-
-        if (!hasTextureError) {
-          setLoadState({
-            src: content.src,
-            textureUrl: content.textureUrl,
-            status: 'loaded',
-          })
-        }
-      },
-      undefined,
-      (error) => {
-        if (isDisposed) return
-
-        console.error(`Unable to load 3D model: ${content.src}`, error)
+      if (!Number.isFinite(maxDimension) || maxDimension <= 0) {
+        const error = new Error('The 3D model has invalid dimensions.')
+        console.error(error)
+        disposeModel(loadedModel)
         setLoadState({
-          src: content.src,
-          textureUrl: content.textureUrl,
+          assetKey,
           status: 'error',
           message: t('mediaViewer.modelError'),
         })
-      },
-    )
+        return
+      }
+
+      loadedModel.traverse((child) => {
+        if (!(child instanceof Mesh)) return
+
+        child.castShadow = true
+        child.receiveShadow = true
+        const materials = Array.isArray(child.material)
+          ? child.material
+          : [child.material]
+
+        for (const material of materials) {
+          if ('map' in material && material.map instanceof Texture) {
+            material.map.colorSpace = SRGBColorSpace
+          }
+        }
+      })
+
+      const scale = 3 / maxDimension
+      loadedModel.scale.setScalar(scale)
+      loadedModel.position.set(
+        -center.x * scale,
+        -center.y * scale,
+        -center.z * scale,
+      )
+      scene.add(loadedModel)
+      model = loadedModel
+
+      camera.position.set(4.5, 3.2, 5.5)
+      camera.lookAt(0, 0, 0)
+      controls.target.set(0, 0, 0)
+      controls.update()
+      controls.saveState()
+
+      if (!hasAssetError) {
+        setLoadState({ assetKey, status: 'loaded' })
+      }
+    }
+
+    const handleLoadError = (error: unknown) => {
+      if (isDisposed) return
+
+      console.error(`Unable to load 3D model: ${modelSrc}`, error)
+      setLoadState({
+        assetKey,
+        status: 'error',
+        message: t('mediaViewer.modelError'),
+      })
+    }
+
+    if (format === 'fbx') {
+      new FBXLoader(manager).load(
+        modelSrc,
+        handleModelLoaded,
+        undefined,
+        handleLoadError,
+      )
+    } else {
+      const loadObj = (
+        materials?: Parameters<OBJLoader['setMaterials']>[0],
+      ) => {
+        const loader = new OBJLoader(manager)
+        if (materials) loader.setMaterials(materials)
+        loader.load(modelSrc, handleModelLoaded, undefined, handleLoadError)
+      }
+
+      if (mtlUrl) {
+        new MTLLoader(manager).load(
+          mtlUrl,
+          (materials) => {
+            if (isDisposed) return
+
+            materials.preload()
+            loadObj(materials)
+          },
+          undefined,
+          handleLoadError,
+        )
+      } else {
+        loadObj()
+      }
+    }
 
     const renderFrame = () => {
       frameId = window.requestAnimationFrame(renderFrame)
@@ -258,7 +307,7 @@ export function ModelViewerCanvas({ content }: ModelViewerCanvasProps) {
       if (model) disposeModel(model)
       renderer.dispose()
     }
-  }, [content.src, content.textureUrl, t])
+  }, [assetKey, fbxTextureUrl, format, modelSrc, mtlUrl, t, textureUrls])
 
   return (
     <div className="media-viewer-model">

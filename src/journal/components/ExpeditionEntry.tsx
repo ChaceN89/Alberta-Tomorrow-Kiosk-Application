@@ -1,10 +1,10 @@
 /**
   File: ExpeditionEntry.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Render an expedition's recorded and undiscovered journal entries.
+  - Render recorded and undiscovered entries, with images, messages, or models to reopen.
 
   Usage:
   - Rendered as a journal page by JournalModal.
@@ -22,6 +22,7 @@ import {
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
+import type { ModelViewerContent } from '@/module-tools/media-viewer/provider/types'
 import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
@@ -34,7 +35,7 @@ type ExpeditionEntryProps = {
 export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
   const { t: tModule, i18n } = useTranslation(module.translationNamespace)
   const { t } = useTranslation('journal')
-  const { openImage, openMessage } = useMediaViewer()
+  const { openImage, openMessage, openModel } = useMediaViewer()
   const { getExpeditionProgress, isCheckpointComplete } =
     useExpeditionProgress()
   const progress = getExpeditionProgress(module)
@@ -80,6 +81,21 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
             src: image.src,
             alt: translate(image.alt),
           })),
+        },
+        { origin },
+      )
+      return
+    }
+
+    if (viewer?.type === 'model') {
+      const model: ModelViewerContent = viewer
+      openModel(
+        {
+          ...model,
+          title: translate(viewer.title),
+          description: viewer.description
+            ? translate(viewer.description)
+            : undefined,
         },
         { origin },
       )
@@ -167,7 +183,10 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
                                 module.journalEntryViewers?.[entry.id]?.type ===
                                   'message'
                                   ? 'openMessage'
-                                  : 'openImage',
+                                  : module.journalEntryViewers?.[entry.id]
+                                        ?.type === 'model'
+                                    ? 'openModel'
+                                    : 'openImage',
                                 { title: entry.title },
                               )}
                               className="group block cursor-zoom-in rounded-md"

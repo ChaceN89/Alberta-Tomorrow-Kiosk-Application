@@ -1,5 +1,5 @@
 /**
-  File: ExploreMapNavigation.tsx | Author: Chace Nielson
+  File: ExploreMapNavBar.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
   Date Updated: Oct 30, 2026
 
@@ -148,13 +148,24 @@ export function ExploreMapNavBar({ moduleId }: ExploreMapNavigationProps) {
           <ul className="space-y-2">
             <li>
               <Link
-                to={moduleId ? '/explore' : '/'}
+                to="/"
                 className={navigationLinkClassName}
                 onClick={() => setIsOpen(false)}
               >
-                {moduleId ? t('navigation.defaultMap') : t('navigation.home')}
+                {t('navigation.home')}
               </Link>
             </li>
+            {moduleId && (
+              <li>
+                <Link
+                  to="/explore"
+                  className={navigationLinkClassName}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {t('navigation.defaultMap')}
+                </Link>
+              </li>
+            )}
             {moduleId && (
               <li>
                 <Link

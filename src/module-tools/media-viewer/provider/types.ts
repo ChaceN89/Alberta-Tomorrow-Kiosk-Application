@@ -30,12 +30,23 @@ export type ImageViewerContent = {
   alt: string
 }
 
-export type ModelViewerContent = {
+type ModelViewerContentBase = {
   title: string
   description?: string
-  src: string
-  textureUrl?: string
 }
+
+export type ModelViewerContent =
+  | (ModelViewerContentBase & {
+      format: 'fbx'
+      src: string
+      textureUrl?: string
+    })
+  | (ModelViewerContentBase & {
+      format: 'obj'
+      src: string
+      mtlUrl?: string
+      textureUrls?: Readonly<Record<string, string>>
+    })
 
 export type MediaViewerContent =
   | ({ type: 'message' } & MessageViewerContent)

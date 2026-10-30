@@ -44,6 +44,7 @@
   "lockedHint": "Keep exploring this expedition to add this note.",
   "openImage": "Open image: {{title}}",
   "openMessage": "Open message: {{title}}",
+  "openModel": "Open 3D model: {{title}}",
   "recorded": "Recorded",
   "continue": "Continue expedition",
   "revisit": "Revisit expedition",

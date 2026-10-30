@@ -33,7 +33,14 @@ import {
   foxFieldList,
   foxFieldMessage,
 } from './testing-foxes-of-alberta/messages'
-import { geologyCheckpoints } from './testing-geology/checkpoints'
+import {
+  geologyCheckpoints,
+  geologyOilBarrelViewedCheckpoint,
+} from './testing-geology/checkpoints'
+import {
+  oilBarrelModelAssets,
+  oilBarrelTexturePreviewUrl,
+} from './testing-geology/oilBarrelModel'
 import { preloadResidentialSchool } from './testing-residential-schools/preload'
 import { residentialSchoolCheckpoints } from './testing-residential-schools/checkpoints'
 import {
@@ -133,6 +140,15 @@ export const modules: readonly LearningModule[] = [
     journalEntryImages: {
       'geology-video-started': geologyLandscapeJournalImage,
       'geology-quiz-completed': geologyLandscapeJournalImage,
+      [geologyOilBarrelViewedCheckpoint]: oilBarrelTexturePreviewUrl,
+    },
+    journalEntryViewers: {
+      [geologyOilBarrelViewedCheckpoint]: {
+        type: 'model',
+        ...oilBarrelModelAssets,
+        title: 'activity.media.oilBarrelTitle',
+        description: 'activity.media.oilBarrelDescription',
+      },
     },
     loadActivity: loadGeology,
   },

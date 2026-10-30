@@ -13,6 +13,7 @@
   - None.
  */
 import type { ComponentType, LazyExoticComponent } from 'react'
+import type { ModelViewerContent } from '@/module-tools/media-viewer/provider/types'
 
 export type ModuleTranslationNamespace =
   'geology' | 'residentialSchool' | 'wildlifeFinder'
@@ -55,6 +56,7 @@ export type JournalEntryViewer =
       images?: readonly { src: string; alt: string }[]
     }
   | { type: 'image'; title: string; description: string; alt: string }
+  | ({ type: 'model' } & ModelViewerContent)
 
 export type ModuleMapPoi = {
   id: string

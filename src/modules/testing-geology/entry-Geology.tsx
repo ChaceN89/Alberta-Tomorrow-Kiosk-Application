@@ -1,10 +1,10 @@
 /**
   File: entry-Geology.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Three-question geology quiz built on the shared quiz system that records journal checkpoints.
+  - Geology activity with a shared 3D oil barrel viewer and a checkpointed quiz.
 
   Usage:
   - Registered activity components are lazy-loaded by the module registry.
@@ -20,11 +20,18 @@ import { getModuleOverviewPath } from '@/modules/routes'
 import { buildQuizQuestions } from '@/module-tools/quiz-system/buildQuizQuestions'
 import { Quiz } from '@/module-tools/quiz-system/Quiz'
 import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
+import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
+import type { ModelViewerContent } from '@/module-tools/media-viewer/provider/types'
 import type { ModuleActivityProps } from '@/modules/types'
 import { geologyVideos } from './videos'
 import { geologyQuizQuestions } from './quiz'
 import {
+  oilBarrelActivityPreviewUrl,
+  oilBarrelModelAssets,
+} from './oilBarrelModel'
+import {
   geologyQuizCompletedCheckpoint,
+  geologyOilBarrelViewedCheckpoint,
   geologyVideoStartedCheckpoint,
 } from './checkpoints'
 
@@ -72,6 +79,12 @@ export default function Geology({
   completeCheckpoint,
 }: ModuleActivityProps) {
   const { t } = useTranslation('geology')
+  const { openModel } = useMediaViewer()
+  const oilBarrelModel: ModelViewerContent = {
+    ...oilBarrelModelAssets,
+    title: t('activity.media.oilBarrelTitle'),
+    description: t('activity.media.oilBarrelDescription'),
+  }
 
   // Each question id doubles as its journal checkpoint id.
   const questions = buildQuizQuestions(
@@ -122,6 +135,34 @@ export default function Geology({
               />
             </li>
           ))}
+          <li className="panel flex flex-col gap-4 p-5 md:p-6">
+            <button
+              type="button"
+              className="block w-full rounded-lg focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus"
+              aria-label={t('activity.media.openOilBarrel')}
+              onClick={(event) =>
+                openModel(oilBarrelModel, {
+                  origin: event.currentTarget,
+                  onOpen: () =>
+                    completeCheckpoint(geologyOilBarrelViewedCheckpoint),
+                })
+              }
+            >
+              <img
+                src={oilBarrelActivityPreviewUrl}
+                alt=""
+                className="aspect-video w-full rounded-lg object-contain"
+              />
+            </button>
+            <div className="space-y-1">
+              <h3 className="text-xl font-semibold">
+                {t('activity.media.oilBarrelTitle')}
+              </h3>
+              <p className="text-muted">
+                {t('activity.media.oilBarrelDescription')}
+              </p>
+            </div>
+          </li>
         </ul>
       </section>
       <Quiz

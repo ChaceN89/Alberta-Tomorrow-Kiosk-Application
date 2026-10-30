@@ -1,21 +1,24 @@
 {
   "title": "Rocks, fossils, and landforms",
   "description": "Test what you know about Alberta's fossils, boulders, and oil sands with a three-question quiz.",
-  "overviewDescription": "Answer three multiple-choice questions about Alberta's badlands, glacial boulders, and oil sands. Correct answers, starting the video, and completing the quiz are recorded in your expedition journal.",
+  "overviewDescription": "Explore a textured 3D oil barrel and answer three multiple-choice questions about Alberta's badlands, glacial boulders, and oil sands. Correct answers, opening the model, starting the video, and completing the quiz are recorded in your expedition journal.",
   "category": "Geology",
   "launch": "Start the quiz",
   "backToOverview": "Back to expedition details",
   "activity": {
-    "introduction": "Alberta's landscape holds clues about ancient life and powerful ice. Answer three questions to add each discovery to your journal.",
+    "introduction": "Alberta's landscape holds clues about ancient life, powerful ice, and oil. Explore the oil barrel and answer three questions to add each discovery to your journal.",
     "media": {
       "heading": "Watch and explore",
-      "description": "Watch a video about Alberta's natural landscapes.",
+      "description": "Watch a video about Alberta's natural landscapes and explore a textured oil barrel in 3D.",
       "videoTitle": "Natural Landscapes. Alberta Tomorrow.",
-      "videoDescription": "Natural landscapes across Alberta, presented by Alberta Tomorrow."
+      "videoDescription": "Natural landscapes across Alberta, presented by Alberta Tomorrow.",
+      "oilBarrelTitle": "Oil barrel model",
+      "oilBarrelDescription": "Open and rotate a textured 3D oil barrel while learning about Alberta's oil sands.",
+      "openOilBarrel": "Open the 3D oil barrel model"
     },
     "complete": {
       "title": "Quiz complete!",
-      "description": "Your three geology discoveries and quiz completion are recorded in your expedition journal.",
+      "description": "Your oil barrel discovery, three geology discoveries, and quiz completion are recorded in your expedition journal.",
       "viewJournal": "View journal entry",
       "retry": "Take the quiz again"
     },
@@ -53,8 +56,15 @@
     }
   },
   "journal": {
-    "summary": "Field notes on the fossils, boulders, and rocks that tell Alberta's story.",
+    "summary": "Field notes on Alberta's oil sands, fossils, boulders, and rocks.",
     "entries": [
+      {
+        "id": "geology-oil-barrel-viewed",
+        "section": "Media",
+        "title": "Oil barrel model explored",
+        "summary": "You opened a textured oil barrel model while exploring Alberta's oil sands.",
+        "imageAlt": "A weathered blue oil barrel with OIL lettering."
+      },
       {
         "id": "geology-video-started",
         "section": "Media",
