@@ -22,6 +22,9 @@ export function DefaultExploreMap() {
   return (
     <main className="relative h-dvh w-full overflow-hidden">
       <AlbertaMap ariaLabel={t('mapLabel')} />
+      <ExploreMapNavigation />
+
+      {/* // info about the map here, might end up being removed or part of nav bar */}
       <section
         aria-labelledby="explore-title"
         className="panel absolute top-20 left-4 w-[calc(100%-2rem)] max-w-sm space-y-2 bg-surface/95 p-4 shadow-xl backdrop-blur"
@@ -30,7 +33,6 @@ export function DefaultExploreMap() {
           {t('title')}
         </h1>
       </section>
-      <ExploreMapNavigation />
     </main>
   )
 }

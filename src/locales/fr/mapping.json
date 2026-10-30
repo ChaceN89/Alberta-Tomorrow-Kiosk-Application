@@ -4,6 +4,12 @@
   "moduleTitle": "Explorer {{moduleName}}",
   "moduleMapLabel": "Carte : {{moduleName}}",
   "moduleMapStatus": "Les lieux et les interactions propres à ce module ne sont pas encore connectés.",
+  "terrain": {
+    "mode2d": "Terrain 3D",
+    "mode3d": "Carte 2D",
+    "switchTo3d": "Passer au relief en 3D",
+    "switchTo2d": "Passer à la carte 2D"
+  },
   "navigation": {
     "label": "Navigation de la carte",
     "open": "Ouvrir la navigation de la carte",

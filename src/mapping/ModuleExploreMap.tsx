@@ -32,10 +32,14 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
   // If exploring a module should open its activity instead:
   // navigate(getModuleActivityPath(module.id))
 
+  // could also load somestuff here for the map, if not already loaded in the module overview page
+
   return (
     <main className="relative h-dvh w-full overflow-hidden">
       <AlbertaMap ariaLabel={t('moduleMapLabel', { moduleName })} />
       <ExploreMapNavigation moduleId={module.id} />
+
+      {/* section about the module itself, might appear and then fade away or the user will interact with it to have it go away so they can start, mayube it locks the map interactions until dismissed, lots of options here for it*/}
       <section
         aria-labelledby="explore-title"
         className="panel absolute top-20 left-4 w-[calc(100%-2rem)] max-w-sm space-y-3 bg-surface/95 p-4 shadow-xl backdrop-blur"

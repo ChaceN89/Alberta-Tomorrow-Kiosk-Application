@@ -4,6 +4,12 @@
   "moduleTitle": "Explore {{moduleName}}",
   "moduleMapLabel": "{{moduleName}} map",
   "moduleMapStatus": "Module-specific map locations and interactions are not connected yet.",
+  "terrain": {
+    "mode2d": "3D terrain",
+    "mode3d": "2D map",
+    "switchTo3d": "Switch to 3D terrain",
+    "switchTo2d": "Switch to 2D map"
+  },
   "navigation": {
     "label": "Map navigation",
     "open": "Open map navigation",
