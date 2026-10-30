@@ -8,7 +8,7 @@
   - ExpeditionProgressProvider shares saved module progress; JournalProvider controls its UI;
   - IntroTutorialProvider manages onboarding;
   - ModulePreloadProvider tracks activity loading for each of the different module pages/module data.
-  - AppStartup gates route rendering; the global overlays mount once startup is ready.
+  - Map routes mount behind the AppStartup splash; global overlays mount after startup is ready.
 
   Usage:
   - Rendered by main.tsx as the root of the routed application.
@@ -16,7 +16,7 @@
   Notes:
   - None.
  */
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
 import { NotFound } from '@/components/app-states/NotFound'
@@ -28,6 +28,7 @@ import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
 import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { AppStartup } from './AppStartup'
+import { useAppStartupMapGate } from './AppStartupMapContext'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/JournalProvider'
 import { ExpeditionProgressProvider } from '@/save-data/ExpeditionProgressProvider'
@@ -42,13 +43,22 @@ const ExploreMap = lazy(() =>
   })),
 )
 
-export function App() {
-  const exploreMapPage = (
+function ExploreMapRoute() {
+  const mapGate = useAppStartupMapGate()
+
+  useEffect(() => {
+    mapGate?.setMapRequired(true)
+    return () => mapGate?.setMapRequired(false)
+  }, [mapGate])
+
+  return (
     <Suspense fallback={<Loading />}>
       <ExploreMap />
     </Suspense>
   )
+}
 
+export function App() {
   return (
     <BrowserRouter>
       <ExpeditionProgressProvider>
@@ -63,14 +73,17 @@ export function App() {
                       <AppStartup overlays={<GlobalOverlayLayer />}>
                         <>
                           <Routes>
-                            <Route path="explore" element={exploreMapPage} />
+                            <Route
+                              path="explore"
+                              element={<ExploreMapRoute />}
+                            />
                             <Route
                               path="expeditions/:moduleId/explore"
-                              element={exploreMapPage}
+                              element={<ExploreMapRoute />}
                             />
                             <Route
                               path="expeditions/:moduleId/activity/explore"
-                              element={exploreMapPage}
+                              element={<ExploreMapRoute />}
                             />
                             <Route element={<Layout />}>
                               <Route index element={<HomePage />} />

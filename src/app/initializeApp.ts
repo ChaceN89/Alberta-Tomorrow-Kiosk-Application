@@ -1,18 +1,17 @@
 /**
   File: initializeApp.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 23, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Provide an awaitable place for setup that must finish before the application appears.
-  - Currently keeps the splash screen visible for at least one second; future startup data
-    requests can be awaited here before the application is revealed.
+  - Provide an awaitable place for app-wide setup and maintain the minimum splash duration.
+  - Map readiness is coordinated separately by AppStartup.
 
   Usage:
-  - Called by AppStartup; return only after required startup work is complete.
+  - Called by AppStartup before it waits for any route-specific startup dependencies.
 
   Notes:
-  - None.
+  - Add app-wide startup work here when it must complete before the splash exits.
  */
 const MINIMUM_SPLASH_DURATION_MS = 1000
 
@@ -23,6 +22,4 @@ export async function initializeApp(): Promise<void> {
   await new Promise<void>((resolve) => {
     window.setTimeout(resolve, MINIMUM_SPLASH_DURATION_MS)
   })
-
-  // Await shared app-data requests here when needed, such as map data.
 }

@@ -39,6 +39,7 @@ import banffLandscape from './assets/banff-landscape.jpg'
 import dinosaurBadlands from './assets/dinosaur-badlands.jpg'
 import watertonLakes from './assets/waterton-lakes.jpg'
 import { useMapInfoPanel } from '@/module-tools/map-info-panel/hooks/useMapInfoPanel'
+import { useAppStartupMapGate } from '@/app/AppStartupMapContext'
 import { useAlbertaMapController } from './map-functions/useAlbertaMapController'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
@@ -76,6 +77,7 @@ export function AlbertaMap({
   } | null>(null)
   const [activePoiId, setActivePoiId] = useState<string | null>(null)
   const { openPanel, closePanel } = useMapInfoPanel()
+  const startupMapGate = useAppStartupMapGate()
   const {
     controls,
     mapRef,
@@ -88,6 +90,13 @@ export function AlbertaMap({
     onMapAvailable,
     onMapError,
   } = useAlbertaMapController()
+
+  useEffect(() => {
+    if (controls.isMapReady || controls.hasMapError) {
+      startupMapGate?.markMapReady()
+    }
+  }, [controls.hasMapError, controls.isMapReady, startupMapGate])
+
   const mapRefCallback = useCallback(
     (map: MapRef | null) => {
       mapRef.current = map
