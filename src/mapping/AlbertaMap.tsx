@@ -13,10 +13,11 @@
   Notes:
   - Map state and behavior are managed by useAlbertaMapController.
  */
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Map, NavigationControl } from 'react-map-gl/maplibre'
+import type { MapRef } from 'react-map-gl/maplibre'
 import * as maplibregl from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { MapControlsContext } from './components/MapControlsContext'
@@ -84,8 +85,16 @@ export function AlbertaMap({
     minZoom,
     maxZoom,
     onMapLoad,
+    onMapAvailable,
     onMapError,
   } = useAlbertaMapController()
+  const mapRefCallback = useCallback(
+    (map: MapRef | null) => {
+      mapRef.current = map
+      onMapAvailable(map?.getMap() ?? null)
+    },
+    [mapRef, onMapAvailable],
+  )
 
   const defaultPois = useMemo(
     () =>
@@ -133,16 +142,22 @@ export function AlbertaMap({
   const visibleActivePoiId = visiblePois.some((poi) => poi.id === activePoiId)
     ? activePoiId
     : (visiblePois[0]?.id ?? null)
-  const poiGroups = useMemo(
-    () =>
-      clusterMapPois(
-        visiblePois,
-        mapInstance,
-        poiClusterRadius,
-        clusterViewport?.zoom,
-      ),
-    [clusterViewport, mapInstance, poiClusterRadius, visiblePois],
-  )
+  const poiGroups = useMemo(() => {
+    if (!mapInstance && !controls.hasMapError) return []
+
+    return clusterMapPois(
+      visiblePois,
+      mapInstance,
+      poiClusterRadius,
+      clusterViewport?.zoom,
+    )
+  }, [
+    clusterViewport,
+    controls.hasMapError,
+    mapInstance,
+    poiClusterRadius,
+    visiblePois,
+  ])
 
   useEffect(() => {
     if (!mapInstance) return
@@ -155,9 +170,9 @@ export function AlbertaMap({
       })
     }
 
-    mapInstance.on('moveend', updateClusterViewport)
+    mapInstance.on('move', updateClusterViewport)
     return () => {
-      mapInstance.off('moveend', updateClusterViewport)
+      mapInstance.off('move', updateClusterViewport)
     }
   }, [mapInstance])
 
@@ -216,7 +231,7 @@ export function AlbertaMap({
         className="absolute inset-0"
       >
         <Map
-          ref={mapRef}
+          ref={mapRefCallback}
           mapLib={maplibregl}
           initialViewState={initialMapView}
           mapStyle={mapStyle}

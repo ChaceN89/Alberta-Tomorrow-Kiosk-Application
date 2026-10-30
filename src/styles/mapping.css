@@ -385,6 +385,7 @@
   font: inherit;
   font-size: 0.875rem;
   font-weight: 800;
+  animation: mapping-poi-marker-enter 450ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
   transition: transform 150ms ease;
 }
 
@@ -419,6 +420,20 @@
   font-size: 0.75rem;
   font-weight: 700;
   white-space: nowrap;
+  transform-origin: center bottom;
+  animation: mapping-poi-marker-enter 450ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+
+@keyframes mapping-poi-marker-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.78);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .mapping-poi-marker__shape {
@@ -541,6 +556,11 @@
   .mapping-poi-selector__chevron,
   .mapping-poi-cluster-marker {
     transition: none;
+  }
+
+  .mapping-poi-marker,
+  .mapping-poi-cluster-marker {
+    animation: none;
   }
 
   .mapping-module-title-bar {

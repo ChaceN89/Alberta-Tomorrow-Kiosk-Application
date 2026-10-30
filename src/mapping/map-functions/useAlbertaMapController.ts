@@ -12,7 +12,7 @@
   Notes:
   - Individual controls are managed by focused hooks in map-functions.
  */
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type { MapRef } from 'react-map-gl/maplibre'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import type { MapControllerControlsProps } from '../components/MapControlsContext'
@@ -98,6 +98,11 @@ export function useAlbertaMapController() {
     }
   }
 
+  const onMapAvailable = useCallback(
+    (map: MapLibreMap | null) => setMapInstance(map),
+    [],
+  )
+
   // Function: Report MapLibre errors and end any pending style loading state.
   const handleMapError = (error: unknown) => {
     reportError(error)
@@ -139,6 +144,7 @@ export function useAlbertaMapController() {
     minZoom: ZOOM_MIN,
     maxZoom: ZOOM_MAX,
     onMapLoad: initializeMap,
+    onMapAvailable,
     onMapError: handleMapError,
   }
 }

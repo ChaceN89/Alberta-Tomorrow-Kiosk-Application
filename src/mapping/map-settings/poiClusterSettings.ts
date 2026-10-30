@@ -33,4 +33,4 @@ export const POI_CLUSTER_ZOOM_OVERSHOOT = 2
 
 // Cluster-click camera transition duration in milliseconds; increase for a
 // slower transition or decrease for a faster one.
-export const POI_CLUSTER_ZOOM_DURATION = 350
+export const POI_CLUSTER_ZOOM_DURATION = 800
