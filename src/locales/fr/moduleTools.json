@@ -54,7 +54,11 @@
   "mediaViewer": {
     "close": "Fermer le visualiseur",
     "seeMore": "Voir plus",
-    "seeLess": "Voir moins"
+    "seeLess": "Voir moins",
+    "modelLoading": "Chargement du modèle 3D…",
+    "modelUnavailable": "La visualisation 3D n’est pas disponible dans ce navigateur.",
+    "modelError": "Le modèle 3D n’a pas pu être chargé. Vérifiez votre connexion et réessayez.",
+    "modelInstructions": "Faites glisser pour faire pivoter et faites défiler pour zoomer."
   },
   "mapInfoPanel": {
     "close": "Fermer les détails du lieu"

@@ -1,11 +1,11 @@
 /*
   File: MediaViewer.css | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
   - Define the open and close motion of the shared media viewer dialog.
-  - Define the 3D tilt shared by viewer photos and message notes.
+  - Define the 3D model scene and tilt shared by photos and message notes.
 
   Usage:
   - Imported by MediaViewerProvider.tsx.
@@ -231,6 +231,41 @@ html.dark .media-viewer-note__doodle {
 /* Lets a touch drag scroll a note that is too tall instead of tilting it. */
 .media-viewer-note--scrollable {
   touch-action: pan-y;
+}
+
+.media-viewer-model {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.media-viewer-model__stage {
+  position: relative;
+  min-height: 12rem;
+  flex: 1;
+  overflow: hidden;
+  background: var(--color-canvas);
+}
+
+.media-viewer-model__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.media-viewer-model__status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.media-viewer-model__status--error {
+  color: var(--color-flag);
 }
 
 @media (prefers-reduced-motion: reduce) {

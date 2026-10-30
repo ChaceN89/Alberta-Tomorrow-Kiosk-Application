@@ -1,10 +1,10 @@
 /**
   File: MediaViewerContext.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Share viewer open state and actions between its provider and consumers.
+  - Share viewer open state and typed media-opening actions with consumers.
 
   Usage:
   - Imported by MediaViewerProvider and useMediaViewer.
@@ -17,6 +17,7 @@ import type {
   ImageViewerContent,
   MediaViewerOpenOptions,
   MessageViewerContent,
+  ModelViewerContent,
 } from './types'
 
 export type MediaViewerContextValue = {
@@ -27,6 +28,10 @@ export type MediaViewerContextValue = {
   ) => void
   openImage: (
     content: ImageViewerContent,
+    options?: MediaViewerOpenOptions,
+  ) => void
+  openModel: (
+    content: ModelViewerContent,
     options?: MediaViewerOpenOptions,
   ) => void
 }

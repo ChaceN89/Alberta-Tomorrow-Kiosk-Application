@@ -22,6 +22,13 @@
     "empty": "Vous n’avez encore commencé aucune expédition.",
     "browse": "Parcourir les expéditions"
   },
+  "assets": {
+    "heading": "Équipement pour explorer l’Alberta",
+    "description": "Choisissez un objet pour l’examiner en 3D. D’autres équipements pourront être ajoutés au fil de votre exploration.",
+    "planeTitle": "Avion d’expédition",
+    "planeDescription": "Un modèle d’avion 3D à explorer sous tous les angles.",
+    "openPlane": "Ouvrir l’avion d’expédition dans le visualiseur 3D"
+  },
   "expeditionNumber": "Expédition {{number}} sur {{total}}",
   "previous": "Page précédente",
   "next": "Page suivante",

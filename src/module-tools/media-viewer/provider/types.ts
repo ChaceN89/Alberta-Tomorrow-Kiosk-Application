@@ -1,10 +1,10 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Define content shapes supported by the shared media viewer.
+  - Define message, image, and 3D model content for the shared media viewer.
 
   Usage:
   - Used by MediaViewerProvider and modules that open viewer content.
@@ -30,9 +30,17 @@ export type ImageViewerContent = {
   alt: string
 }
 
+export type ModelViewerContent = {
+  title: string
+  description?: string
+  src: string
+  textureUrl?: string
+}
+
 export type MediaViewerContent =
   | ({ type: 'message' } & MessageViewerContent)
   | ({ type: 'image' } & ImageViewerContent)
+  | ({ type: 'model' } & ModelViewerContent)
 
 export type MediaViewerOpenOptions = {
   // Runs when the viewer opens, e.g. to complete a checkpoint.

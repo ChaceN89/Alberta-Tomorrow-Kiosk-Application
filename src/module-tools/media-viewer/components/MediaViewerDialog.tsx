@@ -1,10 +1,10 @@
 /**
   File: MediaViewerDialog.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Render the viewer's modal dialog with its header and the image or message body.
+  - Render the viewer dialog with a shared header and the selected media body.
 
   Usage:
   - Rendered once by MediaViewerProvider.
@@ -13,12 +13,19 @@
   - Escape and backdrop clicks ask the provider to close so the closing animation plays.
   - The native close event means the dialog is already gone, so it finishes immediately.
  */
-import { useId } from 'react'
+import { lazy, Suspense, useId } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useViewerDialog } from '../hooks/useViewerDialog'
 import type { MediaViewerContent, ViewerOrigin } from '../provider/types'
 import { ImageViewerBody } from './ImageViewerBody'
 import { MessageViewerBody } from './MessageViewerBody'
 import { ViewerHeader } from './ViewerHeader'
+
+const ModelViewerBody = lazy(() =>
+  import('./ModelViewerBody').then((module) => ({
+    default: module.ModelViewerBody,
+  })),
+)
 
 type MediaViewerDialogProps = {
   content: MediaViewerContent | null
@@ -35,6 +42,7 @@ export function MediaViewerDialog({
   onRequestClose,
   onClosed,
 }: MediaViewerDialogProps) {
+  const { t } = useTranslation('moduleTools')
   const titleId = useId()
   const dialogRef = useViewerDialog(content, origin, isClosing)
 
@@ -63,8 +71,18 @@ export function MediaViewerDialog({
           />
           {content.type === 'message' ? (
             <MessageViewerBody content={content} />
-          ) : (
+          ) : content.type === 'image' ? (
             <ImageViewerBody content={content} />
+          ) : (
+            <Suspense
+              fallback={
+                <p role="status" className="p-6 text-center text-muted">
+                  {t('mediaViewer.modelLoading')}
+                </p>
+              }
+            >
+              <ModelViewerBody content={content} />
+            </Suspense>
           )}
         </div>
       )}

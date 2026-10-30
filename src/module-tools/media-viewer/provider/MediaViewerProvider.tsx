@@ -1,10 +1,10 @@
 /**
   File: MediaViewerProvider.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Oct 30, 2026
 
   Description:
-  - Provide a shared, accessible popup for reading messages and viewing images.
+  - Provide a shared popup for reading messages, viewing images, and exploring models.
   - Allow callers to grant progress when a viewer is opened.
   - Grow the viewer out of the clicked element and shrink it away when closed.
 
@@ -31,6 +31,7 @@ import type {
   MediaViewerContent,
   MediaViewerOpenOptions,
   MessageViewerContent,
+  ModelViewerContent,
   ViewerOrigin,
 } from './types'
 import { measureOrigin } from '../utils/viewerOrigin'
@@ -82,6 +83,12 @@ export function MediaViewerProvider({ children }: MediaViewerProviderProps) {
     [open],
   )
 
+  const openModel = useCallback(
+    (model: ModelViewerContent, options?: MediaViewerOpenOptions) =>
+      open({ type: 'model', ...model }, options),
+    [open],
+  )
+
   const finishClose = useCallback(() => {
     clearCloseTimer()
     setClosing(false)
@@ -104,8 +111,8 @@ export function MediaViewerProvider({ children }: MediaViewerProviderProps) {
   useEffect(() => clearCloseTimer, [clearCloseTimer])
 
   const value = useMemo(
-    () => ({ isOpen: content !== null, openMessage, openImage }),
-    [content, openImage, openMessage],
+    () => ({ isOpen: content !== null, openMessage, openImage, openModel }),
+    [content, openImage, openMessage, openModel],
   )
 
   return (

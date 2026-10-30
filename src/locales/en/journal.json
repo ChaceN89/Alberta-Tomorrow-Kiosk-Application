@@ -22,6 +22,13 @@
     "empty": "You haven't started any expeditions yet.",
     "browse": "Browse expeditions"
   },
+  "assets": {
+    "heading": "Equipment to explore Alberta",
+    "description": "Choose an asset to inspect it in 3D. More equipment can be added as you explore.",
+    "planeTitle": "Expedition aircraft",
+    "planeDescription": "A 3D aircraft model to explore from every angle.",
+    "openPlane": "Open the expedition aircraft in the 3D viewer"
+  },
   "expeditionNumber": "Expedition {{number}} of {{total}}",
   "previous": "Previous page",
   "next": "Next page",

@@ -54,7 +54,11 @@
   "mediaViewer": {
     "close": "Close viewer",
     "seeMore": "See more",
-    "seeLess": "See less"
+    "seeLess": "See less",
+    "modelLoading": "Loading 3D model…",
+    "modelUnavailable": "3D viewing is not available in this browser.",
+    "modelError": "The 3D model could not be loaded. Check your connection and try again.",
+    "modelInstructions": "Drag to rotate and scroll to zoom."
   },
   "mapInfoPanel": {
     "close": "Close location details"
