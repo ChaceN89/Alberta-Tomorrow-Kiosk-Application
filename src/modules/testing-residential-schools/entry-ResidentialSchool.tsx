@@ -1,7 +1,7 @@
 /**
   File: entry-ResidentialSchool.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Present historical Alberta residential-school records respectfully.
@@ -15,6 +15,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { getModuleOverviewPath } from '@/modules/routes'
 import type { ModuleActivityProps } from '@/modules/types'
 
 export default function ResidentialSchool({
@@ -103,7 +104,7 @@ export default function ResidentialSchool({
           )
         })}
       </ul>
-      <Link to={`/modules/${moduleId}`} className="button">
+      <Link to={getModuleOverviewPath(moduleId)} className="button">
         {t('backToOverview')}
       </Link>
     </section>

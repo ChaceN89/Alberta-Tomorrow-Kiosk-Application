@@ -8,7 +8,7 @@
   - Slides out from the left edge; the active media type selects its playback view.
 
   Usage:
-  - Render once inside Layout. It appears when a track is loaded and opens on play.
+  - Render once under AudioPlayerProvider, outside route layouts.
 
   Notes:
   - Closing unfinished media or a player with queued items asks for confirmation.

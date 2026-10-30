@@ -15,6 +15,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
 import type { ModulePreloadState } from '@/modules/useModulePreload'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { visibleModules } from '@/modules/registry'
@@ -115,7 +116,7 @@ function ModuleStatusItem({
       <div className="mt-3 grid grid-cols-3 gap-2">
         <Link
           className="button-secondary dev-module-button"
-          to={`/modules/${module.id}`}
+          to={getModuleOverviewPath(module.id)}
           onClick={onClose}
         >
           <span aria-hidden="true">▤</span>
@@ -123,7 +124,7 @@ function ModuleStatusItem({
         </Link>
         <Link
           className="button dev-module-button"
-          to={`/modules/${module.id}/expedition`}
+          to={getModuleActivityPath(module.id)}
           onClick={() => {
             startExpedition(module.id)
             onClose()

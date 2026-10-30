@@ -1,7 +1,7 @@
 /**
   File: ModulePreloadProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Coordinate cancellable module preloads and expose their progress.
@@ -32,6 +32,7 @@ import {
   type ModulePreloadState,
 } from './useModulePreload'
 import type { LearningModule } from './types'
+import { getModuleOverviewPath } from './routes'
 
 type ActivePreload = {
   moduleId: string
@@ -180,7 +181,7 @@ export function ModulePreloadProvider({
       return
     }
 
-    const modulePath = `/modules/${active.moduleId}`
+    const modulePath = getModuleOverviewPath(active.moduleId)
     const isOnModuleRoute =
       pathname === modulePath || pathname.startsWith(`${modulePath}/`)
 

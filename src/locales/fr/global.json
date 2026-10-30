@@ -14,6 +14,13 @@
     "skip": "Aller au contenu principal",
     "label": "Navigation principale"
   },
+  "explore": {
+    "title": "Explorer l’Alberta",
+    "defaultPlaceholder": "Bienvenue dans l’exploration de l’Alberta. Une carte et un survol seront bientôt disponibles.",
+    "moduleTitle": "Explorer {{moduleName}}",
+    "modulePlaceholder": "Cette expédition n’utilise pas encore la carte d’exploration.",
+    "openActivity": "Explorer cette expédition"
+  },
   "footer": {
     "credit": "Alberta Expeditions fait partie de la plateforme éducative d’<brandLink>Alberta Tomorrow</brandLink>."
   },

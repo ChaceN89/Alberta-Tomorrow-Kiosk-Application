@@ -1,7 +1,7 @@
 /**
   File: entry-Geology.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Three-question geology quiz built on the shared quiz system that records journal checkpoints.
@@ -16,6 +16,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useJournal } from '@/journal/useJournal'
+import { getModuleOverviewPath } from '@/modules/routes'
 import { buildQuizQuestions } from '@/module-tools/quiz-system/buildQuizQuestions'
 import { Quiz } from '@/module-tools/quiz-system/Quiz'
 import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
@@ -135,7 +136,7 @@ export default function Geology({
           />
         )}
       />
-      <Link to={`/modules/${moduleId}`} className="button-secondary">
+      <Link to={getModuleOverviewPath(moduleId)} className="button-secondary">
         {t('backToOverview')}
       </Link>
     </section>

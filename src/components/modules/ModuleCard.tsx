@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom'
 import { useJournal } from '@/journal/useJournal'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { modules } from '@/modules/registry'
+import { getModuleOverviewPath } from '@/modules/routes'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
 type ModuleCardProps = {
@@ -49,7 +50,7 @@ export function ModuleCard({ module }: ModuleCardProps) {
         <ExpeditionStatusText progress={progress} />
       </p>
       <div className="flex flex-wrap gap-3">
-        <Link className="button" to={`/modules/${module.id}`}>
+        <Link className="button" to={getModuleOverviewPath(module.id)}>
           {tHome('exploreModule')}
         </Link>
         {progress.status !== 'notStarted' && (

@@ -1,7 +1,7 @@
 /**
   File: Navbar.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Render the app brand, navigation actions, language switcher, and module preload progress.
@@ -64,7 +64,9 @@ export function Navbar() {
               className="button-secondary min-h-12 gap-2 px-4 py-2"
               aria-label={tJournal('openLabel')}
               onClick={() =>
-                openJournal(pathname.match(/^\/modules\/([^/]+)/)?.[1])
+                openJournal(
+                  pathname.match(/^\/expeditions\/modules\/([^/]+)/)?.[1],
+                )
               }
             >
               <JournalIcon />

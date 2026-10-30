@@ -1,7 +1,7 @@
 /**
   File: ModuleActivity.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Preload the selected activity and show loading or retry UI as needed.
@@ -15,7 +15,9 @@
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { Loading } from '@/components/app-states/Loading'
+import { getModuleExplorePath } from '@/modules/routes'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { ExpeditionActivity } from './ExpeditionActivity'
 import type { ModuleActivityProps } from './types'
@@ -48,5 +50,12 @@ export function ModuleActivity({ module }: ModuleActivityProps) {
     return <Loading label={t('preload.preparing')} />
   }
 
-  return <ExpeditionActivity module={module} />
+  return (
+    <div className="space-y-6">
+      <Link className="button-secondary" to={getModuleExplorePath(module.id)}>
+        {t('explore.openActivity')}
+      </Link>
+      <ExpeditionActivity module={module} />
+    </div>
+  )
 }

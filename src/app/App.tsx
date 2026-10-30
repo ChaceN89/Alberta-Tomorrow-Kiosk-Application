@@ -24,6 +24,8 @@ import { GlobalOverlayLayer } from '@/components/toasts/GlobalOverlayLayer'
 import { JournalModal } from '@/journal/components/JournalModal'
 import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
+import { ExploreMap } from './pages/ExploreMap'
+import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { AppStartup } from './AppStartup'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/JournalProvider'
@@ -44,16 +46,24 @@ export function App() {
                 <MediaViewerProvider>
                   <ErrorBoundary>
                     <AppStartup overlays={<GlobalOverlayLayer />}>
-                      <Routes>
-                        <Route element={<Layout />}>
-                          <Route index element={<HomePage />} />
+                      <>
+                        <Routes>
+                          <Route path="explore" element={<ExploreMap />} />
                           <Route
-                            path="modules/:moduleId/*"
-                            element={<ModulePage />}
+                            path="expeditions/modules/:moduleId/explore"
+                            element={<ExploreMap />}
                           />
-                          <Route path="*" element={<NotFound />} />
-                        </Route>
-                      </Routes>
+                          <Route element={<Layout />}>
+                            <Route index element={<HomePage />} />
+                            <Route
+                              path="expeditions/modules/:moduleId/*"
+                              element={<ModulePage />}
+                            />
+                            <Route path="*" element={<NotFound />} />
+                          </Route>
+                        </Routes>
+                        <AudioPlayerPanel />
+                      </>
                     </AppStartup>
                   </ErrorBoundary>
                   <JournalModal />

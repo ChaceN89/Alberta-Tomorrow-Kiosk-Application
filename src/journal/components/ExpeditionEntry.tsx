@@ -22,6 +22,7 @@ import {
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
+import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
 
@@ -247,14 +248,14 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
       <div className="flex flex-wrap gap-3">
         <Link
           className="button"
-          to={`/modules/${module.id}/expedition`}
+          to={getModuleActivityPath(module.id)}
           onClick={onNavigate}
         >
           {t(progress.status === 'complete' ? 'revisit' : 'continue')}
         </Link>
         <Link
           className="button-secondary"
-          to={`/modules/${module.id}`}
+          to={getModuleOverviewPath(module.id)}
           onClick={onNavigate}
         >
           {t('details')}

@@ -14,6 +14,13 @@
     "skip": "Skip to main content",
     "label": "Main navigation"
   },
+  "explore": {
+    "title": "Explore Alberta",
+    "defaultPlaceholder": "Welcome to Explore Alberta. A map and flyover will be here soon.",
+    "moduleTitle": "Explore {{moduleName}}",
+    "modulePlaceholder": "This expedition does not use the Explore map yet.",
+    "openActivity": "Explore this expedition"
+  },
   "footer": {
     "credit": "Alberta Expeditions is part of <brandLink>Alberta Tomorrow's</brandLink> educational platform."
   },

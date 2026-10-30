@@ -1,7 +1,7 @@
 /**
   File: ModulePage.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Render module details and load activities only when requested.
@@ -33,7 +33,7 @@ export function ModulePage() {
   }
 
   // if the module path is not recognized, render the not found component
-  if (modulePath !== 'expedition') {
+  if (modulePath !== 'activity') {
     return <ModuleNotFound />
   }
 

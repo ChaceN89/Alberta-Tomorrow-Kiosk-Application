@@ -14,7 +14,6 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { Footer } from './Footer'
 import { IntroTutorial } from './IntroTutorial'
 import { Navbar } from './Navbar'
@@ -47,9 +46,6 @@ export function Layout() {
 
       {/* The intro tutorial component renders the guided tutorial dialog. */}
       <IntroTutorial />
-
-      {/* Corner media player shared by every module tool */}
-      <AudioPlayerPanel />
 
       {/* Custom overlay scrollbar component */}
       <OverlayScrollbar />

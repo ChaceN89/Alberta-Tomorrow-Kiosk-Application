@@ -1,7 +1,7 @@
 /**
   File: entry-FoxesOfAlberta.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Oct 29, 2026
 
   Description:
   - Wildlife expedition with two views: listen to audio clips, then take the habitat quiz.
@@ -16,6 +16,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { getModuleOverviewPath } from '@/modules/routes'
 import type { ModuleActivityProps } from '@/modules/types'
 import { HabitatQuiz } from './components/HabitatQuiz'
 import { ListenSection } from './components/ListenSection'
@@ -70,7 +71,7 @@ export default function FoxesOfAlberta({
           onBackToActivity={showActivity}
         />
       )}
-      <Link to={`/modules/${moduleId}`} className="button-secondary">
+      <Link to={getModuleOverviewPath(moduleId)} className="button-secondary">
         {t('backToOverview')}
       </Link>
     </section>
