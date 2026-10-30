@@ -1,7 +1,7 @@
 /**
   File: ModuleExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Oct 30, 2026 - CN - Add the bottom-left map actions.
 
   Description:
   - Show the Alberta map with information for the selected module.
@@ -15,7 +15,9 @@
 import { useTranslation } from 'react-i18next'
 import type { LearningModule } from '@/modules/types'
 import { AlbertaMap } from './AlbertaMap'
-import { ExploreMapNavigation } from './components/ExploreMapNavigation'
+import { MapActionControls } from './components/MapActionControls'
+import { ExploreMapNavBar } from './components/ExploreMapNavBar'
+import { MapControls } from './components/MapControls'
 
 type ModuleExploreMapProps = {
   module: LearningModule
@@ -36,24 +38,24 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
 
   return (
     <main className="relative h-dvh w-full overflow-hidden">
-      {/* the map component given module ID and the modile name  */}
       <AlbertaMap
         ariaLabel={t('moduleMapLabel', { moduleName })}
         moduleId={module.id}
-      />
-      <ExploreMapNavigation moduleId={module.id} />
-
-      {/* section about the module itself, might appear and then fade away or the user will interact with it to have it go away so they can start, mayube it locks the map interactions until dismissed, lots of options here for it*/}
-      <section
-        aria-labelledby="explore-title"
-        className="panel absolute top-20 left-4 w-[calc(100%-2rem)] max-w-sm space-y-3 bg-surface/95 p-4 shadow-xl backdrop-blur"
       >
-        <h1 id="explore-title" className="text-2xl">
-          {t('moduleTitle', { moduleName })}
-        </h1>
-        <p>{tModule('description')}</p>
-        <p className="text-sm text-muted">{t('moduleMapStatus')}</p>
-      </section>
+        <section
+          aria-labelledby="explore-title"
+          className="panel absolute top-20 left-4 z-(--z-content-popover) max-h-[calc(100dvh-6rem)] w-[calc(100%-2rem)] max-w-sm space-y-3 overflow-y-auto bg-surface/95 p-4 shadow-xl backdrop-blur"
+        >
+          <h1 id="explore-title" className="text-2xl">
+            {t('moduleTitle', { moduleName })}
+          </h1>
+          <MapControls />
+          <p>{tModule('description')}</p>
+          <p className="text-sm text-muted">{t('moduleMapStatus')}</p>
+        </section>
+        <MapActionControls />
+      </AlbertaMap>
+      <ExploreMapNavBar moduleId={module.id} />
     </main>
   )
 }

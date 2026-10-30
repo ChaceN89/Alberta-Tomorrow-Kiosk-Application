@@ -17,6 +17,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@/styles/global.css'
+import '@/styles/mapping.css'
 import '@/styles/spashScreen.css'
 import './i18n'
 import { App } from './App'

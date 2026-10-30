@@ -23,7 +23,7 @@ type ExploreMapNavigationProps = {
   moduleId?: string
 }
 
-export function ExploreMapNavigation({ moduleId }: ExploreMapNavigationProps) {
+export function ExploreMapNavBar({ moduleId }: ExploreMapNavigationProps) {
   const { t } = useTranslation('mapping')
   const { t: tJournal } = useTranslation('journal')
   const { openJournal } = useJournal()

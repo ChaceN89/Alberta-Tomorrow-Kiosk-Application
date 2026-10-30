@@ -1,0 +1,266 @@
+/*
+  File: mapping.css | Author: Chace Nielson
+  Date Created: Oct 30, 2026
+  Date Updated: Oct 30, 2026 - CN - Add spacing around the POI dropdown arrow.
+
+  Description:
+  - Style the map view disclosure and its settings controls.
+
+  Usage:
+  - Imported by src/app/main.tsx.
+
+  Notes:
+  - Colors use the shared theme tokens from global.css.
+ */
+.mapping-controls {
+  margin-top: 0.75rem;
+}
+
+.mapping-controls__disclosure {
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.mapping-controls__summary {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  color: var(--color-pine);
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+.mapping-controls__summary::-webkit-details-marker {
+  display: none;
+}
+
+.mapping-controls__summary:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+.mapping-controls__chevron {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  transition: transform 150ms ease;
+}
+
+.mapping-controls__disclosure[open] .mapping-controls__chevron {
+  transform: rotate(180deg);
+}
+
+.mapping-controls__settings {
+  display: grid;
+  max-height: min(65dvh, 38rem);
+  gap: 0.875rem;
+  overflow-y: auto;
+  border-top: 1px solid var(--color-line);
+  padding: 0.875rem;
+}
+
+.mapping-controls__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.mapping-controls__range-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.mapping-controls__range-heading output {
+  color: var(--color-pine);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.mapping-controls__label {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.mapping-controls__select {
+  width: 100%;
+  min-height: 3rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+  padding: 0.625rem 0.75rem;
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.mapping-controls__range {
+  width: 100%;
+  min-height: 2rem;
+  accent-color: var(--color-pine);
+}
+
+.mapping-controls__check {
+  display: flex;
+  min-height: 3rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.mapping-controls__check input {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  margin-top: 0.125rem;
+  accent-color: var(--color-pine);
+}
+
+.mapping-controls__check-copy {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.mapping-controls__help {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.mapping-actions {
+  position: absolute;
+  inset-inline-start: 1rem;
+  bottom: 1rem;
+  z-index: var(--z-content-popover);
+  display: flex;
+  width: min(42rem, calc(100% - 2rem));
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mapping-actions__button {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+  background: var(--color-surface);
+  padding: 0.625rem 1rem;
+  color: var(--color-pine);
+  box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    border-color 150ms ease;
+}
+
+.mapping-actions__button:hover:not(:disabled) {
+  background: var(--color-canvas);
+}
+
+.mapping-actions__button[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-surface);
+}
+
+.mapping-actions__button:focus-visible,
+.mapping-actions__poi-select:focus-visible,
+.mapping-controls__select:focus-visible,
+.mapping-controls__range:focus-visible,
+.mapping-controls__check input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.mapping-actions__button:disabled,
+.mapping-actions__poi-select:disabled,
+.mapping-controls__select:disabled,
+.mapping-controls__range:disabled,
+.mapping-controls__check input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mapping-actions__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+}
+
+.mapping-actions__poi-picker {
+  position: relative;
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+}
+
+.mapping-actions__poi-picker::after {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 1.125rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  transform: translateY(-70%) rotate(45deg);
+  border: solid currentColor;
+  border-width: 0 2px 2px 0;
+  content: '';
+  pointer-events: none;
+}
+
+.mapping-actions__poi-select {
+  width: min(17rem, calc(100vw - 8rem));
+  min-height: 3rem;
+  appearance: none;
+  border: 1px solid var(--color-line);
+  border-radius: 9999px;
+  background: var(--color-surface);
+  padding: 0.625rem 3rem 0.625rem 1rem;
+  color: var(--color-pine);
+  box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.mapping-actions__poi-select:hover:not(:disabled) {
+  background: var(--color-canvas);
+}
+
+.mapping-controls__error {
+  max-width: 24rem;
+  margin: 0;
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+  padding: 0.75rem;
+  color: var(--color-ink);
+  box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapping-controls__chevron,
+  .mapping-actions__button,
+  .mapping-actions__poi-select {
+    transition: none;
+  }
+}

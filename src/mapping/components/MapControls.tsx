@@ -1,0 +1,258 @@
+/**
+  File: MapControls.tsx | Author: Chace Nielson
+  Date Created: Oct 30, 2026
+  Date Updated: Oct 30, 2026 - CN - Support the full camera pitch range.
+
+  Description:
+  - Render accessible controls for map appearance and camera settings.
+
+  Usage:
+  - Rendered in the explore-map heading panel from AlbertaMap state.
+
+  Notes:
+  - Map behavior and settings remain owned by AlbertaMap.
+ */
+import { useId } from 'react'
+import { useTranslation } from 'react-i18next'
+import { BASEMAP_STYLES } from '../map-settings/baseMapSettings'
+import { ZOOM_MAX, ZOOM_MIN } from '../map-settings/mapSettings'
+import {
+  MAX_CAMERA_PITCH,
+  TERRAIN_EXAGGERATION_MAX,
+  TERRAIN_EXAGGERATION_MIN,
+} from '../map-settings/terrainSettings'
+import { useMapControls } from './MapControlsContext'
+
+export function MapControls() {
+  const controls = useMapControls()
+  const {
+    hasMapError,
+    isMapReady,
+    isStyleLoading,
+    isTerrainEnabled,
+    isTerrainTransitioning,
+    terrainExaggeration,
+    basemapStyleId,
+    isHillshadeEnabled,
+    isSatelliteEnabled,
+    isPoiLayerEnabled,
+    cameraPitch,
+    cameraZoom,
+    onTerrainExaggerationChange,
+    onBasemapStyleChange,
+    onHillshadeChange,
+    onSatelliteChange,
+    onPoiLayerChange,
+    onCameraPitchChange,
+    onCameraZoomChange,
+  } = controls
+  const { t } = useTranslation('mapping')
+  const basemapSelectId = useId()
+  const basemapHelpId = useId()
+  const exaggerationId = useId()
+  const exaggerationHelpId = useId()
+  const hillshadeId = useId()
+  const satelliteId = useId()
+  const poiLayerId = useId()
+  const pitchId = useId()
+  const zoomId = useId()
+  const isDisabled = !isMapReady || isStyleLoading
+  const isTerrainControlDisabled = isDisabled || isTerrainTransitioning
+
+  return (
+    <section className="mapping-controls" aria-label={t('view.controls')}>
+      {hasMapError && (
+        <p className="mapping-controls__error" role="alert">
+          {t('terrain.loadError')}
+        </p>
+      )}
+
+      <details className="mapping-controls__disclosure">
+        <summary className="mapping-controls__summary">
+          {t('view.title')}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="mapping-controls__chevron"
+          >
+            <path d="m5 7.5 5 5 5-5" />
+          </svg>
+        </summary>
+
+        <div className="mapping-controls__settings">
+          <div className="mapping-controls__field">
+            <label
+              className="mapping-controls__label"
+              htmlFor={basemapSelectId}
+            >
+              {t('view.basemapLabel')}
+            </label>
+            <select
+              id={basemapSelectId}
+              className="mapping-controls__select"
+              value={basemapStyleId}
+              disabled={isDisabled}
+              aria-describedby={basemapHelpId}
+              onChange={(event) =>
+                onBasemapStyleChange(event.currentTarget.value)
+              }
+            >
+              {BASEMAP_STYLES.map((style) => (
+                <option key={style.id} value={style.id}>
+                  {t(style.labelKey)}
+                </option>
+              ))}
+            </select>
+            <p id={basemapHelpId} className="mapping-controls__help">
+              {t('view.basemapHelp')}
+            </p>
+          </div>
+
+          <label className="mapping-controls__check" htmlFor={hillshadeId}>
+            <input
+              id={hillshadeId}
+              type="checkbox"
+              checked={isHillshadeEnabled}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onHillshadeChange(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.hillshadeLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.hillshadeHelp')}
+              </span>
+            </span>
+          </label>
+
+          <label className="mapping-controls__check" htmlFor={poiLayerId}>
+            <input
+              id={poiLayerId}
+              type="checkbox"
+              checked={isPoiLayerEnabled}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onPoiLayerChange(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.poiLayerLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.poiLayerHelp')}
+              </span>
+            </span>
+          </label>
+
+          <label className="mapping-controls__check" htmlFor={satelliteId}>
+            <input
+              id={satelliteId}
+              type="checkbox"
+              checked={isSatelliteEnabled}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onSatelliteChange(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.satelliteLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.satelliteHelp')}
+              </span>
+            </span>
+          </label>
+
+          <div className="mapping-controls__field">
+            <div className="mapping-controls__range-heading">
+              <label
+                className="mapping-controls__label"
+                htmlFor={exaggerationId}
+              >
+                {t('view.exaggerationLabel')}
+              </label>
+              <output htmlFor={exaggerationId}>
+                {t('view.exaggerationValue', { value: terrainExaggeration })}
+              </output>
+            </div>
+            <input
+              id={exaggerationId}
+              className="mapping-controls__range"
+              type="range"
+              min={TERRAIN_EXAGGERATION_MIN}
+              max={TERRAIN_EXAGGERATION_MAX}
+              step="1"
+              value={terrainExaggeration}
+              disabled={isDisabled}
+              aria-describedby={exaggerationHelpId}
+              onChange={(event) =>
+                onTerrainExaggerationChange(Number(event.currentTarget.value))
+              }
+            />
+            <p id={exaggerationHelpId} className="mapping-controls__help">
+              {t('view.exaggerationHelp')}
+            </p>
+          </div>
+
+          <div className="mapping-controls__field">
+            <div className="mapping-controls__range-heading">
+              <label className="mapping-controls__label" htmlFor={pitchId}>
+                {t('view.pitchLabel')}
+              </label>
+              <output htmlFor={pitchId}>
+                {t('view.pitchValue', { value: cameraPitch })}
+              </output>
+            </div>
+            <input
+              id={pitchId}
+              className="mapping-controls__range"
+              type="range"
+              min="0"
+              max={MAX_CAMERA_PITCH}
+              step="5"
+              value={cameraPitch}
+              disabled={isTerrainControlDisabled || !isTerrainEnabled}
+              onChange={(event) =>
+                onCameraPitchChange(Number(event.currentTarget.value))
+              }
+            />
+            <p className="mapping-controls__help">{t('view.pitchHelp')}</p>
+          </div>
+
+          <div className="mapping-controls__field">
+            <div className="mapping-controls__range-heading">
+              <label className="mapping-controls__label" htmlFor={zoomId}>
+                {t('view.zoomLabel')}
+              </label>
+              <output htmlFor={zoomId}>
+                {t('view.zoomValue', { value: cameraZoom })}
+              </output>
+            </div>
+            <input
+              id={zoomId}
+              className="mapping-controls__range"
+              type="range"
+              min={ZOOM_MIN}
+              max={ZOOM_MAX}
+              step="1"
+              value={cameraZoom}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onCameraZoomChange(Number(event.currentTarget.value))
+              }
+            />
+            <p className="mapping-controls__help">{t('view.zoomHelp')}</p>
+          </div>
+        </div>
+      </details>
+    </section>
+  )
+}
