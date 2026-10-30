@@ -7,7 +7,7 @@
   - Show the Alberta map with information for the selected module.
 
   Usage:
-  - Rendered at /expeditions/modules/:moduleId/explore.
+  - Rendered at /expeditions/:moduleId/explore.
 
   Notes:
   - Module-specific map settings and activity navigation are not connected yet.

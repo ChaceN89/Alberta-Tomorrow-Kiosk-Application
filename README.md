@@ -19,7 +19,7 @@ npm run dev
 ```
 
 Open the local URL printed by Vite. The example is at
-`/modules/foxes-of-alberta-test`. The tracked `.env.development` enables development-only
+`/expeditions/foxes-of-alberta-test`. The tracked `.env.development` enables development-only
 visual testing tools during `npm run dev`; do not put secrets in Vite environment
 files because `VITE_` variables are included in client code.
 Install the recommended VS Code Prettier and ESLint extensions; the committed
@@ -57,8 +57,9 @@ src/
 ```
 
 React Router owns navigation. The registry supplies home-page metadata and
-lazy-loaded activities. Each `/modules/<id>` route shows module details and a
-launch action; activities open at `/modules/<id>/expedition`. Reusable components
+lazy-loaded activities. Each `/expeditions/<id>` route shows module details;
+activities open at `/expeditions/<id>/activity`, and maps open at
+`/expeditions/<id>/explore`. Reusable components
 belong in `src/components/`; module-specific activities, components, and data
 belong in their own `src/modules/<module-id>/` folder. Modules can compose
 shared components without sharing activity-specific state or configuration.
@@ -111,7 +112,7 @@ replace it with real asset or data loading when those resources exist. The
 activity route also has a `Suspense` loading fallback, and the application error
 boundary handles rendering or activity-download failures. Unknown page URLs show
 a playful 404 with an Alberta fun fact; missing modules or invalid paths beneath
-`/modules/` show a module-specific recovery message. English is the initial
+`/expeditions/<id>/` show a module-specific recovery message. English is the initial
 language; switching to French updates the entire interface and document language
 without resetting the current activity. A page reload resets language and
 activity state, but the expedition journal is kept (see below).
@@ -361,7 +362,7 @@ export default function LandUse({
         </button>
       )}
 
-      <Link to={`/modules/${moduleId}`} className="button-secondary">
+      <Link to={`/expeditions/${moduleId}`} className="button-secondary">
         {t('backToOverview')}
       </Link>
     </section>
@@ -506,9 +507,10 @@ There is no automated test framework yet. Before adding a module, manually check
 - Home cards and navigation at desktop and tablet sizes.
 - Both languages on home, in the activity, and on the not-found page.
 - Incorrect and correct answers, reset, return home, and browser back/forward.
-- Direct loading and refreshing `/modules/foxes-of-alberta-test` and
-  `/modules/foxes-of-alberta-test/expedition`.
-- Unknown URLs and module IDs, such as `/missing` and `/modules/missing`.
+- Direct loading and refreshing `/expeditions/foxes-of-alberta-test`,
+  `/expeditions/foxes-of-alberta-test/activity`, and
+  `/expeditions/foxes-of-alberta-test/explore`.
+- Unknown URLs and module IDs, such as `/missing` and `/expeditions/missing`.
 - Keyboard navigation, focus visibility, and the skip-to-content link.
 - Loading feedback with a delayed activity request, and error recovery with a
   failed activity request (browser developer tools can simulate these).
@@ -518,7 +520,7 @@ There is no automated test framework yet. Before adding a module, manually check
 Build with `npm ci && npm run build` and serve `dist/` from the site root using a
 static host. **Configure an SPA fallback:** requests that do not match static
 files must serve `index.html` with a successful response, so direct navigation to
-`/modules/foxes-of-alberta-test/expedition` works. For example, an nginx location can use
+`/expeditions/foxes-of-alberta-test/activity` works. For example, an nginx location can use
 `try_files $uri $uri/ /index.html;`. Keep real asset requests working normally.
 Vite's development/preview servers provide the fallback locally; `npm run preview`
 is not a production server.

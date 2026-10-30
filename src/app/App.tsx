@@ -63,13 +63,17 @@ export function App() {
                         <Routes>
                           <Route path="explore" element={exploreMapPage} />
                           <Route
-                            path="expeditions/modules/:moduleId/explore"
+                            path="expeditions/:moduleId/explore"
                             element={exploreMapPage}
                           />
                           <Route element={<Layout />}>
                             <Route index element={<HomePage />} />
                             <Route
-                              path="expeditions/modules/:moduleId/*"
+                              path="expeditions/modules/*"
+                              element={<NotFound />}
+                            />
+                            <Route
+                              path="expeditions/:moduleId/*"
                               element={<ModulePage />}
                             />
                             <Route path="*" element={<NotFound />} />

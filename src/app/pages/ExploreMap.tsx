@@ -7,7 +7,7 @@
   - Route the shared explore page to the default or selected module map.
 
   Usage:
-  - Rendered by /explore and /expeditions/modules/:moduleId/explore.
+  - Rendered by /explore and /expeditions/:moduleId/explore.
 
   Notes:
   - Map rendering and module map details live in src/mapping.

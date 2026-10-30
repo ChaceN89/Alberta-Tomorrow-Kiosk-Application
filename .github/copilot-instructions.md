@@ -8,7 +8,8 @@
   `src/module-tools/`; modules supply content and tools handle display.
 - Register activities in `src/modules/registry.ts` using `LearningModule` metadata
   and `React.lazy`. Export each activity component as default. The registry drives
-  home cards and `/modules/:moduleId`; don't add a separate route per activity.
+  home cards and `/expeditions/:moduleId`; activity and map pages use the
+  `/activity` and `/explore` suffixes under that route.
 - Put all interface copy, including accessible labels, in both
   `src/locales/en/translation.json` and `src/locales/fr/translation.json`. Use
   `useTranslation`; English resources define typed keys. Preserve key parity.
