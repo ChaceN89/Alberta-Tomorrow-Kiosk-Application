@@ -21,6 +21,8 @@ import type { MapRef } from 'react-map-gl/maplibre'
 import * as maplibregl from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { MapControlsContext } from './components/MapControlsContext'
+import { FlightPlaneLayer } from './flyover/components/FlightPlaneLayer'
+import { FlyoverControlPanel } from './flyover/components/FlyoverControlPanel'
 import { MapPoiClusterMarker } from './components/MapPoiClusterMarker'
 import { MapPoiMarker, type MapPoi } from './components/MapPoiMarker'
 import { MapPoiSelector } from './components/MapPoiSelector'
@@ -30,6 +32,7 @@ import {
   isDefaultPoiId,
   POI_NAVIGATION_DURATION,
 } from './map-settings/defaultPOISettings'
+import { FLYOVER_MARKER_UPDATE_INTERVAL } from './map-settings/flyoverSettings'
 import {
   DEFAULT_POI_CLUSTER_RADIUS,
   POI_CLUSTER_ZOOM_OVERSHOOT,
@@ -80,6 +83,7 @@ export function AlbertaMap({
   const startupMapGate = useAppStartupMapGate()
   const {
     controls,
+    flyover,
     mapRef,
     mapInstance,
     initialMapView,
@@ -117,7 +121,7 @@ export function AlbertaMap({
 
         return {
           id: poi.id,
-          coordinates: poi.view.center,
+          coordinates: poi.location,
           title,
           info: descriptionKey ? (
             <div className="space-y-4">
@@ -175,9 +179,13 @@ export function AlbertaMap({
     startupMapGate,
   ])
 
+  const isFlyoverEnabled = controls.isFlyoverEnabled
+
   useEffect(() => {
     if (!mapInstance) return
 
+    let lastUpdate = 0
+    let hasSkippedUpdate = false
     const updateClusterViewport = () => {
       const { lng, lat } = mapInstance.getCenter()
       setClusterViewport({
@@ -185,14 +193,34 @@ export function AlbertaMap({
         center: [lng, lat],
       })
     }
-
-    mapInstance.on('move', updateClusterViewport)
-    return () => {
-      mapInstance.off('move', updateClusterViewport)
+    // Function: Regroup markers on every move, but only periodically while flying.
+    const handleMove = () => {
+      if (isFlyoverEnabled) {
+        const now = performance.now()
+        if (now - lastUpdate < FLYOVER_MARKER_UPDATE_INTERVAL) {
+          hasSkippedUpdate = true
+          return
+        }
+        lastUpdate = now
+      }
+      hasSkippedUpdate = false
+      updateClusterViewport()
     }
-  }, [mapInstance])
+
+    mapInstance.on('move', handleMove)
+    return () => {
+      mapInstance.off('move', handleMove)
+      if (hasSkippedUpdate) updateClusterViewport()
+    }
+  }, [isFlyoverEnabled, mapInstance])
 
   const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
+    // While flying, selecting a marker carries the plane toward it instead.
+    if (isFlyoverEnabled) {
+      controls.onFlyoverTravelTo(poi.coordinates)
+      return
+    }
+
     setActivePoiId(poi.id)
     if (isDefaultPoiId(poi.id)) {
       controls.onNavigateToPoi(poi.id)
@@ -228,6 +256,11 @@ export function AlbertaMap({
     coordinates: [number, number],
     expansionZoom: number,
   ) => {
+    if (isFlyoverEnabled) {
+      controls.onFlyoverTravelTo(coordinates)
+      return
+    }
+
     const map = mapRef.current?.getMap()
     if (!map) return
 
@@ -262,11 +295,13 @@ export function AlbertaMap({
           }}
           onError={(event) => onMapError(event.error)}
         >
-          <NavigationControl
-            position="bottom-right"
-            showCompass
-            visualizePitch
-          />
+          {!isFlyoverEnabled && (
+            <NavigationControl
+              position="bottom-right"
+              showCompass
+              visualizePitch
+            />
+          )}
           {poiGroups.map((group) => {
             if (group.type === 'cluster') {
               return (
@@ -297,11 +332,21 @@ export function AlbertaMap({
           })}
         </Map>
 
-        {!controls.isFlyoverEnabled && (
+        {!isFlyoverEnabled && (
           <MapPoiSelector
             pois={visiblePois}
             activePoiId={visibleActivePoiId}
             onSelect={navigateToPoi}
+          />
+        )}
+        {flyover.phase !== 'off' && (
+          <FlightPlaneLayer visualRef={flyover.visualRef} />
+        )}
+        {(flyover.phase === 'entering' || flyover.phase === 'flying') && (
+          <FlyoverControlPanel
+            isPaused={flyover.isPaused}
+            altitudeMeters={flyover.altitudeMeters}
+            speedMetersPerSecond={flyover.speedMetersPerSecond}
           />
         )}
         {children}

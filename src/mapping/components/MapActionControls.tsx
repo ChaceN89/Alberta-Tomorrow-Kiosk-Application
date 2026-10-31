@@ -22,6 +22,7 @@ export function MapActionControls() {
     isTerrainEnabled,
     isTerrainTransitioning,
     isFlyoverEnabled,
+    isFlyoverTransitioning,
     onToggleTerrain,
     onToggleFlyover,
   } = useMapControls()
@@ -30,6 +31,7 @@ export function MapActionControls() {
   const switchLabel = t(
     isTerrainEnabled ? 'terrain.switchTo2d' : 'terrain.switchTo3d',
   )
+  const isFlyoverDisabled = isDisabled || isFlyoverTransitioning
   const flyoverLabel = t(
     isFlyoverEnabled ? 'view.disableFlyover' : 'view.enableFlyover',
   )
@@ -78,7 +80,7 @@ export function MapActionControls() {
       <button
         type="button"
         className="mapping-actions__button mapping-actions__mode mapping-actions__flyover"
-        disabled={isDisabled}
+        disabled={isFlyoverDisabled}
         aria-label={flyoverLabel}
         aria-pressed={isFlyoverEnabled}
         onClick={onToggleFlyover}

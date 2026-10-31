@@ -30,5 +30,6 @@ export const TERRAIN_SOURCE: RasterDEMSourceSpecification = {
   tiles: ['https://tiles.mapterhorn.com/{z}/{x}/{y}.webp'],
   encoding: 'terrarium',
   tileSize: 512,
+  maxzoom: 15, // Mapterhorn has no tiles above 15; closer views reuse them.
   attribution: '<a href="https://mapterhorn.com/attribution">© Mapterhorn</a>',
 }

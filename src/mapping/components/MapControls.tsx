@@ -36,6 +36,7 @@ export function MapControls() {
     isStyleLoading,
     isTerrainEnabled,
     isTerrainTransitioning,
+    isFlyoverEnabled,
     terrainExaggeration,
     basemapStyleId,
     isHillshadeEnabled,
@@ -76,6 +77,8 @@ export function MapControls() {
   const zoomId = useId()
   const isDisabled = !isMapReady || isStyleLoading
   const isTerrainControlDisabled = isDisabled || isTerrainTransitioning
+  // The flight camera sets pitch and zoom while flyover mode is active.
+  const isFlightCameraLocked = isDisabled || isFlyoverEnabled
 
   return (
     <section
@@ -339,7 +342,11 @@ export function MapControls() {
               max={MAX_CAMERA_PITCH}
               step="5"
               value={cameraPitch}
-              disabled={isTerrainControlDisabled || !isTerrainEnabled}
+              disabled={
+                isTerrainControlDisabled ||
+                !isTerrainEnabled ||
+                isFlyoverEnabled
+              }
               onChange={(event) =>
                 onCameraPitchChange(Number(event.currentTarget.value))
               }
@@ -364,7 +371,7 @@ export function MapControls() {
               max={ZOOM_MAX}
               step="1"
               value={cameraZoom}
-              disabled={isDisabled}
+              disabled={isFlightCameraLocked}
               onChange={(event) =>
                 onCameraZoomChange(Number(event.currentTarget.value))
               }

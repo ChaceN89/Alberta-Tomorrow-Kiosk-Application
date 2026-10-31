@@ -4,7 +4,7 @@
   Date Updated: Oct 30, 2026
 
   Description:
-  - Connect map state, layer controls, terrain controls, and camera controls.
+  - Connect map state, layer, terrain, camera, and flyover controls.
 
   Usage:
   - Used by AlbertaMap to connect map events and map controls.
@@ -24,6 +24,7 @@ import {
   ZOOM_MIN,
 } from '../map-settings/mapSettings'
 import { DEFAULT_TERRAIN_PITCH } from '../map-settings/terrainSettings'
+import { useFlyoverControls } from '../flyover/hooks/useFlyoverControls'
 import { useMapCameraControls } from './useMapCameraControls'
 import { useMapLayerControls } from './useMapLayerControls'
 import { useTerrainControls } from './useTerrainControls'
@@ -35,7 +36,6 @@ export function useAlbertaMapController() {
   const [isMapReady, setIsMapReady] = useState(false)
   const [isStyleLoading, setIsStyleLoading] = useState(false)
   const [hasMapError, setHasMapError] = useState(false)
-  const [isFlyoverEnabled, setIsFlyoverEnabled] = useState(false)
 
   // Function: Log map failures and expose them to the map settings UI.
   const reportError = (error: unknown) => {
@@ -52,6 +52,15 @@ export function useAlbertaMapController() {
     isStyleLoading,
     reportError,
     clearError,
+  })
+
+  const flyoverControls = useFlyoverControls({
+    mapRef,
+    isMapReady,
+    isStyleLoading,
+    isTerrainTransitioning: terrainControls.isTerrainTransitioning,
+    applyTerrain: terrainControls.applyTerrain,
+    reportError,
   })
 
   const layerControls = useMapLayerControls({
@@ -116,7 +125,8 @@ export function useAlbertaMapController() {
     isStyleLoading,
     isTerrainEnabled: terrainControls.isTerrainEnabled,
     isTerrainTransitioning: terrainControls.isTerrainTransitioning,
-    isFlyoverEnabled,
+    isFlyoverEnabled: flyoverControls.isFlyoverEnabled,
+    isFlyoverTransitioning: flyoverControls.isFlyoverTransitioning,
     terrainExaggeration: terrainControls.terrainExaggeration,
     basemapStyleId: layerControls.basemapStyleId,
     isHillshadeEnabled: layerControls.isHillshadeEnabled,
@@ -134,12 +144,22 @@ export function useAlbertaMapController() {
     onCameraPitchChange: cameraControls.changeCameraPitch,
     onCameraZoomChange: cameraControls.changeCameraZoom,
     onToggleTerrain: terrainControls.toggleTerrain,
-    onToggleFlyover: () => setIsFlyoverEnabled((enabled) => !enabled),
+    onToggleFlyover: flyoverControls.toggleFlyover,
+    onFlyoverTravelTo: flyoverControls.travelTo,
     onNavigateToPoi: cameraControls.navigateToPoi,
+  }
+
+  const flyover = {
+    phase: flyoverControls.flyoverPhase,
+    isPaused: flyoverControls.isFlyoverPaused,
+    altitudeMeters: flyoverControls.flyoverAltitudeMeters,
+    speedMetersPerSecond: flyoverControls.flyoverSpeedMetersPerSecond,
+    visualRef: flyoverControls.flightVisualRef,
   }
 
   return {
     controls,
+    flyover,
     mapRef,
     mapInstance,
     initialMapView,

@@ -52,12 +52,19 @@
       "banff": "Banff",
       "calgary": "Calgary",
       "canmore": "Canmore",
+      "cypressHills": "Cypress Hills",
       "dinosaurProvincialPark": "Dinosaur Provincial Park",
       "drumheller": "Drumheller",
+      "dunvegan": "Historic Dunvegan",
       "edmonton": "Edmonton",
       "elkIsland": "Elk Island National Park",
+      "frankSlide": "Frank Slide",
+      "headSmashedIn": "Head-Smashed-In Buffalo Jump",
       "jasper": "Jasper",
       "lakeLouise": "Lake Louise",
+      "lesserSlaveLake": "Lesser Slave Lake",
+      "oilSandsDiscoveryCentre": "Oil Sands Discovery Centre",
+      "rockyMountainHouse": "Rocky Mountain House National Historic Site",
       "watertonLakes": "Waterton Lakes National Park",
       "woodBuffalo": "Wood Buffalo National Park",
       "writingOnStone": "Writing-on-Stone Provincial Park"
@@ -90,6 +97,28 @@
     "switchTo3d": "Switch to 3D terrain",
     "switchTo2d": "Switch to 2D map",
     "loadError": "Some map data could not load. Check your connection and reload. Technical details are available in the browser console."
+  },
+  "flyover": {
+    "title": "Flyover",
+    "panelLabel": "Flyover controls",
+    "altitude": "Altitude · {{meters}} m",
+    "speed": "Speed · {{speed}} m/s",
+    "paused": "Paused",
+    "keys": {
+      "drag": "Drag",
+      "escape": "Esc"
+    },
+    "controls": {
+      "climb": "Hold to climb",
+      "descend": "Hold to descend",
+      "left": "Steer left",
+      "right": "Steer right",
+      "drag": "Drag the map to steer",
+      "faster": "Hold to speed up",
+      "slower": "Hold to slow down",
+      "pause": "Pause or resume",
+      "exit": "Exit flyover"
+    }
   },
   "poiCycle": {
     "label": "Point of interest selector",

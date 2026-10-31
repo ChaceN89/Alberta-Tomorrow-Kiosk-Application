@@ -52,12 +52,19 @@
       "banff": "Banff",
       "calgary": "Calgary",
       "canmore": "Canmore",
+      "cypressHills": "Cypress Hills",
       "dinosaurProvincialPark": "Parc provincial Dinosaur",
       "drumheller": "Drumheller",
+      "dunvegan": "Dunvegan historique",
       "edmonton": "Edmonton",
       "elkIsland": "Parc national Elk Island",
+      "frankSlide": "Éboulement de Frank",
+      "headSmashedIn": "Précipice à bisons Head-Smashed-In",
       "jasper": "Jasper",
       "lakeLouise": "Lac Louise",
+      "lesserSlaveLake": "Petit lac des Esclaves",
+      "oilSandsDiscoveryCentre": "Centre de découverte des sables bitumineux",
+      "rockyMountainHouse": "Lieu historique national de Rocky Mountain House",
       "watertonLakes": "Parc national des Lacs-Waterton",
       "woodBuffalo": "Parc national Wood Buffalo",
       "writingOnStone": "Parc provincial Writing-on-Stone"
@@ -90,6 +97,28 @@
     "switchTo3d": "Passer au relief en 3D",
     "switchTo2d": "Passer à la carte 2D",
     "loadError": "Certaines données cartographiques n’ont pas pu être chargées. Vérifiez votre connexion et rechargez la page. Les détails techniques sont disponibles dans la console du navigateur."
+  },
+  "flyover": {
+    "title": "Survol",
+    "panelLabel": "Commandes de survol",
+    "altitude": "Altitude · {{meters}} m",
+    "speed": "Vitesse · {{speed}} m/s",
+    "paused": "En pause",
+    "keys": {
+      "drag": "Glisser",
+      "escape": "Échap"
+    },
+    "controls": {
+      "climb": "Maintenir pour monter",
+      "descend": "Maintenir pour descendre",
+      "left": "Tourner à gauche",
+      "right": "Tourner à droite",
+      "drag": "Faire glisser la carte pour tourner",
+      "faster": "Maintenir pour accélérer",
+      "slower": "Maintenir pour ralentir",
+      "pause": "Pause ou reprise",
+      "exit": "Quitter le survol"
+    }
   },
   "poiCycle": {
     "label": "Sélecteur de lieu d’intérêt",
