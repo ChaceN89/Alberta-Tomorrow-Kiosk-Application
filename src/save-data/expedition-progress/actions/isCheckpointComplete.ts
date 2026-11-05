@@ -20,5 +20,6 @@ export function isCheckpointComplete(
   moduleId: string,
   checkpointId: string,
 ): boolean {
+  //checks to see if the modules given checkpoint is complete from the progress object, and the module exists and if that modules specific checkpoint has been marked complete.
   return Boolean(progress[moduleId]?.checkpoints[checkpointId])
 }

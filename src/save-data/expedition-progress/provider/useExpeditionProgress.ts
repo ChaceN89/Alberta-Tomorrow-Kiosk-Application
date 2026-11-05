@@ -27,11 +27,11 @@ export type ExpeditionProgressContextValue = {
   subscribeToChanges: (
     listener: (change: ExpeditionProgressChange) => void,
   ) => () => void
-  startExpedition: (moduleId: string) => void
-  completeCheckpoint: (moduleId: string, checkpointId: string) => void
-  isCheckpointComplete: (moduleId: string, checkpointId: string) => boolean
-  getCompletedCheckpoints: (moduleId: string) => readonly string[]
-  getExpeditionProgress: (module: LearningModule) => ExpeditionProgress
+  startExpedition: (moduleId: string) => void // Mark the start of an expedition for the given module.
+  completeCheckpoint: (moduleId: string, checkpointId: string) => void // Mark the specified checkpoint as complete for the given module.
+  isCheckpointComplete: (moduleId: string, checkpointId: string) => boolean // Check if the specified checkpoint is complete for the given module.
+  getCompletedCheckpoints: (moduleId: string) => readonly string[] // Get a list of completed checkpoints for the given module.
+  getExpeditionProgress: (module: LearningModule) => ExpeditionProgress // Get the overall expedition progress for the given module.
 }
 
 // Create the expedition progress context with a default value of null.

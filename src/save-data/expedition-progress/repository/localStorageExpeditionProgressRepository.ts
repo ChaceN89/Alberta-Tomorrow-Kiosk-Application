@@ -18,6 +18,7 @@ import type {
   ExpeditionProgressRepository,
 } from './ExpeditionProgressRepository'
 
+//
 const STORAGE_KEY = 'alberta-tomorrow:expedition-progress'
 const PREVIOUS_STORAGE_KEY = 'alberta-expeditions:journal'
 const STORAGE_VERSION = 1
@@ -31,6 +32,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function parseCheckpoints(value: unknown): Record<string, string> {
   if (!isRecord(value)) return {}
 
+  // Filter out checkpoint entries whose timestamps are not strings.
   return Object.fromEntries(
     Object.entries(value).filter(
       (entry): entry is [string, string] => typeof entry[1] === 'string',
@@ -42,12 +44,14 @@ function parseCheckpoints(value: unknown): Record<string, string> {
 function parseProgress(raw: string): ExpeditionProgressData {
   let parsed: unknown
 
+  // attempt to parse the raw JSON string
   try {
     parsed = JSON.parse(raw)
   } catch {
     return {}
   }
 
+  // validate the parsed structure and version and in case of any mismatch, return an empty object.
   if (
     !isRecord(parsed) ||
     parsed.version !== STORAGE_VERSION ||
@@ -56,8 +60,10 @@ function parseProgress(raw: string): ExpeditionProgressData {
     return {}
   }
 
+  // empty object to accumulate validated expedition progress entries.
   const progress: ExpeditionProgressData = {}
 
+  // loop through each module's saved expedition data and validate it.
   for (const [moduleId, saved] of Object.entries(parsed.expeditions)) {
     if (!isRecord(saved) || typeof saved.startedAt !== 'string') continue
 

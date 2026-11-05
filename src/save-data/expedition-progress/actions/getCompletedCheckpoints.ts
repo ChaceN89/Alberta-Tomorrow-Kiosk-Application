@@ -19,5 +19,6 @@ export function getCompletedCheckpoints(
   progress: ExpeditionProgressData,
   moduleId: string,
 ): readonly string[] {
+  // search for the completed checkpoints for the given moduleId and get its checkpoint ids
   return Object.keys(progress[moduleId]?.checkpoints ?? {})
 }

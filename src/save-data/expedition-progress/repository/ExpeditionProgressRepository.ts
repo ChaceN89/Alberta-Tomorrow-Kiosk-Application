@@ -14,11 +14,13 @@
  */
 import type { ExpeditionProgressData } from '../types'
 
+// Result of loading expedition progress, including availability status.
 export type ExpeditionProgressLoadResult = {
   progress: ExpeditionProgressData
   isAvailable: boolean
 }
 
+// Interface defining the contract for an expedition progress repository.
 export interface ExpeditionProgressRepository {
   load: () => Promise<ExpeditionProgressLoadResult>
   save: (progress: ExpeditionProgressData) => Promise<boolean>
