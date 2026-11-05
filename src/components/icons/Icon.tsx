@@ -1,7 +1,7 @@
 /**
   File: Icon.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Provide shared SVG defaults for general-purpose interface icons.
@@ -15,9 +15,16 @@
 type IconProps = {
   className: string
   children: React.ReactNode
+  strokeWidth?: number
+  strokeLinecap?: 'butt' | 'round' | 'square'
 }
 
-export function Icon({ className, children }: IconProps) {
+export function Icon({
+  className,
+  children,
+  strokeWidth = 2,
+  strokeLinecap = 'round',
+}: IconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -26,8 +33,8 @@ export function Icon({ className, children }: IconProps) {
       className={className}
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
+      strokeWidth={strokeWidth}
+      strokeLinecap={strokeLinecap}
       strokeLinejoin="round"
     >
       {children}

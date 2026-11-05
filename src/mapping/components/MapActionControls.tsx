@@ -13,6 +13,7 @@
   - Map actions are provided by AlbertaMap through MapControlsContext.
  */
 import { useTranslation } from 'react-i18next'
+import { MapIcon } from '@/components/icons/MapIcon'
 import { EXPLORE_MAP_TUTORIAL_FINISH_REQUEST } from '@/tutorials/specific-tutorials/explore-map/exploreMapTutorialEvents'
 import { useMapControls } from './MapControlsContext'
 
@@ -48,18 +49,7 @@ export function MapActionControls() {
           onClick={onToggleTerrain}
         >
           {isTerrainEnabled ? (
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinejoin="round"
-              className="mapping-actions__icon"
-            >
-              <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z" />
-              <path d="M9 3v15m6-12v15" />
-            </svg>
+            <MapIcon className="mapping-actions__icon" />
           ) : (
             <svg
               aria-hidden="true"
@@ -90,18 +80,7 @@ export function MapActionControls() {
         }}
       >
         {isFlyoverEnabled ? (
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-            className="mapping-actions__icon"
-          >
-            <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z" />
-            <path d="M9 3v15m6-12v15" />
-          </svg>
+          <MapIcon className="mapping-actions__icon" />
         ) : (
           <svg
             aria-hidden="true"

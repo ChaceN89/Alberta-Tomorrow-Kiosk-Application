@@ -14,6 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { MapIcon } from '@/components/icons/MapIcon'
 import { ModuleCard } from '@/components/modules/ModuleCard'
 import { visibleModules } from '@/modules/registry'
 
@@ -30,18 +31,7 @@ export function HomePage() {
           className="button gap-3 px-6 py-4 text-lg shadow-lg transition-transform hover:-translate-y-0.5 motion-reduce:transform-none"
           to="/explore"
         >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-            className="size-6"
-          >
-            <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z" />
-            <path d="M9 3v15m6-12v15" />
-          </svg>
+          <MapIcon className="size-6" />
           {t('exploreAlberta')}
         </Link>
       </div>
