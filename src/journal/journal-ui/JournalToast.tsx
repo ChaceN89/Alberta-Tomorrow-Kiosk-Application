@@ -1,16 +1,16 @@
 /**
   File: JournalToast.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Show a journal update with its progress mountain and a journal icon action.
 
   Usage:
-  - Rendered by JournalProvider when an expedition starts or records a checkpoint.
+  - Rendered by the journal progress notification flow.
 
   Notes:
-  - None.
+  - The action opens the journal directly to the expedition that changed.
  */
 import { useTranslation } from 'react-i18next'
 import { JournalIcon } from '@/components/icons/JournalIcon'

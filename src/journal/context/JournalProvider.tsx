@@ -1,7 +1,7 @@
 /**
   File: JournalProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Control journal navigation and present notifications for progress changes.
@@ -10,7 +10,7 @@
   - Wrap application routes inside ExpeditionProgressProvider.
 
   Notes:
-  - Saved expedition progress is owned by the save-data feature.
+  - Owns journal UI state; checkpoint progress and persistence stay in save-data.
  */
 import {
   useCallback,
@@ -22,7 +22,7 @@ import {
 } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { JournalToast } from './components/JournalToast'
+import { JournalToast } from '../journal-ui/JournalToast'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { ExpeditionProgressChange } from '@/save-data/types'
@@ -35,12 +35,22 @@ type JournalProviderProps = {
 }
 
 export function JournalProvider({ children }: JournalProviderProps) {
+  // Translation, system for the journal provider
   const { t, i18n } = useTranslation('journal')
+
+  // Expedition progress system
   const { progress, subscribeToChanges } = useExpeditionProgress()
+
+  // Journal open state
   const [isOpen, setIsOpen] = useState(false)
+
+  // Active module ID
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null)
+
+  // Journal toast sequence
   const journalToastSequence = useRef(0)
 
+  // Open the journal and optionally set the active module- this can be called from any part of the application
   const openJournal = useCallback(
     (moduleId?: string) => {
       if (moduleId !== undefined) {
@@ -57,6 +67,12 @@ export function JournalProvider({ children }: JournalProviderProps) {
     [progress],
   )
 
+  // Close the journal
+  const closeJournal = useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
+  // Show a toast notification for journal progress changes - Journal Update or other relevant events
   const showJournalToast = useCallback(
     (module: LearningModule, change: ExpeditionProgressChange) => {
       const title = i18n.t('title', { ns: module.translationNamespace })
@@ -68,6 +84,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
             : t('toastUpdated')
       const toastId = `journal-${journalToastSequence.current++}`
 
+      // Display the toast notification using the JournalToast component
       toast(
         <JournalToast
           message={message}
@@ -87,6 +104,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
     [i18n, openJournal, t],
   )
 
+  // Subscribe to expedition progress changes and show journal toasts accordingly
   useEffect(
     () =>
       subscribeToChanges((change) => {
@@ -106,6 +124,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
     [showJournalToast, subscribeToChanges],
   )
 
+  // Select an expedition module to view in the journal
   const selectExpedition = useCallback((moduleId: string | null) => {
     setActiveModuleId(
       moduleId !== null && visibleModules.some((entry) => entry.id === moduleId)
@@ -114,10 +133,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
     )
   }, [])
 
-  const closeJournal = useCallback(() => {
-    setIsOpen(false)
-  }, [])
-
+  // Memoize the context value to avoid unnecessary re-renders
   const contextValue = useMemo(
     () => ({
       isOpen,
@@ -129,6 +145,7 @@ export function JournalProvider({ children }: JournalProviderProps) {
     [activeModuleId, closeJournal, isOpen, openJournal, selectExpedition],
   )
 
+  // a wrapper around the children components providing the journal context
   return (
     <JournalContext.Provider value={contextValue}>
       {children}

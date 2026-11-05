@@ -1,7 +1,7 @@
 /**
   File: JournalPageSwitcher.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Navigate between the journal title page and started expedition pages.
@@ -10,7 +10,7 @@
   - Rendered in the JournalModal dialog header.
 
   Notes:
-  - None.
+  - The title page is included as the first page, before started expeditions.
  */
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +20,7 @@ import {
   ExpeditionStatusText,
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
-import { useJournal } from '@/journal/useJournal'
+import { useJournal } from '@/journal/context/useJournal'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import type { LearningModule } from '@/modules/types'
 

@@ -15,7 +15,7 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useJournal } from '@/journal/useJournal'
+import { useJournal } from '@/journal/context/useJournal'
 import { getModuleOverviewPath } from '@/modules/routes'
 import { buildQuizQuestions } from '@/module-tools/quiz-system/buildQuizQuestions'
 import { Quiz } from '@/module-tools/quiz-system/Quiz'

@@ -126,7 +126,7 @@ accomplished or learned. Activities receive `completedCheckpoints` and a
 only need checkpoint access can use `ModuleCheckpointProps`. Recording a
 checkpoint saves it in browser
 `localStorage` (key `alberta-expeditions:journal`, via
-`src/journal/journalStorage.ts`) and shows its own toast, so rapid journal
+`src/save-data/expeditionProgressStorage.ts`) and shows its own toast, so rapid journal
 events remain separate instead of overwriting one another. Each expedition also has a
 **started** flag (`startedAt`): opening a module's activity starts it, and
 recording any checkpoint starts it too, for example from a map or 3D scene via
@@ -155,7 +155,8 @@ Journal text lives in each module's locale file under `journal.summary` and
 `journal.json`. A journal entry can also include an optional localized `section`
 label, such as `Media` or `Quiz`, to group consecutive checkpoints under a
 heading. Omit `section` for entries that should remain ungrouped. Keep section
-labels and entry ids aligned in both locale files. Modules can optionally map
+labels and entry ids aligned in both locale files, and keep each entry id aligned
+with that module's checkpoint list. Modules can optionally map
 checkpoint ids to imported image URLs with `journalEntryImages`; add a localized
 `imageAlt` to the corresponding journal entry. A pinned image is a button: it
 untilts on hover and opens the shared media viewer, using the entry's title,
@@ -163,7 +164,14 @@ summary, and `imageAlt`. To open something else, add the checkpoint id to
 `journalEntryViewers` with a message or image definition (translation keys, as
 in `messages.ts`); a message entry usually pins a generic note picture. Entries
 without an image stay text-only. Storage is local only; replace
-`journalStorage.ts` to sync with save data later.
+`src/save-data/expeditionProgressStorage.ts` to sync with save data later.
+
+The title page UI lives in `src/journal/title-page/`. Add player-facing previews
+to `player-journal-assets/PlayerJournalAssetList.tsx` by supplying an id, localized
+title and description, preview image, accessible button label, and an `onOpen`
+callback. The callback receives the preview button as its origin, so media
+viewers can animate from it. `ViewablePlayerJournalAsset` owns the shared preview
+card layout; keep asset-specific opening behavior in the title-page asset list.
 
 #### Message images
 

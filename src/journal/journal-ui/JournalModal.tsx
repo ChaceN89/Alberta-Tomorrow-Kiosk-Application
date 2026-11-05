@@ -1,7 +1,7 @@
 /**
   File: JournalModal.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Show the journal dialog and coordinate its active page.
@@ -10,23 +10,30 @@
   - Rendered by App inside the journal and media-viewer providers.
 
   Notes:
-  - None.
+  - Coordinates native dialog lifecycle, page selection, and close animation.
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useJournal } from '@/journal/useJournal'
+import { useJournal } from '@/journal/context/useJournal'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
 import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
 import { visibleModules } from '@/modules/registry'
-import { ExpeditionEntry } from './ExpeditionEntry'
+import { ExpeditionEntry } from '../expedition-entry/ExpeditionEntry'
 import { JournalPageSwitcher } from './JournalPageSwitcher'
-import { JournalTitlePage } from './JournalTitlePage'
+import { JournalTitlePage } from '@/journal/title-page/JournalTitlePage'
 
 export function JournalModal() {
+  // translation hook
   const { t } = useTranslation('journal')
+
+  // the opening and closing state of the journal modal
   const { isOpen, closeJournal, activeModuleId } = useJournal()
   const { isOpen: isMediaViewerOpen } = useMediaViewer()
+
+  // expedition progress
   const { isStorageAvailable, getExpeditionProgress } = useExpeditionProgress()
+
+  //dialog references
   const dialogRef = useRef<HTMLDialogElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
@@ -36,6 +43,7 @@ export function JournalModal() {
   const startedModules = visibleModules.filter(
     (entry) => getExpeditionProgress(entry).status !== 'notStarted',
   )
+  // combine the title page and started modules into a single pages array
   const pages = [null, ...startedModules]
   const activeIndex = Math.max(
     0,
@@ -44,6 +52,7 @@ export function JournalModal() {
   const activePage = pages[activeIndex] ?? null
   const entryCount = startedModules.length
 
+  // the index of the currently active page within the pages array
   useEffect(() => {
     const dialog = dialogRef.current
 
@@ -58,6 +67,7 @@ export function JournalModal() {
     }
   }, [isMediaViewerOpen, isOpen])
 
+  // prevent background scrolling when the journal modal is open
   useEffect(() => {
     if (!isOpen || isMediaViewerOpen) return
 
@@ -71,10 +81,12 @@ export function JournalModal() {
     }
   }, [isMediaViewerOpen, isOpen])
 
+  // scroll to the top of the content when the active page changes
   useEffect(() => {
     contentRef.current?.scrollTo({ top: 0 })
   }, [activePage?.id])
 
+  // handle the closing animation and state of the journal modal
   const handleClose = () => {
     if (isClosing) return
 

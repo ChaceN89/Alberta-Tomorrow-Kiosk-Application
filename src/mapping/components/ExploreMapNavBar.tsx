@@ -16,7 +16,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { JournalIcon } from '@/components/icons/JournalIcon'
-import { useJournal } from '@/journal/useJournal'
+import { useJournal } from '@/journal/context/useJournal'
 import { getModuleOverviewPath } from '@/modules/routes'
 
 type ExploreMapNavigationProps = {

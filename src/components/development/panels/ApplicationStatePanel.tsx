@@ -14,7 +14,7 @@
  */
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useJournal } from '@/journal/useJournal'
+import { useJournal } from '@/journal/context/useJournal'
 import { DevPanel } from './DevPanel'
 import { StatePreview, type PreviewState } from './StatePreview'
 import { ToastPreviewGroups } from './ToastPreviewGroups'

@@ -1,7 +1,7 @@
 /**
   File: useJournal.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Define the expedition journal context and consumer hook.
@@ -10,7 +10,7 @@
   - Journal internals serve their providers or components; tutorials use their own providers.
 
   Notes:
-  - None.
+  - Throws when consumed outside JournalProvider so missing setup is explicit.
  */
 import { createContext, useContext } from 'react'
 
@@ -23,8 +23,10 @@ type JournalContextValue = {
   selectExpedition: (moduleId: string | null) => void
 }
 
+// the context for the expedition journal, providing state and actions to manage the journal's visibility and active module
 export const JournalContext = createContext<JournalContextValue | null>(null)
 
+// use this context consumer hook to access the journal state and actions within components
 export function useJournal() {
   const context = useContext(JournalContext)
 
