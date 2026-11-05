@@ -13,9 +13,12 @@
   - The non-modal coach mark leaves map POI navigation available during step one.
  */
 import { useEffect, useId, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import { markPlaneTutorialCompleted } from '@/save-data/tutorial-progress/planeTutorialStorage'
+import { TutorialPopover } from '@/tutorials/components/TutorialPopover'
+import { TutorialStepContent } from '@/tutorials/components/TutorialStepContent'
+import { useTutorialAnchorMeasurement } from '@/tutorials/hooks/useTutorialAnchorMeasurement'
+import { getSideTutorialPosition } from '@/tutorials/utils/tutorialPositioning'
 import { PLANE_TUTORIAL_START_REQUEST } from './planeTutorialEvents'
 
 type PlaneTutorialProps = {
@@ -24,20 +27,7 @@ type PlaneTutorialProps = {
   onControlsStepChange: (isControlsStep: boolean) => void
 }
 
-type CoachMarkPosition = {
-  style: CSSProperties
-  arrowTop: number
-  arrowSide: 'left' | 'right'
-}
-
 const STEP_COUNT = 2
-const VIEWPORT_MARGIN = 16
-const POPOVER_GAP = 14
-const ARROW_MARGIN = 24
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max)
-}
 
 export function PlaneTutorial({
   onFinish,
@@ -46,16 +36,28 @@ export function PlaneTutorial({
 }: PlaneTutorialProps) {
   const { t } = useTranslation('tutorials')
   const [step, setStep] = useState(0)
-  const [position, setPosition] = useState<CoachMarkPosition | null>(null)
-  const popupRef = useRef<HTMLElement>(null)
+  const popupRef = useRef<HTMLElement | null>(null)
   const titleId = useId()
   const descriptionId = useId()
   const stepId = step === 0 ? 'explore' : 'controls'
+  const anchor = step === 1 ? 'plane-controls' : null
+  const measurement = useTutorialAnchorMeasurement({
+    anchor,
+    selector: anchor ? '[data-plane-controls="true"]' : null,
+    obstructionSelector: '.map-info-panel--open',
+    popupRef,
+  })
+  const position = measurement
+    ? getSideTutorialPosition(
+        measurement.targetRect,
+        measurement.popupSize,
+        measurement.obstructionRect?.left ?? window.innerWidth - 16,
+      )
+    : null
 
   useEffect(() => {
     const restartTutorial = () => {
       setStep(0)
-      setPosition(null)
       onControlsStepChange(false)
       onPause(true)
     }
@@ -64,73 +66,6 @@ export function PlaneTutorial({
     return () =>
       window.removeEventListener(PLANE_TUTORIAL_START_REQUEST, restartTutorial)
   }, [onControlsStepChange, onPause])
-
-  useEffect(() => {
-    if (step === 0) {
-      return
-    }
-
-    let frameId = 0
-    const measure = () => {
-      const target = document.querySelector('[data-plane-controls="true"]')
-      const popup = popupRef.current
-      if (!target || !popup) return
-
-      const targetRect = target.getBoundingClientRect()
-      const popupRect = popup.getBoundingClientRect()
-      const mapInfoPanel = document.querySelector('.map-info-panel--open')
-      const mapInfoPanelLeft =
-        mapInfoPanel?.getBoundingClientRect().left ??
-        window.innerWidth - VIEWPORT_MARGIN
-      const availableRight = mapInfoPanelLeft - targetRect.right - POPOVER_GAP
-      const placeRight = availableRight >= Math.min(popupRect.width, 280)
-      const width = placeRight
-        ? Math.min(popupRect.width, availableRight)
-        : popupRect.width
-      const left = placeRight
-        ? targetRect.right + POPOVER_GAP
-        : Math.max(VIEWPORT_MARGIN, targetRect.left - POPOVER_GAP - width)
-      const top = clamp(
-        targetRect.top + targetRect.height / 2 - popupRect.height / 2,
-        VIEWPORT_MARGIN,
-        window.innerHeight - popupRect.height - VIEWPORT_MARGIN,
-      )
-
-      const nextPosition: CoachMarkPosition = {
-        style: { inset: 'auto', margin: 0, left, top, width },
-        arrowSide: placeRight ? 'left' : 'right',
-        arrowTop: clamp(
-          targetRect.top + targetRect.height / 2 - top,
-          ARROW_MARGIN,
-          popupRect.height - ARROW_MARGIN,
-        ),
-      }
-
-      setPosition((current) =>
-        current?.style.left === left &&
-        current.style.top === top &&
-        current.style.width === width &&
-        current.arrowTop === nextPosition.arrowTop
-          ? current
-          : nextPosition,
-      )
-      if (width < popupRect.width) {
-        frameId = requestAnimationFrame(measure)
-      }
-    }
-    const scheduleMeasure = () => {
-      cancelAnimationFrame(frameId)
-      frameId = requestAnimationFrame(measure)
-    }
-    const initialMeasure = window.setTimeout(measure, 0)
-
-    window.addEventListener('resize', scheduleMeasure)
-    return () => {
-      window.clearTimeout(initialMeasure)
-      cancelAnimationFrame(frameId)
-      window.removeEventListener('resize', scheduleMeasure)
-    }
-  }, [step])
 
   const next = () => {
     if (step === 0) {
@@ -154,23 +89,14 @@ export function PlaneTutorial({
   }
 
   return (
-    <section
-      ref={popupRef}
-      role="dialog"
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
-      style={
-        step === 0
-          ? undefined
-          : {
-              ...(position?.style ?? {
-                inset: 'auto',
-                margin: 0,
-                left: 0,
-                top: 0,
-              }),
-              visibility: position ? 'visible' : 'hidden',
-            }
+    <TutorialPopover
+      popupRef={popupRef}
+      titleId={titleId}
+      descriptionId={descriptionId}
+      position={step === 1 ? position : null}
+      isVisible={step === 0 || position !== null}
+      unpositionedStyle={
+        step === 1 ? { inset: 'auto', margin: 0, left: 0, top: 0 } : undefined
       }
       className={`plane-tutorial ${
         step === 0
@@ -178,30 +104,27 @@ export function PlaneTutorial({
           : 'plane-tutorial--controls plane-tutorial--anchored'
       }`}
     >
-      {step === 1 && position && (
-        <span
-          aria-hidden="true"
-          className={`plane-tutorial__arrow plane-tutorial__arrow--${position.arrowSide}`}
-          style={{ top: position.arrowTop }}
-        />
-      )}
-      <div className="plane-tutorial__content">
-        <p className="text-sm font-semibold text-muted">
-          {t('tutorialStepCount', { current: step + 1, total: STEP_COUNT })}
-        </p>
-        <h2 id={titleId}>{t(`plane.${stepId}.title`)}</h2>
-        <p id={descriptionId} className="text-muted">
-          {t(`plane.${stepId}.description`)}
-        </p>
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <button type="button" className="text-link" onClick={skip}>
-            {t('skip')}
-          </button>
-          <button type="button" className="button" onClick={next}>
-            {t(step === 0 ? 'next' : 'plane.done')}
-          </button>
-        </div>
-      </div>
-    </section>
+      <TutorialStepContent
+        titleId={titleId}
+        descriptionId={descriptionId}
+        stepLabel={t('tutorialStepCount', {
+          current: step + 1,
+          total: STEP_COUNT,
+        })}
+        title={t(`plane.${stepId}.title`)}
+        description={t(`plane.${stepId}.description`)}
+        className="p-6"
+        actions={
+          <>
+            <button type="button" className="text-link" onClick={skip}>
+              {t('skip')}
+            </button>
+            <button type="button" className="button" onClick={next}>
+              {t(step === 0 ? 'next' : 'plane.done')}
+            </button>
+          </>
+        }
+      />
+    </TutorialPopover>
   )
 }

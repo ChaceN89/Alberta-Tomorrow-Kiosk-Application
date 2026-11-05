@@ -28,12 +28,20 @@
   "exploreMap": {
     "title": "Explore the Alberta map",
     "description": "This is the map. Select a point of interest to learn about places across Alberta.",
+    "viewToggle": {
+      "title": "Switch between 2D and 3D",
+      "description": "Use this button to switch between the flat map and a raised 3D terrain view. You can change views any time."
+    },
+    "flyPlane": {
+      "title": "Take off with Fly Plane",
+      "description": "Choose Fly Plane to explore Alberta from above. Your first flight includes a short guide to choosing destinations and using the flight controls."
+    },
     "done": "Explore the map"
   },
   "plane": {
     "explore": {
       "title": "Explore Alberta",
-      "description": "Once the plane settles above the province, it pauses. Use the point-of-interest selector along the bottom to choose a place to fly to and explore. When you're ready, continue to see the flight controls."
+      "description": "Once the plane settles above the province. Use the point-of-interest selector along the bottom to choose a place to fly to and explore. When you're ready, continue to see the flight controls."
     },
     "controls": {
       "title": "Your flight controls",

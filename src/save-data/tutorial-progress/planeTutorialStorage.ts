@@ -1,3 +1,5 @@
+import { createTutorialProgressStorage } from './createTutorialProgressStorage'
+
 /**
   File: planeTutorialStorage.ts | Author: Chace Nielson
   Date Created: Nov 5, 2026
@@ -12,32 +14,22 @@
   Notes:
   - This is a separate local tutorial flag, not expedition progress.
  */
-const STORAGE_KEY = 'alberta-expeditions:plane-tutorial-completed'
 export const PLANE_TUTORIAL_STORAGE_EVENT =
   'alberta-expeditions:plane-tutorial-storage'
 
-export function hasCompletedPlaneTutorial(): boolean {
-  try {
-    return window.localStorage.getItem(STORAGE_KEY) === 'true'
-  } catch {
-    return false
-  }
+const planeTutorialStorage = createTutorialProgressStorage(
+  'alberta-expeditions:plane-tutorial-completed',
+  PLANE_TUTORIAL_STORAGE_EVENT,
+)
+
+export function hasCompletedPlaneTutorial() {
+  return planeTutorialStorage.hasCompleted()
 }
 
 export function markPlaneTutorialCompleted() {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, 'true')
-    window.dispatchEvent(new Event(PLANE_TUTORIAL_STORAGE_EVENT))
-  } catch {
-    // The tutorial still ends for this page load if browser storage is unavailable.
-  }
+  planeTutorialStorage.markCompleted()
 }
 
 export function resetPlaneTutorial() {
-  try {
-    window.localStorage.removeItem(STORAGE_KEY)
-  } catch {
-    // Storage may be unavailable.
-  }
-  window.dispatchEvent(new Event(PLANE_TUTORIAL_STORAGE_EVENT))
+  planeTutorialStorage.reset()
 }

@@ -1,7 +1,7 @@
 /**
   File: main.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Browser entry point: load translations and global styles, create the React root, and mount the app.
@@ -21,6 +21,7 @@ import '@/styles/mapping/controls.css'
 import '@/styles/mapping/flyover.css'
 import '@/styles/mapping/points-of-interest.css'
 import '@/styles/spashScreen.css'
+import '@/styles/tutorials.css'
 import './i18n'
 import { App } from './App'
 

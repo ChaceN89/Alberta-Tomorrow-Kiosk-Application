@@ -18,8 +18,8 @@ export const TERRAIN_SOURCE_ID = 'alberta-terrain-dem'
 export const HILLSHADE_LAYER_ID = 'alberta-terrain-hillshade'
 
 export const TERRAIN_EXAGGERATION_MIN = 0
-export const TERRAIN_EXAGGERATION_MAX = 6
-export const DEFAULT_TERRAIN_EXAGGERATION = 2
+export const TERRAIN_EXAGGERATION_MAX = 4
+export const DEFAULT_TERRAIN_EXAGGERATION = 1
 
 export const MAX_CAMERA_PITCH = 90
 export const DEFAULT_TERRAIN_PITCH = 60

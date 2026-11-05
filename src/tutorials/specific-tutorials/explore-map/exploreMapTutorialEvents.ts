@@ -14,6 +14,8 @@
  */
 export const EXPLORE_MAP_TUTORIAL_START_REQUEST =
   'explore-map-tutorial:start-request'
+export const EXPLORE_MAP_TUTORIAL_FINISH_REQUEST =
+  'explore-map-tutorial:finish-request'
 
 export function requestExploreMapTutorialStart() {
   window.dispatchEvent(new Event(EXPLORE_MAP_TUTORIAL_START_REQUEST))

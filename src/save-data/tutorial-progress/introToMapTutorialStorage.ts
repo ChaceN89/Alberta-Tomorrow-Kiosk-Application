@@ -1,3 +1,5 @@
+import { createTutorialProgressStorage } from './createTutorialProgressStorage'
+
 /**
   File: introToMapTutorialStorage.ts | Author: Chace Nielson
   Date Created: Nov 5, 2026
@@ -12,32 +14,22 @@
   Notes:
   - This is a separate local tutorial flag, not expedition progress.
  */
-const STORAGE_KEY = 'alberta-expeditions:intro-to-map-tutorial-completed'
 export const INTRO_TO_MAP_TUTORIAL_STORAGE_EVENT =
   'alberta-expeditions:intro-to-map-tutorial-storage'
 
-export function hasCompletedIntroToMapTutorial(): boolean {
-  try {
-    return window.localStorage.getItem(STORAGE_KEY) === 'true'
-  } catch {
-    return false
-  }
+const introToMapTutorialStorage = createTutorialProgressStorage(
+  'alberta-expeditions:intro-to-map-tutorial-completed',
+  INTRO_TO_MAP_TUTORIAL_STORAGE_EVENT,
+)
+
+export function hasCompletedIntroToMapTutorial() {
+  return introToMapTutorialStorage.hasCompleted()
 }
 
 export function markIntroToMapTutorialCompleted() {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, 'true')
-    window.dispatchEvent(new Event(INTRO_TO_MAP_TUTORIAL_STORAGE_EVENT))
-  } catch {
-    // The tutorial still ends for this page load if browser storage is unavailable.
-  }
+  introToMapTutorialStorage.markCompleted()
 }
 
 export function resetIntroToMapTutorial() {
-  try {
-    window.localStorage.removeItem(STORAGE_KEY)
-  } catch {
-    // Storage may be unavailable.
-  }
-  window.dispatchEvent(new Event(INTRO_TO_MAP_TUTORIAL_STORAGE_EVENT))
+  introToMapTutorialStorage.reset()
 }

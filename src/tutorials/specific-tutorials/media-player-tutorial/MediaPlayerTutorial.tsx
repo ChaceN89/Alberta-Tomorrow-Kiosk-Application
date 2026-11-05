@@ -1,7 +1,7 @@
 /**
   File: MediaPlayerTutorial.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Guide learners through the shared media player tutorial the first time they use it.
@@ -12,17 +12,14 @@
   Notes:
   - The backdrop blocks the page while keeping the player and tutorial actions usable.
  */
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type CSSProperties,
-} from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAudioPlayer } from '@/module-tools/media-player/hooks/useAudioPlayer'
 import { useIntroTutorial } from '@/tutorials/specific-tutorials/intro-tutorial/useIntroTutorial'
+import { TutorialPopover } from '@/tutorials/components/TutorialPopover'
+import { TutorialStepContent } from '@/tutorials/components/TutorialStepContent'
+import { useTutorialAnchorMeasurement } from '@/tutorials/hooks/useTutorialAnchorMeasurement'
+import { getVerticalTutorialPosition } from '@/tutorials/utils/tutorialPositioning'
 import {
   MEDIA_PLAYER_TUTORIAL_FINISH_REQUEST,
   MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST,
@@ -32,25 +29,9 @@ import {
   hasCompletedMediaPlayerTutorial,
   markMediaPlayerTutorialCompleted,
 } from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
-import {
-  mediaPlayerTutorialSteps,
-  type MediaPlayerTutorialAnchor,
-} from './steps'
+import { mediaPlayerTutorialSteps } from './steps'
 
-const POPUP_MARGIN = 16
-const POPUP_GAP = 14
-const ARROW_INSET = 28
 const PLAYER_TRANSITION_MS = 1300
-
-type MeasuredTutorialPosition = {
-  anchor: MediaPlayerTutorialAnchor
-  style: CSSProperties
-  arrow: { left: number; above: boolean }
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max)
-}
 
 export function MediaPlayerTutorial() {
   const { t } = useTranslation('tutorials')
@@ -72,12 +53,8 @@ export function MediaPlayerTutorial() {
   const [requestedStepIndex, setRequestedStepIndex] = useState<number | null>(
     null,
   )
-  const [measured, setMeasured] = useState<MeasuredTutorialPosition | null>(
-    null,
-  )
-  const popupRef = useRef<HTMLElement>(null)
+  const popupRef = useRef<HTMLElement | null>(null)
   const pausedTrackIdRef = useRef<string | null>(null)
-  const previousLayoutRef = useRef({ isFullscreen, isPanelOpen })
   const titleId = useId()
   const descriptionId = useId()
   const hasTrack = track !== null
@@ -95,7 +72,22 @@ export function MediaPlayerTutorial() {
   const step = stepIndex === null ? null : mediaPlayerTutorialSteps[stepIndex]
   const anchor =
     stepIndex === 0 && isFullscreen ? 'player-controls' : (step?.anchor ?? null)
-  const isPositioned = anchor !== null && measured?.anchor === anchor
+  const layoutKey = `${isFullscreen}:${isPanelOpen}`
+  const measurement = useTutorialAnchorMeasurement({
+    anchor,
+    selector: anchor ? `[data-media-player-tutorial="${anchor}"]` : null,
+    popupRef,
+    layoutKey,
+    followDurationMs: PLAYER_TRANSITION_MS,
+  })
+  const isPositioned = measurement !== null
+  const position = measurement
+    ? getVerticalTutorialPosition(
+        measurement.targetRect,
+        measurement.popupSize,
+        step?.placement ?? 'above',
+      )
+    : null
   const isLastStep = stepIndex === mediaPlayerTutorialSteps.length - 1
 
   const finish = useCallback(
@@ -170,92 +162,6 @@ export function MediaPlayerTutorial() {
   }, [])
 
   useEffect(() => {
-    if (!anchor) return
-
-    let frame = 0
-    let transitionFrame = 0
-    const layoutChanged =
-      previousLayoutRef.current.isFullscreen !== isFullscreen ||
-      previousLayoutRef.current.isPanelOpen !== isPanelOpen
-    previousLayoutRef.current = { isFullscreen, isPanelOpen }
-    const measure = () => {
-      const target = document.querySelector(
-        `[data-media-player-tutorial="${anchor}"]`,
-      )
-      const popup = popupRef.current
-
-      if (!target || !popup) return
-
-      const rect = target.getBoundingClientRect()
-      const { width, height } = popup.getBoundingClientRect()
-      const center = rect.left + rect.width / 2
-      const left = clamp(
-        center - width / 2,
-        POPUP_MARGIN,
-        window.innerWidth - width - POPUP_MARGIN,
-      )
-      const roomAbove = rect.top - POPUP_GAP - POPUP_MARGIN
-      const roomBelow =
-        window.innerHeight - rect.bottom - POPUP_GAP - POPUP_MARGIN
-      const placeAbove =
-        step?.placement === 'above'
-          ? roomAbove >= height || roomBelow < height
-          : roomBelow < height && roomAbove >= height
-      const top = placeAbove
-        ? Math.max(POPUP_MARGIN, rect.top - POPUP_GAP - height)
-        : Math.min(
-            rect.bottom + POPUP_GAP,
-            window.innerHeight - height - POPUP_MARGIN,
-          )
-
-      const nextMeasured: MeasuredTutorialPosition = {
-        anchor,
-        style: { inset: 'auto', margin: 0, left, top },
-        arrow: {
-          left: clamp(center - left, ARROW_INSET, width - ARROW_INSET),
-          above: placeAbove,
-        },
-      }
-
-      setMeasured((current) =>
-        current?.anchor === anchor &&
-        current.style.left === left &&
-        current.style.top === top
-          ? current
-          : nextMeasured,
-      )
-    }
-    const schedule = () => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(measure)
-    }
-    const initialMeasure = window.setTimeout(measure, 0)
-
-    if (layoutChanged) {
-      const transitionStartedAt = performance.now()
-      const followPlayerTransition = () => {
-        measure()
-        if (performance.now() - transitionStartedAt < PLAYER_TRANSITION_MS) {
-          transitionFrame = requestAnimationFrame(followPlayerTransition)
-        }
-      }
-
-      followPlayerTransition()
-    }
-
-    window.addEventListener('resize', schedule)
-    window.addEventListener('scroll', schedule, true)
-
-    return () => {
-      window.clearTimeout(initialMeasure)
-      cancelAnimationFrame(frame)
-      cancelAnimationFrame(transitionFrame)
-      window.removeEventListener('resize', schedule)
-      window.removeEventListener('scroll', schedule, true)
-    }
-  }, [anchor, isFullscreen, isPanelOpen, step?.placement])
-
-  useEffect(() => {
     if (stepIndex === null) return
 
     const finishOnEscape = (event: KeyboardEvent) => {
@@ -280,67 +186,53 @@ export function MediaPlayerTutorial() {
   return (
     <>
       <div aria-hidden="true" className="audio-player-tutorial-backdrop" />
-      <section
-        ref={popupRef}
-        role="dialog"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-        style={{
-          ...(isPositioned
-            ? measured.style
-            : { inset: 'auto', margin: 0, left: 0, top: 0 }),
-          visibility: isPositioned ? 'visible' : 'hidden',
-        }}
+      <TutorialPopover
+        popupRef={popupRef}
+        titleId={titleId}
+        descriptionId={descriptionId}
+        position={position}
+        isVisible={isPositioned}
+        unpositionedStyle={{ inset: 'auto', margin: 0, left: 0, top: 0 }}
         className={`audio-player-tutorial-popup overflow-visible rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl ${
           isPositioned ? 'audio-player-tutorial-popup--visible' : ''
         }`}
       >
-        {isPositioned && (
-          <span
-            aria-hidden="true"
-            className={`absolute size-4 rotate-45 border-line bg-surface ${
-              measured.arrow.above
-                ? '-bottom-2 border-r border-b'
-                : '-top-2 border-t border-l'
-            }`}
-            style={{ left: measured.arrow.left - 8 }}
-          />
-        )}
-        <div className="relative space-y-4 p-5 md:p-6">
-          <p className="text-xs font-semibold text-muted">
-            {t('tutorialStepCount', {
-              current: stepIndex + 1,
-              total: mediaPlayerTutorialSteps.length,
-            })}
-          </p>
-          <h2 id={titleId} className="text-xl">
-            {t(`mediaPlayer.${step.id}.title`)}
-          </h2>
-          <p id={descriptionId} className="text-muted">
-            {t(`mediaPlayer.${step.id}.description`)}
-          </p>
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-            {stepIndex !== 1 && (
-              <button
-                type="button"
-                className="button"
-                onClick={isLastStep ? () => finish() : next}
-              >
-                {t(isLastStep ? 'mediaPlayer.done' : 'next')}
-              </button>
-            )}
-            {!isLastStep && (
-              <button
-                type="button"
-                className="text-link"
-                onClick={() => finish()}
-              >
-                {t('skip')}
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
+        <TutorialStepContent
+          titleId={titleId}
+          descriptionId={descriptionId}
+          stepLabel={t('tutorialStepCount', {
+            current: stepIndex + 1,
+            total: mediaPlayerTutorialSteps.length,
+          })}
+          stepLabelClassName="text-xs font-semibold text-muted"
+          title={t(`mediaPlayer.${step.id}.title`)}
+          titleClassName="text-xl"
+          description={t(`mediaPlayer.${step.id}.description`)}
+          className="relative p-5 md:p-6"
+          actions={
+            <>
+              {stepIndex !== 1 && (
+                <button
+                  type="button"
+                  className="button"
+                  onClick={isLastStep ? () => finish() : next}
+                >
+                  {t(isLastStep ? 'mediaPlayer.done' : 'next')}
+                </button>
+              )}
+              {!isLastStep && (
+                <button
+                  type="button"
+                  className="text-link"
+                  onClick={() => finish()}
+                >
+                  {t('skip')}
+                </button>
+              )}
+            </>
+          }
+        />
+      </TutorialPopover>
     </>
   )
 }

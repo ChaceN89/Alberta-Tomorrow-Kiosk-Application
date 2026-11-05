@@ -13,6 +13,7 @@
   - Map actions are provided by AlbertaMap through MapControlsContext.
  */
 import { useTranslation } from 'react-i18next'
+import { EXPLORE_MAP_TUTORIAL_FINISH_REQUEST } from '@/tutorials/specific-tutorials/explore-map/exploreMapTutorialEvents'
 import { useMapControls } from './MapControlsContext'
 
 export function MapActionControls() {
@@ -40,6 +41,7 @@ export function MapActionControls() {
         <button
           type="button"
           className="mapping-actions__button mapping-actions__mode"
+          data-tutorial="map-view-toggle"
           disabled={isDisabled}
           aria-label={switchLabel}
           aria-pressed={isTerrainEnabled}
@@ -78,10 +80,14 @@ export function MapActionControls() {
       <button
         type="button"
         className="mapping-actions__button mapping-actions__mode mapping-actions__flyover"
+        data-tutorial="fly-plane"
         disabled={isFlyoverDisabled}
         aria-label={flyoverLabel}
         aria-pressed={isFlyoverEnabled}
-        onClick={() => onToggleFlyover()}
+        onClick={() => {
+          window.dispatchEvent(new Event(EXPLORE_MAP_TUTORIAL_FINISH_REQUEST))
+          onToggleFlyover()
+        }}
       >
         {isFlyoverEnabled ? (
           <svg

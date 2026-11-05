@@ -1,7 +1,7 @@
 /*
   File: IntroTutorial.css | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Define the intro tutorial dialog entrance and backdrop animations.
@@ -70,6 +70,10 @@
 
 .tutorial-pop-b {
   animation: tutorial-pop-b 750ms ease-out both;
+}
+
+.tutorial-dialog--intro::backdrop {
+  background: transparent;
 }
 
 .tutorial-pop-a::backdrop,

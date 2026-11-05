@@ -12,73 +12,60 @@
   Notes:
   - Escape skips the current tutorial step flow.
  */
-import { useEffect, useId, useRef } from 'react'
+import {
+  useEffect,
+  useRef,
+  type CSSProperties,
+  type DialogHTMLAttributes,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 
 type TutorialDialogProps = {
-  title: string
-  description: string
-  actionLabel: string
-  onAction: () => void
-  stepLabel?: string
-  skipLabel?: string
-  onSkip?: () => void
+  children: ReactNode
+  ariaLabelledBy: string
+  ariaDescribedBy: string
+  className: string
+  style?: CSSProperties
+  dialogRef?: RefObject<HTMLDialogElement | null>
+  onCancel?: DialogHTMLAttributes<HTMLDialogElement>['onCancel']
 }
 
 export function TutorialDialog({
-  title,
-  description,
-  actionLabel,
-  onAction,
-  stepLabel,
-  skipLabel,
-  onSkip,
+  children,
+  ariaLabelledBy,
+  ariaDescribedBy,
+  className,
+  style,
+  dialogRef,
+  onCancel,
 }: TutorialDialogProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null)
-  const titleId = useId()
-  const descriptionId = useId()
+  const internalDialogRef = useRef<HTMLDialogElement>(null)
+  const activeDialogRef = dialogRef ?? internalDialogRef
 
   useEffect(() => {
-    const dialog = dialogRef.current
+    const dialog = activeDialogRef.current
     if (!dialog || dialog.open) return
 
     dialog.showModal()
     return () => {
       if (dialog.open) dialog.close()
     }
-  }, [])
+  }, [activeDialogRef])
 
   return (
     <dialog
-      ref={dialogRef}
-      className="explore-tutorial-dialog"
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      ref={activeDialogRef}
+      className={className}
+      style={style}
+      aria-labelledby={ariaLabelledBy}
+      aria-describedby={ariaDescribedBy}
       onCancel={(event) => {
         event.preventDefault()
-        ;(onSkip ?? onAction)()
+        onCancel?.(event)
       }}
     >
-      <div className="explore-tutorial-dialog__content">
-        {stepLabel && (
-          <p className="text-sm font-semibold text-muted">{stepLabel}</p>
-        )}
-        <h2 id={titleId}>{title}</h2>
-        <p id={descriptionId} className="text-muted">
-          {description}
-        </p>
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          {onSkip && skipLabel ? (
-            <button type="button" className="text-link" onClick={onSkip}>
-              {skipLabel}
-            </button>
-          ) : (
-            <span />
-          )}
-          <button type="button" className="button" onClick={onAction} autoFocus>
-            {actionLabel}
-          </button>
-        </div>
-      </div>
+      {children}
     </dialog>
   )
 }
