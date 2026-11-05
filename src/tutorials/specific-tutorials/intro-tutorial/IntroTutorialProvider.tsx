@@ -1,7 +1,7 @@
 /**
   File: IntroTutorialProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Start the intro tutorial for first-time visitors and control its steps.
@@ -27,9 +27,9 @@ import {
 } from '@/save-data/tutorial-progress/introTutorialStorage'
 import { introTutorialSteps } from './steps'
 import { IntroTutorialContext } from './useIntroTutorial'
+import { scheduleTutorialStart } from '@/tutorials/utils/scheduleTutorialStart'
 
-// Gives the splash screen time to finish fading before the tutorial appears. A little delay ensures smooth transition.
-const START_DELAY_MS = 350
+const START_DELAY_MS = 1_000
 
 // props for this component - the children to be wrapped by the provider
 type IntroTutorialProviderProps = {
@@ -55,12 +55,10 @@ export function IntroTutorialProvider({
   useEffect(() => {
     if (!isAutoStartPending || !isHome) return
 
-    const timer = window.setTimeout(() => {
+    return scheduleTutorialStart(() => {
       setIsAutoStartPending(false)
       setStepIndex(0)
     }, START_DELAY_MS)
-
-    return () => window.clearTimeout(timer)
   }, [isAutoStartPending, isHome])
 
   const next = useCallback(() => {

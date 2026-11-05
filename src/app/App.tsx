@@ -22,6 +22,7 @@ import { Layout } from '@/components/layout/Layout'
 import { NotFound } from '@/components/app-states/NotFound'
 import { ErrorBoundary } from '@/components/app-states/ErrorBoundary'
 import { Loading } from '@/components/app-states/Loading'
+import { SplashScreen } from '@/components/app-states/SplashScreen'
 import { GlobalOverlayLayer } from '@/components/toasts/GlobalOverlayLayer'
 import { JournalModal } from '@/journal/journal-ui/JournalModal'
 import { HomePage } from './pages/HomePage'
@@ -61,7 +62,7 @@ function ExploreMapRoute() {
 export function App() {
   return (
     <BrowserRouter>
-      <ExpeditionProgressProvider fallback={<Loading />}>
+      <ExpeditionProgressProvider fallback={<SplashScreen isExiting={false} />}>
         <JournalProvider>
           <IntroTutorialProvider>
             <ModulePreloadProvider>

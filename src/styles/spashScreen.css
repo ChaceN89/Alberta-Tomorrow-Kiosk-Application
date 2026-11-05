@@ -1,13 +1,17 @@
-@keyframes splash-fade-in {
-  from {
-    opacity: 0;
-  }
+/*
+  File: spashScreen.css | Author: Chace Nielson
+  Date Created: Nov 5, 2026
+  Date Updated: Nov 5, 2026
 
-  to {
-    opacity: 1;
-  }
-}
+  Description:
+  - Style the initial splash screen and its exit transition.
 
+  Usage:
+  - Imported by src/app/main.tsx.
+
+  Notes:
+  - Keep the splash opaque on its first frame so routed content cannot flash through.
+ */
 @keyframes splash-fade-out {
   from {
     opacity: 1;
@@ -28,10 +32,6 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-.splash-screen {
-  animation: splash-fade-in 350ms ease-out both;
 }
 
 .splash-screen--exiting {

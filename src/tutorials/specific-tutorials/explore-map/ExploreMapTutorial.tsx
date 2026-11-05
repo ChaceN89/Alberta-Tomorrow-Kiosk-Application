@@ -31,6 +31,7 @@ import {
   EXPLORE_MAP_TUTORIAL_START_REQUEST,
 } from './exploreMapTutorialEvents'
 import { exploreMapTutorialSteps } from './steps'
+import { scheduleTutorialStart } from '@/tutorials/utils/scheduleTutorialStart'
 
 const START_DELAY_MS = 350
 
@@ -99,18 +100,16 @@ export function ExploreMapTutorial({ isMapReady }: ExploreMapTutorialProps) {
   useEffect(() => {
     if (!isStartRequested || !isMapReady) return
 
-    const timer = window.setTimeout(() => {
+    return scheduleTutorialStart(() => {
       setActiveStepIndex(0)
       setIsStartRequested(false)
-    }, 0)
-    return () => window.clearTimeout(timer)
+    })
   }, [isMapReady, isStartRequested])
 
   useEffect(() => {
     if (!shouldAutoStart || !isMapReady || hasCompleted) return
 
-    const timer = window.setTimeout(() => setActiveStepIndex(0), START_DELAY_MS)
-    return () => window.clearTimeout(timer)
+    return scheduleTutorialStart(() => setActiveStepIndex(0), START_DELAY_MS)
   }, [hasCompleted, isMapReady, shouldAutoStart])
 
   const activeStep =
