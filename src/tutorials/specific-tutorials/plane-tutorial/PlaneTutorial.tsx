@@ -90,6 +90,7 @@ export function PlaneTutorial({
 
   return (
     <TutorialPopover
+      key={step}
       popupRef={popupRef}
       titleId={titleId}
       descriptionId={descriptionId}
@@ -114,16 +115,11 @@ export function PlaneTutorial({
         title={t(`plane.${stepId}.title`)}
         description={t(`plane.${stepId}.description`)}
         className="p-6"
-        actions={
-          <>
-            <button type="button" className="text-link" onClick={skip}>
-              {t('skip')}
-            </button>
-            <button type="button" className="button" onClick={next}>
-              {t(step === 0 ? 'next' : 'plane.done')}
-            </button>
-          </>
-        }
+        skipAction={{ label: t('skip'), onClick: skip }}
+        nextAction={{
+          label: t(step === 0 ? 'next' : 'plane.done'),
+          onClick: next,
+        }}
       />
     </TutorialPopover>
   )

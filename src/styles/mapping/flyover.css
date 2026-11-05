@@ -171,16 +171,7 @@
 }
 
 .plane-tutorial {
-  position: absolute;
-  z-index: var(--z-tooltip);
   width: min(32rem, calc(100vw - 2rem));
-  overflow: visible;
-  border: 1px solid var(--color-line);
-  border-radius: 1rem;
-  background: var(--color-surface);
-  color: var(--color-ink);
-  box-shadow: 0 1.5rem 4rem rgb(23 46 41 / 28%);
-  animation: plane-tutorial-enter 220ms ease-out both;
 }
 
 .plane-tutorial--intro {
@@ -191,16 +182,6 @@
 
 .plane-tutorial--anchored {
   max-width: min(32rem, calc(100vw - 2rem));
-}
-
-@keyframes plane-tutorial-enter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 
 .mapping-flyover-panel__badges {
@@ -258,8 +239,7 @@
 @media (prefers-reduced-motion: reduce) {
   .plane-hud,
   .mapping-flyover-panel,
-  .mapping-flyover-panel__content,
-  .plane-tutorial {
+  .mapping-flyover-panel__content {
     animation: none;
     transition: none;
   }

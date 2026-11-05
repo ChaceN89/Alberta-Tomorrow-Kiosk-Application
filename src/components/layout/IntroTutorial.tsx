@@ -16,7 +16,7 @@ import { useId, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import logo from '@/assets/expedition.svg'
 import '@/styles/IntroTutorial.css'
-import { TutorialDialog } from '@/tutorials/components/TutorialDialog'
+import { TutorialPopover } from '@/tutorials/components/TutorialPopover'
 import { TutorialStepContent } from '@/tutorials/components/TutorialStepContent'
 import { useTutorialAnchorMeasurement } from '@/tutorials/hooks/useTutorialAnchorMeasurement'
 import { introTutorialSteps } from '@/tutorials/specific-tutorials/intro-tutorial/steps'
@@ -70,76 +70,60 @@ function IntroTutorialDialog() {
     finish()
   }
 
+  const className = `tutorial-dialog--intro text-ink backdrop:bg-transparent ${
+    isCentered
+      ? 'm-auto w-[min(36.4rem,calc(100vw-2rem))] backdrop:backdrop-blur-sm'
+      : 'w-[min(28.6rem,calc(100vw-2rem))]'
+  }`
+  const content = (
+    <TutorialStepContent
+      titleId={titleId}
+      descriptionId={descriptionId}
+      stepLabel={t('tutorialStepCount', {
+        current: stepIndex + 1,
+        total: introTutorialSteps.length,
+      })}
+      stepLabelClassName="text-xs font-semibold text-muted"
+      title={t(`${step.id}.title`)}
+      titleClassName="text-xl"
+      description={t(`${step.id}.description`)}
+      leadingContent={
+        isCentered && <img src={logo} alt="" className="size-14" />
+      }
+      className="relative p-5 md:p-6"
+      skipAction={
+        !isLastStep ? { label: t('skip'), onClick: finish } : undefined
+      }
+      nextAction={{
+        label: actionLabel,
+        onClick: isLastStep ? finish : next,
+        autoFocus: true,
+      }}
+    >
+      {step.id === 'welcome' && (
+        <ul className="list-disc space-y-2 pl-5 text-muted">
+          {t('welcome.structure', { returnObjects: true }).map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      )}
+    </TutorialStepContent>
+  )
+
   return (
-    <TutorialDialog
-      dialogRef={dialogRef}
-      ariaLabelledBy={titleId}
-      ariaDescribedBy={descriptionId}
-      style={position?.style}
-      className={`tutorial-dialog tutorial-dialog--intro overflow-visible text-ink backdrop:bg-transparent ${
-        isCentered
-          ? 'm-auto w-[min(36.4rem,calc(100vw-2rem))] backdrop:backdrop-blur-sm'
-          : 'w-[min(28.6rem,calc(100vw-2rem))]'
-      } ${isMeasuring ? 'opacity-0' : ''} ${
-        // Alternating names restart the animation on every step; pointer steps
-        // wait until they are positioned so they don't animate in the wrong spot.
-        isMeasuring
-          ? ''
-          : stepIndex % 2 === 0
-            ? 'tutorial-pop-a'
-            : 'tutorial-pop-b'
-      }`}
+    <TutorialPopover
+      key={step.id}
+      modal
+      popupRef={dialogRef}
+      titleId={titleId}
+      descriptionId={descriptionId}
+      position={position}
+      isVisible={!isMeasuring}
+      className={className}
       onCancel={handleCancel}
     >
-      {position && (
-        <span
-          aria-hidden="true"
-          className={`tutorial-popover__arrow tutorial-popover__arrow--${position.arrow.side}`}
-          style={{ left: position.arrow.offset - 8 }}
-        />
-      )}
-      <TutorialStepContent
-        titleId={titleId}
-        descriptionId={descriptionId}
-        stepLabel={t('tutorialStepCount', {
-          current: stepIndex + 1,
-          total: introTutorialSteps.length,
-        })}
-        stepLabelClassName="text-xs font-semibold text-muted"
-        title={t(`${step.id}.title`)}
-        titleClassName="text-xl"
-        description={t(`${step.id}.description`)}
-        leadingContent={
-          isCentered && <img src={logo} alt="" className="size-14" />
-        }
-        className="relative p-5 md:p-6"
-        actions={
-          <>
-            <button
-              type="button"
-              className="button"
-              autoFocus
-              onClick={isLastStep ? finish : next}
-            >
-              {actionLabel}
-            </button>
-            {!isLastStep && (
-              <button type="button" className="text-link" onClick={finish}>
-                {t('skip')}
-              </button>
-            )}
-          </>
-        }
-      >
-        {step.id === 'welcome' && (
-          <ul className="list-disc space-y-2 pl-5 text-muted">
-            {t('welcome.structure', { returnObjects: true }).map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        )}
-      </TutorialStepContent>
-    </TutorialDialog>
+      {content}
+    </TutorialPopover>
   )
 }
 

@@ -187,15 +187,14 @@ export function MediaPlayerTutorial() {
     <>
       <div aria-hidden="true" className="audio-player-tutorial-backdrop" />
       <TutorialPopover
+        key={step.id}
         popupRef={popupRef}
         titleId={titleId}
         descriptionId={descriptionId}
         position={position}
         isVisible={isPositioned}
         unpositionedStyle={{ inset: 'auto', margin: 0, left: 0, top: 0 }}
-        className={`audio-player-tutorial-popup overflow-visible rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl ${
-          isPositioned ? 'audio-player-tutorial-popup--visible' : ''
-        }`}
+        className="audio-player-tutorial-popup"
       >
         <TutorialStepContent
           titleId={titleId}
@@ -209,27 +208,18 @@ export function MediaPlayerTutorial() {
           titleClassName="text-xl"
           description={t(`mediaPlayer.${step.id}.description`)}
           className="relative p-5 md:p-6"
-          actions={
-            <>
-              {stepIndex !== 1 && (
-                <button
-                  type="button"
-                  className="button"
-                  onClick={isLastStep ? () => finish() : next}
-                >
-                  {t(isLastStep ? 'mediaPlayer.done' : 'next')}
-                </button>
-              )}
-              {!isLastStep && (
-                <button
-                  type="button"
-                  className="text-link"
-                  onClick={() => finish()}
-                >
-                  {t('skip')}
-                </button>
-              )}
-            </>
+          nextAction={
+            stepIndex !== 1
+              ? {
+                  label: t(isLastStep ? 'mediaPlayer.done' : 'next'),
+                  onClick: isLastStep ? () => finish() : next,
+                }
+              : undefined
+          }
+          skipAction={
+            !isLastStep
+              ? { label: t('skip'), onClick: () => finish() }
+              : undefined
           }
         />
       </TutorialPopover>

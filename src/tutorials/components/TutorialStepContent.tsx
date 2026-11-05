@@ -14,6 +14,12 @@
  */
 import type { ReactNode } from 'react'
 
+export type TutorialAction = {
+  label: string
+  onClick: () => void
+  autoFocus?: boolean
+}
+
 type TutorialStepContentProps = {
   title: string
   description: string
@@ -25,7 +31,8 @@ type TutorialStepContentProps = {
   descriptionClassName?: string
   leadingContent?: ReactNode
   children?: ReactNode
-  actions?: ReactNode
+  skipAction?: TutorialAction
+  nextAction?: TutorialAction
   className?: string
 }
 
@@ -40,7 +47,8 @@ export function TutorialStepContent({
   descriptionClassName = 'text-muted',
   leadingContent,
   children,
-  actions,
+  skipAction,
+  nextAction,
   className = '',
 }: TutorialStepContentProps) {
   return (
@@ -58,9 +66,29 @@ export function TutorialStepContent({
         {description}
       </p>
       {children}
-      {actions && (
+      {(skipAction || nextAction) && (
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          {actions}
+          {skipAction && (
+            <button
+              type="button"
+              className="text-link tutorial-step-action tutorial-step-content__skip"
+              onClick={skipAction.onClick}
+            >
+              {skipAction.label}
+            </button>
+          )}
+          {nextAction && (
+            <button
+              type="button"
+              className={`button tutorial-step-action ${
+                skipAction ? '' : 'ml-auto'
+              }`}
+              autoFocus={nextAction.autoFocus}
+              onClick={nextAction.onClick}
+            >
+              {nextAction.label}
+            </button>
+          )}
         </div>
       )}
     </div>

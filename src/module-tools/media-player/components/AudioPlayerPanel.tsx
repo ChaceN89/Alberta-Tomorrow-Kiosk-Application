@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerPanel.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Shared audio and video player with a media queue and full-screen playback.
@@ -17,6 +17,7 @@
  */
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import { useJournal } from '@/journal/context/useJournal'
 import { MediaPlayerTutorial } from '@/tutorials/specific-tutorials/media-player-tutorial/MediaPlayerTutorial'
 import '@/styles/AudioPlayer.css'
@@ -34,6 +35,8 @@ import { QueueTabView } from './QueueTabView'
 
 export function AudioPlayerPanel() {
   const { t } = useTranslation('moduleTools')
+  const { pathname } = useLocation()
+  const isExplorePage = pathname === '/explore' || pathname.endsWith('/explore')
   const { isOpen: isJournalOpen } = useJournal()
   const {
     track,
@@ -79,6 +82,10 @@ export function AudioPlayerPanel() {
           isFullscreen ? 'audio-player-frame--fullscreen' : ''
         } ${
           !isPanelOpen && !isFullscreen ? 'audio-player-frame--collapsed' : ''
+        } ${
+          isExplorePage && !isFullscreen
+            ? 'audio-player-frame--above-map-actions'
+            : ''
         } ${frameExitAnimationClass}`}
       >
         <section

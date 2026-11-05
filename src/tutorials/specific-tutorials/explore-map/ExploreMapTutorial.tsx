@@ -13,16 +13,17 @@
   - The map must be ready before the tutorial opens over the startup screen.
  */
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   INTRO_TO_MAP_TUTORIAL_STORAGE_EVENT,
   hasCompletedIntroToMapTutorial,
   markIntroToMapTutorialCompleted,
 } from '@/save-data/tutorial-progress/introToMapTutorialStorage'
-import { TutorialDialog } from '@/tutorials/components/TutorialDialog'
 import { TutorialPopover } from '@/tutorials/components/TutorialPopover'
-import { TutorialStepContent } from '@/tutorials/components/TutorialStepContent'
+import {
+  TutorialStepContent,
+  type TutorialAction,
+} from '@/tutorials/components/TutorialStepContent'
 import { useTutorialAnchorMeasurement } from '@/tutorials/hooks/useTutorialAnchorMeasurement'
 import { getVerticalTutorialPosition } from '@/tutorials/utils/tutorialPositioning'
 import {
@@ -158,28 +159,22 @@ export function ExploreMapTutorial({ isMapReady }: ExploreMapTutorialProps) {
       )
     }
   }
-  const actions = (
-    <>
-      <button type="button" className="text-link" onClick={finish}>
-        {t('skip')}
-      </button>
-      <button
-        type="button"
-        className="button"
-        autoFocus
-        onClick={continueTutorial}
-      >
-        {actionLabel}
-      </button>
-    </>
-  )
+  const skipAction: TutorialAction = { label: t('skip'), onClick: finish }
+  const nextAction: TutorialAction = {
+    label: actionLabel,
+    onClick: continueTutorial,
+    autoFocus: true,
+  }
 
   if (activeStep.mode === 'dialog') {
     return (
-      <TutorialDialog
-        ariaLabelledBy={titleId}
-        ariaDescribedBy={descriptionId}
-        className="tutorial-dialog w-[min(32rem,calc(100vw-2rem))]"
+      <TutorialPopover
+        key={activeStep.id}
+        modal
+        titleId={titleId}
+        descriptionId={descriptionId}
+        position={null}
+        className="w-[min(32rem,calc(100vw-2rem))]"
         onCancel={finish}
       >
         <TutorialStepContent
@@ -189,9 +184,10 @@ export function ExploreMapTutorial({ isMapReady }: ExploreMapTutorialProps) {
           title={title}
           description={description}
           className="p-6"
-          actions={actions}
+          skipAction={skipAction}
+          nextAction={nextAction}
         />
-      </TutorialDialog>
+      </TutorialPopover>
     )
   }
 
@@ -204,7 +200,8 @@ export function ExploreMapTutorial({ isMapReady }: ExploreMapTutorialProps) {
       stepLabel={stepLabel}
       title={title}
       description={description}
-      actions={actions}
+      skipAction={skipAction}
+      nextAction={nextAction}
     />
   )
 }
@@ -217,7 +214,8 @@ type AnchoredMapTutorialStepProps = {
   stepLabel: string
   title: string
   description: string
-  actions: ReactNode
+  skipAction: TutorialAction
+  nextAction: TutorialAction
 }
 
 function AnchoredMapTutorialStep({
@@ -228,7 +226,8 @@ function AnchoredMapTutorialStep({
   stepLabel,
   title,
   description,
-  actions,
+  skipAction,
+  nextAction,
 }: AnchoredMapTutorialStepProps) {
   const popupRef = useRef<HTMLElement | null>(null)
   const measurement = useTutorialAnchorMeasurement({
@@ -247,6 +246,7 @@ function AnchoredMapTutorialStep({
 
   return (
     <TutorialPopover
+      key={anchor}
       popupRef={popupRef}
       titleId={titleId}
       descriptionId={descriptionId}
@@ -262,7 +262,8 @@ function AnchoredMapTutorialStep({
         title={title}
         description={description}
         className="p-6"
-        actions={actions}
+        skipAction={skipAction}
+        nextAction={nextAction}
       />
     </TutorialPopover>
   )

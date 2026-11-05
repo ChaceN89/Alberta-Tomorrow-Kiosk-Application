@@ -175,32 +175,19 @@
 }
 
 .audio-player-tutorial-popup {
-  position: fixed;
   z-index: var(--z-player-tutorial-popup);
-  width: min(28.6rem, calc(100vw - 2rem));
   pointer-events: auto;
 }
 
-.audio-player-tutorial-popup--visible {
-  animation: audio-player-tutorial-pop 300ms ease-out both;
-}
-
-@keyframes audio-player-tutorial-pop {
-  from {
-    opacity: 0;
-    transform: translateY(0.5rem) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 .audio-player-frame {
+  --audio-player-bottom-inset: 1rem;
+
   position: absolute;
   z-index: var(--z-player-frame);
-  top: calc(100dvh - min(calc(26rem + 10px), 100dvh - 2rem) - 1rem);
+  top: calc(
+    100dvh - min(calc(26rem + 10px), 100dvh - 2rem) -
+      var(--audio-player-bottom-inset)
+  );
   left: 0;
   width: min(26rem, calc(100vw - 3rem));
   height: min(calc(26rem + 10px), calc(100dvh - 2rem));
@@ -213,12 +200,36 @@
     transform var(--audio-player-morph-duration) var(--audio-player-morph-ease);
 }
 
+.audio-player-frame--above-map-actions {
+  --audio-player-bottom-inset: 8rem;
+}
+
+.audio-player-frame--above-map-actions:not(.audio-player-frame--collapsed) {
+  --audio-player-bottom-inset: min(
+    8rem,
+    calc(100dvh - min(calc(26rem + 10px), 100dvh - 2rem) - 1rem)
+  );
+}
+
 .audio-player-frame--fullscreen {
   top: 1rem;
   left: 50%;
   width: min(64rem, calc(100vw - 2rem));
   height: calc(100dvh - 2rem);
   transform: translateX(-50%);
+}
+
+@media (max-width: 40rem) {
+  .audio-player-frame--above-map-actions {
+    --audio-player-bottom-inset: 11.5rem;
+  }
+
+  .audio-player-frame--above-map-actions:not(.audio-player-frame--collapsed) {
+    --audio-player-bottom-inset: min(
+      11.5rem,
+      calc(100dvh - min(calc(26rem + 10px), 100dvh - 2rem) - 1rem)
+    );
+  }
 }
 
 /*
@@ -439,7 +450,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .audio-player-stage button:not(:disabled) {
+  .audio-player-stage button:not(:disabled):not(.tutorial-step-action) {
     transition:
       transform 160ms ease,
       box-shadow 160ms ease,
@@ -447,7 +458,7 @@
       color 200ms ease;
   }
 
-  .audio-player-stage button:not(:disabled):hover {
+  .audio-player-stage button:not(:disabled):not(.tutorial-step-action):hover {
     transform: translateY(-1px) scale(1.02);
     box-shadow: 0 4px 10px rgb(0 0 0 / 12%);
   }
@@ -456,7 +467,7 @@
     transform: translateY(-1px) scale(1, 1.08);
   }
 
-  .audio-player-stage button:not(:disabled):active {
+  .audio-player-stage button:not(:disabled):not(.tutorial-step-action):active {
     transform: scale(0.98);
   }
 }
@@ -464,7 +475,6 @@
 @media (prefers-reduced-motion: reduce) {
   .audio-panel-exit,
   .audio-player-media-content,
-  .audio-player-tutorial-popup--visible,
   .audio-panel-tab-view,
   .audio-player-tab-enter,
   .audio-close-dialog,
@@ -478,7 +488,7 @@
     animation: none;
   }
 
-  .audio-player-stage button:not(:disabled) {
+  .audio-player-stage button:not(:disabled):not(.tutorial-step-action) {
     transition: none;
   }
 
