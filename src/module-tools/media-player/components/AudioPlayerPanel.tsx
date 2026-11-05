@@ -18,7 +18,7 @@
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { useJournal } from '@/journal/context/useJournal'
-import { MediaPlayerTutorial } from '@/tutorials/media-player-tutorial/MediaPlayerTutorial'
+import { MediaPlayerTutorial } from '@/tutorials/specific-tutorials/media-player-tutorial/MediaPlayerTutorial'
 import '@/styles/AudioPlayer.css'
 import { useAudioPlayer } from '../hooks/useAudioPlayer'
 import { useFullscreenScrollLock } from '../hooks/useFullscreenScrollLock'

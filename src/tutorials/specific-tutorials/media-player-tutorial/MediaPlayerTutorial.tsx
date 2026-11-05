@@ -22,7 +22,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAudioPlayer } from '@/module-tools/media-player/hooks/useAudioPlayer'
-import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
+import { useIntroTutorial } from '@/tutorials/specific-tutorials/intro-tutorial/useIntroTutorial'
 import {
   MEDIA_PLAYER_TUTORIAL_FINISH_REQUEST,
   MEDIA_PLAYER_TUTORIAL_PLAY_REQUEST,

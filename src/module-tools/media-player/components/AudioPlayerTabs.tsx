@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '@/components/shared/Tooltip'
-import { requestMediaPlayerTutorialDismissalForPlayback } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
+import { requestMediaPlayerTutorialDismissalForPlayback } from '@/tutorials/specific-tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import {
   CloseIcon,
   MusicNoteIcon,

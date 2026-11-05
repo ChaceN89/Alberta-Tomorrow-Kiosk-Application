@@ -19,8 +19,8 @@ import '@/styles/IntroTutorial.css'
 import {
   introTutorialSteps,
   type TutorialAnchor,
-} from '@/tutorials/intro-tutorial/steps'
-import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
+} from '@/tutorials/specific-tutorials/intro-tutorial/steps'
+import { useIntroTutorial } from '@/tutorials/specific-tutorials/intro-tutorial/useIntroTutorial'
 
 const POPUP_MARGIN = 16
 const POPUP_GAP = 14

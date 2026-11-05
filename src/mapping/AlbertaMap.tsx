@@ -49,9 +49,9 @@ import {
   PLANE_TUTORIAL_STORAGE_EVENT,
   resetPlaneTutorial,
 } from '@/save-data/tutorial-progress/planeTutorialStorage'
-import { ExploreMapTutorial } from '@/tutorials/explore-map/ExploreMapTutorial'
-import { PlaneTutorial } from '@/tutorials/plane-tutorial/PlaneTutorial'
-import { PLANE_TUTORIAL_START_REQUEST } from '@/tutorials/plane-tutorial/planeTutorialEvents'
+import { ExploreMapTutorial } from '@/tutorials/specific-tutorials/explore-map/ExploreMapTutorial'
+import { PlaneTutorial } from '@/tutorials/specific-tutorials/plane-tutorial/PlaneTutorial'
+import { PLANE_TUTORIAL_START_REQUEST } from '@/tutorials/specific-tutorials/plane-tutorial/planeTutorialEvents'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 maplibregl.setWorkerUrl(mapWorkerUrl)
