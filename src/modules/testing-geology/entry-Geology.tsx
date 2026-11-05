@@ -138,7 +138,7 @@ export default function Geology({
           <li className="panel flex flex-col gap-4 p-5 md:p-6">
             <button
               type="button"
-              className="block w-full rounded-lg focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus"
+              className="block w-full rounded-lg"
               aria-label={t('activity.media.openOilBarrel')}
               onClick={(event) =>
                 openModel(oilBarrelModel, {

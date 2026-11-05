@@ -210,7 +210,7 @@ export function DisplayTesting() {
             menuOpen || activePanel !== null || pendingReset !== null
           }
           aria-haspopup="true"
-          className="flex size-12 items-center justify-center rounded-full bg-gray-800/35 text-xl text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-gray-800/70 hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus motion-reduce:transition-none"
+          className="flex size-12 items-center justify-center rounded-full bg-gray-800/35 text-xl text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-gray-800/70 hover:scale-105 motion-reduce:transition-none"
           onClick={toggleTools}
         >
           <span aria-hidden="true">

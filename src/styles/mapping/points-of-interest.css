@@ -167,11 +167,6 @@
     0 0.4rem 1rem rgb(23 46 41 / 30%);
 }
 
-.mapping-poi-cluster-marker:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 3px;
-}
-
 .mapping-poi-marker {
   position: relative;
   display: inline-flex;
@@ -281,11 +276,6 @@
 .mapping-poi-marker[data-active='true'] .mapping-poi-marker__tail-outline {
   stroke: var(--color-pine);
   stroke-width: 2.5;
-}
-
-.mapping-poi-marker:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 3px;
 }
 
 .mapping-poi-marker__pin {

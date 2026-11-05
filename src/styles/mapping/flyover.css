@@ -166,16 +166,8 @@
 
 .mapping-flyover-panel--collapsed
   .mapping-flyover-panel__toggle:hover
-  .mapping-flyover-panel__tooltip,
-.mapping-flyover-panel--collapsed
-  .mapping-flyover-panel__toggle:focus-visible
   .mapping-flyover-panel__tooltip {
   opacity: 1;
-}
-
-.mapping-flyover-panel__toggle:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 3px;
 }
 
 .plane-tutorial {

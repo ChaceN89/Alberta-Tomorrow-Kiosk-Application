@@ -1,7 +1,7 @@
 /**
   File: ExploreMapNavBar.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Provide map navigation, module links, and journal access outside the map.
@@ -59,7 +59,7 @@ export function ExploreMapNavBar({ moduleId }: ExploreMapNavigationProps) {
   }
 
   const navigationLinkClassName =
-    'flex min-h-12 items-center rounded-xl px-4 font-semibold text-ink hover:bg-canvas focus-visible:bg-canvas'
+    'flex min-h-12 items-center rounded-xl px-4 font-semibold text-ink hover:bg-canvas'
 
   return (
     <>

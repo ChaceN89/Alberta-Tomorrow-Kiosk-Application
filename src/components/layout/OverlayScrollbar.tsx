@@ -1,7 +1,7 @@
 /**
   File: OverlayScrollbar.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Provide app-shell scrolling with an accessible floating scrollbar.
@@ -159,7 +159,7 @@ export function OverlayScrollbar() {
       aria-valuenow={scrollPercent}
       aria-valuetext={t('scrollbar.position', { percent: scrollPercent })}
       tabIndex={0}
-      className="group fixed inset-y-1 right-0 z-(--z-content-popover) w-4 touch-none cursor-pointer focus-visible:outline-2 focus-visible:outline-focus"
+      className="group fixed inset-y-1 right-0 z-(--z-content-popover) w-4 touch-none cursor-pointer"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -169,7 +169,7 @@ export function OverlayScrollbar() {
       <span
         ref={thumbRef}
         aria-hidden="true"
-        className="absolute top-0 right-1 w-1 rounded-full bg-muted/50 transition-colors group-hover:bg-pine/80 group-focus-visible:bg-pine motion-reduce:transition-none"
+        className="absolute top-0 right-1 w-1 rounded-full bg-muted/50 transition-colors group-hover:bg-pine/80 motion-reduce:transition-none"
         style={{
           height: `${thumbHeight}px`,
           transform: `translateY(${thumbOffset}px)`,

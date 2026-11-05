@@ -1,7 +1,7 @@
 /**
   File: Dropdown.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Provide a reusable accessible action menu with keyboard navigation.
@@ -131,7 +131,7 @@ export function Dropdown({
               aria-checked={
                 selectedId === undefined ? undefined : selectedId === item.id
               }
-              className="flex min-h-12 w-full items-center gap-3 rounded-lg px-3 text-left text-ink hover:bg-canvas focus-visible:bg-canvas"
+              className="flex min-h-12 w-full items-center gap-3 rounded-lg px-3 text-left text-ink hover:bg-canvas"
               onClick={() => {
                 onSelect(item)
                 setIsOpen(false)

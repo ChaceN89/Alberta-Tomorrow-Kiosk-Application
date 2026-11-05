@@ -1,7 +1,7 @@
 /**
   File: Navbar.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Render the app brand, navigation actions, language switcher, and module preload progress.
@@ -77,7 +77,7 @@ export function Navbar() {
                 aria-label={t('navigation.startTutorial')}
                 onClick={restartTutorial}
               >
-                <HelpIcon className="size-6 transition-transform duration-200 group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none" />
+                <HelpIcon className="size-6 transition-transform duration-200 group-hover:scale-110 motion-reduce:transition-none" />
               </button>
             )}
           </nav>

@@ -197,7 +197,7 @@ html.dark .button-secondary[aria-pressed='true'] {
   }
 
   :focus-visible {
-    @apply outline-3 outline-offset-4 outline-focus;
+    outline: none;
   }
 
   button,

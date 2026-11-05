@@ -34,7 +34,7 @@ export function ViewablePlayerJournalAsset({
     <div className="flex items-center gap-4 rounded-xl border border-line bg-surface p-3">
       <button
         type="button"
-        className="block shrink-0 rounded-xl focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus"
+        className="block shrink-0 rounded-xl"
         aria-label={ariaLabel}
         onClick={(event) => onOpen(event.currentTarget)}
       >

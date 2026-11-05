@@ -73,13 +73,6 @@
   overflow-wrap: anywhere;
 }
 
-.maplibregl-map
-  .maplibregl-ctrl-top-right
-  .maplibregl-ctrl-attrib-button:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
 .mapping-controls__disclosure {
   overflow: hidden;
   border: 1px solid var(--color-line);
@@ -103,11 +96,6 @@
 
 .mapping-controls__summary::-webkit-details-marker {
   display: none;
-}
-
-.mapping-controls__summary:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: -3px;
 }
 
 .mapping-controls__chevron {
@@ -248,17 +236,6 @@
   border-color: var(--color-ink);
   background: var(--color-ink);
   color: var(--color-surface);
-}
-
-.mapping-actions__button:focus-visible,
-.mapping-controls__select:focus-visible,
-.mapping-controls__range:focus-visible,
-.mapping-controls__check input:focus-visible,
-.mapping-poi-selector__button:focus-visible,
-.mapping-poi-selector__active:focus-visible,
-.mapping-poi-selector__option:focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 3px;
 }
 
 .mapping-actions__button:disabled,

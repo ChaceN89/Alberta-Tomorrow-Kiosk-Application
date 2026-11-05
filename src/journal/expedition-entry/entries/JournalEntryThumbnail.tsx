@@ -63,7 +63,7 @@ export function JournalEntryThumbnail({
           alt=""
           loading="lazy"
           decoding="async"
-          className="h-[8.6rem] w-52 -rotate-5 rounded-md border-2 border-white object-cover shadow-md transition-transform duration-200 group-hover:rotate-0 group-hover:scale-105 group-focus-visible:rotate-0 group-focus-visible:scale-105 motion-reduce:transition-none"
+          className="h-[8.6rem] w-52 -rotate-5 rounded-md border-2 border-white object-cover shadow-md transition-transform duration-200 group-hover:rotate-0 group-hover:scale-105 motion-reduce:transition-none"
         />
       </button>
       <PaperclipIcon
