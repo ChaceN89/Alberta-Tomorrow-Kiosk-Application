@@ -1,7 +1,7 @@
 /**
   File: DisplayTesting.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Provide the development menu and set the document title and language.
@@ -21,6 +21,8 @@ import { useModulePreload } from '@/modules/useModulePreload'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
 import { requestMediaPlayerTutorialFinish } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import { markMediaPlayerTutorialCompleted } from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
+import { markIntroToMapTutorialCompleted } from '@/save-data/tutorial-progress/introToMapTutorialStorage'
+import { markPlaneTutorialCompleted } from '@/save-data/tutorial-progress/planeTutorialStorage'
 import { ApplicationStatePanel } from '../panels/ApplicationStatePanel'
 import { TutorialsPanel } from '../panels/TutorialsPanel'
 import { ModuleStatusPanel } from '../panels/ModuleStatusPanel'
@@ -179,6 +181,8 @@ export function DisplayTesting() {
   const handleCompleteAllTutorials = () => {
     finishIntroTutorial()
     markMediaPlayerTutorialCompleted()
+    markIntroToMapTutorialCompleted()
+    markPlaneTutorialCompleted()
     requestMediaPlayerTutorialFinish()
     toast(t('allTutorialsComplete'), {
       toasterId: NOTIFICATION_TOASTER_ID,

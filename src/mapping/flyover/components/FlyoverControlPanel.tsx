@@ -1,23 +1,24 @@
 /**
   File: FlyoverControlPanel.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
-  - Show the flyover title, flight controls, and the current altitude, speed, and pause status.
+  - Show flight controls in a vertically centered, collapsible map panel.
 
   Usage:
-  - Rendered on the left side of the map by AlbertaMap while flyover mode is active.
+  - Rendered by PlaneHud while flyover mode is active.
 
   Notes:
-  - The keys listed here are read by useFlightInput; dragging is read by useFlightDrag.
+  - The controls stay mounted while collapsed so they can slide in and out.
  */
+import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type FlyoverControlPanelProps = {
   isPaused: boolean
-  altitudeMeters: number
-  speedMetersPerSecond: number
+  isTutorialActive: boolean
+  isTutorialControlsStep: boolean
 }
 
 const CONTROLS = [
@@ -34,12 +35,16 @@ const CONTROLS = [
 
 export function FlyoverControlPanel({
   isPaused,
-  altitudeMeters,
-  speedMetersPerSecond,
+  isTutorialActive,
+  isTutorialControlsStep,
 }: FlyoverControlPanelProps) {
-  const { t, i18n } = useTranslation('mapping')
+  const { t } = useTranslation('mapping')
+  const controlsId = useId()
+  const [isManuallyExpanded, setIsManuallyExpanded] = useState(false)
+  const isExpanded = isTutorialControlsStep || isManuallyExpanded
 
-  // Function: The text shown on a key for a control.
+  if (isTutorialActive && !isTutorialControlsStep) return null
+
   const getKeyLabel = (key: (typeof CONTROLS)[number]['key']) => {
     switch (key) {
       case 'drag':
@@ -57,37 +62,64 @@ export function FlyoverControlPanel({
 
   return (
     <section
-      className="mapping-flyover-panel panel bg-surface/95 shadow-xl backdrop-blur"
+      data-plane-controls="true"
+      className={`mapping-flyover-panel ${
+        isExpanded ? '' : 'mapping-flyover-panel--collapsed'
+      }`}
       aria-label={t('flyover.panelLabel')}
     >
-      <div className="mapping-flyover-panel__header">
-        <h2 className="mapping-flyover-panel__title">{t('flyover.title')}</h2>
-        <p className="mapping-flyover-panel__reading">
-          {t('flyover.altitude', {
-            meters: altitudeMeters.toLocaleString(i18n.language),
-          })}
-        </p>
-        <p className="mapping-flyover-panel__reading">
-          {t('flyover.speed', {
-            speed: speedMetersPerSecond.toLocaleString(i18n.language),
-          })}
-        </p>
-        <p className="mapping-flyover-panel__badges" role="status">
-          {isPaused && (
-            <strong className="mapping-flyover-panel__badge">
-              {t('flyover.paused')}
-            </strong>
-          )}
-        </p>
+      <button
+        type="button"
+        className="mapping-flyover-panel__toggle"
+        aria-label={t(
+          isExpanded ? 'flyover.hideControls' : 'flyover.showControls',
+        )}
+        aria-expanded={isExpanded}
+        aria-controls={controlsId}
+        title={t('flyover.controlsTooltip')}
+        onClick={() => setIsManuallyExpanded((expanded) => !expanded)}
+      >
+        <span className="mapping-flyover-panel__tooltip" aria-hidden="true">
+          {t('flyover.controlsTooltip')}
+        </span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="mapping-actions__icon"
+        >
+          <path d={isExpanded ? 'm15 18-6-6 6-6' : 'm9 18 6-6-6-6'} />
+        </svg>
+      </button>
+      <div
+        id={controlsId}
+        className="mapping-flyover-panel__content panel bg-surface/95 shadow-xl backdrop-blur"
+        aria-hidden={!isExpanded}
+        inert={!isExpanded}
+      >
+        <header className="mapping-flyover-panel__header">
+          <h2 className="mapping-flyover-panel__title">{t('flyover.title')}</h2>
+          <p className="mapping-flyover-panel__badges" role="status">
+            {isPaused && (
+              <strong className="mapping-flyover-panel__badge">
+                {t('flyover.paused')}
+              </strong>
+            )}
+          </p>
+        </header>
+        <ul className="mapping-flyover-panel__controls">
+          {CONTROLS.map(({ key, labelKey }) => (
+            <li key={key} className="mapping-flyover-panel__control">
+              <kbd className="mapping-flyover-panel__key">
+                {getKeyLabel(key)}
+              </kbd>
+              <span>{t(labelKey)}</span>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className="mapping-flyover-panel__controls">
-        {CONTROLS.map(({ key, labelKey }) => (
-          <li key={key} className="mapping-flyover-panel__control">
-            <kbd className="mapping-flyover-panel__key">{getKeyLabel(key)}</kbd>
-            <span>{t(labelKey)}</span>
-          </li>
-        ))}
-      </ul>
     </section>
   )
 }

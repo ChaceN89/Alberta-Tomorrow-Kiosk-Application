@@ -1,7 +1,7 @@
 /**
   File: AlbertaMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Render the shared Alberta map and its map controls.
@@ -13,16 +13,16 @@
   Notes:
   - Map state and behavior are managed by useAlbertaMapController.
  */
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Map, NavigationControl } from 'react-map-gl/maplibre'
+import { AttributionControl, Map } from 'react-map-gl/maplibre'
 import type { MapRef } from 'react-map-gl/maplibre'
 import * as maplibregl from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { MapControlsContext } from './components/MapControlsContext'
 import { FlightPlaneLayer } from './flyover/components/FlightPlaneLayer'
-import { FlyoverControlPanel } from './flyover/components/FlyoverControlPanel'
+import { PlaneHud } from './flyover/components/PlaneHud'
 import { MapPoiClusterMarker } from './components/MapPoiClusterMarker'
 import { MapPoiMarker, type MapPoi } from './components/MapPoiMarker'
 import { MapPoiSelector } from './components/MapPoiSelector'
@@ -44,6 +44,14 @@ import watertonLakes from './assets/waterton-lakes.jpg'
 import { useMapInfoPanel } from '@/module-tools/map-info-panel/hooks/useMapInfoPanel'
 import { useAppStartupMapGate } from '@/app/AppStartupMapContext'
 import { useAlbertaMapController } from './map-functions/useAlbertaMapController'
+import {
+  hasCompletedPlaneTutorial,
+  PLANE_TUTORIAL_STORAGE_EVENT,
+  resetPlaneTutorial,
+} from '@/save-data/tutorial-progress/planeTutorialStorage'
+import { ExploreMapTutorial } from '@/tutorials/explore-map/ExploreMapTutorial'
+import { PlaneTutorial } from '@/tutorials/plane-tutorial/PlaneTutorial'
+import { PLANE_TUTORIAL_START_REQUEST } from '@/tutorials/plane-tutorial/planeTutorialEvents'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 maplibregl.setWorkerUrl(mapWorkerUrl)
@@ -55,6 +63,31 @@ type AlbertaMapProps = {
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
   children?: ReactNode
+}
+
+function getMapInfoPanelCameraOffset(
+  mapContainer: HTMLElement,
+): [number, number] {
+  const panel = document.querySelector<HTMLElement>('.map-info-panel')
+  if (!panel) return [0, 0]
+
+  const mapBounds = mapContainer.getBoundingClientRect()
+  const panelWidth = panel.getBoundingClientRect().width
+  const panelInset = Number.parseFloat(
+    window.getComputedStyle(panel).insetInlineEnd,
+  )
+  const panelLeft =
+    window.innerWidth -
+    (Number.isFinite(panelInset) ? panelInset : 0) -
+    panelWidth
+  const visibleRightEdge = Math.max(
+    mapBounds.left,
+    Math.min(mapBounds.right, panelLeft),
+  )
+  const unobstructedCenter = (mapBounds.left + visibleRightEdge) / 2
+  const mapCenter = (mapBounds.left + mapBounds.right) / 2
+
+  return [unobstructedCenter - mapCenter, 0]
 }
 
 // Function: Render MapLibre and provide its controls to the explore-page UI.
@@ -79,6 +112,12 @@ export function AlbertaMap({
     center: [number, number]
   } | null>(null)
   const [activePoiId, setActivePoiId] = useState<string | null>(null)
+  const [isPlaneTutorialControlsStep, setIsPlaneTutorialControlsStep] =
+    useState(false)
+  const [hasCompletedPlaneTour, setHasCompletedPlaneTour] = useState(
+    hasCompletedPlaneTutorial,
+  )
+  const pendingPlaneTutorialStart = useRef(false)
   const { openPanel, closePanel } = useMapInfoPanel()
   const startupMapGate = useAppStartupMapGate()
   const {
@@ -94,6 +133,7 @@ export function AlbertaMap({
     onMapAvailable,
     onMapError,
   } = useAlbertaMapController()
+  const { onSetFlyoverPaused, onStartFlyover } = controls
 
   const mapRefCallback = useCallback(
     (map: MapRef | null) => {
@@ -102,6 +142,26 @@ export function AlbertaMap({
     },
     [mapRef, onMapAvailable],
   )
+
+  useEffect(() => {
+    if (!mapInstance) return
+
+    // Let the credits appear briefly before collapsing the compact control.
+    const timer = window.setTimeout(() => {
+      const attribution = mapInstance
+        .getContainer()
+        .querySelector<HTMLElement>(
+          '.maplibregl-ctrl-top-right .maplibregl-ctrl-attrib',
+        )
+      if (!attribution?.classList.contains('maplibregl-compact-show')) return
+
+      attribution
+        .querySelector<HTMLElement>('.maplibregl-ctrl-attrib-button')
+        ?.click()
+    }, 5000)
+
+    return () => window.clearTimeout(timer)
+  }, [mapInstance])
 
   const defaultPois = useMemo(
     () =>
@@ -182,6 +242,76 @@ export function AlbertaMap({
   const isFlyoverEnabled = controls.isFlyoverEnabled
 
   useEffect(() => {
+    const syncCompletion = () =>
+      setHasCompletedPlaneTour(hasCompletedPlaneTutorial())
+
+    window.addEventListener(PLANE_TUTORIAL_STORAGE_EVENT, syncCompletion)
+    return () =>
+      window.removeEventListener(PLANE_TUTORIAL_STORAGE_EVENT, syncCompletion)
+  }, [])
+
+  useEffect(() => {
+    const startPlaneTutorial = () => {
+      resetPlaneTutorial()
+      setHasCompletedPlaneTour(false)
+      setIsPlaneTutorialControlsStep(false)
+
+      if (flyover.phase === 'off') {
+        if (controls.isMapReady && !controls.isStyleLoading) {
+          onStartFlyover(true)
+        } else {
+          pendingPlaneTutorialStart.current = true
+        }
+      } else if (flyover.phase === 'exiting') {
+        pendingPlaneTutorialStart.current = true
+      } else {
+        onSetFlyoverPaused(true)
+      }
+    }
+
+    window.addEventListener(PLANE_TUTORIAL_START_REQUEST, startPlaneTutorial)
+    return () =>
+      window.removeEventListener(
+        PLANE_TUTORIAL_START_REQUEST,
+        startPlaneTutorial,
+      )
+  }, [
+    controls.isMapReady,
+    controls.isStyleLoading,
+    flyover.phase,
+    onSetFlyoverPaused,
+    onStartFlyover,
+  ])
+
+  useEffect(() => {
+    if (
+      flyover.phase !== 'off' ||
+      !controls.isMapReady ||
+      controls.isStyleLoading ||
+      !pendingPlaneTutorialStart.current
+    ) {
+      return
+    }
+
+    pendingPlaneTutorialStart.current = false
+    onStartFlyover(true)
+  }, [
+    controls.isMapReady,
+    controls.isStyleLoading,
+    flyover.phase,
+    onStartFlyover,
+  ])
+
+  const isPlaneTutorialActive =
+    (flyover.phase === 'entering' || flyover.phase === 'flying') &&
+    !hasCompletedPlaneTour
+
+  const finishPlaneTutorial = () => {
+    setHasCompletedPlaneTour(true)
+    setIsPlaneTutorialControlsStep(false)
+  }
+
+  useEffect(() => {
     if (!mapInstance) return
 
     let lastUpdate = 0
@@ -217,32 +347,58 @@ export function AlbertaMap({
   const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
     // While flying, selecting a marker carries the plane toward it instead.
     if (isFlyoverEnabled) {
+      setActivePoiId(poi.id)
       controls.onFlyoverTravelTo(poi.coordinates)
+      if (poi.info) {
+        openPanel({ title: poi.title, content: poi.info }, { origin })
+      } else {
+        closePanel({ restoreFocus: false })
+      }
       return
     }
 
     setActivePoiId(poi.id)
-    if (isDefaultPoiId(poi.id)) {
-      controls.onNavigateToPoi(poi.id)
-    } else {
-      mapRef.current?.flyTo({
-        center: poi.coordinates,
-        zoom: 12,
-        pitch: controls.isTerrainEnabled ? 50 : 0,
-        duration: POI_NAVIGATION_DURATION,
-      })
+    const navigateCamera = (offset: [number, number]) => {
+      if (isDefaultPoiId(poi.id)) {
+        controls.onNavigateToPoi(poi.id, offset)
+      } else {
+        mapRef.current?.flyTo({
+          center: poi.coordinates,
+          zoom: 12,
+          pitch: controls.isTerrainEnabled ? 50 : 0,
+          duration: POI_NAVIGATION_DURATION,
+          offset,
+        })
+      }
       poi.onActivate?.()
     }
 
     if (poi.info) {
       openPanel({ title: poi.title, content: poi.info }, { origin })
+      window.requestAnimationFrame(() => {
+        const map = mapRef.current?.getMap()
+        navigateCamera(
+          map ? getMapInfoPanelCameraOffset(map.getContainer()) : [0, 0],
+        )
+      })
     } else {
       closePanel({ restoreFocus: false })
+      navigateCamera([0, 0])
     }
   }
 
   const mapControls = {
     ...controls,
+    onToggleFlyover: () => {
+      if (controls.isFlyoverEnabled) {
+        setIsPlaneTutorialControlsStep(false)
+        controls.onToggleFlyover()
+      } else {
+        controls.onStartFlyover(!hasCompletedPlaneTour)
+      }
+    },
+    onStartFlyover: (pauseAfterEntry: boolean) =>
+      controls.onStartFlyover(pauseAfterEntry),
     defaultPoisVisible: areDefaultPoisVisible,
     modulePoisVisible: areModulePoisVisible,
     hasModulePois: modulePois.length > 0,
@@ -286,6 +442,7 @@ export function AlbertaMap({
           mapStyle={mapStyle}
           minZoom={minZoom}
           maxZoom={maxZoom}
+          attributionControl={false}
           style={{ width: '100%', height: '100%' }}
           onLoad={(event) => {
             const map = event.target
@@ -295,13 +452,11 @@ export function AlbertaMap({
           }}
           onError={(event) => onMapError(event.error)}
         >
-          {!isFlyoverEnabled && (
-            <NavigationControl
-              position="bottom-right"
-              showCompass
-              visualizePitch
-            />
-          )}
+          <AttributionControl
+            position="top-right"
+            compact
+            customAttribution='<a href="https://maplibre.org/" target="_blank" rel="noopener">MapLibre</a>'
+          />
           {poiGroups.map((group) => {
             if (group.type === 'cluster') {
               return (
@@ -332,23 +487,30 @@ export function AlbertaMap({
           })}
         </Map>
 
-        {!isFlyoverEnabled && (
-          <MapPoiSelector
-            pois={visiblePois}
-            activePoiId={visibleActivePoiId}
-            onSelect={navigateToPoi}
-          />
-        )}
+        <MapPoiSelector
+          pois={visiblePois}
+          activePoiId={visibleActivePoiId}
+          onSelect={navigateToPoi}
+        />
         {flyover.phase !== 'off' && (
           <FlightPlaneLayer visualRef={flyover.visualRef} />
         )}
-        {(flyover.phase === 'entering' || flyover.phase === 'flying') && (
-          <FlyoverControlPanel
-            isPaused={flyover.isPaused}
-            altitudeMeters={flyover.altitudeMeters}
-            speedMetersPerSecond={flyover.speedMetersPerSecond}
+        <PlaneHud
+          isActive={flyover.phase !== 'off'}
+          isPaused={flyover.isPaused}
+          altitudeMeters={flyover.altitudeMeters}
+          speedMetersPerSecond={flyover.speedMetersPerSecond}
+          isTutorialActive={isPlaneTutorialActive}
+          isTutorialControlsStep={isPlaneTutorialControlsStep}
+        />
+        {isPlaneTutorialActive && (
+          <PlaneTutorial
+            onFinish={finishPlaneTutorial}
+            onPause={controls.onSetFlyoverPaused}
+            onControlsStepChange={setIsPlaneTutorialControlsStep}
           />
         )}
+        <ExploreMapTutorial isMapReady={controls.isMapReady} />
         {children}
       </div>
     </MapControlsContext.Provider>

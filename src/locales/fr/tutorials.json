@@ -25,6 +25,22 @@
     "description": "Bonne chance et amusez-vous bien à découvrir l’Alberta.",
     "start": "Commencer l’exploration"
   },
+  "exploreMap": {
+    "title": "Explorez la carte de l’Alberta",
+    "description": "Voici la carte. Sélectionnez un lieu d’intérêt pour découvrir des endroits de l’Alberta.",
+    "done": "Explorer la carte"
+  },
+  "plane": {
+    "explore": {
+      "title": "Explorez l’Alberta",
+      "description": "Une fois l’avion au-dessus de la province, il se met en pause. Utilisez le sélecteur de lieux d’intérêt en bas pour choisir un endroit à survoler et à découvrir. Continuez lorsque vous êtes prêt à voir les commandes de vol."
+    },
+    "controls": {
+      "title": "Commandes de vol",
+      "description": "Les commandes de vol sont ouvertes à côté de cette fenêtre. Jetez-y un coup d’œil, puis continuez pour les replier. Vous pouvez les rouvrir à tout moment avec le bouton à gauche."
+    },
+    "done": "Commencer à voler"
+  },
   "mediaPlayer": {
     "done": "J’ai compris",
     "player": {

@@ -1,7 +1,7 @@
 /**
   File: TutorialsPanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Developer controls to reset or restart the first-visit tutorial.
@@ -14,11 +14,19 @@
  */
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
+import { resetIntroToMapTutorial } from '@/save-data/tutorial-progress/introToMapTutorialStorage'
+import { resetPlaneTutorial } from '@/save-data/tutorial-progress/planeTutorialStorage'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
 import { requestMediaPlayerTutorialStart } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import { resetMediaPlayerTutorial } from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
+import { requestExploreMapTutorialStart } from '@/tutorials/explore-map/exploreMapTutorialEvents'
+import { requestPlaneTutorialStart } from '@/tutorials/plane-tutorial/planeTutorialEvents'
 import { DevPanel } from './DevPanel'
+
+type RequestedExploreTutorial = 'map' | 'plane' | null
 
 type TutorialsPanelProps = {
   onClose: () => void
@@ -35,6 +43,26 @@ export function TutorialsPanel({
 }: TutorialsPanelProps) {
   const { t } = useTranslation('development')
   const { resetFlag, restartTutorial } = useIntroTutorial()
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const [requestedExploreTutorial, setRequestedExploreTutorial] =
+    useState<RequestedExploreTutorial>(null)
+
+  useEffect(() => {
+    if (!requestedExploreTutorial || pathname !== '/explore') return
+
+    const timer = window.setTimeout(() => {
+      if (requestedExploreTutorial === 'map') {
+        requestExploreMapTutorialStart()
+      } else {
+        requestPlaneTutorialStart()
+      }
+      setRequestedExploreTutorial(null)
+      onTutorialStarted()
+    }, 0)
+
+    return () => window.clearTimeout(timer)
+  }, [onTutorialStarted, pathname, requestedExploreTutorial])
 
   const startMediaPlayerTutorial = () => {
     resetMediaPlayerTutorial()
@@ -43,6 +71,13 @@ export function TutorialsPanel({
     toast(t('mediaPlayerTutorialStarted'), {
       toasterId: NOTIFICATION_TOASTER_ID,
     })
+  }
+
+  const startExploreTutorial = (
+    tutorial: Exclude<RequestedExploreTutorial, null>,
+  ) => {
+    setRequestedExploreTutorial(tutorial)
+    if (pathname !== '/explore') navigate('/explore')
   }
 
   return (
@@ -135,6 +170,73 @@ export function TutorialsPanel({
               onClick={() => {
                 resetMediaPlayerTutorial()
                 toast(t('mediaPlayerTutorialFlagReset'), {
+                  toasterId: NOTIFICATION_TOASTER_ID,
+                })
+              }}
+            >
+              {t('resetTutorialFlag')}
+            </button>
+          </div>
+        </section>
+        <section
+          aria-labelledby="dev-explore-map-tutorial-heading"
+          className="space-y-2"
+        >
+          <h3
+            id="dev-explore-map-tutorial-heading"
+            className="font-semibold text-muted"
+          >
+            {t('exploreMapTutorialGroup')}
+          </h3>
+          <div className="grid gap-2">
+            <button
+              type="button"
+              className="button-secondary w-full"
+              onClick={() => {
+                resetIntroToMapTutorial()
+                startExploreTutorial('map')
+              }}
+            >
+              {t('startTutorial')}
+            </button>
+            <button
+              type="button"
+              className="button-danger w-full"
+              onClick={() => {
+                resetIntroToMapTutorial()
+                toast(t('exploreMapTutorialFlagReset'), {
+                  toasterId: NOTIFICATION_TOASTER_ID,
+                })
+              }}
+            >
+              {t('resetTutorialFlag')}
+            </button>
+          </div>
+        </section>
+        <section
+          aria-labelledby="dev-plane-tutorial-heading"
+          className="space-y-2"
+        >
+          <h3
+            id="dev-plane-tutorial-heading"
+            className="font-semibold text-muted"
+          >
+            {t('planeTutorialGroup')}
+          </h3>
+          <div className="grid gap-2">
+            <button
+              type="button"
+              className="button-secondary w-full"
+              onClick={() => startExploreTutorial('plane')}
+            >
+              {t('startTutorial')}
+            </button>
+            <button
+              type="button"
+              className="button-danger w-full"
+              onClick={() => {
+                resetPlaneTutorial()
+                toast(t('planeTutorialFlagReset'), {
                   toasterId: NOTIFICATION_TOASTER_ID,
                 })
               }}

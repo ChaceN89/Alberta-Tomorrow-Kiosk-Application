@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -28,29 +28,25 @@ export type MapControlsProps = {
   basemapStyleId: BasemapStyleId
   isHillshadeEnabled: boolean
   isSatelliteEnabled: boolean
-  isBasemapPlacesEnabled: boolean
   isAlbertaBoundaryEnabled: boolean
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
   hasModulePois?: boolean
   poiClusterRadius: number
-  cameraPitch: number
-  cameraZoom: number
   onTerrainExaggerationChange: (exaggeration: number) => void
   onBasemapStyleChange: (styleId: string) => void
   onHillshadeChange: (enabled: boolean) => void
   onSatelliteChange: (enabled: boolean) => void
-  onBasemapPlacesChange: (enabled: boolean) => void
   onAlbertaBoundaryChange: (enabled: boolean) => void
   onDefaultPoisChange?: (enabled: boolean) => void
   onModulePoisChange?: (enabled: boolean) => void
   onPoiClusterRadiusChange: (radius: number) => void
-  onCameraPitchChange: (pitch: number) => void
-  onCameraZoomChange: (zoom: number) => void
   onToggleTerrain: () => void
   onToggleFlyover: () => void
+  onStartFlyover: (pauseAfterEntry: boolean) => void
+  onSetFlyoverPaused: (isPaused: boolean) => void
   onFlyoverTravelTo: (coordinates: [number, number]) => void
-  onNavigateToPoi: (poiId: DefaultPoiId) => void
+  onNavigateToPoi: (poiId: DefaultPoiId, offset?: [number, number]) => void
 }
 
 export type MapControllerControlsProps = Omit<

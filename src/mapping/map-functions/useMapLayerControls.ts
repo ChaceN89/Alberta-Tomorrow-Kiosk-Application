@@ -1,7 +1,7 @@
 /**
   File: useMapLayerControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Manage basemap selection and visibility of optional map layers.
@@ -25,7 +25,6 @@ import {
 } from '../map-settings/baseMapSettings'
 import {
   ALBERTA_BOUNDARY_DEFAULT,
-  BASEMAP_PLACES_DEFAULT,
   HILLSHADING_DEFAULT,
   SATELLITE_IMAGE_DEFAULT,
 } from '../map-settings/mapSettings'
@@ -70,9 +69,6 @@ export function useMapLayerControls({
   const [isSatelliteEnabled, setIsSatelliteEnabled] = useState(
     SATELLITE_IMAGE_DEFAULT,
   )
-  const [isBasemapPlacesEnabled, setIsBasemapPlacesEnabled] = useState(
-    BASEMAP_PLACES_DEFAULT,
-  )
   const [isAlbertaBoundaryEnabled, setIsAlbertaBoundaryEnabled] = useState(
     ALBERTA_BOUNDARY_DEFAULT,
   )
@@ -82,7 +78,7 @@ export function useMapLayerControls({
     ensureTerrainSource(map)
     if (SATELLITE_IMAGE_DEFAULT) ensureSatelliteLayer(map)
     if (HILLSHADING_DEFAULT) ensureHillshadeLayer(map)
-    setBasemapPlacesVisibility(map, BASEMAP_PLACES_DEFAULT)
+    setBasemapPlacesVisibility(map, false)
     if (ALBERTA_BOUNDARY_DEFAULT) {
       setAlbertaBoundaryVisibility(map, ALBERTA_BOUNDARY_DEFAULT)
     }
@@ -93,7 +89,7 @@ export function useMapLayerControls({
     ensureTerrainSource(map)
     if (isSatelliteEnabled) ensureSatelliteLayer(map)
     if (isHillshadeEnabled) ensureHillshadeLayer(map)
-    setBasemapPlacesVisibility(map, isBasemapPlacesEnabled)
+    setBasemapPlacesVisibility(map, false)
     if (isAlbertaBoundaryEnabled) {
       setAlbertaBoundaryVisibility(map, isAlbertaBoundaryEnabled)
     }
@@ -182,20 +178,6 @@ export function useMapLayerControls({
     }
   }
 
-  // Function: Show or hide built-in basemap place icons and labels.
-  const changeBasemapPlacesVisibility = (enabled: boolean) => {
-    const map = mapRef.current?.getMap()
-    if (!map || !isMapReady) return
-
-    try {
-      setBasemapPlacesVisibility(map, enabled)
-      setIsBasemapPlacesEnabled(enabled)
-      clearError()
-    } catch (error) {
-      reportError(error)
-    }
-  }
-
   // Function: Show or hide the Alberta provincial boundary layer.
   const changeAlbertaBoundaryVisibility = (enabled: boolean) => {
     const map = mapRef.current?.getMap()
@@ -214,13 +196,11 @@ export function useMapLayerControls({
     basemapStyleId,
     isHillshadeEnabled,
     isSatelliteEnabled,
-    isBasemapPlacesEnabled,
     isAlbertaBoundaryEnabled,
     initializeMapLayers,
     changeBasemapStyle,
     changeHillshade,
     changeSatellite,
-    changeBasemapPlacesVisibility,
     changeAlbertaBoundaryVisibility,
   }
 }

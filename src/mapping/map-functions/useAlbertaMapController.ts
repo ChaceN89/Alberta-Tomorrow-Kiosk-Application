@@ -1,7 +1,7 @@
 /**
   File: useAlbertaMapController.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Connect map state, layer, terrain, camera, and flyover controls.
@@ -79,12 +79,7 @@ export function useAlbertaMapController() {
   }
 
   const cameraControls = useMapCameraControls({
-    mapRef,
-    initialPitch: initialMapView.pitch,
-    initialZoom: Math.round(INITIAL_VIEW.zoom),
-    isMapReady,
     isStyleLoading,
-    isTerrainEnabled: terrainControls.isTerrainEnabled,
     isTerrainTransitioning: terrainControls.isTerrainTransitioning,
     applyTerrain: terrainControls.applyTerrain,
     reportError,
@@ -97,10 +92,6 @@ export function useAlbertaMapController() {
       layerControls.initializeMapLayers(map)
       terrainControls.initializeTerrain(map)
       setMapInstance(map)
-
-      // Function: Keep camera controls synchronized with map movement.
-      const handleMapMoveEnd = () => cameraControls.handleMapMoveEnd(map)
-      map.on('moveend', handleMapMoveEnd)
 
       setIsMapReady(true)
     } catch (error) {
@@ -131,20 +122,16 @@ export function useAlbertaMapController() {
     basemapStyleId: layerControls.basemapStyleId,
     isHillshadeEnabled: layerControls.isHillshadeEnabled,
     isSatelliteEnabled: layerControls.isSatelliteEnabled,
-    isBasemapPlacesEnabled: layerControls.isBasemapPlacesEnabled,
     isAlbertaBoundaryEnabled: layerControls.isAlbertaBoundaryEnabled,
-    cameraPitch: cameraControls.cameraPitch,
-    cameraZoom: cameraControls.cameraZoom,
     onTerrainExaggerationChange: terrainControls.changeTerrainExaggeration,
     onBasemapStyleChange: layerControls.changeBasemapStyle,
     onHillshadeChange: layerControls.changeHillshade,
     onSatelliteChange: layerControls.changeSatellite,
-    onBasemapPlacesChange: layerControls.changeBasemapPlacesVisibility,
     onAlbertaBoundaryChange: layerControls.changeAlbertaBoundaryVisibility,
-    onCameraPitchChange: cameraControls.changeCameraPitch,
-    onCameraZoomChange: cameraControls.changeCameraZoom,
     onToggleTerrain: terrainControls.toggleTerrain,
-    onToggleFlyover: flyoverControls.toggleFlyover,
+    onToggleFlyover: () => flyoverControls.toggleFlyover(),
+    onStartFlyover: flyoverControls.toggleFlyover,
+    onSetFlyoverPaused: flyoverControls.setFlyoverPaused,
     onFlyoverTravelTo: flyoverControls.travelTo,
     onNavigateToPoi: cameraControls.navigateToPoi,
   }

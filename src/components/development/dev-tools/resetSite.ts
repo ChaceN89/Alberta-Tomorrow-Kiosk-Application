@@ -14,10 +14,14 @@
  */
 import { resetIntroTutorial } from '@/save-data/tutorial-progress/introTutorialStorage'
 import { resetMediaPlayerTutorial } from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
+import { resetIntroToMapTutorial } from '@/save-data/tutorial-progress/introToMapTutorialStorage'
+import { resetPlaneTutorial } from '@/save-data/tutorial-progress/planeTutorialStorage'
 
 export function resetSiteTutorialFlags() {
   resetIntroTutorial()
   resetMediaPlayerTutorial()
+  resetIntroToMapTutorial()
+  resetPlaneTutorial()
 }
 
 export async function resetSite(resetExpeditionProgress: () => Promise<void>) {

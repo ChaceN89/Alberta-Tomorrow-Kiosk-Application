@@ -95,10 +95,14 @@
   "allTutorialsGroup": "All tutorials",
   "introTutorialGroup": "Introduction tutorial",
   "mediaPlayerTutorialGroup": "Media player tutorial",
+  "exploreMapTutorialGroup": "Explore map tutorial",
+  "planeTutorialGroup": "Plane flight tutorial",
   "startTutorial": "Start this tutorial",
   "resetTutorialFlag": "Reset tutorial flag",
   "tutorialsDescription": "Start each tutorial now or reset its saved flag for a later visit.",
   "introTutorialFlagReset": "Intro tutorial flag reset. Reload the page or use Start this tutorial to run it.",
   "mediaPlayerTutorialFlagReset": "Media player tutorial flag reset. Reload the page or use Start this tutorial to run it.",
+  "exploreMapTutorialFlagReset": "Explore map tutorial flag reset. Use Start this tutorial to run it now.",
+  "planeTutorialFlagReset": "Plane tutorial flag reset. Use Start this tutorial to run it now.",
   "mediaPlayerTutorialStarted": "Media tutorial started if a track is open; otherwise, it will start when you open one."
 }

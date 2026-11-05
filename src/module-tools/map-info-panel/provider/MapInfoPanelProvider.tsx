@@ -1,7 +1,7 @@
 /**
   File: MapInfoPanelProvider.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Provide the shared map info panel for POI marker interactions.
@@ -127,8 +127,8 @@ export function MapInfoPanelProvider({ children }: MapInfoPanelProviderProps) {
   )
 
   const value = useMemo(
-    () => ({ openPanel, closePanel }),
-    [closePanel, openPanel],
+    () => ({ isOpen, openPanel, closePanel }),
+    [closePanel, isOpen, openPanel],
   )
 
   return (

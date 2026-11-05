@@ -1,18 +1,19 @@
 /**
   File: MapPoiSelector.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Select a visible point of interest or cycle to an adjacent location.
 
   Usage:
-  - Rendered at the bottom center of AlbertaMap.
+  - Fixed in the bottom-right corner of the screen.
 
   Notes:
   - The parent supplies the POI list for the current map and layer settings.
  */
 import { useEffect, useId, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { MapPoi } from './MapPoiMarker'
 
@@ -90,7 +91,7 @@ export function MapPoiSelector({
     onSelect(pois[nextIndex])
   }
 
-  return (
+  return createPortal(
     <nav
       ref={rootRef}
       className="mapping-poi-selector"
@@ -190,6 +191,7 @@ export function MapPoiSelector({
           ))}
         </ul>
       )}
-    </nav>
+    </nav>,
+    document.body,
   )
 }

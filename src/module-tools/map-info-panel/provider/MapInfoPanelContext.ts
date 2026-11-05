@@ -1,7 +1,7 @@
 /**
   File: MapInfoPanelContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Share map info panel state and actions with map markers.
@@ -20,6 +20,7 @@ import type {
 } from './types'
 
 export type MapInfoPanelContextValue = {
+  isOpen: boolean
   openPanel: (
     content: MapInfoPanelContent,
     options?: MapInfoPanelOpenOptions,

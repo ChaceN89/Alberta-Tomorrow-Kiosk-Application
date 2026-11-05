@@ -1,7 +1,7 @@
 /**
   File: useFlyoverControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Run flyover mode: spawn the plane, fly it, and drive the map camera behind it.
@@ -136,6 +136,8 @@ export function useFlyoverControls({
   const runtimeRef = useRef<FlightRuntime | null>(null)
   const visualRef = useRef(createFlightVisualState())
   const reportErrorRef = useRef(reportError)
+  const pausedAtRef = useRef<number | null>(null)
+  const pauseAfterEntryRef = useRef(false)
   const isActive = phase !== 'off'
 
   useEffect(() => {
@@ -149,12 +151,37 @@ export function useFlyoverControls({
   }, [])
 
   // Function: Pause or resume the plane's flight.
+  const setFlyoverPaused = useCallback((shouldPause: boolean) => {
+    if (phaseRef.current === 'entering') {
+      pauseAfterEntryRef.current = shouldPause
+      return
+    }
+    if (phaseRef.current !== 'flying') return
+
+    if (isPausedRef.current === shouldPause) return
+
+    const now = performance.now()
+    if (shouldPause) {
+      pausedAtRef.current = now
+    } else if (pausedAtRef.current !== null) {
+      const pausedDuration = now - pausedAtRef.current
+      const runtime = runtimeRef.current
+      if (runtime) {
+        runtime.transitionStartedAt += pausedDuration
+        if (runtime.travel) runtime.travel.startedAt += pausedDuration
+      }
+      pausedAtRef.current = null
+    }
+
+    isPausedRef.current = shouldPause
+    setIsPaused(shouldPause)
+  }, [])
+
   const togglePause = useCallback(() => {
     if (phaseRef.current !== 'flying') return
 
-    isPausedRef.current = !isPausedRef.current
-    setIsPaused(isPausedRef.current)
-  }, [])
+    setFlyoverPaused(!isPausedRef.current)
+  }, [setFlyoverPaused])
 
   // Function: Leave flyover mode from the keyboard.
   const stopFlyoverRef = useRef<() => void>(() => {})
@@ -168,7 +195,7 @@ export function useFlyoverControls({
   const dragTurnRef = useFlightDrag({ isActive, mapRef })
 
   // Function: Spawn the plane at the center of the map and begin the entry transition.
-  const startFlyover = () => {
+  const startFlyover = (pauseAfterEntry = false) => {
     if (
       phaseRef.current !== 'off' ||
       isStyleLoading ||
@@ -234,7 +261,9 @@ export function useFlyoverControls({
       visualRef.current = createFlightVisualState()
       setAltitudeMeters(startAltitude)
       setSpeedMetersPerSecond(Math.round(startSpeed / 10) * 10)
+      pauseAfterEntryRef.current = pauseAfterEntry
       isPausedRef.current = false
+      pausedAtRef.current = null
       setIsPaused(false)
 
       // Release focus from the toggle after a pointer press so the keys reach the flight.
@@ -285,8 +314,9 @@ export function useFlyoverControls({
   // center of the view.
   const travelTo = (coordinates: [number, number]) => {
     const runtime = runtimeRef.current
-    if (phaseRef.current !== 'flying' || isPausedRef.current || !runtime) return
+    if (phaseRef.current !== 'flying' || !runtime) return
 
+    if (isPausedRef.current) setFlyoverPaused(false)
     const { flight } = runtime
     const from: [number, number] = [flight.longitude, flight.latitude]
     const startAltitude = runtime.travel?.startAltitude ?? flight.altitudeMeters
@@ -319,8 +349,8 @@ export function useFlyoverControls({
     }
   }
 
-  const toggleFlyover = () => {
-    if (phaseRef.current === 'off') startFlyover()
+  const toggleFlyover = (startPaused = false) => {
+    if (phaseRef.current === 'off') startFlyover(startPaused)
     else stopFlyover()
   }
 
@@ -455,6 +485,8 @@ export function useFlyoverControls({
       lastTime = now
 
       try {
+        if (isPausedRef.current) return
+
         const viewportHeight = map.getCanvas().clientHeight
         const fov = map.getVerticalFieldOfView()
 
@@ -475,10 +507,16 @@ export function useFlyoverControls({
           )
           updateFlightVisual(visual, runtime)
           applyEnterVisual(visual, progress)
-          if (progress >= 1) changePhase('flying')
+          if (progress >= 1) {
+            changePhase('flying')
+            if (pauseAfterEntryRef.current) {
+              pauseAfterEntryRef.current = false
+              pausedAtRef.current = now
+              isPausedRef.current = true
+              setIsPaused(true)
+            }
+          }
         } else if (phase === 'flying') {
-          if (isPausedRef.current) return
-
           const keys = inputRef.current
           const previousAltitude = runtime.flight.altitudeMeters
           // Steering comes from the keys and the map drag together; a trip takes all control.
@@ -541,6 +579,7 @@ export function useFlyoverControls({
     isFlyoverEnabled: isActive,
     isFlyoverTransitioning: phase === 'entering' || phase === 'exiting',
     isFlyoverPaused: isPaused,
+    setFlyoverPaused,
     flyoverAltitudeMeters: altitudeMeters,
     flyoverSpeedMetersPerSecond: speedMetersPerSecond,
     flightVisualRef: visualRef,

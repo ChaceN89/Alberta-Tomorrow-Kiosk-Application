@@ -95,10 +95,14 @@
   "allTutorialsGroup": "Tous les tutoriels",
   "introTutorialGroup": "Tutoriel d’introduction",
   "mediaPlayerTutorialGroup": "Tutoriel du lecteur multimédia",
+  "exploreMapTutorialGroup": "Tutoriel de la carte d’exploration",
+  "planeTutorialGroup": "Tutoriel de vol",
   "startTutorial": "Démarrer ce tutoriel",
   "resetTutorialFlag": "Réinitialiser l’indicateur",
   "tutorialsDescription": "Lancez chaque tutoriel maintenant ou réinitialisez son indicateur pour une prochaine visite.",
   "introTutorialFlagReset": "Indicateur du tutoriel d’introduction réinitialisé. Rechargez la page ou utilisez Démarrer ce tutoriel.",
   "mediaPlayerTutorialFlagReset": "Indicateur du tutoriel du lecteur réinitialisé. Rechargez la page ou utilisez Démarrer ce tutoriel.",
+  "exploreMapTutorialFlagReset": "Indicateur du tutoriel de la carte réinitialisé. Utilisez Démarrer ce tutoriel pour le lancer maintenant.",
+  "planeTutorialFlagReset": "Indicateur du tutoriel de vol réinitialisé. Utilisez Démarrer ce tutoriel pour le lancer maintenant.",
   "mediaPlayerTutorialStarted": "Le tutoriel multimédia démarre si une piste est ouverte; sinon, il démarrera à l’ouverture d’une piste."
 }

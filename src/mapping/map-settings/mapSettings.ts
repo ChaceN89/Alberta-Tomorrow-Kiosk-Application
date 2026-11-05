@@ -1,7 +1,7 @@
 /**
   File: mapSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026 - CN - Configure Alberta boundary defaults.
+  Date Updated: Nov 5, 2026
 
   Description:
   - Store general map defaults, zoom boundaries, and startup feature visibility.
@@ -16,7 +16,6 @@
 // min and max zoom settings as well
 export const ZOOM_MIN = 0
 export const ZOOM_MAX = 25
-export const CAMERA_MOVE_DURATION = 200 // in milliseconds
 
 // the defaults for the initial view of the site
 export const INITIAL_VIEW = {
@@ -35,9 +34,6 @@ export const SATELLITE_IMAGE_DEFAULT = false
 
 // Start with terrain enabled.
 export const START_IN_3D_DEFAULT = true
-
-// Start with basemap place icons and labels hidden.
-export const BASEMAP_PLACES_DEFAULT = false
 
 // settings related to the Alberta boundary layer
 export const ALBERTA_BOUNDARY_DEFAULT = true

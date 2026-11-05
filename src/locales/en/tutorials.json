@@ -25,6 +25,22 @@
     "description": "Good luck out there, and have fun discovering Alberta.",
     "start": "Start exploring"
   },
+  "exploreMap": {
+    "title": "Explore the Alberta map",
+    "description": "This is the map. Select a point of interest to learn about places across Alberta.",
+    "done": "Explore the map"
+  },
+  "plane": {
+    "explore": {
+      "title": "Explore Alberta",
+      "description": "Once the plane settles above the province, it pauses. Use the point-of-interest selector along the bottom to choose a place to fly to and explore. When you're ready, continue to see the flight controls."
+    },
+    "controls": {
+      "title": "Your flight controls",
+      "description": "The flight controls are open beside this tip. Take a look, then continue to tuck them away. You can reopen them any time with the button on the left."
+    },
+    "done": "Start flying"
+  },
   "mediaPlayer": {
     "done": "Got it",
     "player": {
