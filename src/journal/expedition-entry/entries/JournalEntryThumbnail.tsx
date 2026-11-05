@@ -30,6 +30,7 @@ type JournalEntryThumbnailProps = {
   ) => void
 }
 
+// Provide the pinned image button and open the entry's configured viewer.
 export function JournalEntryThumbnail({
   entry,
   imageSrc,
@@ -37,6 +38,7 @@ export function JournalEntryThumbnail({
   module,
   onOpenEntryMedia,
 }: JournalEntryThumbnailProps) {
+  // Choose an accessible action label that matches the configured viewer.
   const { t } = useTranslation('journal')
   const viewerType = module.journalEntryViewers?.[entry.id]?.type
   const labelKey =

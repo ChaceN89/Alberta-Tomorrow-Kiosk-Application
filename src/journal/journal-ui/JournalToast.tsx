@@ -30,6 +30,7 @@ export function JournalToast({
   progress,
   onViewJournal,
 }: JournalToastProps) {
+  // translation function
   const { t } = useTranslation('journal')
 
   return (

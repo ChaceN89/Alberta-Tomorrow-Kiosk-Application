@@ -17,6 +17,7 @@ import {
   type PlayerJournalAsset,
 } from './ViewablePlayerJournalAsset'
 
+// Render the list of player journal assets with their viewable previews.
 type PlayerJournalAssetListProps = {
   assets: readonly PlayerJournalAsset[]
 }

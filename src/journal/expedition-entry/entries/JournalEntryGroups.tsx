@@ -30,15 +30,18 @@ type JournalEntryGroupsProps = {
   ) => void
 }
 
+// Render each entry as recorded or locked, grouped by its optional section.
 export function JournalEntryGroups({
   module,
   entries,
   isCheckpointComplete,
   onOpenEntryMedia,
 }: JournalEntryGroupsProps) {
+  // The notebook heading and locked/recorded labels are shared journal copy.
   const { t } = useTranslation('journal')
   const entryGroups: { section: string | null; entries: JournalEntry[] }[] = []
 
+  // Keep consecutive entries together so locale order and section changes are preserved.
   for (const entry of entries) {
     const section = entry.section ?? null
     const previousGroup = entryGroups[entryGroups.length - 1]

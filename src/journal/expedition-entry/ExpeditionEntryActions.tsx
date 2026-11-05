@@ -23,11 +23,13 @@ type ExpeditionEntryActionsProps = {
   onNavigate: () => void
 }
 
+// Provide the module's activity and overview links from the journal.
 export function ExpeditionEntryActions({
   moduleId,
   progress,
   onNavigate,
 }: ExpeditionEntryActionsProps) {
+  // Action labels are shared journal copy, not module-specific text.
   const { t } = useTranslation('journal')
 
   return (

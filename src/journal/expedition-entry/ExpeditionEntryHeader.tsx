@@ -25,6 +25,7 @@ type ExpeditionEntryHeaderProps = {
   progress: ExpeditionProgress
 }
 
+// Pair the module's localized title with its current expedition progress.
 export function ExpeditionEntryHeader({
   module,
   progress,

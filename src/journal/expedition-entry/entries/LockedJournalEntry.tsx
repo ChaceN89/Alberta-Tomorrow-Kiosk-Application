@@ -19,7 +19,9 @@ type LockedJournalEntryProps = {
   hasImage: boolean
 }
 
+// Show the placeholder until the learner records this checkpoint.
 export function LockedJournalEntry({ hasImage }: LockedJournalEntryProps) {
+  // Locked state labels are shared by every module journal.
   const { t } = useTranslation('journal')
 
   return (

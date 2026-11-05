@@ -31,6 +31,7 @@ type RecordedJournalEntryProps = {
   ) => void
 }
 
+// Show a completed entry with its optional media and module-specific action.
 export function RecordedJournalEntry({
   entry,
   module,
@@ -38,6 +39,7 @@ export function RecordedJournalEntry({
   isInSection,
   onOpenEntryMedia,
 }: RecordedJournalEntryProps) {
+  // The recorded label is shared across all module journals.
   const { t } = useTranslation('journal')
   const imageAlt = entry.imageAlt ?? ''
 
@@ -77,6 +79,7 @@ export function RecordedJournalEntry({
         )}
         {module.journalEntryAction && (
           <div className="shrink-0">
+            {/* Module-specific actions load only when needed and do not block the row. */}
             <Suspense fallback={null}>
               <module.journalEntryAction
                 entryId={entry.id}

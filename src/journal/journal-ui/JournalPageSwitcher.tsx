@@ -37,11 +37,15 @@ export function JournalPageSwitcher({
   activeIndex,
   entryCount,
 }: JournalPageSwitcherProps) {
+  //
   const { t } = useTranslation('journal')
+  //
   const { getExpeditionProgress } = useExpeditionProgress()
   const { selectExpedition } = useJournal()
   const switcherRef = useRef<HTMLDivElement>(null)
   const switcherButtonRef = useRef<HTMLButtonElement>(null)
+
+  // the open/closed state of the page list
   const [isListOpen, setIsListOpen] = useState(false)
 
   useEffect(() => {

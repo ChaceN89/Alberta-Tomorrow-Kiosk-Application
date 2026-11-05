@@ -27,14 +27,20 @@ type ExpeditionEntryProps = {
   onNavigate: () => void
 }
 
+// Connect this module's journal content, saved progress, and media actions.
 export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
+  // Load journal copy from this module's translation namespace.
   const { t: tModule, i18n } = useTranslation(module.translationNamespace)
+  // Use the shared viewer for pinned images, messages, and models.
   const { openImage, openMessage, openModel } = useMediaViewer()
+  // Read the progress state used by both the header and entry rows.
   const { getExpeditionProgress, isCheckpointComplete } =
     useExpeditionProgress()
+
   const progress = getExpeditionProgress(module)
   const entries = tModule('journal.entries', { returnObjects: true })
 
+  // Open the viewer configured for an entry, or use its image as the fallback.
   const openEntryMedia = (
     entry: JournalEntry,
     imageSrc: string,
@@ -42,9 +48,11 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
     origin: Element,
   ) => {
     const viewer = module.journalEntryViewers?.[entry.id]
+    // Viewer text in the registry is stored as keys in the module namespace.
     const translate = (key: string) =>
       i18n.t(key, { ns: module.translationNamespace, defaultValue: key })
 
+    // Messages can include their own translated text and optional images.
     if (viewer?.type === 'message') {
       openMessage(
         {
@@ -61,6 +69,7 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
       return
     }
 
+    // Model definitions already use the shared model viewer content shape.
     if (viewer?.type === 'model') {
       const model: ModelViewerContent = viewer
       openModel(
@@ -76,6 +85,7 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
       return
     }
 
+    // Images use custom viewer details when configured, otherwise entry copy.
     openImage(
       viewer
         ? {
