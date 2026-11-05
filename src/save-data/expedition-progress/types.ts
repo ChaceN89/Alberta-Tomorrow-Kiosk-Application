@@ -1,24 +1,32 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
-  - Define dependencies shared by expedition progress actions.
+  - Define saved expedition progress and its derived display status.
 
   Usage:
-  - Individual action modules use these callback types.
+  - Save-data providers and consumers share these domain types.
 
   Notes:
-  - None.
+  - This is the persisted domain shape; repository details live separately.
  */
-import type { LearningModule } from '@/modules/types'
-import type { ExpeditionProgressChange, ExpeditionProgressData } from '../types'
+export type ExpeditionRecord = {
+  startedAt: string
+  checkpoints: Record<string, string>
+}
 
-export type CommitProgress = (next: ExpeditionProgressData) => void
+export type ExpeditionProgressData = Record<string, ExpeditionRecord>
 
-export type NotifyProgressChange = (
-  module: LearningModule,
-  kind: ExpeditionProgressChange['kind'],
-  next: ExpeditionProgressData,
-) => void
+export type ExpeditionProgress = {
+  completed: number
+  total: number
+  status: 'notStarted' | 'inProgress' | 'complete'
+}
+
+export type ExpeditionProgressChange = {
+  moduleId: string
+  kind: 'started' | 'updated'
+  progress: ExpeditionProgress
+}

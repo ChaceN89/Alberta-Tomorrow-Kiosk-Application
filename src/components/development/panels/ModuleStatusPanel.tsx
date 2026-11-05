@@ -14,7 +14,8 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
+import { useExpeditionProgressDevTools } from '@/save-data/expedition-progress/development/useExpeditionProgressDevTools'
 import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
 import type { ModulePreloadState } from '@/modules/useModulePreload'
 import { useModulePreload } from '@/modules/useModulePreload'
@@ -41,14 +42,13 @@ function ModuleStatusItem({
   const { t } = useTranslation('development')
   const { t: tModule } = useTranslation(module.translationNamespace)
   const { isModuleReady, preloadModule } = useModulePreload()
+  const { getExpeditionProgress, startExpedition } = useExpeditionProgress()
   const {
     completeModule,
-    getExpeditionProgress,
     progressNextCheckpoint,
     randomizeModuleCheckpoints,
     restartModule,
-    startExpedition,
-  } = useExpeditionProgress()
+  } = useExpeditionProgressDevTools()
   const isCurrent = preloadState.moduleId === module.id
   const status = isCurrent
     ? preloadState.status

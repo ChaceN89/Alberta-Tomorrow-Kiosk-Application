@@ -1,7 +1,7 @@
 /**
   File: getExpeditionProgress.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Get the derived progress summary for a module.
@@ -10,7 +10,7 @@
   - Exposed through the expedition progress context.
 
   Notes:
-  - None.
+  - This delegates to the shared module progress selector.
  */
 import type { LearningModule } from '@/modules/types'
 import type { ExpeditionProgress, ExpeditionProgressData } from '../types'

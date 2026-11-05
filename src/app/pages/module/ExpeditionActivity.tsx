@@ -15,7 +15,7 @@
  */
 import { Suspense, useCallback, useEffect } from 'react'
 import { Loading } from '@/components/app-states/Loading'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { ModuleActivityProps } from './types'
 
 export function ExpeditionActivity({ module }: ModuleActivityProps) {

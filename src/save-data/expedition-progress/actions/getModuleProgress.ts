@@ -1,7 +1,7 @@
 /**
   File: getModuleProgress.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Derive a module's completed checkpoint count and status.
@@ -10,7 +10,7 @@
   - Shared by progress selectors and change notifications.
 
   Notes:
-  - None.
+  - Completion counts include only ids declared by the module.
  */
 import type { LearningModule } from '@/modules/types'
 import type { ExpeditionProgress, ExpeditionProgressData } from '../types'

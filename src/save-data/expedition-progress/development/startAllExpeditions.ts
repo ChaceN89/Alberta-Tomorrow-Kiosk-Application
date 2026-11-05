@@ -1,7 +1,7 @@
 /**
   File: startAllExpeditions.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Start every visible expedition that has not already been started.
@@ -14,7 +14,7 @@
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'
-import type { CommitProgress } from './types'
+import type { CommitProgress } from '../actions/types'
 
 // Start each visible expedition that has no saved record.
 export function startAllExpeditions(

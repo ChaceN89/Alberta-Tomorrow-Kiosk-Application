@@ -1,7 +1,7 @@
 /**
   File: completeModule.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Complete every checkpoint in a module and notify progress subscribers.
@@ -14,7 +14,7 @@
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'
-import type { CommitProgress, NotifyProgressChange } from './types'
+import type { CommitProgress, NotifyProgressChange } from '../actions/types'
 
 // Complete every checkpoint in one module and notify listeners.
 export function completeModule(

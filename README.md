@@ -47,7 +47,8 @@ Commit `package-lock.json`; use `npm ci` for reproducible installs.
 src/
   app/          Entry point, translations setup, routing, and pages
   components/   Shared UI and reusable components used across modules
-  journal/      Journal progress state, localStorage persistence, and context
+  journal/      Journal pages, navigation, entry rendering, and context
+  save-data/    Expedition progress repository, tutorial flags, and state hooks
   modules/      Typed registry, shared types, and individual module folders
   module-tools/ Reusable module tools (audio-player, quiz-system, media-viewer) shared by modules
   locales/      en/ and fr/ with global, home, journal, development, funfacts, moduleTools, and module.* JSON files
@@ -117,6 +118,19 @@ language; switching to French updates the entire interface and document language
 without resetting the current activity. A page reload resets language and
 activity state, but the expedition journal is kept (see below).
 
+### Save data
+
+`src/save-data/expedition-progress/` owns expedition progress types, learner-facing
+operations, and the React provider/hook. Persistence is behind the asynchronous
+`ExpeditionProgressRepository` interface; the default local-storage repository
+keeps the current browser-only behavior.
+The provider accepts another repository and a loading fallback, so an account API
+adapter can be added later without putting persistence calls in modules or UI.
+Developer-only reset, randomize, and progress simulation actions are isolated in
+`expedition-progress/development/` and exposed through
+`useExpeditionProgressDevTools`; normal app consumers use `useExpeditionProgress`.
+Tutorial completion flags are separate under `src/save-data/tutorial-progress/`.
+
 ### Expedition journal
 
 Each module declares journal **checkpoints**: ids for things a learner
@@ -125,8 +139,8 @@ accomplished or learned. Activities receive `completedCheckpoints` and a
 `ModuleActivityProps` in `src/modules/types.ts`. Nested module components that
 only need checkpoint access can use `ModuleCheckpointProps`. Recording a
 checkpoint saves it in browser
-`localStorage` (key `alberta-expeditions:journal`, via
-`src/save-data/expeditionProgressStorage.ts`) and shows its own toast, so rapid journal
+`localStorage` (key `alberta-tomorrow:expedition-progress`, via the default
+local-storage repository) and shows its own toast, so rapid journal
 events remain separate instead of overwriting one another. Each expedition also has a
 **started** flag (`startedAt`): opening a module's activity starts it, and
 recording any checkpoint starts it too, for example from a map or 3D scene via
@@ -163,8 +177,10 @@ untilts on hover and opens the shared media viewer, using the entry's title,
 summary, and `imageAlt`. To open something else, add the checkpoint id to
 `journalEntryViewers` with a message or image definition (translation keys, as
 in `messages.ts`); a message entry usually pins a generic note picture. Entries
-without an image stay text-only. Storage is local only; replace
-`src/save-data/expeditionProgressStorage.ts` to sync with save data later.
+without an image stay text-only. Storage is local only; replace the repository
+implementation in `src/save-data/expedition-progress/repository/` to connect a
+future account-backed API. The provider consumes the `ExpeditionProgressRepository`
+interface, keeping persistence separate from progress rules and React consumers.
 
 The title page UI lives in `src/journal/title-page/`. Add player-facing previews
 to `player-journal-assets/PlayerJournalAssetList.tsx` by supplying an id, localized

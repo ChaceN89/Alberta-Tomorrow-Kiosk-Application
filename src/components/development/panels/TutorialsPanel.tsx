@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
 import { useIntroTutorial } from '@/tutorials/intro-tutorial/useIntroTutorial'
 import { requestMediaPlayerTutorialStart } from '@/tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
-import { resetMediaPlayerTutorial } from '@/save-data/mediaPlayerTutorialStorage'
+import { resetMediaPlayerTutorial } from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
 import { DevPanel } from './DevPanel'
 
 type TutorialsPanelProps = {

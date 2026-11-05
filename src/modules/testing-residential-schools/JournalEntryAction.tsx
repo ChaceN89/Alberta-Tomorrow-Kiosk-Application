@@ -21,7 +21,7 @@ import {
 } from './checkpoints'
 import { bloodSchoolAudioTrack, lesserSlaveLakeAudioTrack } from './tracks'
 import { stAlbertYouTubeTrack } from './videos'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
 
 export default function JournalEntryAction({
   entryId,

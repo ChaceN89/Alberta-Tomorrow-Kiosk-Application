@@ -1,7 +1,7 @@
 /**
   File: completeCheckpoint.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Record a valid module checkpoint and notify progress subscribers.
@@ -10,7 +10,7 @@
   - Called by module activities and the expedition progress provider.
 
   Notes:
-  - None.
+  - Unknown module or checkpoint ids are reported and not saved.
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'

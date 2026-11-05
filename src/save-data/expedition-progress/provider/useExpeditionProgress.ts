@@ -1,7 +1,7 @@
 /**
   File: useExpeditionProgress.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Define the shared interface for reading and updating saved expedition progress.
@@ -10,7 +10,7 @@
   - Use within ExpeditionProgressProvider from modules, journal UI, or shared UI.
 
   Notes:
-  - None.
+  - Exposes learner-facing progress operations; developer mutations use a separate hook.
  */
 import { createContext, useContext } from 'react'
 import type { LearningModule } from '@/modules/types'
@@ -18,7 +18,7 @@ import type {
   ExpeditionProgress,
   ExpeditionProgressChange,
   ExpeditionProgressData,
-} from './types'
+} from '../types'
 
 // Define the shape of the expedition progress context value.
 export type ExpeditionProgressContextValue = {
@@ -32,14 +32,6 @@ export type ExpeditionProgressContextValue = {
   isCheckpointComplete: (moduleId: string, checkpointId: string) => boolean
   getCompletedCheckpoints: (moduleId: string) => readonly string[]
   getExpeditionProgress: (module: LearningModule) => ExpeditionProgress
-  resetExpeditionProgress: () => void
-  startAllExpeditions: () => void
-  progressNextCheckpoint: (moduleId: string) => boolean
-  progressAllNextCheckpoints: () => number
-  completeModule: (moduleId: string) => boolean
-  randomizeModuleCheckpoints: (moduleId: string) => boolean
-  restartModule: (moduleId: string) => boolean
-  completeAllModules: () => void
 }
 
 // Create the expedition progress context with a default value of null.

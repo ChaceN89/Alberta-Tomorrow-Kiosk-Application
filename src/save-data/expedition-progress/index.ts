@@ -1,28 +1,22 @@
 /**
   File: index.ts | Author: Chace Nielson
-  Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Created: Nov 5, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
-  - Re-export expedition progress actions from their individual modules.
+  - Expose the learner-facing expedition progress feature.
 
   Usage:
-  - Import progress actions through this directory.
+  - Import the provider and hook through this feature entry point.
 
   Notes:
-  - Each action remains implemented in its own file.
+  - Developer-only progress controls live in the development subfolder.
  */
-export { completeAllModules } from './completeAllModules'
-export { completeCheckpoint } from './completeCheckpoint'
-export { completeModule } from './completeModule'
-export { getCompletedCheckpoints } from './getCompletedCheckpoints'
-export { getExpeditionProgress } from './getExpeditionProgress'
-export { getModuleProgress } from './getModuleProgress'
-export { isCheckpointComplete } from './isCheckpointComplete'
-export { progressAllNextCheckpoints } from './progressAllNextCheckpoints'
-export { progressNextCheckpoint } from './progressNextCheckpoint'
-export { randomizeModuleCheckpoints } from './randomizeModuleCheckpoints'
-export { resetExpeditionProgress } from './resetExpeditionProgress'
-export { restartModule } from './restartModule'
-export { startAllExpeditions } from './startAllExpeditions'
-export { startExpedition } from './startExpedition'
+export { ExpeditionProgressProvider } from './provider/ExpeditionProgressProvider'
+export { useExpeditionProgress } from './provider/useExpeditionProgress'
+export type {
+  ExpeditionProgress,
+  ExpeditionProgressChange,
+  ExpeditionProgressData,
+  ExpeditionRecord,
+} from './types'

@@ -15,7 +15,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
-import type { ExpeditionProgress } from '@/save-data/types'
+import type { ExpeditionProgress } from '@/save-data/expedition-progress'
 
 type ExpeditionEntryActionsProps = {
   moduleId: string

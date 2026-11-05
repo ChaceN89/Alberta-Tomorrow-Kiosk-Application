@@ -1,27 +1,26 @@
 /**
-  File: expeditionProgressStorage.ts | Author: Chace Nielson
+  File: localStorageExpeditionProgressRepository.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
-  - Persist expedition progress in browser localStorage.
+  - Implement the progress repository with browser localStorage.
 
   Usage:
-  - The expedition progress provider uses these functions as its local adapter.
+  - The progress provider uses this adapter by default.
 
   Notes:
   - Persisted data is intentionally resettable; no legacy format migration is included.
  */
-import type { ExpeditionProgressData } from './types'
+import type { ExpeditionProgressData } from '../types'
+import type {
+  ExpeditionProgressLoadResult,
+  ExpeditionProgressRepository,
+} from './ExpeditionProgressRepository'
 
 const STORAGE_KEY = 'alberta-tomorrow:expedition-progress'
 const PREVIOUS_STORAGE_KEY = 'alberta-expeditions:journal'
 const STORAGE_VERSION = 1
-
-type LoadedProgress = {
-  progress: ExpeditionProgressData
-  isAvailable: boolean
-}
 
 // Check whether parsed storage data is a non-array object.
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -72,7 +71,7 @@ function parseProgress(raw: string): ExpeditionProgressData {
 }
 
 // Load and validate expedition progress from localStorage.
-export function loadExpeditionProgress(): LoadedProgress {
+function loadExpeditionProgress(): ExpeditionProgressLoadResult {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
 
@@ -83,9 +82,7 @@ export function loadExpeditionProgress(): LoadedProgress {
 }
 
 // Serialize and save expedition progress to localStorage.
-export function saveExpeditionProgress(
-  progress: ExpeditionProgressData,
-): boolean {
+function saveExpeditionProgress(progress: ExpeditionProgressData): boolean {
   try {
     window.localStorage.setItem(
       STORAGE_KEY,
@@ -98,7 +95,7 @@ export function saveExpeditionProgress(
 }
 
 // Remove current and previous expedition progress storage keys.
-export function clearExpeditionProgressStorage(): boolean {
+function clearExpeditionProgressStorage(): boolean {
   try {
     window.localStorage.removeItem(STORAGE_KEY)
     window.localStorage.removeItem(PREVIOUS_STORAGE_KEY)
@@ -107,3 +104,10 @@ export function clearExpeditionProgressStorage(): boolean {
     return false
   }
 }
+
+export const localStorageExpeditionProgressRepository: ExpeditionProgressRepository =
+  {
+    load: async () => loadExpeditionProgress(),
+    save: async (progress) => saveExpeditionProgress(progress),
+    clear: async () => clearExpeditionProgressStorage(),
+  }

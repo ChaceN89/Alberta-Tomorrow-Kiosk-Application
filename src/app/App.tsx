@@ -1,7 +1,7 @@
 /**
   File: App.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Compose the route tree under BrowserRouter, enabling client-side navigation and deep links.
@@ -31,7 +31,7 @@ import { AppStartup } from './AppStartup'
 import { useAppStartupMapGate } from './AppStartupMapContext'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/context/JournalProvider'
-import { ExpeditionProgressProvider } from '@/save-data/ExpeditionProgressProvider'
+import { ExpeditionProgressProvider } from '@/save-data/expedition-progress'
 import { IntroTutorialProvider } from '@/tutorials/intro-tutorial/IntroTutorialProvider'
 import { AudioPlayerProvider } from '@/module-tools/media-player/provider/AudioPlayerProvider'
 import { MediaViewerProvider } from '@/module-tools/media-viewer/provider/MediaViewerProvider'
@@ -61,7 +61,7 @@ function ExploreMapRoute() {
 export function App() {
   return (
     <BrowserRouter>
-      <ExpeditionProgressProvider>
+      <ExpeditionProgressProvider fallback={<Loading />}>
         <JournalProvider>
           <IntroTutorialProvider>
             <ModulePreloadProvider>

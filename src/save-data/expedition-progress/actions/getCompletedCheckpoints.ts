@@ -1,7 +1,7 @@
 /**
   File: getCompletedCheckpoints.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Return the recorded checkpoint ids for a module.
@@ -10,7 +10,7 @@
   - Exposed through the expedition progress context.
 
   Notes:
-  - None.
+  - The result includes only checkpoints recorded for this module.
  */
 import type { ExpeditionProgressData } from '../types'
 

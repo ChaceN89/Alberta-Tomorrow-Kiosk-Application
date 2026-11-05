@@ -15,7 +15,7 @@
 import { useTranslation } from 'react-i18next'
 import { JournalIcon } from '@/components/icons/JournalIcon'
 import { ExpeditionPeak } from '@/components/modules/ExpeditionPeak'
-import type { ExpeditionProgress } from '@/save-data/types'
+import type { ExpeditionProgress } from '@/save-data/expedition-progress'
 
 type JournalToastProps = {
   message: string

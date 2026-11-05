@@ -31,7 +31,7 @@ import {
 import {
   hasCompletedMediaPlayerTutorial,
   markMediaPlayerTutorialCompleted,
-} from '@/save-data/mediaPlayerTutorialStorage'
+} from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
 import {
   mediaPlayerTutorialSteps,
   type MediaPlayerTutorialAnchor,

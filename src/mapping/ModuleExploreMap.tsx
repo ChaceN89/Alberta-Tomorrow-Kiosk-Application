@@ -14,7 +14,7 @@
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
 import type { MapPoi } from './components/MapPoiMarker'
 import stMarysLandscape from '@/modules/testing-residential-schools/assets/st-marys-landscape.jpg'

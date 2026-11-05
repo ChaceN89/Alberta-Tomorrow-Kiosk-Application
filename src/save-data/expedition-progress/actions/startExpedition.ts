@@ -1,7 +1,7 @@
 /**
   File: startExpedition.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Start an expedition if it has not already been started.
@@ -10,7 +10,7 @@
   - Called by the expedition progress provider.
 
   Notes:
-  - None.
+  - Starting an existing expedition leaves its original start time unchanged.
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'

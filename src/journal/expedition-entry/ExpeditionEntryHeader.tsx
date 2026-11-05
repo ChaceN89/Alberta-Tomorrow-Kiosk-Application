@@ -17,7 +17,7 @@ import {
   ExpeditionStatusText,
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
-import type { ExpeditionProgress } from '@/save-data/types'
+import type { ExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
 
 type ExpeditionEntryHeaderProps = {

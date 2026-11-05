@@ -1,7 +1,7 @@
 /**
   File: randomizeModuleCheckpoints.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Randomize checkpoint completion for a module and notify subscribers.
@@ -14,7 +14,7 @@
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'
-import type { CommitProgress, NotifyProgressChange } from './types'
+import type { CommitProgress, NotifyProgressChange } from '../actions/types'
 
 // Randomize checkpoint completion while ensuring the result changes.
 export function randomizeModuleCheckpoints(

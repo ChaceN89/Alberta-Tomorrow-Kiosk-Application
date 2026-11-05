@@ -16,7 +16,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useJournal } from '@/journal/context/useJournal'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import { useModulePreload } from '@/modules/useModulePreload'
 import {
   getModuleActivityExplorePath,

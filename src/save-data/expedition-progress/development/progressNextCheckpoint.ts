@@ -1,7 +1,7 @@
 /**
   File: progressNextCheckpoint.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Record the next incomplete checkpoint in a module.
@@ -10,7 +10,7 @@
   - Exposed through the expedition progress context for developer tools.
 
   Notes:
-  - None.
+  - Advances the first incomplete checkpoint in the module's declared order.
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'

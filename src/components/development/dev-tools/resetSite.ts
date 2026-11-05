@@ -1,28 +1,27 @@
 /**
   File: resetSite.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
-  - Clear every saved browser value this app owns and reload as a first visit.
+  - Clear tutorial flags, reset expedition progress, and reload as a first visit.
 
   Usage:
-  - Shared and app-state UI is imported by app or feature flows.
+  - Called by the development tools after the user confirms a site reset.
 
   Notes:
-  - None.
+  - Expedition progress is cleared through the provider's configured repository.
  */
-import { clearExpeditionProgressStorage } from '@/save-data/expeditionProgressStorage'
-import { resetIntroTutorial } from '@/save-data/introTutorialStorage'
-import { resetMediaPlayerTutorial } from '@/save-data/mediaPlayerTutorialStorage'
+import { resetIntroTutorial } from '@/save-data/tutorial-progress/introTutorialStorage'
+import { resetMediaPlayerTutorial } from '@/save-data/tutorial-progress/mediaPlayerTutorialStorage'
 
 export function resetSiteTutorialFlags() {
   resetIntroTutorial()
   resetMediaPlayerTutorial()
 }
 
-export function resetSite() {
-  clearExpeditionProgressStorage()
+export async function resetSite(resetExpeditionProgress: () => Promise<void>) {
+  await resetExpeditionProgress()
   resetSiteTutorialFlags()
   window.location.assign('/')
 }

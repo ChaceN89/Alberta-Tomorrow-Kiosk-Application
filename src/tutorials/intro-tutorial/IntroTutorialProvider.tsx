@@ -24,7 +24,7 @@ import {
   hasCompletedIntroTutorial,
   markIntroTutorialCompleted,
   resetIntroTutorial,
-} from '@/save-data/introTutorialStorage'
+} from '@/save-data/tutorial-progress/introTutorialStorage'
 import { introTutorialSteps } from './steps'
 import { IntroTutorialContext } from './useIntroTutorial'
 

@@ -24,8 +24,10 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { JournalToast } from '../journal-ui/JournalToast'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
-import type { ExpeditionProgressChange } from '@/save-data/types'
+import {
+  useExpeditionProgress,
+  type ExpeditionProgressChange,
+} from '@/save-data/expedition-progress'
 import { visibleModules } from '@/modules/registry'
 import type { LearningModule } from '@/modules/types'
 import { JournalContext } from './useJournal'

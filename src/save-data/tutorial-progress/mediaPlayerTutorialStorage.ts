@@ -1,7 +1,7 @@
 /**
   File: mediaPlayerTutorialStorage.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Persist whether the first-use media player tutorial has been completed.
@@ -10,7 +10,7 @@
   - The media player tutorial feature and development tools use these functions.
 
   Notes:
-  - None.
+  - This is a separate local tutorial flag, not expedition progress.
  */
 const STORAGE_KEY = 'alberta-expeditions:media-player-tutorial-completed'
 

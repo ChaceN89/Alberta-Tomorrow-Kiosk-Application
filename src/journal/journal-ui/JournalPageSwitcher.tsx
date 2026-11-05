@@ -21,7 +21,7 @@ import {
 } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
 import { useJournal } from '@/journal/context/useJournal'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
 
 type JournalPageSwitcherProps = {

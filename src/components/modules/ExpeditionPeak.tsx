@@ -15,7 +15,7 @@
  */
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ExpeditionProgress } from '@/save-data/types'
+import type { ExpeditionProgress } from '@/save-data/expedition-progress'
 
 type ExpeditionPeakProps = {
   progress: ExpeditionProgress

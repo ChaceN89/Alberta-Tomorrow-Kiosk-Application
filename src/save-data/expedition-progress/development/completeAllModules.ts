@@ -1,7 +1,7 @@
 /**
   File: completeAllModules.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Complete all checkpoints for every visible module.
@@ -14,7 +14,7 @@
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'
-import type { CommitProgress } from './types'
+import type { CommitProgress } from '../actions/types'
 
 // Complete every checkpoint for every visible module.
 export function completeAllModules(

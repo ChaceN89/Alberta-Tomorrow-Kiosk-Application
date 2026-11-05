@@ -1,7 +1,7 @@
 /**
   File: progressAllNextCheckpoints.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 5, 2026
 
   Description:
   - Record one next checkpoint for every visible expedition.
@@ -14,7 +14,7 @@
  */
 import { visibleModules } from '@/modules/registry'
 import type { ExpeditionProgressData } from '../types'
-import type { CommitProgress } from './types'
+import type { CommitProgress } from '../actions/types'
 
 // Record one next checkpoint for each visible expedition.
 export function progressAllNextCheckpoints(

@@ -15,7 +15,7 @@
 import { useTranslation } from 'react-i18next'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
 import type { ModelViewerContent } from '@/module-tools/media-viewer/provider/types'
-import { useExpeditionProgress } from '@/save-data/useExpeditionProgress'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
 import { ExpeditionEntryActions } from './ExpeditionEntryActions'
 import { ExpeditionEntryHeader } from './ExpeditionEntryHeader'
