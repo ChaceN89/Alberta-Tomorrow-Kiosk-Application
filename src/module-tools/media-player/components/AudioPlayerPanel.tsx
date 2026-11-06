@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerPanel.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Shared audio and video player with a media queue and full-screen playback.
@@ -16,6 +16,7 @@
   - Close flow, text lookup, and the queue, top bar, media, and confirm pieces are split out.
  */
 import { createPortal } from 'react-dom'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { useJournal } from '@/journal/context/useJournal'
@@ -29,6 +30,7 @@ import { AudioPlayerControls } from './AudioPlayerControls'
 import { AudioPlayerTabs } from './AudioPlayerTabs'
 import { CloseConfirmDialog } from './CloseConfirmDialog'
 import { FullscreenQueue } from './FullscreenQueue'
+import { MediaTitle } from './MediaTitle'
 import { PlayerMedia } from './PlayerMedia'
 import { PlayerTopBar } from './PlayerTopBar'
 import { QueueTabView } from './QueueTabView'
@@ -40,12 +42,17 @@ export function AudioPlayerPanel() {
   const { isOpen: isJournalOpen } = useJournal()
   const {
     track,
+    isPlaying,
     isPanelOpen,
     isFullscreen,
     isMediaEndClosing,
+    collapsedPlaybackStartSequence,
     setFullscreen,
     activePanelTab,
   } = useAudioPlayer()
+  const [previousTrackId, setPreviousTrackId] = useState(track?.id ?? null)
+  const [isFullscreenEntry, setFullscreenEntry] = useState(false)
+  const [isPlaybackTabHovered, setPlaybackTabHovered] = useState(false)
   const { getTrackTitle, getTrackSubtitle } = useTrackText()
   const {
     isConfirmingClose,
@@ -55,6 +62,21 @@ export function AudioPlayerPanel() {
     stageExitAnimationClass,
     frameExitAnimationClass,
   } = usePlayerClose()
+
+  const currentTrackId = track?.id ?? null
+  if (currentTrackId !== previousTrackId) {
+    setPreviousTrackId(currentTrackId)
+    setFullscreenEntry(
+      track !== null && previousTrackId === null && isFullscreen,
+    )
+  }
+
+  useEffect(() => {
+    if (!isFullscreenEntry) return
+
+    const timeoutId = window.setTimeout(() => setFullscreenEntry(false), 320)
+    return () => window.clearTimeout(timeoutId)
+  }, [isFullscreenEntry])
 
   useFullscreenScrollLock(isFullscreen && track !== null)
 
@@ -74,7 +96,9 @@ export function AudioPlayerPanel() {
     <div
       className={`audio-player-stage ${
         isFullscreen ? 'audio-player-stage--fullscreen' : ''
-      } ${stageExitAnimationClass}`}
+      } ${stageExitAnimationClass} ${
+        isFullscreenEntry ? 'audio-player-stage--fullscreen-enter' : ''
+      }`}
     >
       <MediaPlayerTutorial />
       <div
@@ -86,7 +110,9 @@ export function AudioPlayerPanel() {
           isExplorePage && !isFullscreen
             ? 'audio-player-frame--above-map-actions'
             : ''
-        } ${frameExitAnimationClass}`}
+        } ${frameExitAnimationClass} ${
+          isFullscreenEntry ? 'audio-player-frame--fullscreen-enter' : ''
+        }`}
       >
         <section
           aria-label={t('audioPlayer.label')}
@@ -139,7 +165,19 @@ export function AudioPlayerPanel() {
             />
           </div>
         </section>
-        <AudioPlayerTabs requestClose={requestClose} />
+        <AudioPlayerTabs
+          requestClose={requestClose}
+          onPlaybackTabHoverChange={setPlaybackTabHovered}
+        />
+        <MediaTitle
+          track={track}
+          title={trackTitle}
+          subtitle={trackSubtitle}
+          isCollapsed={!isPanelOpen && !isFullscreen}
+          isPlaying={isPlaying}
+          isPlaybackTabHovered={isPlaybackTabHovered}
+          collapsedPlaybackStartSequence={collapsedPlaybackStartSequence}
+        />
         {isConfirmingClose && (
           <CloseConfirmDialog
             isCollapsed={!isPanelOpen && !isFullscreen}

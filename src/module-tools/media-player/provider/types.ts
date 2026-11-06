@@ -1,10 +1,10 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Define the media track, queue, and YouTube controller types shared by the player.
+  - Define audio, direct video, YouTube, queue, and controller types shared by the player.
 
   Usage:
   - Imported by modules that describe tracks and by the player's provider and components.
@@ -45,7 +45,12 @@ export type YouTubeTrack = MediaItemBase & {
   videoId: string
 }
 
-export type MediaTrack = AudioTrack | YouTubeTrack
+export type VideoTrack = MediaItemBase & {
+  type: 'video'
+  src: string
+}
+
+export type MediaTrack = AudioTrack | VideoTrack | YouTubeTrack
 
 export type AudioPlayCallbacks = {
   onStart?: () => void

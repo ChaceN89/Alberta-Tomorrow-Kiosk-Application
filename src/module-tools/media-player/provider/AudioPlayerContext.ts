@@ -1,10 +1,10 @@
 /**
   File: AudioPlayerContext.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Define the value shared by the media player provider with its consumers.
+  - Define the playback state and controls shared by the media player provider.
 
   Usage:
   - Imported by AudioPlayerProvider and useAudioPlayer.
@@ -24,6 +24,7 @@ type AudioPlayerContextValue = {
   // null means nothing is loaded and the player is fully turned off.
   track: MediaTrack | null
   isPlaying: boolean
+  collapsedPlaybackStartSequence: number
   isEnded: boolean
   hasError: boolean
   isPanelOpen: boolean
@@ -38,6 +39,10 @@ type AudioPlayerContextValue = {
   queue: readonly QueuedAudioTrack[]
   onVideoPlayerReady: (player: YouTubePlayerController | null) => void
   onVideoPlayingChange: (isPlaying: boolean) => void
+  registerDirectVideoElement: (video: HTMLVideoElement | null) => void
+  onDirectVideoTimeUpdate: (currentTime: number) => void
+  onDirectVideoDurationChange: (duration: number) => void
+  onDirectVideoPlaybackRateChange: (playbackRate: number) => void
   onMediaEnded: () => void
   onPlaybackError: () => void
   playTrack: (track: MediaTrack, callbacks?: AudioPlayCallbacks) => void

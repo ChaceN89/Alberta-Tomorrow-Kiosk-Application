@@ -1,13 +1,14 @@
 {
   "audioPlayer": {
     "label": "Lecteur multimédia",
+    "videoLoading": "Chargement de la vidéo…",
     "play": "Lecture",
     "pause": "Pause",
     "resume": "Reprendre",
     "playTrack": "Lecture : {{title}}",
     "pauseTrack": "Pause : {{title}}",
     "resumeTrack": "Reprendre : {{title}}",
-    "seek": "Parcourir l’audio",
+    "seek": "Parcourir le média",
     "position": "{{current}} sur {{total}}",
     "slower": "Ralentir (vitesse actuelle : {{rate}})",
     "faster": "Accélérer (vitesse actuelle : {{rate}})",

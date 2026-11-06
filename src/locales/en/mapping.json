@@ -83,6 +83,16 @@
         "description": "Waterton Lakes National Park brings together prairie and mountain ecosystems at Alberta's southern border and forms part of Waterton-Glacier International Peace Park.",
         "imageAlt": "Illustration of an alpine lake and mountain landscape in Waterton Lakes National Park; not a documentary photograph."
       }
+    },
+    "defaultPoiVideos": {
+      "banff": {
+        "title": "Bow Falls video",
+        "subtitle": "Banff, Alberta"
+      },
+      "calgary": {
+        "title": "Downtown Calgary video",
+        "subtitle": "Calgary, Alberta"
+      }
     }
   },
   "terrain": {

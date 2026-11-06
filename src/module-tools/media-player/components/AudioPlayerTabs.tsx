@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerTabs.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Render the player, queue, playback, and close tabs beside the player frame.
@@ -14,10 +14,10 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Tooltip } from '@/components/shared/Tooltip'
+import { MusicNoteIcon } from '@/components/icons/MusicNoteIcon'
 import { requestMediaPlayerTutorialDismissalForPlayback } from '@/tutorials/specific-tutorials/media-player-tutorial/mediaPlayerTutorialEvents'
 import {
   CloseIcon,
-  MusicNoteIcon,
   PauseIcon,
   PlayIcon,
   QueueListIcon,
@@ -26,6 +26,7 @@ import { useAudioPlayer } from '../hooks/useAudioPlayer'
 
 type AudioPlayerTabsProps = {
   requestClose: () => void
+  onPlaybackTabHoverChange: (isHovered: boolean) => void
 }
 
 function EqualizerBars() {
@@ -42,7 +43,10 @@ function EqualizerBars() {
   )
 }
 
-export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
+export function AudioPlayerTabs({
+  requestClose,
+  onPlaybackTabHoverChange,
+}: AudioPlayerTabsProps) {
   const { t } = useTranslation('moduleTools')
   const {
     isPlaying,
@@ -125,6 +129,10 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
       className={`${buttonClass} bg-surface text-pine`}
       aria-label={playbackTabLabel}
       onClick={handlePlaybackRequest}
+      onMouseEnter={() => onPlaybackTabHoverChange(true)}
+      onMouseLeave={() => onPlaybackTabHoverChange(false)}
+      onFocus={() => onPlaybackTabHoverChange(true)}
+      onBlur={() => onPlaybackTabHoverChange(false)}
     >
       {isPlaying ? (
         <PauseIcon className="size-5" />
@@ -152,26 +160,30 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
           tutorialAnchor: 'player-tabs',
           button: closeTab,
           label: t('audioPlayer.close'),
+          showTooltip: false,
         },
         {
           className: 'bottom-38',
           tutorialAnchor: undefined,
           button: playbackTab,
           label: playbackTabLabel,
+          showTooltip: false,
         },
         {
           className: 'bottom-21',
           tutorialAnchor: 'player-tab',
           button: playerTab,
           label: playerTabLabel,
+          showTooltip: true,
         },
         {
           className: 'bottom-4',
           tutorialAnchor: undefined,
           button: queueTab,
           label: queueTabLabel,
+          showTooltip: true,
         },
-      ].map(({ className, tutorialAnchor, button, label }) => (
+      ].map(({ className, tutorialAnchor, button, label, showTooltip }) => (
         <div
           key={className}
           inert={isFullscreen}
@@ -179,7 +191,13 @@ export function AudioPlayerTabs({ requestClose }: AudioPlayerTabsProps) {
           data-media-player-tutorial={tutorialAnchor}
           className={`audio-player-tab absolute ${className} left-full ${sideTabClass}`}
         >
-          {isPanelOpen ? button : <Tooltip text={label}>{button}</Tooltip>}
+          {isPanelOpen || !showTooltip ? (
+            button
+          ) : (
+            <Tooltip text={label} placement="right">
+              {button}
+            </Tooltip>
+          )}
         </div>
       ))}
     </>

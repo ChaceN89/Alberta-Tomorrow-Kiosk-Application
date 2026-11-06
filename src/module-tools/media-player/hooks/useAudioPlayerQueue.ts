@@ -1,10 +1,10 @@
 /**
   File: useAudioPlayerQueue.ts | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Own queued media state and the operations that add, reorder, and play queue items.
+  - Own queued media state and operations for audio, direct-video, and YouTube tracks.
 
   Usage:
   - AudioPlayerProvider supplies playback refs and uses the returned queue actions.
@@ -26,19 +26,25 @@ type RefLike<T> = {
 
 type UseAudioPlayerQueueOptions = {
   audioRef: RefLike<HTMLAudioElement | null>
+  directVideoRef: RefLike<HTMLVideoElement | null>
   currentItemRef: RefLike<QueuedAudioTrack | null>
   videoPlayerRef: RefLike<YouTubePlayerController | null>
   isEnded: boolean
   startPlayback: (audio: HTMLAudioElement) => void
+  startDirectVideoPlayback: (video: HTMLVideoElement) => void
+  startYouTubePlayback: () => void
   loadItem: (item: QueuedAudioTrack, shouldPlay: boolean) => void
 }
 
 export function useAudioPlayerQueue({
   audioRef,
+  directVideoRef,
   currentItemRef,
   videoPlayerRef,
   isEnded,
   startPlayback,
+  startDirectVideoPlayback,
+  startYouTubePlayback,
   loadItem,
 }: UseAudioPlayerQueueOptions) {
   const queueRef = useRef<QueuedAudioTrack[]>([])
@@ -72,7 +78,13 @@ export function useAudioPlayerQueue({
         } else if (audio.paused) {
           if (next.type === 'youtube') {
             if (isEnded) videoPlayerRef.current?.seekTo(0, true)
-            videoPlayerRef.current?.playVideo()
+            startYouTubePlayback()
+          } else if (next.type === 'video') {
+            const video = directVideoRef.current
+            if (!video) return
+
+            if (video.ended) video.currentTime = 0
+            if (video.paused) startDirectVideoPlayback(video)
           } else {
             startPlayback(audio)
           }
@@ -94,10 +106,13 @@ export function useAudioPlayerQueue({
     },
     [
       audioRef,
+      directVideoRef,
       currentItemRef,
       isEnded,
       loadItem,
       startPlayback,
+      startDirectVideoPlayback,
+      startYouTubePlayback,
       updateQueue,
       videoPlayerRef,
     ],

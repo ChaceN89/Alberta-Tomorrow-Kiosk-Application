@@ -1,10 +1,10 @@
 /**
   File: PlayerMedia.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Show the current track's video, or its cover art for audio.
+  - Show YouTube or direct video content, or cover art for audio.
 
   Usage:
   - Rendered at the top of the player view by AudioPlayerPanel.
@@ -15,6 +15,7 @@
 import { useAudioPlayer } from '../hooks/useAudioPlayer'
 import type { MediaTrack } from '../provider/types'
 import { YouTubePlayer } from './YouTubePlayer'
+import { DirectVideoPlayer } from './DirectVideoPlayer'
 import defaultAudioCover from '@/assets/default-audio-cover.svg'
 
 type PlayerMediaProps = {
@@ -49,6 +50,8 @@ export function PlayerMedia({ track, isFullscreen }: PlayerMediaProps) {
           onEnded={onMediaEnded}
           onError={onPlaybackError}
         />
+      ) : track.type === 'video' ? (
+        <DirectVideoPlayer key={track.id} track={track} />
       ) : (
         <img
           src={track.coverArt ?? defaultAudioCover}

@@ -13,13 +13,9 @@
   - Track titles are supplied by the panel so localized media labels stay consistent.
  */
 import { useTranslation } from 'react-i18next'
-import {
-  CloseIcon,
-  MoveDownIcon,
-  MoveUpIcon,
-  MusicNoteIcon,
-  VideoIcon,
-} from './AudioPlayerIcons'
+import { CloseIcon, MoveDownIcon, MoveUpIcon } from './AudioPlayerIcons'
+import { MusicNoteIcon } from '@/components/icons/MusicNoteIcon'
+import { VideoIcon } from '@/components/icons/VideoIcon'
 import type { MediaTrack, QueuedAudioTrack } from '../provider/types'
 import defaultAudioCover from '@/assets/default-audio-cover.svg'
 

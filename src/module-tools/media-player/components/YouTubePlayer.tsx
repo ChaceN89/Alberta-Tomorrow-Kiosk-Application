@@ -21,7 +21,7 @@ type YouTubeIframeApi = {
     options: {
       videoId: string
       playerVars: {
-        autoplay: 1
+        autoplay: 0
         controls: 1
         fs: 1
         playsinline: 1
@@ -104,7 +104,7 @@ export function YouTubePlayer({
         playerRef.current = new api.Player(element, {
           videoId,
           playerVars: {
-            autoplay: 1,
+            autoplay: 0,
             controls: 1,
             fs: 1,
             playsinline: 1,
@@ -117,7 +117,6 @@ export function YouTubePlayer({
               target.getIframe().title = title
               target.getIframe().allowFullscreen = true
               onReady(target)
-              target.playVideo()
             },
             onStateChange: ({ data }) => {
               onPlayingChange(data === 1)

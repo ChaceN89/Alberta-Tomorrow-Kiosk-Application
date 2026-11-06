@@ -1,10 +1,10 @@
 /**
   File: AlbertaMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Render the shared Alberta map and its map controls.
+  - Render the shared Alberta map, its controls, and default POI content.
 
   Usage:
   - Used by default and module-specific explore views.
@@ -41,7 +41,9 @@ import {
 import banffLandscape from './assets/banff-landscape.jpg'
 import dinosaurBadlands from './assets/dinosaur-badlands.jpg'
 import watertonLakes from './assets/waterton-lakes.jpg'
+import { DEFAULT_POI_VIDEO_TRACKS } from './defaultPoiVideos'
 import { useMapInfoPanel } from '@/module-tools/map-info-panel/hooks/useMapInfoPanel'
+import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import { useAppStartupMapGate } from '@/app/AppStartupMapContext'
 import { useAlbertaMapController } from './map-functions/useAlbertaMapController'
 import {
@@ -171,6 +173,7 @@ export function AlbertaMap({
         const descriptionKey =
           'descriptionKey' in poi ? poi.descriptionKey : undefined
         const imageAltKey = 'imageAltKey' in poi ? poi.imageAltKey : undefined
+        const videoTrack = DEFAULT_POI_VIDEO_TRACKS[poi.id]
         const image = imageKey
           ? {
               banff: banffLandscape,
@@ -183,18 +186,20 @@ export function AlbertaMap({
           id: poi.id,
           coordinates: poi.location,
           title,
-          info: descriptionKey ? (
-            <div className="space-y-4">
-              {image && (
-                <img
-                  src={image}
-                  alt={imageAltKey ? t(imageAltKey) : ''}
-                  className="mapping-poi-info-image"
-                />
-              )}
-              <p>{t(descriptionKey)}</p>
-            </div>
-          ) : undefined,
+          info:
+            descriptionKey || videoTrack ? (
+              <div className="space-y-4">
+                {image && (
+                  <img
+                    src={image}
+                    alt={imageAltKey ? t(imageAltKey) : ''}
+                    className="mapping-poi-info-image"
+                  />
+                )}
+                {descriptionKey && <p>{t(descriptionKey)}</p>}
+                {videoTrack && <TrackPlayButton track={videoTrack} />}
+              </div>
+            ) : undefined,
         }
       }),
     [t],

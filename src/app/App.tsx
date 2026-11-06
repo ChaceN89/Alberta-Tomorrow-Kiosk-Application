@@ -1,7 +1,7 @@
 /**
   File: App.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Compose the route tree under BrowserRouter, enabling client-side navigation and deep links.
@@ -42,6 +42,12 @@ const ExploreMap = lazy(() =>
   import('./pages/ExploreMap').then(({ ExploreMap }) => ({
     default: ExploreMap,
   })),
+)
+
+const DeveloperPage = lazy(() =>
+  import('@/components/development/developer-page/DeveloperPage').then(
+    ({ DeveloperPage }) => ({ default: DeveloperPage }),
+  ),
 )
 
 function ExploreMapRoute() {
@@ -88,6 +94,19 @@ export function App() {
                             />
                             <Route element={<Layout />}>
                               <Route index element={<HomePage />} />
+                              <Route
+                                path="developer-page"
+                                element={
+                                  import.meta.env.VITE_ENVIRONMENT ===
+                                  'development' ? (
+                                    <Suspense fallback={<Loading />}>
+                                      <DeveloperPage />
+                                    </Suspense>
+                                  ) : (
+                                    <NotFound />
+                                  )
+                                }
+                              />
                               <Route
                                 path="expeditions/modules/*"
                                 element={<NotFound />}

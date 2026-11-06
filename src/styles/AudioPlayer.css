@@ -1,7 +1,7 @@
 /*
   File: AudioPlayer.css | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Define layout, transitions, and reduced-motion behavior for the shared player.
@@ -63,6 +63,26 @@
   }
 }
 
+@keyframes audio-player-stage-fullscreen-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes audio-player-fullscreen-enter {
+  from {
+    transform: translateX(-50%) translateY(5rem) scale(0.82);
+  }
+
+  to {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
 @keyframes audio-player-media-enter {
   from {
     opacity: 0.65;
@@ -72,6 +92,24 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes audio-player-media-title-show {
+  0% {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+
+  7%,
+  88% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(0.35rem);
   }
 }
 
@@ -141,6 +179,15 @@
 .audio-player-frame--fullscreen-exit,
 .audio-player-frame--media-end-exit {
   animation: audio-player-fullscreen-exit 320ms cubic-bezier(0.4, 0, 0.8, 0.2)
+    both;
+}
+
+.audio-player-stage--fullscreen-enter {
+  animation: audio-player-stage-fullscreen-enter 320ms ease-out both;
+}
+
+.audio-player-frame--fullscreen-enter {
+  animation: audio-player-fullscreen-enter 320ms cubic-bezier(0.2, 0.8, 0.6, 1)
     both;
 }
 
@@ -265,6 +312,64 @@
   transform: translateX(-100%);
 }
 
+.audio-player-media-title {
+  position: absolute;
+  z-index: var(--z-player-tutorial-popup);
+  bottom: calc(5.25rem + 4.5rem);
+  left: calc(100% + 3rem);
+  width: 18rem;
+  max-width: calc(100vw - 3.75rem);
+  pointer-events: none;
+  transition:
+    opacity 180ms ease-out,
+    transform 180ms ease-out;
+}
+
+.audio-player-media-title::after {
+  position: absolute;
+  top: 50%;
+  left: -0.35rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-bottom: 1px solid var(--color-line);
+  border-left: 1px solid var(--color-line);
+  background: var(--color-surface);
+  content: '';
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.audio-player-media-title--visible {
+  animation: audio-player-media-title-show 3200ms ease-out both;
+}
+
+.audio-player-media-title--hidden {
+  opacity: 0;
+  transform: translateY(0.35rem);
+}
+
+.track-play-button__action,
+.track-play-button__queue {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .track-play-button__action:not(:disabled):hover,
+  .track-play-button__queue[aria-disabled='false']:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 14px rgb(23 46 41 / 20%);
+  }
+
+  .track-play-button__action:not(:disabled):active,
+  .track-play-button__queue[aria-disabled='false']:active {
+    transform: scale(0.97);
+  }
+}
+
 .audio-player-card {
   transition: border-radius var(--audio-player-morph-duration)
     var(--audio-player-morph-ease);
@@ -308,6 +413,19 @@
   max-width: 100%;
   height: auto;
   margin-inline: auto;
+}
+
+.audio-player-direct-video {
+  position: relative;
+  z-index: var(--z-player-frame);
+}
+
+.audio-player-direct-video-poster {
+  z-index: var(--z-player-tutorial-popup);
+}
+
+.audio-player-direct-video-loading {
+  z-index: var(--z-player-dialog);
 }
 
 /*
@@ -481,6 +599,8 @@
   .audio-panel-exit--collapsed,
   .audio-player-stage--fullscreen-exit,
   .audio-player-frame--fullscreen-exit,
+  .audio-player-stage--fullscreen-enter,
+  .audio-player-frame--fullscreen-enter,
   .audio-player-stage--media-end-exit,
   .audio-player-frame--media-end-exit,
   .audio-close-dialog__content,
@@ -494,6 +614,9 @@
 
   .audio-player-stage,
   .audio-player-frame,
+  .audio-player-media-title,
+  .track-play-button__action,
+  .track-play-button__queue,
   .audio-player-card,
   .audio-player-media-viewport,
   .audio-player-topbar,
@@ -507,4 +630,26 @@
   .audio-panel-tab-view {
     transition: none;
   }
+
+  @keyframes audio-player-media-title-show-reduced {
+    0%,
+    99% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .audio-player-media-title--visible {
+    animation: audio-player-media-title-show-reduced 3200ms steps(1, end) both;
+    transform: none;
+  }
+}
+
+.audio-player-media-title--hovered {
+  animation: none;
+  opacity: 1;
+  transform: none;
 }

@@ -1,7 +1,7 @@
 /**
   File: DisplayTesting.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Provide the development menu and set the document title and language.
@@ -15,6 +15,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { NOTIFICATION_TOASTER_ID } from '@/components/toasts/toasterIds'
 import { useExpeditionProgressDevTools } from '@/save-data/expedition-progress/development/useExpeditionProgressDevTools'
 import { useModulePreload } from '@/modules/useModulePreload'
@@ -259,6 +260,14 @@ export function DisplayTesting() {
               <span aria-hidden="true">▶</span>
               {t('applicationStates')}
             </button>
+            <Link
+              to="/developer-page"
+              className="dev-tool-menu-button"
+              onClick={closeAllTools}
+            >
+              <span aria-hidden="true">◇</span>
+              {t('developerPage')}
+            </Link>
             <button
               type="button"
               aria-pressed={breakpointMode !== 'off'}

@@ -72,39 +72,6 @@ export function RewindIcon({ className }: IconProps) {
   )
 }
 
-export function MusicNoteIcon({ className }: IconProps) {
-  return (
-    <Icon className={className}>
-      <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z" />
-    </Icon>
-  )
-}
-
-export function VideoIcon({ className }: IconProps) {
-  return (
-    <Icon className={className}>
-      <rect
-        x="3"
-        y="6"
-        width="12"
-        height="12"
-        rx="2"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-      <path
-        d="m15 10 6-4v12l-6-4"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-      />
-    </Icon>
-  )
-}
-
 export function FullscreenIcon({ className }: IconProps) {
   return (
     <Icon className={className}>

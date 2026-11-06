@@ -1,10 +1,10 @@
 /**
   File: AudioPlayerProvider.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Own audio playback and expose shared media queue state to the app.
+  - Own audio and video playback and expose shared media queue state to the app.
   - Mounted above the routes so playback and queued callbacks survive navigation.
 
   Usage:
@@ -25,6 +25,10 @@ import type {
   YouTubePlayerController,
 } from './types'
 
+const FULLSCREEN_ENTRY_DURATION_MS = 320
+const PLAYER_MORPH_DURATION_MS = 1200
+const VIDEO_START_BUFFER_MS = 100
+
 type AudioPlayerProviderProps = {
   children: ReactNode
 }
@@ -32,6 +36,13 @@ type AudioPlayerProviderProps = {
 export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const videoPlayerRef = useRef<YouTubePlayerController | null>(null)
+  const directVideoRef = useRef<HTMLVideoElement | null>(null)
+  const shouldStartYouTubeRef = useRef(false)
+  const shouldStartDirectVideoRef = useRef(false)
+  const videoStartDelayElapsedRef = useRef(true)
+  const fullscreenEntryPendingRef = useRef(false)
+  const fullscreenStartTimeoutRef = useRef<number | null>(null)
+  const isPanelOpenRef = useRef(false)
   const isFullscreenRef = useRef(false)
   const isMediaEndClosingRef = useRef(false)
   const volumeRef = useRef(1)
@@ -40,9 +51,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const playbackAttemptRef = useRef(0)
   const [track, setTrack] = useState<MediaTrack | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [collapsedPlaybackStartSequence, setCollapsedPlaybackStartSequence] =
+    useState(0)
   const [isEnded, setIsEnded] = useState(false)
   const [hasError, setHasError] = useState(false)
-  const [isPanelOpen, setPanelOpen] = useState(false)
+  const [isPanelOpen, setPanelOpenState] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const [isMediaEndClosing, setIsMediaEndClosing] = useState(false)
@@ -54,15 +67,27 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const [playbackRate, setPlaybackRate] = useState(NORMAL_RATE)
   const [volume, setVolumeState] = useState(1)
 
-  const setFullscreen = useCallback((fullscreen: boolean) => {
-    isFullscreenRef.current = fullscreen
-    setIsFullscreen(fullscreen)
+  const setPanelOpen = useCallback((isOpen: boolean) => {
+    isPanelOpenRef.current = isOpen
+    setPanelOpenState(isOpen)
+    if (isOpen) setCollapsedPlaybackStartSequence(0)
+  }, [])
+
+  const onCollapsedPlaybackStarted = useCallback(() => {
+    if (!isPanelOpenRef.current && !isFullscreenRef.current) {
+      setCollapsedPlaybackStartSequence((sequence) => sequence + 1)
+    }
   }, [])
 
   useEffect(() => {
     const audio = audioRef.current
 
-    return () => audio?.pause()
+    return () => {
+      audio?.pause()
+      if (fullscreenStartTimeoutRef.current !== null) {
+        window.clearTimeout(fullscreenStartTimeoutRef.current)
+      }
+    }
   }, [])
 
   const startPlayback = useCallback((audio: HTMLAudioElement) => {
@@ -76,6 +101,84 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     })
   }, [])
 
+  const startDirectVideoPlayback = useCallback((video: HTMLVideoElement) => {
+    shouldStartDirectVideoRef.current = true
+    if (!videoStartDelayElapsedRef.current) return
+
+    const attempt = ++playbackAttemptRef.current
+
+    void video.play().catch(() => {
+      if (attempt !== playbackAttemptRef.current) return
+
+      setHasError(true)
+      setIsPlaying(false)
+    })
+  }, [])
+
+  const startYouTubePlayback = useCallback(() => {
+    shouldStartYouTubeRef.current = true
+    if (!videoStartDelayElapsedRef.current) return
+
+    videoPlayerRef.current?.playVideo()
+  }, [])
+
+  const startPendingVideoPlayback = useCallback(() => {
+    const currentTrack = currentItemRef.current?.track
+
+    if (currentTrack?.type === 'youtube' && shouldStartYouTubeRef.current) {
+      startYouTubePlayback()
+    } else if (
+      currentTrack?.type === 'video' &&
+      shouldStartDirectVideoRef.current &&
+      directVideoRef.current
+    ) {
+      startDirectVideoPlayback(directVideoRef.current)
+    }
+  }, [startDirectVideoPlayback, startYouTubePlayback])
+
+  const setFullscreen = useCallback(
+    (fullscreen: boolean) => {
+      const wasFullscreen = isFullscreenRef.current
+      isFullscreenRef.current = fullscreen
+      setIsFullscreen(fullscreen)
+
+      if (fullscreen && !wasFullscreen) {
+        setCollapsedPlaybackStartSequence(0)
+        fullscreenEntryPendingRef.current = true
+        videoStartDelayElapsedRef.current = false
+        if (fullscreenStartTimeoutRef.current !== null) {
+          window.clearTimeout(fullscreenStartTimeoutRef.current)
+        }
+
+        const prefersReducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        ).matches
+        const animationDuration = currentItemRef.current
+          ? PLAYER_MORPH_DURATION_MS
+          : FULLSCREEN_ENTRY_DURATION_MS
+        const delay =
+          (prefersReducedMotion ? 0 : animationDuration) + VIDEO_START_BUFFER_MS
+
+        fullscreenStartTimeoutRef.current = window.setTimeout(() => {
+          fullscreenStartTimeoutRef.current = null
+          fullscreenEntryPendingRef.current = false
+          videoStartDelayElapsedRef.current = true
+          startPendingVideoPlayback()
+        }, delay)
+      } else if (!fullscreen) {
+        const wasEntryPending = fullscreenEntryPendingRef.current
+        if (fullscreenStartTimeoutRef.current !== null) {
+          window.clearTimeout(fullscreenStartTimeoutRef.current)
+          fullscreenStartTimeoutRef.current = null
+        }
+        fullscreenEntryPendingRef.current = false
+        videoStartDelayElapsedRef.current = true
+        if (wasEntryPending) startPendingVideoPlayback()
+      }
+    },
+    [startPendingVideoPlayback],
+  )
+
   const loadItem = useCallback(
     (item: QueuedAudioTrack, shouldPlay: boolean) => {
       const audio = audioRef.current
@@ -83,6 +186,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       if (!audio) return
 
       playbackAttemptRef.current += 1
+      shouldStartYouTubeRef.current =
+        item.track.type === 'youtube' && shouldPlay
+      shouldStartDirectVideoRef.current =
+        item.track.type === 'video' && shouldPlay
       currentItemRef.current = item
       hasStartedRef.current = false
       setTrack(item.track)
@@ -96,6 +203,8 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       setActivePanelTab('player')
       audio.playbackRate = NORMAL_RATE
       audio.volume = volumeRef.current
+      videoPlayerRef.current?.pauseVideo()
+      directVideoRef.current?.pause()
 
       if (item.track.type === 'audio') {
         audio.src = item.track.src
@@ -112,21 +221,63 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const onVideoPlayerReady = useCallback(
     (player: YouTubePlayerController | null) => {
       videoPlayerRef.current = player
-      if (player) player.setVolume(Math.round(volumeRef.current * 100))
+      if (player) {
+        player.setVolume(Math.round(volumeRef.current * 100))
+        if (
+          shouldStartYouTubeRef.current &&
+          videoStartDelayElapsedRef.current
+        ) {
+          startYouTubePlayback()
+        }
+      }
     },
-    [],
+    [startYouTubePlayback],
   )
 
-  const onVideoPlayingChange = useCallback((playing: boolean) => {
-    setIsPlaying(playing)
-    if (playing) {
-      setIsEnded(false)
-      setHasError(false)
-      if (!hasStartedRef.current) {
-        hasStartedRef.current = true
-        currentItemRef.current?.callbacks.onStart?.()
+  const onVideoPlayingChange = useCallback(
+    (playing: boolean) => {
+      setIsPlaying(playing)
+      if (playing) {
+        setIsEnded(false)
+        setHasError(false)
+        onCollapsedPlaybackStarted()
+        if (!hasStartedRef.current) {
+          hasStartedRef.current = true
+          currentItemRef.current?.callbacks.onStart?.()
+        }
       }
-    }
+    },
+    [onCollapsedPlaybackStarted],
+  )
+
+  const registerDirectVideoElement = useCallback(
+    (video: HTMLVideoElement | null) => {
+      directVideoRef.current = video
+      if (!video) return
+
+      video.volume = volumeRef.current
+      video.playbackRate = NORMAL_RATE
+      if (
+        currentItemRef.current?.track.type === 'video' &&
+        shouldStartDirectVideoRef.current &&
+        videoStartDelayElapsedRef.current
+      ) {
+        startDirectVideoPlayback(video)
+      }
+    },
+    [startDirectVideoPlayback],
+  )
+
+  const onDirectVideoTimeUpdate = useCallback((time: number) => {
+    setCurrentTime(time)
+  }, [])
+
+  const onDirectVideoDurationChange = useCallback((nextDuration: number) => {
+    setDuration(nextDuration)
+  }, [])
+
+  const onDirectVideoPlaybackRateChange = useCallback((rate: number) => {
+    setPlaybackRate(rate)
   }, [])
 
   const onPlaybackError = useCallback(() => {
@@ -145,10 +296,13 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     takeNext,
   } = useAudioPlayerQueue({
     audioRef,
+    directVideoRef,
     currentItemRef,
     videoPlayerRef,
     isEnded,
     startPlayback,
+    startDirectVideoPlayback,
+    startYouTubePlayback,
     loadItem,
   })
 
@@ -156,6 +310,15 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     const audio = audioRef.current
 
     playbackAttemptRef.current += 1
+    if (fullscreenStartTimeoutRef.current !== null) {
+      window.clearTimeout(fullscreenStartTimeoutRef.current)
+      fullscreenStartTimeoutRef.current = null
+    }
+    shouldStartYouTubeRef.current = false
+    shouldStartDirectVideoRef.current = false
+    fullscreenEntryPendingRef.current = false
+    videoStartDelayElapsedRef.current = true
+    directVideoRef.current?.pause()
     if (audio) {
       audio.pause()
       audio.removeAttribute('src')
@@ -165,6 +328,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     currentItemRef.current = null
     hasStartedRef.current = false
     clearQueue()
+    setCollapsedPlaybackStartSequence(0)
     setTrack(null)
     setIsPlaying(false)
     setIsEnded(false)
@@ -178,7 +342,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     setCurrentTime(0)
     setDuration(0)
     setPlaybackRate(NORMAL_RATE)
-  }, [clearQueue, setFullscreen])
+  }, [clearQueue, setFullscreen, setPanelOpen])
 
   const advanceQueue = useCallback(() => {
     const next = takeNext()
@@ -202,7 +366,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
     if (advanceQueue()) return
 
-    if (currentItem.track.type === 'youtube' && !isFullscreenRef.current) {
+    if (currentItem.track.type !== 'audio' && !isFullscreenRef.current) {
       stop()
     } else {
       isMediaEndClosingRef.current = true
@@ -217,7 +381,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
     playbackAttemptRef.current += 1
     if (currentItem.track.type === 'youtube') {
+      shouldStartYouTubeRef.current = false
       videoPlayerRef.current?.pauseVideo()
+    } else if (currentItem.track.type === 'video') {
+      shouldStartDirectVideoRef.current = false
+      directVideoRef.current?.pause()
     } else {
       audioRef.current?.pause()
     }
@@ -232,7 +400,16 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
     if (currentItem.track.type === 'youtube') {
       if (isEnded) videoPlayerRef.current?.seekTo(0, true)
-      videoPlayerRef.current?.playVideo()
+      startYouTubePlayback()
+      return
+    }
+
+    if (currentItem.track.type === 'video') {
+      const video = directVideoRef.current
+      if (!video) return
+
+      if (video.ended) video.currentTime = 0
+      startDirectVideoPlayback(video)
       return
     }
 
@@ -241,21 +418,39 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
     if (audio.ended) audio.currentTime = 0
     startPlayback(audio)
-  }, [isEnded, startPlayback])
+  }, [isEnded, startDirectVideoPlayback, startPlayback, startYouTubePlayback])
 
   const togglePlayback = useCallback(() => {
-    const audio = audioRef.current
-    if (!audio || !currentItemRef.current) return
+    const currentItem = currentItemRef.current
+    if (!currentItem) return
 
-    if (currentItemRef.current.track.type === 'youtube') {
+    if (currentItem.track.type === 'youtube') {
       if (isPlaying) {
+        shouldStartYouTubeRef.current = false
         videoPlayerRef.current?.pauseVideo()
       } else {
         if (isEnded) videoPlayerRef.current?.seekTo(0, true)
-        videoPlayerRef.current?.playVideo()
+        startYouTubePlayback()
       }
       return
     }
+
+    if (currentItem.track.type === 'video') {
+      const video = directVideoRef.current
+      if (!video) return
+
+      if (video.paused) {
+        if (video.ended) video.currentTime = 0
+        startDirectVideoPlayback(video)
+      } else {
+        shouldStartDirectVideoRef.current = false
+        video.pause()
+      }
+      return
+    }
+
+    const audio = audioRef.current
+    if (!audio) return
 
     if (audio.paused) {
       if (audio.ended) audio.currentTime = 0
@@ -263,13 +458,36 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     } else {
       audio.pause()
     }
-  }, [isEnded, isPlaying, startPlayback])
+  }, [
+    isEnded,
+    isPlaying,
+    startDirectVideoPlayback,
+    startPlayback,
+    startYouTubePlayback,
+  ])
 
   const seek = useCallback((seconds: number) => {
-    const audio = audioRef.current
-    if (!audio || !Number.isFinite(seconds)) return
+    if (!Number.isFinite(seconds)) return
 
-    audio.currentTime = Math.max(0, Math.min(seconds, audio.duration || 0))
+    if (currentItemRef.current?.track.type === 'video') {
+      const video = directVideoRef.current
+      if (!video) return
+
+      video.currentTime = Math.max(
+        0,
+        Math.min(seconds, Number.isFinite(video.duration) ? video.duration : 0),
+      )
+      setCurrentTime(video.currentTime)
+      return
+    }
+
+    const audio = audioRef.current
+    if (!audio) return
+
+    audio.currentTime = Math.max(
+      0,
+      Math.min(seconds, Number.isFinite(audio.duration) ? audio.duration : 0),
+    )
     setCurrentTime(audio.currentTime)
   }, [])
 
@@ -278,11 +496,18 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     volumeRef.current = normalized
     setVolumeState(normalized)
     if (audioRef.current) audioRef.current.volume = normalized
+    if (directVideoRef.current) directVideoRef.current.volume = normalized
     videoPlayerRef.current?.setVolume(Math.round(normalized * 100))
   }, [])
 
   const speedUp = useCallback(() => {
-    if (audioRef.current) {
+    if (currentItemRef.current?.track.type === 'video') {
+      if (directVideoRef.current) {
+        directVideoRef.current.playbackRate = nextFastRate(
+          directVideoRef.current.playbackRate,
+        )
+      }
+    } else if (audioRef.current) {
       audioRef.current.playbackRate = nextFastRate(
         audioRef.current.playbackRate,
       )
@@ -290,7 +515,13 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   }, [])
 
   const slowDown = useCallback(() => {
-    if (audioRef.current) {
+    if (currentItemRef.current?.track.type === 'video') {
+      if (directVideoRef.current) {
+        directVideoRef.current.playbackRate = nextSlowRate(
+          directVideoRef.current.playbackRate,
+        )
+      }
+    } else if (audioRef.current) {
       audioRef.current.playbackRate = nextSlowRate(
         audioRef.current.playbackRate,
       )
@@ -300,7 +531,11 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
   const beginClose = useCallback(() => {
     setIsClosing(true)
     if (currentItemRef.current?.track.type === 'youtube') {
+      shouldStartYouTubeRef.current = false
       videoPlayerRef.current?.pauseVideo()
+    } else if (currentItemRef.current?.track.type === 'video') {
+      shouldStartDirectVideoRef.current = false
+      directVideoRef.current?.pause()
     } else {
       audioRef.current?.pause()
     }
@@ -310,6 +545,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
     () => ({
       track,
       isPlaying,
+      collapsedPlaybackStartSequence,
       isEnded,
       hasError,
       isPanelOpen,
@@ -324,6 +560,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       queue,
       onVideoPlayerReady,
       onVideoPlayingChange,
+      registerDirectVideoElement,
+      onDirectVideoTimeUpdate,
+      onDirectVideoDurationChange,
+      onDirectVideoPlaybackRateChange,
       onMediaEnded,
       onPlaybackError,
       playTrack,
@@ -358,6 +598,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       isFullscreen,
       isMediaEndClosing,
       isPlaying,
+      collapsedPlaybackStartSequence,
       pausePlayback,
       playNow,
       playTrack,
@@ -372,6 +613,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
       removeFromQueue,
       moveInQueue,
       seek,
+      onDirectVideoDurationChange,
+      onDirectVideoPlaybackRateChange,
+      onDirectVideoTimeUpdate,
+      registerDirectVideoElement,
       setVolume,
       setActivePanelTab,
       setPanelOpen,
@@ -397,6 +642,7 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
         }}
         onPlaying={() => {
           setHasError(false)
+          onCollapsedPlaybackStarted()
 
           if (!hasStartedRef.current) {
             hasStartedRef.current = true

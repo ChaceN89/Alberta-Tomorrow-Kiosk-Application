@@ -1,7 +1,7 @@
 /**
   File: AudioPlayerControls.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Render media metadata, volume, seek, playback-rate, and transport controls.
@@ -155,7 +155,7 @@ export function AudioPlayerControls({
         </div>
       ) : (
         <>
-          {track.type === 'audio' && (
+          {track.type !== 'youtube' && (
             <div>
               <input
                 type="range"

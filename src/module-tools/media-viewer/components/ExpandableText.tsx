@@ -26,6 +26,7 @@ export function ExpandableText({ text }: ExpandableTextProps) {
   const [isExpanded, setExpanded] = useState(false)
   const [isCutOff, setCutOff] = useState(false)
 
+  // Check if the text is cut off and update the state accordingly.
   useLayoutEffect(() => {
     const element = textRef.current
 

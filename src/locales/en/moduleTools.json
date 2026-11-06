@@ -1,13 +1,14 @@
 {
   "audioPlayer": {
     "label": "Media player",
+    "videoLoading": "Loading video…",
     "play": "Play",
     "pause": "Pause",
     "resume": "Resume",
     "playTrack": "Play {{title}}",
     "pauseTrack": "Pause {{title}}",
     "resumeTrack": "Resume {{title}}",
-    "seek": "Seek through audio",
+    "seek": "Seek through media",
     "position": "{{current}} of {{total}}",
     "slower": "Slow down (currently {{rate}})",
     "faster": "Speed up (currently {{rate}})",

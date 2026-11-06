@@ -83,6 +83,16 @@
         "description": "Le parc national des Lacs-Waterton réunit des écosystèmes de prairie et de montagne à la frontière sud de l’Alberta et fait partie du parc international de la paix Waterton-Glacier.",
         "imageAlt": "Illustration d’un lac alpin et de montagnes dans le parc national des Lacs-Waterton; il ne s’agit pas d’une photographie documentaire."
       }
+    },
+    "defaultPoiVideos": {
+      "banff": {
+        "title": "Vidéo des chutes Bow",
+        "subtitle": "Banff, Alberta"
+      },
+      "calgary": {
+        "title": "Vidéo du centre-ville de Calgary",
+        "subtitle": "Calgary, Alberta"
+      }
     }
   },
   "terrain": {

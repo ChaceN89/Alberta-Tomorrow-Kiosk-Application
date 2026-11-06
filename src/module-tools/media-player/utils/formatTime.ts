@@ -1,13 +1,13 @@
 /**
   File: formatTime.ts | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 28, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Format audio positions in seconds as m:ss.
+  - Format media positions in seconds as m:ss.
 
   Usage:
-  - Used by AudioPlayerPanel for the elapsed and total time labels.
+  - Used by AudioPlayerControls for elapsed and total media time labels.
 
   Notes:
   - None.

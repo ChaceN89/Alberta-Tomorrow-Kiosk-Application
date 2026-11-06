@@ -1,14 +1,14 @@
 /**
   File: TrackPlayButton.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Offer concise playback and queue actions for module media.
+  - Offer concise playback and queue actions for audio and video tracks.
   - Passes optional onStart and onEnd callbacks so modules can record checkpoints.
 
   Usage:
-  - Render in any module with a track and callbacks, e.g. one that calls completeCheckpoint.
+  - Render in any module with a track, optional callbacks, and an optional play label.
 
   Notes:
   - When a different track is playing, learners can queue this track or start it immediately.
@@ -23,12 +23,14 @@ import { getTrackTranslationText } from '../utils/getTrackTranslationText'
 
 type TrackPlayButtonProps = AudioPlayCallbacks & {
   track: MediaTrack
+  playLabel?: string
 }
 
 export function TrackPlayButton({
   track,
   onStart,
   onEnd,
+  playLabel,
 }: TrackPlayButtonProps) {
   const { t, i18n } = useTranslation('moduleTools')
   const {
@@ -61,6 +63,11 @@ export function TrackPlayButton({
       : 'play'
 
   const play = () => {
+    if (track.type !== 'audio' && !isActive) {
+      setPanelOpen(true)
+      setFullscreen(true)
+    }
+
     if (isCurrent) {
       if (isActive) {
         togglePlayback()
@@ -72,11 +79,6 @@ export function TrackPlayButton({
     } else {
       playTrack(track, callbacks)
     }
-
-    if (track.type === 'youtube' && !isActive) {
-      setPanelOpen(true)
-      setFullscreen(true)
-    }
   }
   const localizedTitle = getTrackTranslationText(
     i18n,
@@ -84,12 +86,15 @@ export function TrackPlayButton({
     'titleKey',
     track.title,
   )
+  const actionLabel = isActive
+    ? t('audioPlayer.pause')
+    : (playLabel ?? t(`audioPlayer.${action}`))
 
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
         type="button"
-        className="button gap-2"
+        className="button track-play-button__action gap-2"
         aria-label={t(
           action === 'playNow'
             ? 'audioPlayer.playNowTrack'
@@ -103,7 +108,7 @@ export function TrackPlayButton({
         ) : (
           <PlayIcon className="size-5" />
         )}
-        {t(`audioPlayer.${action}`)}
+        {actionLabel}
       </button>
       <Tooltip
         text={t(
@@ -112,7 +117,7 @@ export function TrackPlayButton({
       >
         <button
           type="button"
-          className="button-secondary size-12 p-0 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
+          className="button-secondary track-play-button__queue size-12 p-0 aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
           aria-disabled={isQueued}
           aria-label={t(
             isQueued
