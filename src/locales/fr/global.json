@@ -50,6 +50,11 @@
     "title": "Impossible de trouver cette activité.",
     "description": "Ce module a peut-être été déplacé ou n'est plus disponible. Retournez à l'accueil pour choisir une autre activité."
   },
+  "moduleEnvironment": {
+    "title": "Environnement : {{moduleName}}",
+    "description": "Cet environnement 3D n’est pas encore disponible.",
+    "backToOverview": "Retourner à l’aperçu de l’expédition"
+  },
   "error": {
     "title": "Un problème est survenu.",
     "description": "Impossible d'ouvrir cette activité. Retournez à l'accueil et réessayez. Si le problème persiste, vérifiez votre connexion et rechargez la page.",

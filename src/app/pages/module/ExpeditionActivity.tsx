@@ -1,7 +1,7 @@
 /**
   File: ExpeditionActivity.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Start the selected expedition and connect its activity to journal progress.
@@ -16,9 +16,17 @@
 import { Suspense, useCallback, useEffect } from 'react'
 import { Loading } from '@/components/app-states/Loading'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
+import type { ModuleActivityComponent } from '@/modules/types'
 import type { ModuleActivityProps } from './types'
 
-export function ExpeditionActivity({ module }: ModuleActivityProps) {
+type ExpeditionActivityRunnerProps = ModuleActivityProps & {
+  Activity: ModuleActivityComponent
+}
+
+export function ExpeditionActivity({
+  module,
+  Activity,
+}: ExpeditionActivityRunnerProps) {
   // extract journal functions for managing expedition progress
   const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
     useExpeditionProgress()
@@ -29,16 +37,13 @@ export function ExpeditionActivity({ module }: ModuleActivityProps) {
     [completeCheckpoint, module.id],
   )
 
-  // get the lazy-loaded activity component for the module
-  const Activity = module.component
-
   // start the expedition for the current module when the component mounts
   useEffect(() => {
     startExpedition(module.id)
   }, [module.id, startExpedition])
 
   // render the lazy-loaded activity component within a suspense boundary
-  // the activity is the module.component to show specifci derived data for that module
+  // The module activity page supplies the module-specific learner experience.
   return (
     <Suspense fallback={<Loading />}>
       <Activity

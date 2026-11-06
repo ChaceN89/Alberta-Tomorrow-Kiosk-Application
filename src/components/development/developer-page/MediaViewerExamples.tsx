@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
-import { oilBarrelModelAssets } from '@/modules/testing-geology/oilBarrelModel'
+import { oilBarrelModelAssets } from '@/modules/testing-geology/data/models'
 import foxFamilyImage from '@/modules/testing-foxes-of-alberta/assets/fox-family.png'
 
 export function MediaViewerExamples() {

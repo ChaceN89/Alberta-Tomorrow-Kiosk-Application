@@ -1,0 +1,128 @@
+/**
+  File: ViewerExamples.tsx | Author: Chace Nielson
+  Date Created: Oct 29, 2026
+  Date Updated: Nov 6, 2026
+
+  Description:
+  - Demonstrate message and image content in the shared media viewer.
+  - Record each configured journal checkpoint when its content is opened.
+
+  Usage:
+  - Rendered in the wildlife module activity page.
+
+  Notes:
+  - Content and interface copy are localized in module.wildlifeFinder.json.
+ */
+import { useTranslation } from 'react-i18next'
+import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
+import type { ModuleCheckpointProps } from '@/modules/types'
+import {
+  foxFamilyImageCheckpoint,
+  foxFieldListCheckpoint,
+  foxFieldMessageCheckpoint,
+} from '@/modules/testing-foxes-of-alberta/journal/checkpoints'
+import { foxFamilyImage } from '@/modules/testing-foxes-of-alberta/data/images'
+import {
+  foxFieldList,
+  foxFieldMessage,
+} from '@/modules/testing-foxes-of-alberta/data/messages'
+
+type ViewerExamplesProps = ModuleCheckpointProps
+
+export function ViewerExamples({ completeCheckpoint }: ViewerExamplesProps) {
+  const { t } = useTranslation('wildlifeFinder')
+  const { openImage, openMessage } = useMediaViewer()
+
+  return (
+    <section aria-labelledby="viewer-examples-title" className="space-y-4">
+      <div className="space-y-2">
+        <h2 id="viewer-examples-title">{t('viewer.heading')}</h2>
+        <p className="text-muted">{t('viewer.description')}</p>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <article className="panel flex flex-col items-start gap-4 p-5 md:p-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">
+              {t(foxFieldMessage.title)}
+            </h3>
+            <p className="text-muted">{t('viewer.message.preview')}</p>
+          </div>
+          <button
+            type="button"
+            className="button mt-auto"
+            onClick={(event) =>
+              openMessage(
+                {
+                  title: t(foxFieldMessage.title),
+                  subtitle: t(foxFieldMessage.subtitle),
+                  message: t(foxFieldMessage.message),
+                },
+                {
+                  onOpen: () => completeCheckpoint(foxFieldMessageCheckpoint),
+                  origin: event.currentTarget,
+                },
+              )
+            }
+          >
+            {t('viewer.message.open')}
+          </button>
+        </article>
+        <article className="panel flex flex-col items-start gap-4 p-5 md:p-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">{t(foxFieldList.title)}</h3>
+            <p className="text-muted">{t('viewer.list.preview')}</p>
+          </div>
+          <button
+            type="button"
+            className="button mt-auto"
+            onClick={(event) =>
+              openMessage(
+                {
+                  title: t(foxFieldList.title),
+                  subtitle: t(foxFieldList.subtitle),
+                  message: t(foxFieldList.message),
+                  images: foxFieldList.images.map((image) => ({
+                    src: image.src,
+                    alt: t(image.alt),
+                  })),
+                },
+                {
+                  onOpen: () => completeCheckpoint(foxFieldListCheckpoint),
+                  origin: event.currentTarget,
+                },
+              )
+            }
+          >
+            {t('viewer.list.open')}
+          </button>
+        </article>
+        <article className="panel flex flex-col items-start gap-4 p-5 md:p-6">
+          <div className="space-y-2">
+            <h3 className="text-xl font-semibold">{t(foxFamilyImage.title)}</h3>
+            <p className="text-muted">{t('viewer.image.preview')}</p>
+          </div>
+          <button
+            type="button"
+            className="button mt-auto"
+            onClick={(event) =>
+              openImage(
+                {
+                  title: t(foxFamilyImage.title),
+                  description: t(foxFamilyImage.description),
+                  alt: t(foxFamilyImage.alt),
+                  src: foxFamilyImage.src,
+                },
+                {
+                  onOpen: () => completeCheckpoint(foxFamilyImageCheckpoint),
+                  origin: event.currentTarget,
+                },
+              )
+            }
+          >
+            {t('viewer.image.open')}
+          </button>
+        </article>
+      </div>
+    </section>
+  )
+}

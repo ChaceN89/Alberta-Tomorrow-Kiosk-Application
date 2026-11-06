@@ -1,7 +1,7 @@
 /**
   File: ModuleOverview.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Show reusable module details and navigation before launch.
@@ -18,10 +18,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useJournal } from '@/journal/context/useJournal'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import { useModulePreload } from '@/modules/useModulePreload'
-import {
-  getModuleActivityExplorePath,
-  getModuleActivityPath,
-} from '@/modules/routes'
+import { getModuleStartPath } from '@/modules/routes'
 import type { LearningModule } from '@/modules/types'
 import { ExpeditionPeak, ExpeditionStatusText } from './ExpeditionPeak'
 
@@ -39,9 +36,7 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
   const { openJournal } = useJournal()
   const expeditionProgress = getExpeditionProgress(module)
   const navigate = useNavigate()
-  const activityPath = module.map
-    ? getModuleActivityExplorePath(module.id)
-    : getModuleActivityPath(module.id)
+  const activityPath = getModuleStartPath(module.id, module.startDestination)
   const isReady = isModuleReady(module.id)
   const hasError = state.moduleId === module.id && state.status === 'error'
   const isPreparing = !isReady && !hasError
@@ -57,8 +52,8 @@ export function ModuleOverview({ module }: ModuleOverviewProps) {
       className="max-w-3xl space-y-6"
     >
       <p className="font-semibold text-pine">{t('category')}</p>
-      <h1 id="module-title">{t('title')}</h1>
-      <p className="text-lg text-muted">{t('description')}</p>
+      <h1 id="module-title">{t(module.titleKey)}</h1>
+      <p className="text-lg text-muted">{t(module.descriptionKey)}</p>
       <p className="text-muted">{t('overviewDescription')}</p>
       {isPreparing && (
         <p role="status" className="text-muted">

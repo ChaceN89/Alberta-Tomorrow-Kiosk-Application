@@ -1,7 +1,7 @@
 /**
   File: ExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Route the shared explore page to the default or selected module map.
@@ -17,7 +17,7 @@ import { BaseExploreMap } from '@/mapping/BaseExploreMap'
 import { ModuleExploreMap } from '@/mapping/ModuleExploreMap'
 import { visibleModules } from '@/modules/registry'
 import { Navigate, useParams } from 'react-router-dom'
-import { getModuleActivityPath } from '@/modules/routes'
+import { getModuleStartPath } from '@/modules/routes'
 
 export function ExploreMap() {
   const { moduleId } = useParams()
@@ -36,7 +36,12 @@ export function ExploreMap() {
   }
 
   if (!module.map) {
-    return <Navigate to={getModuleActivityPath(module.id)} replace />
+    return (
+      <Navigate
+        to={getModuleStartPath(module.id, module.startDestination)}
+        replace
+      />
+    )
   }
 
   // module found, render the module explore map with the module's specific settings

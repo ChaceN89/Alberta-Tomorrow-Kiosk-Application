@@ -1,94 +1,52 @@
 /**
   File: RecordedJournalEntry.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Render a recorded journal entry with its optional media and module action.
+  - Render a recorded journal entry with its configured media attachments.
 
   Usage:
   - Rendered as an item in JournalEntryGroups.
 
   Notes:
-  - Its optional module action is lazy-loaded so journal display does not load it early.
+  - Attachments are rendered from the module's journal manifest.
  */
-import { Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LearningModule } from '@/modules/types'
-import { JournalEntryThumbnail } from './JournalEntryThumbnail'
+import { JournalEntryMediaList } from './JournalEntryMediaList'
 import type { JournalEntry } from './types'
 
 type RecordedJournalEntryProps = {
   entry: JournalEntry
   module: LearningModule
-  imageSrc?: string
   isInSection: boolean
-  onOpenEntryMedia: (
-    entry: JournalEntry,
-    imageSrc: string,
-    imageAlt: string,
-    origin: Element,
-  ) => void
 }
 
 // Show a completed entry with its optional media and module-specific action.
 export function RecordedJournalEntry({
   entry,
   module,
-  imageSrc,
   isInSection,
-  onOpenEntryMedia,
 }: RecordedJournalEntryProps) {
   // The recorded label is shared across all module journals.
   const { t } = useTranslation('journal')
-  const imageAlt = entry.imageAlt ?? ''
 
   return (
-    <li
-      className={`rounded-xl border border-pine/40 bg-canvas ${
-        imageSrc ? 'py-3 pl-4 pr-0' : 'p-4'
-      }`}
-    >
-      <div
-        className={`flex gap-3 ${
-          imageSrc
-            ? 'items-center'
-            : 'flex-col sm:flex-row sm:items-center sm:justify-between'
-        }`}
-      >
-        <div className="min-w-0 grow">
-          <p className="text-sm font-semibold text-pine">
-            <span aria-hidden="true">✓ </span>
-            {t('recorded')}
-          </p>
-          {isInSection ? (
-            <h6 className="font-semibold">{entry.title}</h6>
-          ) : (
-            <h5 className="font-semibold">{entry.title}</h5>
-          )}
-          <p className="text-muted">{entry.summary}</p>
-        </div>
-        {imageSrc && (
-          <JournalEntryThumbnail
-            entry={entry}
-            imageSrc={imageSrc}
-            imageAlt={imageAlt}
-            module={module}
-            onOpenEntryMedia={onOpenEntryMedia}
-          />
-        )}
-        {module.journalEntryAction && (
-          <div className="shrink-0">
-            {/* Module-specific actions load only when needed and do not block the row. */}
-            <Suspense fallback={null}>
-              <module.journalEntryAction
-                entryId={entry.id}
-                moduleId={module.id}
-              />
-            </Suspense>
-          </div>
-        )}
-      </div>
+    <li className="rounded-xl border border-pine/40 bg-canvas p-4">
+      <p className="text-sm font-semibold text-pine">
+        <span aria-hidden="true">✓ </span>
+        {t('recorded')}
+      </p>
+      {isInSection ? (
+        <h6 className="font-semibold">{entry.title}</h6>
+      ) : (
+        <h5 className="font-semibold">{entry.title}</h5>
+      )}
+      <p className="text-muted">{entry.summary}</p>
+      {entry.media.length > 0 && (
+        <JournalEntryMediaList entry={entry} module={module} />
+      )}
     </li>
   )
 }

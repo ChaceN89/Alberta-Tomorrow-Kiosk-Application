@@ -1,7 +1,7 @@
 /**
   File: localStorageExpeditionProgressRepository.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Implement the progress repository with browser localStorage.
@@ -10,7 +10,7 @@
   - The progress provider uses this adapter by default.
 
   Notes:
-  - Persisted data is intentionally resettable; no legacy format migration is included.
+  - Legacy checkpoint ids are migrated when progress is loaded.
  */
 import type { ExpeditionProgressData } from '../types'
 import type {
@@ -63,17 +63,83 @@ function parseProgress(raw: string): ExpeditionProgressData {
   // empty object to accumulate validated expedition progress entries.
   const progress: ExpeditionProgressData = {}
 
-  // loop through each module's saved expedition data and validate it.
+  // Loop through each module's saved expedition data and validate it.
   for (const [moduleId, saved] of Object.entries(parsed.expeditions)) {
     if (!isRecord(saved) || typeof saved.startedAt !== 'string') continue
 
     progress[moduleId] = {
       startedAt: saved.startedAt,
-      checkpoints: parseCheckpoints(saved.checkpoints),
+      checkpoints: migrateCheckpointIds(
+        moduleId,
+        parseCheckpoints(saved.checkpoints),
+      ),
     }
   }
 
   return progress
+}
+
+const LEGACY_CHECKPOINT_IDS: Readonly<
+  Record<string, Readonly<Record<string, string | null>>>
+> = {
+  'testing-foxes-of-alberta': {
+    'habitats-matter': null,
+    'foxes-habitat-introduction-viewed': null,
+    'audio-1-started': 'foxes-of-alberta-song-started',
+    'audio-1-finished': 'foxes-of-alberta-song-finished',
+    'audio-2-finished': 'foxes-of-alberta-narration-finished',
+    'audio-3-started': 'foxes-red-fox-sound-recording-started',
+    'swift-fox-home': 'foxes-quiz-swift-fox-habitat-answered',
+    'red-fox-food': 'foxes-quiz-red-fox-diet-answered',
+    'red-fox-sound-identification': 'foxes-quiz-red-fox-sound-answered',
+  },
+  'testing-geology': {
+    'geology-video-started': 'geology-natural-landscapes-video-started',
+    'geology-oil-barrel-viewed': 'geology-oil-barrel-model-viewed',
+    badlands: 'geology-quiz-badlands-question-answered',
+    'glacial-boulder': 'geology-quiz-glacial-boulder-question-answered',
+    'oil-sands': 'geology-quiz-oil-sands-question-answered',
+  },
+  'testing-residential-schools': {
+    'st-marys-blood': 'residential-schools-st-marys-blood-poi-selected',
+    'st-marys-blood-photo-viewed':
+      'residential-schools-st-marys-blood-photo-viewed',
+    'st-marys-blood-audio-finished':
+      'residential-schools-st-marys-blood-audio-finished',
+    'st-albert-youville': 'residential-schools-st-albert-youville-poi-selected',
+    'st-albert-youville-video-finished':
+      'residential-schools-st-albert-youville-video-finished',
+    'st-albert-youville-message-opened':
+      'residential-schools-st-albert-youville-message-opened',
+    'lesser-slave-lake': 'residential-schools-lesser-slave-lake-poi-selected',
+    'lesser-slave-lake-audio-finished':
+      'residential-schools-lesser-slave-lake-audio-finished',
+  },
+}
+
+function migrateCheckpointIds(
+  moduleId: string,
+  checkpoints: Record<string, string>,
+): Record<string, string> {
+  const migrations = LEGACY_CHECKPOINT_IDS[moduleId]
+  if (!migrations) return checkpoints
+
+  const migrated = { ...checkpoints }
+
+  for (const [oldId, currentId] of Object.entries(migrations)) {
+    const timestamp = migrated[oldId]
+    if (timestamp === undefined) continue
+
+    if (currentId === null) {
+      delete migrated[oldId]
+      continue
+    }
+
+    migrated[currentId] ??= timestamp
+    delete migrated[oldId]
+  }
+
+  return migrated
 }
 
 // Load and validate expedition progress from localStorage.

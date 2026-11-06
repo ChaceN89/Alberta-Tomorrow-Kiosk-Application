@@ -1,7 +1,7 @@
 /**
   File: JournalEntryGroups.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Group translated journal entries by section and render their ordered lists.
@@ -22,12 +22,6 @@ type JournalEntryGroupsProps = {
   module: LearningModule
   entries: readonly JournalEntry[]
   isCheckpointComplete: (moduleId: string, checkpointId: string) => boolean
-  onOpenEntryMedia: (
-    entry: JournalEntry,
-    imageSrc: string,
-    imageAlt: string,
-    origin: Element,
-  ) => void
 }
 
 // Render each entry as recorded or locked, grouped by its optional section.
@@ -35,7 +29,6 @@ export function JournalEntryGroups({
   module,
   entries,
   isCheckpointComplete,
-  onOpenEntryMedia,
 }: JournalEntryGroupsProps) {
   // The notebook heading and locked/recorded labels are shared journal copy.
   const { t } = useTranslation('journal')
@@ -63,21 +56,17 @@ export function JournalEntryGroups({
           const items = (
             <ol className="space-y-3">
               {group.entries.map((entry) => {
-                const imageSrc = module.journalEntryImages?.[entry.id]
-
                 return isCheckpointComplete(module.id, entry.id) ? (
                   <RecordedJournalEntry
                     key={entry.id}
                     entry={entry}
                     module={module}
-                    imageSrc={imageSrc}
                     isInSection={group.section !== null}
-                    onOpenEntryMedia={onOpenEntryMedia}
                   />
                 ) : (
                   <LockedJournalEntry
                     key={entry.id}
-                    hasImage={Boolean(imageSrc)}
+                    hasMedia={entry.media.length > 0}
                   />
                 )
               })}

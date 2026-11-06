@@ -1,10 +1,10 @@
 /**
   File: ModulePage.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Render module details and load activities only when requested.
+  - Render module details and route each module to its configured start destination.
 
   Usage:
   - App route pages are rendered by the router.
@@ -17,7 +17,11 @@ import { ModuleNotFound } from '@/components/modules/ModuleNotFound'
 import { ModuleOverview } from '@/components/modules/ModuleOverview'
 import { visibleModules } from '@/modules/registry'
 import { ModuleActivity } from './module/ModuleActivity'
-import { getModuleActivityExplorePath } from '@/modules/routes'
+import {
+  getModuleActivityExplorePath,
+  getModuleEnvironmentPath,
+} from '@/modules/routes'
+import { ModuleEnvironmentPage } from './module/ModuleEnvironmentPage'
 
 export function ModulePage() {
   const { moduleId, '*': modulePath } = useParams()
@@ -34,14 +38,25 @@ export function ModulePage() {
   }
 
   // if the module path is not recognized, render the not found component
+  if (modulePath === 'environment') {
+    return module.startDestination === 'environment' ? (
+      <ModuleEnvironmentPage module={module} />
+    ) : (
+      <ModuleNotFound />
+    )
+  }
+
   if (modulePath !== 'activity') {
     return <ModuleNotFound />
   }
 
-  if (module.map) {
+  if (module.startDestination === 'map') {
     return <Navigate to={getModuleActivityExplorePath(module.id)} replace />
   }
 
-  // final check - return the actual module activity component - quiz, list, images etc - specific data to the module
+  if (module.startDestination === 'environment') {
+    return <Navigate to={getModuleEnvironmentPath(module.id)} replace />
+  }
+
   return <ModuleActivity module={module} />
 }

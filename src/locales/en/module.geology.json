@@ -23,7 +23,7 @@
       "retry": "Take the quiz again"
     },
     "questions": {
-      "badlands": {
+      "geology-quiz-badlands-question-answered": {
         "prompt": "Which part of Alberta is famous for badlands and dinosaur fossils?",
         "options": {
           "rocky-mountain-peaks": "The Rocky Mountain peaks",
@@ -33,7 +33,7 @@
         "correct": "That's right! In 1884, geologist Joseph Burr Tyrrell found a dinosaur skull in the badlands near Drumheller. It was later named Albertosaurus.",
         "tryAgain": "Not quite. Think of the dry, layered badlands where fossils are exposed along a river valley. Try another answer!"
       },
-      "glacial-boulder": {
+      "geology-quiz-glacial-boulder-question-answered": {
         "prompt": "How did the huge Big Rock boulder near Okotoks travel from the Rocky Mountains?",
         "options": {
           "volcanic-eruption": "A volcanic eruption threw it",
@@ -43,7 +43,7 @@
         "correct": "That's right! Glacial ice carried Big Rock out of the Rocky Mountains and left it near Okotoks.",
         "tryAgain": "Not quite. This boulder is so large that only something enormous and slow-moving could carry it. Try another answer!"
       },
-      "oil-sands": {
+      "geology-quiz-oil-sands-question-answered": {
         "prompt": "In which part of Alberta are the oil sands mainly found?",
         "options": {
           "northern-alberta": "Northern Alberta",
@@ -59,14 +59,14 @@
     "summary": "Field notes on Alberta's oil sands, fossils, boulders, and rocks.",
     "entries": [
       {
-        "id": "geology-oil-barrel-viewed",
+        "id": "geology-oil-barrel-model-viewed",
         "section": "Media",
         "title": "Oil barrel model explored",
         "summary": "You opened a textured oil barrel model while exploring Alberta's oil sands.",
         "imageAlt": "A weathered blue oil barrel with OIL lettering."
       },
       {
-        "id": "geology-video-started",
+        "id": "geology-natural-landscapes-video-started",
         "section": "Media",
         "title": "Natural landscapes video started",
         "summary": "You started watching the video about Alberta's natural landscapes.",
@@ -80,19 +80,19 @@
         "imageAlt": "A turquoise lake surrounded by evergreen trees and Rocky Mountain peaks beneath a blue sky."
       },
       {
-        "id": "badlands",
+        "id": "geology-quiz-badlands-question-answered",
         "section": "Quiz",
         "title": "Badlands and dinosaur bones",
         "summary": "The Red Deer River valley near Drumheller has badlands where a dinosaur skull was found in 1884. It was later named Albertosaurus."
       },
       {
-        "id": "glacial-boulder",
+        "id": "geology-quiz-glacial-boulder-question-answered",
         "section": "Quiz",
         "title": "A boulder carried by ice",
         "summary": "Glacial ice carried Big Rock out of the Rocky Mountains to its resting place near Okotoks."
       },
       {
-        "id": "oil-sands",
+        "id": "geology-quiz-oil-sands-question-answered",
         "section": "Quiz",
         "title": "Oil sands in the north",
         "summary": "Alberta's oil sands are found in northern Alberta, including the Athabasca, Cold Lake, and Peace River areas."

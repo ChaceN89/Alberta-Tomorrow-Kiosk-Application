@@ -1,7 +1,7 @@
 /**
   File: ModuleActivity.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Preload the selected activity and show loading or retry UI as needed.
@@ -17,6 +17,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { Loading } from '@/components/app-states/Loading'
+import { ModuleNotFound } from '@/components/modules/ModuleNotFound'
 import { getModuleExplorePath } from '@/modules/routes'
 import { useModulePreload } from '@/modules/useModulePreload'
 import { ExpeditionActivity } from './ExpeditionActivity'
@@ -25,10 +26,15 @@ import type { ModuleActivityProps } from './types'
 export function ModuleActivity({ module }: ModuleActivityProps) {
   const { t } = useTranslation('global')
   const { state, preloadModule, isModuleReady } = useModulePreload()
+  const Activity = module.activityPage
 
   useEffect(() => {
     void preloadModule(module)
   }, [module, preloadModule])
+
+  if (!Activity) {
+    return <ModuleNotFound />
+  }
 
   if (!isModuleReady(module.id)) {
     if (state.moduleId === module.id && state.status === 'error') {
@@ -57,7 +63,7 @@ export function ModuleActivity({ module }: ModuleActivityProps) {
           {t('explore.openActivity')}
         </Link>
       )}
-      <ExpeditionActivity module={module} />
+      <ExpeditionActivity module={module} Activity={Activity} />
     </div>
   )
 }

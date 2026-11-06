@@ -14,8 +14,8 @@
  */
 import { useTranslation } from 'react-i18next'
 import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
-import { geologyVideos } from '@/modules/testing-geology/videos'
-import { bloodSchoolAudioTrack } from '@/modules/testing-residential-schools/tracks'
+import { geologyVideos } from '@/modules/testing-geology/data/videos'
+import { bloodSchoolAudioTrack } from '@/modules/testing-residential-schools/data/audio'
 import { DEFAULT_POI_VIDEO_TRACKS } from '@/mapping/defaultPoiVideos'
 
 export function MediaPlayerExamples() {

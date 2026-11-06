@@ -1,7 +1,7 @@
 /**
   File: ModulePreloadProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Coordinate cancellable module preloads and expose their progress.
@@ -122,7 +122,7 @@ export function ModulePreloadProvider({
         }
 
         try {
-          await module.loadActivity()
+          await module.loadActivityPage?.()
           reportProgress(0)
           await module.preload?.({
             signal: controller.signal,

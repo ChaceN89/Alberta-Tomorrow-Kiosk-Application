@@ -71,7 +71,7 @@
     "start": "Commencer le questionnaire",
     "backToActivity": "Retour à l’activité",
     "questions": {
-      "swift-fox-home": {
+      "foxes-quiz-swift-fox-habitat-answered": {
         "prompt": "Quel habitat est le plus caractéristique du renard véloce dans le sud-est de l’Alberta ?",
         "options": {
           "boreal-forest": "Forêt boréale",
@@ -81,7 +81,7 @@
         "correct": "Bravo ! Le renard véloce est adapté aux prairies ouvertes à herbes courtes du sud-est de l’Alberta.",
         "tryAgain": "Pas tout à fait. Pensez à une prairie ouverte et sèche du sud de l’Alberta."
       },
-      "red-fox-food": {
+      "foxes-quiz-red-fox-diet-answered": {
         "prompt": "Que mangent les renards roux ?",
         "options": {
           "large-animals-only": "Seulement de gros animaux",
@@ -91,7 +91,7 @@
         "correct": "Bravo ! Les renards roux ont une alimentation variée qui comprend de petits animaux et des aliments végétaux comme des fruits.",
         "tryAgain": "Pas tout à fait. Les renards roux ont une alimentation variée qui comprend des aliments d’origine animale et végétale."
       },
-      "red-fox-sound-identification": {
+      "foxes-quiz-red-fox-sound-answered": {
         "prompt": "Quel animal entend-on dans cet enregistrement ?",
         "options": {
           "coyote": "Un coyote",
@@ -110,33 +110,30 @@
   },
   "journal": {
     "summary": "Notes de terrain sur la façon dont la faune de l’Alberta dépend de son habitat.",
+    "descriptionImageTitle": "Un renard véloce dans son habitat de prairie",
+    "descriptionImageAlt": "Un renard véloce debout dans une prairie herbeuse.",
+    "openDescriptionImage": "Ouvrir l’image de l’habitat du renard",
     "entries": [
       {
-        "id": "habitats-matter",
-        "imageAlt": "Un renard debout dans son habitat de prairie herbeuse.",
-        "title": "Pourquoi les habitats sont importants",
-        "summary": "Les animaux dépendent de leur habitat pour se nourrir, boire et s'abriter."
-      },
-      {
-        "id": "audio-1-started",
+        "id": "foxes-of-alberta-song-started",
         "section": "Médias",
         "title": "L’écoute commence",
         "summary": "Vous avez commencé à écouter la chanson d’essai de l’expédition. Les sons nous en apprennent beaucoup sur un lieu."
       },
       {
-        "id": "audio-1-finished",
+        "id": "foxes-of-alberta-song-finished",
         "section": "Médias",
         "title": "La chanson en entier",
         "summary": "Vous avez écouté la chanson d’essai jusqu’à la fin."
       },
       {
-        "id": "audio-2-finished",
+        "id": "foxes-of-alberta-narration-finished",
         "section": "Médias",
         "title": "Une voix du terrain",
         "summary": "Vous avez terminé l’écoute de la narration d’essai."
       },
       {
-        "id": "audio-3-started",
+        "id": "foxes-red-fox-sound-recording-started",
         "section": "Médias",
         "title": "Un renard dans son milieu",
         "summary": "Vous avez commencé à écouter un enregistrement du cri d’un renard roux."
@@ -167,19 +164,19 @@
         "summary": "Vous avez observé de près une famille de jeunes renards qui se repose ensemble."
       },
       {
-        "id": "swift-fox-home",
+        "id": "foxes-quiz-swift-fox-habitat-answered",
         "section": "Questionnaire",
         "title": "L’habitat du renard véloce",
         "summary": "Le renard véloce est adapté aux prairies ouvertes à herbes courtes du sud-est de l’Alberta."
       },
       {
-        "id": "red-fox-food",
+        "id": "foxes-quiz-red-fox-diet-answered",
         "section": "Questionnaire",
         "title": "L’alimentation du renard roux",
         "summary": "Les renards roux ont une alimentation variée qui comprend de petits animaux et des aliments végétaux comme des fruits."
       },
       {
-        "id": "red-fox-sound-identification",
+        "id": "foxes-quiz-red-fox-sound-answered",
         "section": "Questionnaire",
         "title": "Reconnaître le renard roux",
         "summary": "Vous avez reconnu le cri d’un renard roux."

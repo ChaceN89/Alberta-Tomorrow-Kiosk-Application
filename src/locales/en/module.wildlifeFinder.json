@@ -71,7 +71,7 @@
     "start": "Start the quiz",
     "backToActivity": "Back to the activity",
     "questions": {
-      "swift-fox-home": {
+      "foxes-quiz-swift-fox-habitat-answered": {
         "prompt": "Which habitat is most closely associated with swift foxes in southeastern Alberta?",
         "options": {
           "boreal-forest": "Boreal forest",
@@ -81,7 +81,7 @@
         "correct": "That's right! Swift foxes are adapted to the open shortgrass prairie of southeastern Alberta.",
         "tryAgain": "Not quite. Look for an open, dry grassland habitat in southern Alberta."
       },
-      "red-fox-food": {
+      "foxes-quiz-red-fox-diet-answered": {
         "prompt": "What do red foxes eat?",
         "options": {
           "large-animals-only": "Only large animals",
@@ -91,7 +91,7 @@
         "correct": "That's right! Red foxes eat a varied diet that includes small animals and plant foods such as fruit.",
         "tryAgain": "Not quite. Red foxes eat a varied diet, including both animal and plant foods."
       },
-      "red-fox-sound-identification": {
+      "foxes-quiz-red-fox-sound-answered": {
         "prompt": "Which animal is making this sound?",
         "options": {
           "coyote": "A coyote",
@@ -110,33 +110,30 @@
   },
   "journal": {
     "summary": "Field notes on how Alberta's wildlife depends on its habitat.",
+    "descriptionImageTitle": "A swift fox in its prairie habitat",
+    "descriptionImageAlt": "A swift fox standing in its grassy prairie habitat.",
+    "openDescriptionImage": "Open the fox habitat image",
     "entries": [
       {
-        "id": "habitats-matter",
-        "imageAlt": "A fox standing in its grassy prairie habitat.",
-        "title": "Why habitats matter",
-        "summary": "Animals depend on their habitats for food, water, and shelter."
-      },
-      {
-        "id": "audio-1-started",
+        "id": "foxes-of-alberta-song-started",
         "section": "Media",
         "title": "Listening begins",
         "summary": "You started listening to the expedition's test song. Sounds can tell us a lot about a place."
       },
       {
-        "id": "audio-1-finished",
+        "id": "foxes-of-alberta-song-finished",
         "section": "Media",
         "title": "The whole song",
         "summary": "You listened to the test song all the way to the end."
       },
       {
-        "id": "audio-2-finished",
+        "id": "foxes-of-alberta-narration-finished",
         "section": "Media",
         "title": "A voice from the field",
         "summary": "You finished listening to the test narration."
       },
       {
-        "id": "audio-3-started",
+        "id": "foxes-red-fox-sound-recording-started",
         "section": "Media",
         "title": "A fox in the field",
         "summary": "You started listening to a red fox sound recording."
@@ -167,19 +164,19 @@
         "summary": "You looked closely at a family of young foxes resting together."
       },
       {
-        "id": "swift-fox-home",
+        "id": "foxes-quiz-swift-fox-habitat-answered",
         "section": "Quiz",
         "title": "Swift fox habitat",
         "summary": "Swift foxes are adapted to the open shortgrass prairie of southeastern Alberta."
       },
       {
-        "id": "red-fox-food",
+        "id": "foxes-quiz-red-fox-diet-answered",
         "section": "Quiz",
         "title": "Red fox diet",
         "summary": "Red foxes eat a varied diet that includes small animals and plant foods such as fruit."
       },
       {
-        "id": "red-fox-sound-identification",
+        "id": "foxes-quiz-red-fox-sound-answered",
         "section": "Quiz",
         "title": "Recognizing a red fox",
         "summary": "You identified the sound of a red fox."

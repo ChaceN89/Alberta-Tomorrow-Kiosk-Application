@@ -1,7 +1,7 @@
 /**
   File: ModuleExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Show the Alberta map with information for the selected module.
@@ -10,17 +10,13 @@
   - Rendered at /expeditions/:moduleId/explore.
 
   Notes:
-  - Module POI descriptions use translated, authored React content.
+  - Module POI descriptions are supplied by each module's POI content components.
  */
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
 import type { MapPoi } from './components/MapPoiMarker'
-import stMarysLandscape from '@/modules/testing-residential-schools/assets/st-marys-landscape.jpg'
-import stAlbertRiverValley from '@/modules/testing-residential-schools/assets/st-albert-river-valley.jpg'
-import lesserSlaveLakeLandscape from '@/modules/testing-residential-schools/assets/lesser-slave-lake.jpg'
-import { ResidentialSchoolPoiInfo } from '@/modules/testing-residential-schools/ResidentialSchoolPoiInfo'
 import { AlbertaMap } from './AlbertaMap'
 import { MapActionControls } from './components/MapActionControls'
 import { ExploreMapNavBar } from './components/ExploreMapNavBar'
@@ -34,21 +30,11 @@ type ModuleExploreMapProps = {
 export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
   const { t } = useTranslation('mapping')
   const { t: tModule } = useTranslation(module.translationNamespace)
-  const { t: tResidentialSchool } = useTranslation('residentialSchool')
   const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
     useExpeditionProgress()
-  const moduleName = tModule('title')
+  const moduleName = tModule(module.titleKey)
   const moduleMap = module.map
   const completedCheckpoints = getCompletedCheckpoints(module.id)
-  const schools =
-    module.translationNamespace === 'residentialSchool'
-      ? tResidentialSchool('activity.schools', { returnObjects: true })
-      : []
-  const schoolImages: Readonly<Record<string, string>> = {
-    'st-marys-blood': stMarysLandscape,
-    'st-albert-youville': stAlbertRiverValley,
-    'lesser-slave-lake': lesserSlaveLakeLandscape,
-  }
 
   useEffect(() => {
     startExpedition(module.id)
@@ -56,30 +42,26 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
 
   const modulePois: MapPoi[] =
     moduleMap?.pois.flatMap((poi) => {
-      const school = schools.find((entry) => entry.id === poi.id)
-      const image = schoolImages[poi.id]
-      if (!school || !image) return []
+      const PoiContent = moduleMap.poiContent?.[poi.id]
 
       return [
         {
           id: poi.id,
           coordinates: poi.coordinates,
-          title: school.name,
+          title: tModule(poi.titleKey),
           isComplete:
-            completedCheckpoints.includes(poi.id) &&
+            completedCheckpoints.includes(poi.checkpointId) &&
             (poi.additionalCompletionCheckpoints ?? []).every((checkpointId) =>
               completedCheckpoints.includes(checkpointId),
             ),
-          onActivate: () => completeCheckpoint(module.id, poi.id),
-          info: (
-            <ResidentialSchoolPoiInfo
-              school={school}
-              schoolImage={image}
+          onActivate: () => completeCheckpoint(module.id, poi.checkpointId),
+          info: PoiContent ? (
+            <PoiContent
               onComplete={(checkpointId) =>
                 completeCheckpoint(module.id, checkpointId)
               }
             />
-          ),
+          ) : undefined,
         },
       ]
     }) ?? []
@@ -91,8 +73,8 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
         ariaLabel={t('moduleMapLabel', { moduleName })}
         moduleId={module.id}
         modulePois={modulePois}
-        defaultPoisVisible={moduleMap?.defaultPoisVisible}
-        modulePoisVisible={moduleMap?.modulePoisVisible}
+        defaultPoisVisible={moduleMap?.settings.defaultPoisVisible}
+        modulePoisVisible={moduleMap?.settings.modulePoisVisible}
       >
         <MapControls />
         <ModuleTitleBar

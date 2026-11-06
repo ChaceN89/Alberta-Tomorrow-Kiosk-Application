@@ -33,9 +33,8 @@
         "title": "Musique instrumentale d’ambiance"
       }
     },
-    "schools": [
-      {
-        "id": "st-marys-blood",
+    "schools": {
+      "st-marys-blood": {
         "name": "St. Mary's Residential School (Blood)",
         "location": "Cardston (réserve Blood), Alberta",
         "operatingYears": "1898–1988",
@@ -43,8 +42,7 @@
         "imageAlt": "Illustration du piémont du sud de l’Alberta; il ne s’agit pas d’une photographie historique de l’école.",
         "source": "https://archives.nctr.ca/index.php/St-Marys-Residential-School-Blood"
       },
-      {
-        "id": "st-albert-youville",
+      "st-albert-youville": {
         "name": "St. Albert Residential School (Youville)",
         "location": "St. Albert, Alberta",
         "operatingYears": "1873–1948",
@@ -52,8 +50,7 @@
         "imageAlt": "Illustration de la vallée près de St. Albert; il ne s’agit pas d’une photographie historique de l’école.",
         "source": "https://archives.nctr.ca/index.php/St-Albert-Residential-School-Youville"
       },
-      {
-        "id": "lesser-slave-lake",
+      "lesser-slave-lake": {
         "name": "Lesser Slave Lake Residential School (St. Peter's)",
         "location": "Lesser Slave Lake, Alberta",
         "operatingYears": "1895–1932",
@@ -61,53 +58,53 @@
         "imageAlt": "Illustration du bord du lac dans le nord de l’Alberta; il ne s’agit pas d’une photographie historique de l’école.",
         "source": "https://archives.nctr.ca/index.php/Lesser-Slave-Lake-Residential-School"
       }
-    ]
+    }
   },
   "journal": {
     "summary": "Notes tirées de l’étude de trois pensionnats autochtones de l’Alberta, à partir des archives du Centre national pour la vérité et la réconciliation.",
     "entries": [
       {
-        "id": "st-marys-blood",
+        "id": "residential-schools-st-marys-blood-poi-selected",
         "title": "St. Mary's Residential School (Blood)",
         "summary": "L’école a fonctionné de 1898 à 1988 sur la réserve Blood de la Nation Kainai, au sud-ouest de Lethbridge.",
         "imageAlt": "Illustration du piémont du sud de l’Alberta; il ne s’agit pas d’une photographie historique de l’école."
       },
       {
-        "id": "st-marys-blood-photo-viewed",
+        "id": "residential-schools-st-marys-blood-photo-viewed",
         "title": "Photographie consultée : St. Mary's",
         "summary": "Vous avez ouvert la photo en noir et blanc fournie dans le visualiseur d’images. Sa date, son lieu et son lien avec l’école n’ont pas été vérifiés.",
         "imageAlt": "Photo en noir et blanc montrant des enfants et des adultes réunis à l’extérieur."
       },
       {
-        "id": "st-marys-blood-audio-finished",
+        "id": "residential-schools-st-marys-blood-audio-finished",
         "title": "Musique instrumentale terminée : St. Mary's",
         "summary": "Vous avez écouté jusqu’à la fin la musique instrumentale du panneau d’information de St. Mary's."
       },
       {
-        "id": "st-albert-youville",
+        "id": "residential-schools-st-albert-youville-poi-selected",
         "title": "St. Albert Residential School (Youville)",
         "summary": "L’école a fonctionné de 1873 à 1948 à St. Albert, au nord-ouest d’Edmonton, dans le territoire du Traité no 6.",
         "imageAlt": "Illustration de la vallée près de St. Albert; il ne s’agit pas d’une photographie historique de l’école."
       },
       {
-        "id": "st-albert-youville-video-finished",
+        "id": "residential-schools-st-albert-youville-video-finished",
         "title": "Vidéo terminée : St. Albert",
         "summary": "Vous avez regardé jusqu’à la fin la vidéo YouTube ouverte depuis le panneau d’information de St. Albert."
       },
       {
-        "id": "st-albert-youville-message-opened",
+        "id": "residential-schools-st-albert-youville-message-opened",
         "title": "Message d’exemple ouvert : St. Albert",
         "summary": "Vous avez ouvert un message fictif dans le visualiseur. Il ne s’agit ni d’un document historique ni du témoignage d’un survivant ou d’une survivante.",
         "imageAlt": "Photo en noir et blanc d’un grand bâtiment en brique avec des personnes rassemblées à l’extérieur. La date, le lieu et le lien de la photo avec cette école n’ont pas été vérifiés."
       },
       {
-        "id": "lesser-slave-lake",
+        "id": "residential-schools-lesser-slave-lake-poi-selected",
         "title": "Lesser Slave Lake Residential School (St. Peter's)",
         "summary": "L’école a fonctionné de 1895 à 1932 dans le nord de l’Alberta, au nord-ouest d’Edmonton, sous l’administration de l’Église anglicane.",
         "imageAlt": "Illustration du bord du lac dans le nord de l’Alberta; il ne s’agit pas d’une photographie historique de l’école."
       },
       {
-        "id": "lesser-slave-lake-audio-finished",
+        "id": "residential-schools-lesser-slave-lake-audio-finished",
         "title": "Musique d’ambiance terminée : Lesser Slave Lake",
         "summary": "Vous avez écouté jusqu’à la fin la musique instrumentale d’ambiance du panneau d’information de Lesser Slave Lake.",
         "imageAlt": "Illustration générée d’un lac paisible du nord de l’Alberta à l’aube."

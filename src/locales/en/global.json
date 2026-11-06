@@ -50,6 +50,11 @@
     "title": "We couldn't find that activity.",
     "description": "This module may have moved or is no longer available. Head home to choose another activity."
   },
+  "moduleEnvironment": {
+    "title": "{{moduleName}} environment",
+    "description": "This 3D environment is not available yet.",
+    "backToOverview": "Return to expedition overview"
+  },
   "error": {
     "title": "Something went wrong.",
     "description": "We couldn't open this activity. Please return home and try again. If the problem continues, check your connection and reload.",
