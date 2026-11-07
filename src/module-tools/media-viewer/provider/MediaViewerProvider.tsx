@@ -1,7 +1,7 @@
 /**
   File: MediaViewerProvider.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Provide a shared popup for reading messages, viewing images, and exploring models.
@@ -123,7 +123,6 @@ export function MediaViewerProvider({ children }: MediaViewerProviderProps) {
         origin={origin}
         isClosing={isClosing}
         onRequestClose={requestClose}
-        onClosed={finishClose}
       />
     </MediaViewerContext.Provider>
   )

@@ -1,7 +1,6 @@
 {
   "title": "Explorer l’Alberta",
   "mapLabel": "Carte de l’Alberta",
-  "moduleTitle": "Explorer {{moduleName}}",
   "moduleMapLabel": "Carte : {{moduleName}}",
   "view": {
     "title": "Vue de la carte",
@@ -17,8 +16,8 @@
     "basemapHelp": "Modifie les couleurs, les routes, les étiquettes, l’eau et l’apparence des terres.",
     "albertaBoundaryLabel": "Limite de l’Alberta",
     "albertaBoundaryHelp": "Afficher ou masquer la limite provinciale de l’Alberta.",
-    "defaultPoisLabel": "Lieux d’intérêt par défaut",
-    "defaultPoisHelp": "Afficher ou masquer les lieux de l’Alberta présents sur toutes les cartes.",
+    "defaultPoisLabel": "Lieux d’intérêt de la carte de base",
+    "defaultPoisHelp": "Afficher ou masquer les lieux partagés de l’Alberta sur toutes les cartes.",
     "expeditionPoisLabel": "Lieux d’intérêt de l’expédition",
     "expeditionPoisHelp": "Afficher ou masquer les lieux d’intérêt de cette expédition.",
     "poiClusterRadiusLabel": "Rayon de regroupement des lieux",
@@ -62,6 +61,7 @@
       "writingOnStone": "Parc provincial Writing-on-Stone"
     },
     "defaultPoiInfo": {
+      "genericDescription": "Ce lieu d’intérêt de l’Alberta est indiqué sur la carte. Zoomez pour explorer les environs.",
       "banff": {
         "description": "Banff est une ville de montagne du parc national Banff, entourée des Rocheuses canadiennes et située dans la vallée de la Bow.",
         "imageAlt": "Illustration d’un lac de montagne et des Rocheuses canadiennes près de Banff; il ne s’agit pas d’une photographie documentaire."
@@ -104,8 +104,11 @@
     "title": "Survol",
     "panelLabel": "Commandes de survol",
     "telemetryLabel": "Informations de vol",
+    "mapCoordinatesLabel": "Coordonnées du centre de la carte",
     "altitudeLabel": "Altitude",
     "speedLabel": "Vitesse",
+    "latitudeLabel": "Latitude",
+    "longitudeLabel": "Longitude",
     "metersValue": "{{value}} m",
     "speedValue": "{{value}} m/s",
     "paused": "En pause",
@@ -143,8 +146,14 @@
     "label": "Navigation de la carte",
     "open": "Ouvrir la navigation de la carte",
     "close": "Fermer la navigation de la carte",
+    "resetView": "Réinitialiser la vue de la carte",
     "home": "Accueil",
-    "defaultMap": "Carte générale de l’Alberta",
-    "moduleOverview": "Retour aux détails de l’expédition"
+    "defaultMap": "Carte de base",
+    "moduleActivity": "Retour à l’activité de l’expédition",
+    "currentExpedition": "Expédition : {{moduleName}}",
+    "expeditionActivity": "Activité de l’expédition",
+    "expeditionOverview": "Aperçu de l’expédition",
+    "expeditions": "Expéditions",
+    "expeditionMap": "Carte : {{moduleName}}"
   }
 }

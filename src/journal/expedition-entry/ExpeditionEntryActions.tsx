@@ -1,10 +1,10 @@
 /**
   File: ExpeditionEntryActions.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Render the links to continue an expedition or view its details.
+  - Render the link to continue an expedition.
 
   Usage:
   - Rendered at the bottom of an ExpeditionEntry.
@@ -14,7 +14,7 @@
  */
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { getModuleActivityPath, getModuleOverviewPath } from '@/modules/routes'
+import { getModuleActivityPath } from '@/modules/routes'
 import type { ExpeditionProgress } from '@/save-data/expedition-progress'
 
 type ExpeditionEntryActionsProps = {
@@ -23,7 +23,7 @@ type ExpeditionEntryActionsProps = {
   onNavigate: () => void
 }
 
-// Provide the module's activity and overview links from the journal.
+// Provide the module's activity link from the journal.
 export function ExpeditionEntryActions({
   moduleId,
   progress,
@@ -33,21 +33,12 @@ export function ExpeditionEntryActions({
   const { t } = useTranslation('journal')
 
   return (
-    <div className="flex flex-wrap gap-3">
-      <Link
-        className="button"
-        to={getModuleActivityPath(moduleId)}
-        onClick={onNavigate}
-      >
-        {t(progress.status === 'complete' ? 'revisit' : 'continue')}
-      </Link>
-      <Link
-        className="button-secondary"
-        to={getModuleOverviewPath(moduleId)}
-        onClick={onNavigate}
-      >
-        {t('details')}
-      </Link>
-    </div>
+    <Link
+      className="button"
+      to={getModuleActivityPath(moduleId)}
+      onClick={onNavigate}
+    >
+      {t(progress.status === 'complete' ? 'revisit' : 'continue')}
+    </Link>
   )
 }

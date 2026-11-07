@@ -1,7 +1,7 @@
 /**
   File: ModuleCard.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Show expedition details, progress, and actions in the home list.
@@ -32,15 +32,19 @@ export function ModuleCard({ module }: ModuleCardProps) {
   const { openJournal } = useJournal()
   const progress = getExpeditionProgress(module)
   const title = tModule('title')
+  const ModuleIcon = module.icon
 
   return (
     <li className="panel flex flex-col gap-4">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex flex-wrap gap-3 text-sm font-semibold text-pine">
-          <span>{tModule('category')}</span>
-          <span>
-            {tHome('moduleDuration', { count: module.estimatedMinutes })}
-          </span>
+        <div className="flex min-w-0 items-center gap-3">
+          <ModuleIcon className="size-12 shrink-0 text-pine" />
+          <div className="flex flex-wrap gap-3 text-sm font-semibold text-pine">
+            <span>{tModule('category')}</span>
+            <span>
+              {tHome('moduleDuration', { count: module.estimatedMinutes })}
+            </span>
+          </div>
         </div>
         <ExpeditionPeak progress={progress} className="size-12" />
       </div>

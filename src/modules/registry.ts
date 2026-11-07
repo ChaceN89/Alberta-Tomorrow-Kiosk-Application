@@ -15,6 +15,7 @@
 import { foxesOfAlbertaModule } from './testing-foxes-of-alberta/module'
 import { residentialSchoolsModule } from './testing-residential-schools/module'
 import { geologyModule } from './testing-geology/module'
+import { frankSlideModule } from './testing-frank-slide/module'
 import type { LearningModule } from './types'
 
 export const modules: readonly LearningModule[] = [
@@ -32,6 +33,11 @@ export const modules: readonly LearningModule[] = [
     visible: true,
     id: 'geology-test',
     ...geologyModule,
+  },
+  {
+    visible: true,
+    id: 'frank-slide-test',
+    ...frankSlideModule,
   },
 ]
 

@@ -13,12 +13,15 @@
   - Add settings here when the module gains additional configurable behavior.
  */
 import type { ModuleSettings } from '@/modules/types'
+import { GeologyModuleIcon } from '@/components/icons/module-icons'
+import geologyJournalImage from '../assets/natural-landscapes-journal.jpg'
 
 export const geologySettings: ModuleSettings = {
+  icon: GeologyModuleIcon,
   translationNamespace: 'geology',
   titleKey: 'title',
   descriptionKey: 'description',
   estimatedMinutes: 4,
   startDestination: 'activity',
-  journalDescriptionKey: 'journal.summary',
+  journalImage: geologyJournalImage,
 }

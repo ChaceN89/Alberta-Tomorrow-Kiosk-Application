@@ -27,11 +27,13 @@ import { MapPoiClusterMarker } from './components/MapPoiClusterMarker'
 import { MapPoiMarker, type MapPoi } from './components/MapPoiMarker'
 import { MapPoiSelector } from './components/MapPoiSelector'
 import { clusterMapPois } from './map-functions/clusterMapPois'
+import { getAnimationDuration } from './map-functions/mapAnimationFunctions'
 import {
   DEFAULT_POI_SETTINGS,
   isDefaultPoiId,
   POI_NAVIGATION_DURATION,
 } from './map-settings/defaultPOISettings'
+import { defaultPoiContent } from './poi-content'
 import { FLYOVER_MARKER_UPDATE_INTERVAL } from './map-settings/flyoverSettings'
 import {
   DEFAULT_POI_CLUSTER_RADIUS,
@@ -54,6 +56,7 @@ import {
 import { ExploreMapTutorial } from '@/tutorials/specific-tutorials/explore-map/ExploreMapTutorial'
 import { PlaneTutorial } from '@/tutorials/specific-tutorials/plane-tutorial/PlaneTutorial'
 import { PLANE_TUTORIAL_START_REQUEST } from '@/tutorials/specific-tutorials/plane-tutorial/planeTutorialEvents'
+import type { ModuleMapStartup } from '@/modules/types'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 maplibregl.setWorkerUrl(mapWorkerUrl)
@@ -64,6 +67,7 @@ type AlbertaMapProps = {
   modulePois?: readonly MapPoi[]
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
+  moduleStartup?: ModuleMapStartup
   children?: ReactNode
 }
 
@@ -99,6 +103,7 @@ export function AlbertaMap({
   modulePois = [],
   defaultPoisVisible = true,
   modulePoisVisible = true,
+  moduleStartup,
   children,
 }: AlbertaMapProps) {
   const { t } = useTranslation('mapping')
@@ -120,6 +125,8 @@ export function AlbertaMap({
     hasCompletedPlaneTutorial,
   )
   const pendingPlaneTutorialStart = useRef(false)
+  const pendingMapReset = useRef(false)
+  const pendingMapResetExitRequested = useRef(false)
   const { openPanel, closePanel } = useMapInfoPanel()
   const startupMapGate = useAppStartupMapGate()
   const {
@@ -135,7 +142,96 @@ export function AlbertaMap({
     onMapAvailable,
     onMapError,
   } = useAlbertaMapController()
-  const { onSetFlyoverPaused, onStartFlyover } = controls
+  const {
+    isMapReady,
+    isStyleLoading,
+    isTerrainTransitioning,
+    onSetFlyoverPaused,
+    onStartFlyover,
+    onToggleFlyover,
+  } = controls
+  const moduleStartupHasRun = useRef(false)
+  const onStartFlyoverRef = useRef(onStartFlyover)
+  const onMapErrorRef = useRef(onMapError)
+
+  useEffect(() => {
+    onStartFlyoverRef.current = onStartFlyover
+    onMapErrorRef.current = onMapError
+  }, [onMapError, onStartFlyover])
+
+  const resetMapToStart = useCallback(() => {
+    const map = mapRef.current?.getMap()
+    if (!map) return
+
+    const center: [number, number] = [
+      initialMapView.longitude,
+      initialMapView.latitude,
+    ]
+    const startView = moduleStartup?.view ?? {
+      center,
+      zoom: initialMapView.zoom,
+      pitch: initialMapView.pitch,
+      bearing: initialMapView.bearing,
+    }
+
+    try {
+      map.flyTo({
+        ...startView,
+        duration: getAnimationDuration(POI_NAVIGATION_DURATION),
+      })
+    } catch (error) {
+      onMapErrorRef.current(error)
+    }
+  }, [
+    initialMapView.bearing,
+    initialMapView.latitude,
+    initialMapView.longitude,
+    initialMapView.pitch,
+    initialMapView.zoom,
+    mapRef,
+    moduleStartup?.view,
+  ])
+
+  const onResetMapView = useCallback(() => {
+    if (!isMapReady || isStyleLoading || isTerrainTransitioning) {
+      return
+    }
+
+    if (flyover.phase === 'off') {
+      pendingMapReset.current = false
+      pendingMapResetExitRequested.current = false
+      resetMapToStart()
+      return
+    }
+
+    pendingMapReset.current = true
+    setIsPlaneTutorialControlsStep(false)
+    pendingMapResetExitRequested.current = flyover.phase === 'flying'
+    if (pendingMapResetExitRequested.current) onToggleFlyover()
+  }, [
+    isMapReady,
+    isStyleLoading,
+    isTerrainTransitioning,
+    onToggleFlyover,
+    flyover.phase,
+    resetMapToStart,
+  ])
+
+  useEffect(() => {
+    if (!pendingMapReset.current) return
+    if (flyover.phase === 'flying') {
+      if (!pendingMapResetExitRequested.current) {
+        pendingMapResetExitRequested.current = true
+        onToggleFlyover()
+      }
+      return
+    }
+    if (flyover.phase !== 'off') return
+
+    pendingMapReset.current = false
+    pendingMapResetExitRequested.current = false
+    resetMapToStart()
+  }, [onToggleFlyover, flyover.phase, resetMapToStart])
 
   const mapRefCallback = useCallback(
     (map: MapRef | null) => {
@@ -168,7 +264,8 @@ export function AlbertaMap({
   const defaultPois = useMemo(
     () =>
       DEFAULT_POI_SETTINGS.map((poi) => {
-        const title = t(poi.labelKey)
+        const title = t(poi.titleKey)
+        const PoiContent = defaultPoiContent[poi.id]
         const imageKey = 'imageKey' in poi ? poi.imageKey : undefined
         const descriptionKey =
           'descriptionKey' in poi ? poi.descriptionKey : undefined
@@ -184,33 +281,105 @@ export function AlbertaMap({
 
         return {
           id: poi.id,
-          coordinates: poi.location,
+          coordinates: poi.coordinates,
           title,
-          info:
-            descriptionKey || videoTrack ? (
-              <div className="space-y-4">
-                {image && (
-                  <img
-                    src={image}
-                    alt={imageAltKey ? t(imageAltKey) : ''}
-                    className="mapping-poi-info-image"
-                  />
-                )}
-                {descriptionKey && <p>{t(descriptionKey)}</p>}
-                {videoTrack && <TrackPlayButton track={videoTrack} />}
-              </div>
-            ) : undefined,
+          info: PoiContent ? (
+            <PoiContent />
+          ) : (
+            <div className="space-y-4">
+              {image && (
+                <img
+                  src={image}
+                  alt={imageAltKey ? t(imageAltKey) : ''}
+                  className="mapping-poi-info-image"
+                />
+              )}
+              <p>
+                {descriptionKey
+                  ? t(descriptionKey)
+                  : t('view.defaultPoiInfo.genericDescription')}
+              </p>
+              {videoTrack && <TrackPlayButton track={videoTrack} />}
+            </div>
+          ),
         }
       }),
     [t],
   )
-  const visiblePois = useMemo(
-    () => [
-      ...(areDefaultPoisVisible ? defaultPois : []),
-      ...(areModulePoisVisible ? modulePois : []),
-    ],
-    [areDefaultPoisVisible, areModulePoisVisible, defaultPois, modulePois],
-  )
+
+  useEffect(() => {
+    if (
+      !moduleId ||
+      !moduleStartup ||
+      !controls.isMapReady ||
+      controls.isStyleLoading ||
+      controls.isTerrainTransitioning ||
+      moduleStartupHasRun.current
+    ) {
+      return
+    }
+
+    const map = mapRef.current?.getMap()
+    if (!map) return
+
+    moduleStartupHasRun.current = true
+    let isEffectActive = true
+    const startFlyoverAfterArrival = () => {
+      if (!isEffectActive) return
+
+      map.off('moveend', startFlyoverAfterArrival)
+      if (moduleStartup.startFlyover) onStartFlyoverRef.current(false)
+    }
+
+    if (moduleStartup.startFlyover) {
+      map.once('moveend', startFlyoverAfterArrival)
+    }
+
+    try {
+      map.flyTo({
+        ...moduleStartup.view,
+        duration: POI_NAVIGATION_DURATION,
+      })
+      if (!map.isMoving()) startFlyoverAfterArrival()
+    } catch (error) {
+      map.off('moveend', startFlyoverAfterArrival)
+      moduleStartupHasRun.current = false
+      onMapErrorRef.current(error)
+    }
+
+    return () => {
+      isEffectActive = false
+      map.off('moveend', startFlyoverAfterArrival)
+    }
+  }, [
+    controls.isMapReady,
+    controls.isStyleLoading,
+    controls.isTerrainTransitioning,
+    mapRef,
+    moduleId,
+    moduleStartup,
+  ])
+  const visiblePois = useMemo(() => {
+    const poisById = new globalThis.Map<string, MapPoi>()
+
+    if (areDefaultPoisVisible) {
+      defaultPois.forEach((poi) => poisById.set(poi.id, poi))
+    }
+
+    if (areModulePoisVisible) {
+      modulePois.forEach((poi) => {
+        const defaultPoi = poisById.get(poi.id)
+        poisById.set(
+          poi.id,
+          defaultPoi
+            ? { ...defaultPoi, ...poi, info: poi.info ?? defaultPoi.info }
+            : poi,
+        )
+      })
+    }
+
+    return [...poisById.values()]
+  }, [areDefaultPoisVisible, areModulePoisVisible, defaultPois, modulePois])
   const visibleActivePoiId = visiblePois.some((poi) => poi.id === activePoiId)
     ? activePoiId
     : (visiblePois[0]?.id ?? null)
@@ -342,6 +511,7 @@ export function AlbertaMap({
       updateClusterViewport()
     }
 
+    updateClusterViewport()
     mapInstance.on('move', handleMove)
     return () => {
       mapInstance.off('move', handleMove)
@@ -354,6 +524,7 @@ export function AlbertaMap({
     if (isFlyoverEnabled) {
       setActivePoiId(poi.id)
       controls.onFlyoverTravelTo(poi.coordinates)
+      poi.onActivate?.()
       if (poi.info) {
         openPanel({ title: poi.title, content: poi.info }, { origin })
       } else {
@@ -394,6 +565,7 @@ export function AlbertaMap({
 
   const mapControls = {
     ...controls,
+    onResetMapView,
     onToggleFlyover: () => {
       if (controls.isFlyoverEnabled) {
         setIsPlaneTutorialControlsStep(false)
@@ -505,6 +677,8 @@ export function AlbertaMap({
           isPaused={flyover.isPaused}
           altitudeMeters={flyover.altitudeMeters}
           speedMetersPerSecond={flyover.speedMetersPerSecond}
+          latitude={clusterViewport?.center[1] ?? initialMapView.latitude}
+          longitude={clusterViewport?.center[0] ?? initialMapView.longitude}
           isTutorialActive={isPlaneTutorialActive}
           isTutorialControlsStep={isPlaneTutorialControlsStep}
         />

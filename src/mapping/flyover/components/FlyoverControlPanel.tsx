@@ -1,7 +1,7 @@
 /**
   File: FlyoverControlPanel.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Show flight controls in a vertically centered, collapsible map panel.

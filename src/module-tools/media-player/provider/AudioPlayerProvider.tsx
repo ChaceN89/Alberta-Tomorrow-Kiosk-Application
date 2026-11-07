@@ -366,14 +366,10 @@ export function AudioPlayerProvider({ children }: AudioPlayerProviderProps) {
 
     if (advanceQueue()) return
 
-    if (currentItem.track.type !== 'audio' && !isFullscreenRef.current) {
-      stop()
-    } else {
-      isMediaEndClosingRef.current = true
-      setIsMediaEndClosing(true)
-      setIsClosing(true)
-    }
-  }, [advanceQueue, stop])
+    isMediaEndClosingRef.current = true
+    setIsMediaEndClosing(true)
+    setIsClosing(true)
+  }, [advanceQueue])
 
   const pausePlayback = useCallback(() => {
     const currentItem = currentItemRef.current

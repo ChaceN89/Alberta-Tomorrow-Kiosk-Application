@@ -1,7 +1,7 @@
 /*
   File: flyover.css | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Style the plane HUD, flyover controls, and map tutorials.
@@ -38,10 +38,12 @@
   position: absolute;
   top: 1rem;
   left: 50%;
+  z-index: var(--z-content-popover);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem 1.5rem;
+  max-width: calc(100vw - 2rem);
   transform: translateX(-50%);
   border: 1px solid var(--color-line);
   border-radius: 9999px;
@@ -51,11 +53,12 @@
   box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
   font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .plane-hud__telemetry p {
   margin: 0;
+  white-space: nowrap;
 }
 
 .plane-hud__telemetry strong {
@@ -65,16 +68,16 @@
 .mapping-flyover-panel {
   position: absolute;
   top: 50%;
-  inset-inline-start: 1rem;
+  inset-inline-start: 0;
   z-index: var(--z-content-popover);
-  width: min(16.5rem, calc(100vw - 2rem));
+  width: min(16.5rem, calc(100vw - 3.25rem));
   transform: translateY(-50%);
   transition: transform 280ms cubic-bezier(0.2, 0.75, 0.2, 1);
   pointer-events: none;
 }
 
 .mapping-flyover-panel--collapsed {
-  transform: translate(calc(-100% + 3rem), -50%);
+  transform: translate(-100%, -50%);
 }
 
 .mapping-flyover-panel__content {
@@ -126,19 +129,21 @@
 
 .mapping-flyover-panel__toggle {
   position: absolute;
-  top: 0;
-  inset-inline-end: 0;
+  top: 50%;
+  inset-inline-start: 100%;
   z-index: 1;
   display: flex;
-  width: 3rem;
-  min-height: 3rem;
+  width: 2.25rem;
+  min-height: 3.5rem;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--color-line);
-  border-radius: 0.75rem;
+  border-inline-start: 0;
+  border-radius: 0 1rem 1rem 0;
   background: var(--color-surface);
   color: var(--color-pine);
   box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
+  transform: translateY(-50%);
   pointer-events: auto;
 }
 

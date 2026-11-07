@@ -25,11 +25,11 @@ export const BASEMAP_STYLES = [
     url: 'https://tiles.openfreemap.org/styles/bright',
     labelKey: 'view.basemapStyles.bright',
   },
-  {
-    id: 'positron',
-    url: 'https://tiles.openfreemap.org/styles/positron',
-    labelKey: 'view.basemapStyles.positron',
-  },
+  // {
+  //   id: 'positron',
+  //   url: 'https://tiles.openfreemap.org/styles/positron',
+  //   labelKey: 'view.basemapStyles.positron',
+  // },
   {
     id: 'dark',
     url: 'https://tiles.openfreemap.org/styles/dark',

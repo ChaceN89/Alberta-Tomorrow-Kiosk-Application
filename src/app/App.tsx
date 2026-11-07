@@ -17,6 +17,7 @@
   - None.
  */
 import { lazy, Suspense, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
 import { NotFound } from '@/components/app-states/NotFound'
@@ -32,10 +33,13 @@ import { AppStartup } from './AppStartup'
 import { useAppStartupMapGate } from './AppStartupMapContext'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/context/JournalProvider'
+import { useJournal } from '@/journal/context/useJournal'
 import { ExpeditionProgressProvider } from '@/save-data/expedition-progress'
 import { IntroTutorialProvider } from '@/tutorials/specific-tutorials/intro-tutorial/IntroTutorialProvider'
 import { AudioPlayerProvider } from '@/module-tools/media-player/provider/AudioPlayerProvider'
+import { useAudioPlayer } from '@/module-tools/media-player/hooks/useAudioPlayer'
 import { MediaViewerProvider } from '@/module-tools/media-viewer/provider/MediaViewerProvider'
+import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
 import { MapInfoPanelProvider } from '@/module-tools/map-info-panel/provider/MapInfoPanelProvider'
 
 const ExploreMap = lazy(() =>
@@ -65,6 +69,18 @@ function ExploreMapRoute() {
   )
 }
 
+function AppRouteContent({ children }: { children: ReactNode }) {
+  const { isOpen: isJournalOpen } = useJournal()
+  const { isOpen: isMediaViewerOpen } = useMediaViewer()
+  const { isFullscreen: isPlayerFullscreen } = useAudioPlayer()
+
+  return (
+    <div inert={isJournalOpen || isMediaViewerOpen || isPlayerFullscreen}>
+      {children}
+    </div>
+  )
+}
+
 export function App() {
   return (
     <BrowserRouter>
@@ -77,8 +93,14 @@ export function App() {
                 <MediaViewerProvider>
                   <ErrorBoundary>
                     <MapInfoPanelProvider>
-                      <AppStartup overlays={<GlobalOverlayLayer />}>
-                        <>
+                      <AppStartup
+                        overlays={
+                          <GlobalOverlayLayer
+                            mediaPlayer={<AudioPlayerPanel />}
+                          />
+                        }
+                      >
+                        <AppRouteContent>
                           <Routes>
                             <Route
                               path="explore"
@@ -118,8 +140,7 @@ export function App() {
                               <Route path="*" element={<NotFound />} />
                             </Route>
                           </Routes>
-                          <AudioPlayerPanel />
-                        </>
+                        </AppRouteContent>
                       </AppStartup>
                     </MapInfoPanelProvider>
                   </ErrorBoundary>

@@ -1,7 +1,7 @@
 /*
   File: tutorials.css | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Style shared tutorial dialogs, step content, and coach-mark arrows.
@@ -22,13 +22,29 @@
 }
 
 .tutorial-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: var(--z-tutorial-dialog);
   max-width: calc(100vw - 2rem);
-  margin: auto;
+  margin: 0;
   overflow: visible;
+  transform: translate(-50%, -50%);
 }
 
-.tutorial-dialog::backdrop {
+.tutorial-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-tutorial-backdrop);
   background: rgb(12 27 22 / 55%);
+}
+
+.tutorial-dialog-backdrop[hidden] {
+  display: none;
+}
+
+.tutorial-dialog-backdrop--intro {
+  background: transparent;
 }
 
 .tutorial-popover {
@@ -43,7 +59,7 @@
   animation: tutorial-popup-enter 300ms ease-out both;
 }
 
-.tutorial-dialog.tutorial-popup--visible::backdrop {
+.tutorial-dialog-backdrop:not([hidden]) {
   animation: tutorial-popup-backdrop-enter 300ms ease-out both;
 }
 
@@ -142,7 +158,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tutorial-popup--visible,
-  .tutorial-dialog.tutorial-popup--visible::backdrop {
+  .tutorial-dialog-backdrop:not([hidden]) {
     animation: none;
   }
 

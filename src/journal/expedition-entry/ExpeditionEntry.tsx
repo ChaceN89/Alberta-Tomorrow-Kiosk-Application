@@ -12,10 +12,11 @@
   Notes:
   - Entry copy comes from module locales; attachments come from the module journal manifest.
  */
-import { Suspense } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
+import { getModuleOverviewPath } from '@/modules/routes'
 import { ExpeditionEntryActions } from './ExpeditionEntryActions'
 import { ExpeditionEntryHeader } from './ExpeditionEntryHeader'
 import { JournalEntryGroups } from './entries/JournalEntryGroups'
@@ -28,15 +29,14 @@ type ExpeditionEntryProps = {
 
 // Connect this module's journal content, saved progress, and media attachments.
 export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
-  // Load journal copy from this module's translation namespace.
+  // The overview description and journal entries share the module's localized data.
   const { t: tModule } = useTranslation(module.translationNamespace)
+  const { t: tJournal } = useTranslation('journal')
   // Read the progress state used by both the header and entry rows.
   const { getExpeditionProgress, isCheckpointComplete } =
     useExpeditionProgress()
 
   const progress = getExpeditionProgress(module)
-  const journalDescription = tModule(module.journalDescriptionKey)
-  const JournalDescription = module.journalDescription
   const localizedEntries = tModule('journal.entries', { returnObjects: true })
   const localizedEntryIds = new Set<string>()
   const entries: JournalEntry[] = localizedEntries.map((entry) => {
@@ -77,13 +77,16 @@ export function ExpeditionEntry({ module, onNavigate }: ExpeditionEntryProps) {
   return (
     <article className="space-y-5">
       <ExpeditionEntryHeader module={module} progress={progress} />
-      {JournalDescription ? (
-        <Suspense fallback={<p className="text-muted">{journalDescription}</p>}>
-          <JournalDescription description={journalDescription} />
-        </Suspense>
-      ) : (
-        <p className="text-muted">{journalDescription}</p>
-      )}
+      <div className="space-y-2">
+        <p className="text-muted">{tModule(module.descriptionKey)}</p>
+        <Link
+          className="inline-flex min-h-11 items-center font-semibold text-pine underline decoration-current underline-offset-4 hover:text-pine-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          to={getModuleOverviewPath(module.id)}
+          onClick={onNavigate}
+        >
+          {tJournal('returnToOverview')}
+        </Link>
+      </div>
       <JournalEntryGroups
         module={module}
         entries={entries}

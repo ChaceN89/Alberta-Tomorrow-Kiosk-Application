@@ -1,7 +1,7 @@
 /**
   File: TutorialPopover.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Share popup layout, optional modal behavior, positioning, and callout tail.
@@ -10,14 +10,9 @@
   - Render for any tutorial step; omit position for centered popups.
 
   Notes:
-  - Modal popups use TutorialDialog for native dialog behavior.
+  - Modal popups use TutorialDialog without entering the browser top layer.
  */
-import type {
-  CSSProperties,
-  DialogHTMLAttributes,
-  ReactNode,
-  RefObject,
-} from 'react'
+import type { CSSProperties, ReactNode, RefObject } from 'react'
 import { TutorialDialog } from './TutorialDialog'
 import type { TutorialPopoverPosition } from '../utils/tutorialPositioning'
 
@@ -37,12 +32,12 @@ type TutorialPopoverProps = TutorialPopoverBaseProps &
     | {
         modal: true
         popupRef?: RefObject<HTMLDialogElement | null>
-        onCancel?: DialogHTMLAttributes<HTMLDialogElement>['onCancel']
+        onEscape?: () => void
       }
     | {
         modal?: false
         popupRef?: RefObject<HTMLElement | null>
-        onCancel?: never
+        onEscape?: never
       }
   )
 
@@ -57,7 +52,7 @@ export function TutorialPopover({
   className = '',
   children,
   modal,
-  onCancel,
+  onEscape,
 }: TutorialPopoverProps) {
   const arrowStyle = position
     ? position.arrow.side === 'top' || position.arrow.side === 'bottom'
@@ -98,7 +93,7 @@ export function TutorialPopover({
         ariaDescribedBy={descriptionId}
         style={style}
         className={popupClassName}
-        onCancel={onCancel}
+        onEscape={onEscape}
       >
         {content}
       </TutorialDialog>

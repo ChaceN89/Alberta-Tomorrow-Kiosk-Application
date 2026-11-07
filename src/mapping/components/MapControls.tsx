@@ -1,7 +1,7 @@
 /**
   File: MapControls.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Render accessible controls for map appearance and camera settings.
@@ -18,6 +18,7 @@ import { BASEMAP_STYLES } from '../map-settings/baseMapSettings'
 import {
   TERRAIN_EXAGGERATION_MAX,
   TERRAIN_EXAGGERATION_MIN,
+  TERRAIN_EXAGGERATION_STEP,
 } from '../map-settings/terrainSettings'
 import {
   MAX_POI_CLUSTER_RADIUS,
@@ -275,7 +276,7 @@ export function MapControls() {
               type="range"
               min={TERRAIN_EXAGGERATION_MIN}
               max={TERRAIN_EXAGGERATION_MAX}
-              step="1"
+              step={TERRAIN_EXAGGERATION_STEP}
               value={terrainExaggeration}
               disabled={isDisabled}
               aria-describedby={exaggerationHelpId}

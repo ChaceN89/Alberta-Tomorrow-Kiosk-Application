@@ -1,0 +1,152 @@
+{
+  "title": "Éboulement de Frank",
+  "description": "Explorez l’éboulement de Frank, puis répondez à un questionnaire de quatre questions.",
+  "overviewDescription": "Visitez l’éboulement de Frank sur la carte, lisez sur l’avalanche rocheuse de 1903 et répondez à quatre questions pour consigner vos découvertes.",
+  "category": "Géologie",
+  "launch": "Explorer l’éboulement de Frank",
+  "backToOverview": "Retour aux détails de l’expédition",
+  "activity": {
+    "introduction": "Commencez par la carte pour trouver l’éboulement de Frank et explorer le mont Turtle. L’ouverture de l’éboulement de Frank consigne l’étape qui déverrouille le questionnaire; ouvrir le mont Turtle ajoute une découverte distincte au journal.",
+    "mapFirst": {
+      "heading": "Explorez d’abord la carte",
+      "description": "Utilisez le bouton ci-dessous pour ouvrir la carte de l’expédition et explorer les points de l’éboulement de Frank et du mont Turtle. La carte se déplacera jusqu’au site, puis passera en mode avion. Revenez ici après avoir ouvert l’éboulement de Frank pour répondre au questionnaire."
+    },
+    "quiz": {
+      "heading": "Questionnaire sur l’éboulement de Frank",
+      "lockedTitle": "Questionnaire verrouillé",
+      "lockedDescription": "Trouvez et sélectionnez d’abord le point de l’éboulement de Frank sur la carte. Le questionnaire de quatre questions sera déverrouillé ici une fois cette étape consignée."
+    },
+    "complete": {
+      "title": "Questionnaire terminé!",
+      "description": "Votre découverte de l’éboulement de Frank sur la carte et vos réponses sont consignées dans le journal de l’expédition.",
+      "viewJournal": "Voir l’entrée du journal",
+      "retry": "Recommencer le questionnaire"
+    },
+    "questions": {
+      "frank-slide-quiz-event": {
+        "prompt": "Quel événement est connu sous le nom d’éboulement de Frank?",
+        "options": {
+          "turtle-mountain-rock-avalanche": "Une avalanche rocheuse du mont Turtle",
+          "river-flood": "Une inondation de la rivière Crowsnest",
+          "forest-fire": "Un feu de forêt qui a brûlé la ville"
+        },
+        "correct": "Exact! Une partie du mont Turtle s’est effondrée dans une avalanche rocheuse.",
+        "tryAgain": "Pas tout à fait. Pensez à la masse de roches qui a dévalé le mont Turtle."
+      },
+      "frank-slide-quiz-mountain": {
+        "prompt": "Quelle montagne s’est effondrée lors de l’événement?",
+        "options": {
+          "turtle-mountain": "Le mont Turtle",
+          "mountain-view": "Le mont Mountain View",
+          "castle-mountain": "Le mont Castle"
+        },
+        "correct": "Exact! L’avalanche rocheuse est venue du mont Turtle.",
+        "tryAgain": "Pas tout à fait. Cette montagne se trouve à côté de la communauté de Frank."
+      },
+      "frank-slide-quiz-date": {
+        "prompt": "À quelle date l’éboulement de Frank s’est-il produit?",
+        "options": {
+          "april-29-1903": "Le 29 avril 1903",
+          "june-1-1910": "Le 1er juin 1910",
+          "october-12-1885": "Le 12 octobre 1885"
+        },
+        "correct": "Exact! L’éboulement de Frank s’est produit le 29 avril 1903.",
+        "tryAgain": "Pas tout à fait. L’événement a eu lieu au printemps 1903."
+      },
+      "frank-slide-quiz-location": {
+        "prompt": "Dans quelle région de l’Alberta se trouve l’éboulement de Frank?",
+        "options": {
+          "crowsnest-pass": "Le col Crowsnest",
+          "peace-river-country": "La région de la rivière de la Paix",
+          "canadian-badlands": "Les badlands canadiens"
+        },
+        "correct": "Exact! L’éboulement de Frank se trouve dans le col Crowsnest, dans le sud-ouest de l’Alberta.",
+        "tryAgain": "Pas tout à fait. L’éboulement de Frank se trouve dans la région des Rocheuses, dans le sud-ouest de l’Alberta."
+      }
+    }
+  },
+  "poi": {
+    "description": "Le 29 avril 1903, une partie du mont Turtle s’est effondrée et une avalanche rocheuse a traversé la vallée près de la communauté minière de Frank.",
+    "turtleMountain": {
+      "title": "Mont Turtle",
+      "description": "Le mont Turtle culmine à environ 2 210 m au-dessus du col Crowsnest. À 4 h 10, le 29 avril 1903, une partie de son versant est s’est détachée lors de l’avalanche rocheuse connue sous le nom d’éboulement de Frank.",
+      "trailHeading": "Le parcours actuel",
+      "trailDescription": "Un itinéraire informel part des environs de Blairmore et monte un versant raide jusqu’au pic nord; un sentier de randonnée relie les pics sud et troisième. Le parcours est exposé, parfois difficile à suivre, et comporte des passages sur rocher et de l’orientation. Considérez-le comme une sortie alpine exigeante réservée aux randonneurs expérimentés, pas comme un sentier aménagé pour débutants.",
+      "monitoringHeading": "Surveillance et équipement",
+      "monitoringDescription": "Les travaux de surveillance de l’Alberta Geological Survey ont inclus une station météo, une caméra, des capteurs de fissures, des inclinomètres et d’autres appareils au pic sud pour suivre les mouvements. Un rapport gouvernemental de 2018 décrit aussi deux barils d’urgence bleus près de la station météo, avec une radio, une lampe de poche, des couvertures, de l’eau, une trousse de premiers soins, du matériel de cuisson et de la nourriture d’urgence pour les randonneurs immobilisés.",
+      "safetyNote": "Les provisions d’urgence sont destinées aux situations imprévues et ne remplacent pas votre propre équipement de montagne. Vérifiez localement l’accès et la météo avant de partir et ne touchez pas aux appareils de surveillance."
+    },
+    "images": {
+      "mountainTitle": "L’éboulement de Frank après l’avalanche rocheuse",
+      "mountainDescription": "Photographie historique montrant le versant du mont Turtle et des bâtiments à proximité. La source et la date n’ont pas été vérifiées.",
+      "mountainAlt": "Photographie historique en noir et blanc montrant une montagne au-dessus de bâtiments à Frank, en Alberta.",
+      "openMountain": "Ouvrir la photographie historique du mont Turtle",
+      "streetTitle": "Rue au pied du mont Turtle",
+      "streetDescription": "Photographie historique montrant une rue et des bâtiments au pied du mont Turtle. La source et la date n’ont pas été vérifiées.",
+      "streetAlt": "Photographie historique en noir et blanc montrant une rue et des bâtiments au pied du mont Turtle.",
+      "openStreet": "Ouvrir la photographie historique de la rue"
+    },
+    "imageSourceNote": "Photographies historiques fournies pour ce module de test; leur source originale et leurs dates exactes n’ont pas encore été vérifiées."
+  },
+  "journal": {
+    "entries": [
+      {
+        "id": "frank-slide-poi-selected",
+        "section": "Carte",
+        "title": "Éboulement de Frank découvert",
+        "summary": "Vous avez sélectionné le point de l’éboulement de Frank et ouvert ses renseignements sur la carte.",
+        "imageAlt": "Photographies historiques fournies pour ce module de test; leur source originale et leurs dates exactes n’ont pas encore été vérifiées."
+      },
+      {
+        "id": "frank-slide-turtle-mountain-poi-opened",
+        "section": "Carte",
+        "title": "Mont Turtle exploré",
+        "summary": "Vous avez ouvert le point du mont Turtle et exploré son histoire, son parcours de randonnée et son équipement de surveillance."
+      },
+      {
+        "id": "frank-slide-mountain-photo-viewed",
+        "section": "Images",
+        "title": "Photographie du mont Turtle consultée",
+        "summary": "Vous avez ouvert la photographie historique montrant le versant du mont Turtle.",
+        "imageAlt": "Photographie historique en noir et blanc montrant une montagne au-dessus de bâtiments à Frank, en Alberta."
+      },
+      {
+        "id": "frank-slide-street-photo-viewed",
+        "section": "Images",
+        "title": "Photographie de la rue consultée",
+        "summary": "Vous avez ouvert la photographie historique montrant la rue au pied du mont Turtle.",
+        "imageAlt": "Photographie historique en noir et blanc montrant une rue et des bâtiments au pied du mont Turtle."
+      },
+      {
+        "id": "frank-slide-quiz-event",
+        "section": "Questionnaire",
+        "title": "Une avalanche rocheuse",
+        "summary": "Une partie du mont Turtle s’est effondrée dans l’avalanche rocheuse connue sous le nom d’éboulement de Frank."
+      },
+      {
+        "id": "frank-slide-quiz-mountain",
+        "section": "Questionnaire",
+        "title": "Le mont Turtle",
+        "summary": "L’avalanche rocheuse de l’éboulement de Frank est venue du mont Turtle."
+      },
+      {
+        "id": "frank-slide-quiz-date",
+        "section": "Questionnaire",
+        "title": "Le 29 avril 1903",
+        "summary": "L’éboulement de Frank s’est produit le 29 avril 1903."
+      },
+      {
+        "id": "frank-slide-quiz-location",
+        "section": "Questionnaire",
+        "title": "Le col Crowsnest",
+        "summary": "L’éboulement de Frank se trouve dans le col Crowsnest, dans le sud-ouest de l’Alberta."
+      },
+      {
+        "id": "frank-slide-quiz-completed",
+        "section": "Questionnaire",
+        "title": "Questionnaire sur l’éboulement de Frank terminé",
+        "summary": "Vous avez répondu aux quatre questions sur l’éboulement de Frank."
+      }
+    ]
+  }
+}

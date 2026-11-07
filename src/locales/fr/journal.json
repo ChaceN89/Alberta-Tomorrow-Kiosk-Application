@@ -48,7 +48,7 @@
   "recorded": "Consignée",
   "continue": "Poursuivre l’expédition",
   "revisit": "Revisiter l’expédition",
-  "details": "Détails de l’expédition",
+  "returnToOverview": "Retour à l’aperçu de l’expédition",
   "toastStarted": "Expédition ajoutée à votre journal.",
   "toastUpdated": "Journal mis à jour.",
   "toastCompleted": "Expédition terminée !",

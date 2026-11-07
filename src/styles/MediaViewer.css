@@ -1,7 +1,7 @@
 /*
   File: MediaViewer.css | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Define the open and close motion of the shared media viewer dialog.
@@ -60,6 +60,34 @@
   }
 }
 
+.media-viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-media-viewer-backdrop);
+  display: grid;
+  place-items: center;
+  background: rgb(23 46 41 / 50%);
+  backdrop-filter: blur(4px);
+  animation: media-viewer-fade-in 320ms ease-out both;
+}
+
+.media-viewer-backdrop[hidden] {
+  display: none;
+}
+
+.media-viewer-backdrop[data-motion='closing'] {
+  pointer-events: none;
+  animation: media-viewer-fade-out 320ms ease-in both;
+}
+
+.media-viewer {
+  position: relative;
+  inset: auto;
+  z-index: var(--z-media-viewer);
+  margin: 0;
+  max-width: none;
+}
+
 /*
   Opening is the closing played backwards: the same 320ms, the same path, and mirrored
   easing. The curve (0.8, 0, 0.6, 1) is the closing curve (0.4, 0, 0.2, 1) reversed, and
@@ -72,20 +100,12 @@
     media-viewer-fade-in 130ms ease-out both;
 }
 
-.media-viewer[data-motion='opening']::backdrop {
-  animation: media-viewer-fade-in 320ms ease-out both;
-}
-
 /* The dialog stays visible while it travels and only fades out as it arrives. */
 .media-viewer[data-motion='closing'] {
   pointer-events: none;
   animation:
     media-viewer-shrink 320ms cubic-bezier(0.4, 0, 0.2, 1) both,
     media-viewer-fade-out 130ms ease-in 190ms both;
-}
-
-.media-viewer[data-motion='closing']::backdrop {
-  animation: media-viewer-fade-out 320ms ease-in both;
 }
 
 /*

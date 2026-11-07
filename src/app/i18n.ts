@@ -21,6 +21,7 @@ import enHome from '@/locales/en/home.json'
 import enTutorials from '@/locales/en/tutorials.json'
 import enJournal from '@/locales/en/journal.json'
 import enGeology from '@/locales/en/module.geology.json'
+import enFrankSlide from '@/locales/en/module.frankSlide.json'
 import enModuleTools from '@/locales/en/moduleTools.json'
 import enMapping from '@/locales/en/mapping.json'
 import enResidentialSchool from '@/locales/en/module.residentialSchools.json'
@@ -32,6 +33,7 @@ import frHome from '@/locales/fr/home.json'
 import frTutorials from '@/locales/fr/tutorials.json'
 import frJournal from '@/locales/fr/journal.json'
 import frGeology from '@/locales/fr/module.geology.json'
+import frFrankSlide from '@/locales/fr/module.frankSlide.json'
 import frModuleTools from '@/locales/fr/moduleTools.json'
 import frMapping from '@/locales/fr/mapping.json'
 import frResidentialSchool from '@/locales/fr/module.residentialSchools.json'
@@ -45,6 +47,7 @@ declare module 'i18next' {
       development: typeof enDevelopment // Add a trailing comment to indicate the type is for English development resources.
       global: typeof enGlobal // English global resources
       funfacts: typeof enFunfacts // English funfacts resources
+      frankSlide: typeof enFrankSlide // English Frank Slide module resources
       geology: typeof enGeology // English geology module resources
       home: typeof enHome // English home resources
       tutorials: typeof enTutorials // English tutorial resources
@@ -64,6 +67,7 @@ void i18n.use(initReactI18next).init({
       development: enDevelopment,
       global: enGlobal,
       funfacts: enFunfacts,
+      frankSlide: enFrankSlide,
       geology: enGeology,
       home: enHome,
       tutorials: enTutorials,
@@ -77,6 +81,7 @@ void i18n.use(initReactI18next).init({
       development: frDevelopment,
       global: frGlobal,
       funfacts: frFunfacts,
+      frankSlide: frFrankSlide,
       geology: frGeology,
       home: frHome,
       tutorials: frTutorials,
@@ -96,6 +101,7 @@ void i18n.use(initReactI18next).init({
     'mapping',
     'moduleTools',
     'funfacts',
+    'frankSlide',
     'geology',
     'wildlifeFinder',
     'residentialSchool',

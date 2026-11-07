@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -29,6 +29,7 @@ export type MapControlsProps = {
   isHillshadeEnabled: boolean
   isSatelliteEnabled: boolean
   isAlbertaBoundaryEnabled: boolean
+  onResetMapView: () => void
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
   hasModulePois?: boolean
@@ -51,7 +52,7 @@ export type MapControlsProps = {
 
 export type MapControllerControlsProps = Omit<
   MapControlsProps,
-  'poiClusterRadius' | 'onPoiClusterRadiusChange'
+  'poiClusterRadius' | 'onPoiClusterRadiusChange' | 'onResetMapView'
 >
 
 export const MapControlsContext = createContext<MapControlsProps | null>(null)

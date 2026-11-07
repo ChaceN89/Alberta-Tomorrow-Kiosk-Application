@@ -1,3 +1,17 @@
-.tutorial-dialog--intro::backdrop {
+/*
+  File: IntroTutorial.css | Author: Chace Nielson
+  Date Created: Nov 5, 2026
+  Date Updated: Nov 6, 2026
+
+  Description:
+  - Keep the intro tutorial's custom modal backdrop transparent.
+
+  Usage:
+  - Imported by IntroTutorial.tsx.
+
+  Notes:
+  - The shared tutorial backdrop is rendered as an app-managed layer.
+ */
+.tutorial-dialog-backdrop--intro {
   background: transparent;
 }

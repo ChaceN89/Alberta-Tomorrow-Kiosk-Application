@@ -1,7 +1,7 @@
 /**
   File: usePlayerClose.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Run the player's close flow: confirmation, exit animation, then unloading the track.
@@ -120,17 +120,17 @@ export function usePlayerClose() {
     ? `audio-player-stage--fullscreen-exit ${
         isMediaEndFullscreenExit ? 'audio-player-stage--media-end-exit' : ''
       }`
-    : isCompactCloseAnimation && isPanelOpen
-      ? 'audio-panel-exit'
+    : isCompactCloseAnimation
+      ? isPanelOpen
+        ? 'audio-panel-exit'
+        : 'audio-panel-exit--collapsed'
       : ''
   const frameExitAnimationClass = isFullscreenCloseAnimation
     ? `audio-player-frame--fullscreen-exit ${
         isMediaEndFullscreenExit ? 'audio-player-frame--media-end-exit' : ''
       }`
-    : isCompactCloseAnimation
-      ? isPanelOpen
-        ? 'audio-panel-exit'
-        : 'audio-panel-exit--collapsed'
+    : isCompactCloseAnimation && isPanelOpen
+      ? 'audio-panel-exit'
       : ''
 
   return {

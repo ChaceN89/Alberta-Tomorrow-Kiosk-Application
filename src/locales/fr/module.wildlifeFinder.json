@@ -109,10 +109,6 @@
     }
   },
   "journal": {
-    "summary": "Notes de terrain sur la façon dont la faune de l’Alberta dépend de son habitat.",
-    "descriptionImageTitle": "Un renard véloce dans son habitat de prairie",
-    "descriptionImageAlt": "Un renard véloce debout dans une prairie herbeuse.",
-    "openDescriptionImage": "Ouvrir l’image de l’habitat du renard",
     "entries": [
       {
         "id": "foxes-of-alberta-song-started",

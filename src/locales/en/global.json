@@ -9,6 +9,7 @@
   },
   "navigation": {
     "home": "Home",
+    "exploreMap": "Explore the base map",
     "returnHome": "Return home",
     "startTutorial": "Start the introduction tour",
     "skip": "Skip to main content",

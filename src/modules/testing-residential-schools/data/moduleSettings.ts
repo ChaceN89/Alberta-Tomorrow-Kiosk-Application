@@ -13,12 +13,15 @@
   - Add settings here when the module gains additional configurable behavior.
  */
 import type { ModuleSettings } from '@/modules/types'
+import { ResidentialSchoolsModuleIcon } from '@/components/icons/module-icons'
+import residentialSchoolsJournalImage from '../assets/st-albert-school-photo.png'
 
 export const residentialSchoolsSettings: ModuleSettings = {
+  icon: ResidentialSchoolsModuleIcon,
   translationNamespace: 'residentialSchool',
   titleKey: 'title',
   descriptionKey: 'description',
   estimatedMinutes: 3,
   startDestination: 'map',
-  journalDescriptionKey: 'journal.summary',
+  journalImage: residentialSchoolsJournalImage,
 }

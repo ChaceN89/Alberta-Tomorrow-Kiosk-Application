@@ -1,7 +1,7 @@
 /**
   File: flyoverSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Define flyover flight, camera, transition, and plane display settings.
@@ -17,12 +17,12 @@
 // Altitude above the terrain. Hold S to climb and W to descend between these limits.
 export const FLYOVER_MIN_ALTITUDE_METERS = 100
 export const FLYOVER_MAX_ALTITUDE_METERS = 100000
-export const FLYOVER_START_ALTITUDE_METERS = 12000
+export const FLYOVER_START_ALTITUDE_METERS = 3000
 
 // The plane spawns this far behind the view center, as a share of how far ahead
 // the camera looks. At 1 what you were looking at ends up ahead of the plane;
 // 0 spawns the plane right at the view center.
-export const FLYOVER_START_BACKUP_SCALE = 1.5
+export const FLYOVER_START_BACKUP_SCALE = 1
 
 // Climb and descent speed: the larger of a fixed rate and a share of the current
 // altitude each second, so high altitudes change as quickly as low ones.

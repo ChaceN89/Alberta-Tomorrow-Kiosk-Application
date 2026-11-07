@@ -1,7 +1,7 @@
 /**
   File: JournalPageSwitcher.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Navigate between the journal title page and started expedition pages.
@@ -15,10 +15,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import logo from '@/assets/expedition.svg'
-import {
-  ExpeditionPeak,
-  ExpeditionStatusText,
-} from '@/components/modules/ExpeditionPeak'
+import { ExpeditionStatusText } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
 import { useJournal } from '@/journal/context/useJournal'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
@@ -137,6 +134,7 @@ export function JournalPageSwitcher({
         >
           {pages.map((page, index) => {
             const progress = page ? getExpeditionProgress(page) : null
+            const ModuleIcon = page?.icon
 
             return (
               <li key={page?.id ?? 'title-page'}>
@@ -146,8 +144,8 @@ export function JournalPageSwitcher({
                   className="flex min-h-12 w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-canvas aria-current:bg-canvas aria-current:font-semibold"
                   onClick={() => goToPage(page)}
                 >
-                  {page && progress ? (
-                    <ExpeditionPeak progress={progress} className="size-8" />
+                  {ModuleIcon ? (
+                    <ModuleIcon className="size-8 shrink-0 text-pine" />
                   ) : (
                     <img src={logo} alt="" className="size-8 shrink-0" />
                   )}

@@ -20,13 +20,32 @@ import type {
   ModelViewerContent,
 } from '@/module-tools/media-viewer/provider/types'
 import type { MediaTrack } from '@/module-tools/media-player/provider/types'
+import type { ModuleIconComponent } from '@/components/icons/module-icons/types'
 
 export type ModuleTranslationNamespace =
-  'geology' | 'residentialSchool' | 'wildlifeFinder'
+  'frankSlide' | 'geology' | 'residentialSchool' | 'wildlifeFinder'
+
+export type MapPoiTranslationNamespace = 'mapping' | ModuleTranslationNamespace
+
+export type MapPoiView = {
+  center: [number, number]
+  zoom: number
+  pitch: number
+  bearing: number
+}
+
+export type MapPoiDefinition = {
+  id: string
+  coordinates: [number, number]
+  titleKey: ParseKeys<MapPoiTranslationNamespace>
+  titleNamespace?: MapPoiTranslationNamespace
+  view?: MapPoiView
+}
 
 export type ModuleStartDestination = 'activity' | 'environment' | 'map'
 
 export type ModuleInfo = {
+  icon: ModuleIconComponent
   translationNamespace: ModuleTranslationNamespace
   titleKey: 'title'
   descriptionKey: 'description'
@@ -35,15 +54,8 @@ export type ModuleInfo = {
 
 export type ModuleSettings = ModuleInfo & {
   startDestination: ModuleStartDestination
-  journalDescriptionKey: ParseKeys<ModuleTranslationNamespace>
+  journalImage: string
 }
-
-export type ModuleJournalDescriptionProps = {
-  description: string
-}
-
-export type ModuleJournalDescriptionComponent =
-  ComponentType<ModuleJournalDescriptionProps>
 
 export type ModuleCheckpointProps = {
   completedCheckpoints: readonly string[]
@@ -90,17 +102,21 @@ export type JournalEntryDefinition = {
   media: readonly JournalEntryMedia[]
 }
 
-export type ModuleMapPoi = {
-  id: string
+export type ModuleMapPoi = MapPoiDefinition & {
   checkpointId: string
-  coordinates: [number, number]
-  titleKey: ParseKeys<ModuleTranslationNamespace>
   additionalCompletionCheckpoints?: readonly string[]
+}
+
+export type ModuleMapStartup = {
+  view: MapPoiView
+  startFlyover?: boolean
 }
 
 export type ModuleMapSettings = {
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
+  activityMapLinkPlacement?: 'outsideActivity' | 'insideActivity'
+  startup?: ModuleMapStartup
 }
 
 export type ModuleMapPoiContentProps = {
@@ -116,16 +132,17 @@ export type ModuleMap = {
 export interface LearningModule {
   visible: boolean
   id: string
+  icon: ModuleInfo['icon']
   translationNamespace: ModuleInfo['translationNamespace']
   titleKey: ModuleInfo['titleKey']
   descriptionKey: ModuleInfo['descriptionKey']
   estimatedMinutes: ModuleInfo['estimatedMinutes']
   startDestination: ModuleSettings['startDestination']
-  journalDescriptionKey: ModuleSettings['journalDescriptionKey']
+  journalImage: ModuleSettings['journalImage']
+  // section for journal entry initia limge here - descriptionIMg can get set
   checkpoints: readonly string[]
   map?: ModuleMap
   activityPage?: LazyExoticComponent<ModuleActivityComponent>
-  journalDescription?: LazyExoticComponent<ModuleJournalDescriptionComponent>
   journalEntries: Readonly<Record<string, JournalEntryDefinition>>
   loadActivityPage?: ModuleActivityLoader
   preload?: ModulePreloader

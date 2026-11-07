@@ -1,7 +1,7 @@
 /*
   File: global.css | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Tailwind entry point, centralized theme, and shared touch-friendly UI.
@@ -38,31 +38,34 @@
 }
 
 /*
-  Layer order, lowest to highest. Native modal dialogs (journal, media viewer,
-  tutorials) sit in the browser top layer above every value below, so the
-  notification toasts and developer tools move into the active dialog (see
-  GlobalOverlayLayer) and use these same values to stay above its content.
-
-  page content and module titles < map attribution < status toasts < media
-  player < map info panel < POI selector < full-screen player < tooltips <
-  notification toasts < splash screen, with the developer tools above
-  everything but the splash (they only mount once startup finishes). The
-  player-* values only order the parts inside the media player stage, which is
-  its own stacking context.
+  Layer order, lowest to highest: page content and module titles < map attribution
+  < map info panel < journal < media viewer < media player < status toasts
+  < notification toasts. GlobalOverlayLayer is a single persistent top-layer
+  host; these values order its contents and the app-managed overlays. Developer
+  tools sit above the page layers, and the player-* values only order parts
+  inside the media player stage.
 */
 @theme static {
   --z-content-popover: 10;
   --z-map-attribution: 11;
-  --z-status-toast: 20;
-  --z-media-player: 40;
   --z-map-info-panel: 45;
   --z-map-poi-selector: 46;
-  --z-media-player-fullscreen: 50;
-  --z-tooltip: 60;
-  --z-notification-toast: 70;
+  --z-journal-backdrop: 50;
+  --z-journal-dialog: 51;
+  --z-media-viewer-backdrop: 60;
+  --z-media-viewer: 61;
+  --z-media-player: 70;
+  --z-media-player-fullscreen: 80;
+  --z-tooltip: 90;
+  --z-tutorial-backdrop: 94;
+  --z-tutorial-dialog: 95;
+  --z-state-preview: 1015;
+  --z-status-toast: 1020;
+  --z-notification-toast: 1030;
   --z-splash: 100;
   --z-dev-guides: 1000;
   --z-dev-tools: 1010;
+  --z-global-overlay: 2000;
   --z-player-tutorial-backdrop: 1;
   --z-player-frame: 2;
   --z-player-tutorial-popup: 3;
@@ -137,12 +140,34 @@ html::-webkit-scrollbar {
   }
 }
 
-.journal-modal[open] {
-  animation: journal-slide-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.journal-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-journal-backdrop);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(23 46 41 / 50%);
+  backdrop-filter: blur(4px);
+  animation: journal-backdrop-in 220ms ease-out both;
 }
 
-.journal-modal[open]::backdrop {
-  animation: journal-backdrop-in 220ms ease-out both;
+.journal-modal-backdrop[hidden] {
+  display: none;
+}
+
+.journal-modal-backdrop--closing {
+  pointer-events: none;
+  animation: journal-backdrop-out 220ms ease-in both;
+}
+
+.journal-modal[open] {
+  position: relative;
+  inset: auto;
+  z-index: var(--z-journal-dialog);
+  margin: 0;
+  max-width: none;
+  animation: journal-slide-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .journal-modal[open].journal-modal--closing {
@@ -150,13 +175,9 @@ html::-webkit-scrollbar {
   animation: journal-slide-out 360ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-.journal-modal[open].journal-modal--closing::backdrop {
-  animation: journal-backdrop-out 220ms ease-in both;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .journal-modal[open],
-  .journal-modal[open]::backdrop {
+  .journal-modal-backdrop {
     animation-duration: 1ms;
   }
 }

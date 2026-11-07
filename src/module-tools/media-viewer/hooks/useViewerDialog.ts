@@ -1,13 +1,13 @@
 /**
   File: useViewerDialog.ts | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Drive the viewer's native dialog: open from an origin, return to it on close, and lock scroll.
+  - Apply viewer motion from its origin and lock scrolling while it is open.
 
   Usage:
-  - Called by MediaViewerDialog, which attaches the returned ref to its dialog.
+  - Called by MediaViewerDialog, which attaches the returned ref to its panel.
 
   Notes:
   - The dialog's data-motion attribute selects the animations in MediaViewer.css, and
@@ -29,12 +29,10 @@ export function useViewerDialog(
 
     if (!dialog) return
 
-    if (content && !dialog.open) {
-      dialog.showModal()
+    if (content) {
       setOriginVars(dialog, origin)
       dialog.dataset.motion = 'opening'
-    } else if (!content && dialog.open) {
-      dialog.close()
+    } else {
       delete dialog.dataset.motion
     }
   }, [content, origin])

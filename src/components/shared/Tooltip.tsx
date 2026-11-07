@@ -14,7 +14,14 @@
   - The tooltip is also connected to the child with aria-describedby and works with keyboard focus.
   - Touch users retain the control; no hover interaction is required to use it.
  */
-import { cloneElement, useEffect, useId, useRef, useState } from 'react'
+import {
+  cloneElement,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import type { ReactElement } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -34,9 +41,45 @@ export function Tooltip({
   const tooltipId = useId()
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const anchorRef = useRef<HTMLSpanElement>(null)
+  const tooltipRef = useRef<HTMLSpanElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null)
   const [position, setPosition] = useState({ left: 0, top: 0 })
+  const [resolvedPlacement, setResolvedPlacement] = useState<
+    'top' | 'bottom' | 'right'
+  >(placement)
+
+  useLayoutEffect(() => {
+    if (!isVisible || placement !== 'top') return
+
+    const anchor = anchorRef.current
+    const tooltip = tooltipRef.current
+    if (!anchor || !tooltip) return
+
+    const anchorRect = anchor.getBoundingClientRect()
+    const tooltipHeight = tooltip.getBoundingClientRect().height
+    const margin = 8
+    const aboveTop = anchorRect.top - margin - tooltipHeight
+    const belowTop = anchorRect.bottom + margin
+    const belowFits = belowTop + tooltipHeight <= window.innerHeight - margin
+
+    if (aboveTop >= margin) {
+      setResolvedPlacement('top')
+      setPosition((current) => ({ ...current, top: anchorRect.top - margin }))
+      return
+    }
+
+    setResolvedPlacement('bottom')
+    setPosition((current) => ({
+      ...current,
+      top: belowFits
+        ? belowTop
+        : Math.max(
+            margin,
+            Math.min(belowTop, window.innerHeight - tooltipHeight - margin),
+          ),
+    }))
+  }, [isVisible, placement])
 
   useEffect(
     () => () => {
@@ -52,6 +95,7 @@ export function Tooltip({
       const rect = anchorRef.current?.getBoundingClientRect()
       if (!rect) return
 
+      setResolvedPlacement(placement)
       setPosition({
         left:
           placement === 'right'
@@ -99,17 +143,20 @@ export function Tooltip({
       {isVisible &&
         createPortal(
           <span
+            ref={tooltipRef}
             id={tooltipId}
             role="tooltip"
             className={`pointer-events-none fixed z-(--z-tooltip) max-w-64 rounded-lg bg-ink px-3 py-2 text-center text-sm text-surface shadow-lg ${
-              placement === 'right'
+              resolvedPlacement === 'right'
                 ? '-translate-y-1/2'
-                : '-translate-x-1/2 -translate-y-full'
+                : resolvedPlacement === 'top'
+                  ? '-translate-x-1/2 -translate-y-full'
+                  : '-translate-x-1/2'
             }`}
             style={{
               left: position.left,
               top: position.top,
-              ...(placement === 'right'
+              ...(resolvedPlacement === 'right'
                 ? { maxWidth: 'min(16rem, calc(100vw - 3.5rem))' }
                 : {}),
             }}

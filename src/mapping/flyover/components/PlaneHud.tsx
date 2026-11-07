@@ -1,16 +1,16 @@
 /**
   File: PlaneHud.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Group flight telemetry and controls into a HUD that fades with flyover mode.
+  - Keep map telemetry visible while limiting the controls panel to flyover mode.
 
   Usage:
   - Rendered by AlbertaMap for every flyover phase, including its exit transition.
 
   Notes:
-  - The POI selector remains map-owned so it stays available outside flyover mode.
+  - Coordinates remain visible when flight altitude and speed are hidden.
  */
 import { FlyoverControlPanel } from './FlyoverControlPanel'
 import { FlyoverTelemetry } from './FlyoverTelemetry'
@@ -20,6 +20,8 @@ type PlaneHudProps = {
   isPaused: boolean
   altitudeMeters: number
   speedMetersPerSecond: number
+  latitude: number
+  longitude: number
   isTutorialActive: boolean
   isTutorialControlsStep: boolean
 }
@@ -29,24 +31,31 @@ export function PlaneHud({
   isPaused,
   altitudeMeters,
   speedMetersPerSecond,
+  latitude,
+  longitude,
   isTutorialActive,
   isTutorialControlsStep,
 }: PlaneHudProps) {
   return (
-    <div
-      className={`plane-hud ${isActive ? 'plane-hud--active' : ''}`}
-      aria-hidden={!isActive}
-      inert={!isActive}
-    >
+    <>
       <FlyoverTelemetry
+        isFlightActive={isActive}
         altitudeMeters={altitudeMeters}
         speedMetersPerSecond={speedMetersPerSecond}
+        latitude={latitude}
+        longitude={longitude}
       />
-      <FlyoverControlPanel
-        isPaused={isPaused}
-        isTutorialActive={isTutorialActive}
-        isTutorialControlsStep={isTutorialControlsStep}
-      />
-    </div>
+      <div
+        className={`plane-hud ${isActive ? 'plane-hud--active' : ''}`}
+        aria-hidden={!isActive}
+        inert={!isActive}
+      >
+        <FlyoverControlPanel
+          isPaused={isPaused}
+          isTutorialActive={isTutorialActive}
+          isTutorialControlsStep={isTutorialControlsStep}
+        />
+      </div>
+    </>
   )
 }

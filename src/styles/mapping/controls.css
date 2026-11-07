@@ -1,7 +1,7 @@
 /*
   File: controls.css | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Style map titles, attribution, settings, and action controls.
@@ -27,14 +27,56 @@
 .mapping-module-title-bar {
   position: absolute;
   top: 1rem;
-  inset-inline-end: 1rem;
+  inset-inline-end: 4.5rem;
   z-index: var(--z-content-popover);
-  width: var(--map-overlay-width);
+  width: max-content;
+  max-width: min(32rem, calc(100vw - 6rem));
   max-height: 28dvh;
   overflow-y: auto;
   text-align: center;
   animation: mapping-module-title-enter 1000ms cubic-bezier(0.2, 0.75, 0.2, 1)
     1500ms both;
+}
+
+.mapping-module-title-bar__toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 0.5rem;
+  color: var(--color-ink);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.mapping-module-title-bar__toggle:hover {
+  color: var(--color-pine);
+}
+
+.mapping-module-title-bar__toggle:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.mapping-module-title-bar__chevron {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  transform: translateY(-0.125rem) rotate(45deg);
+  transition: transform 160ms ease;
+}
+
+.mapping-module-title-bar__toggle[aria-expanded='true']
+  .mapping-module-title-bar__chevron {
+  transform: translateY(0.125rem) rotate(225deg);
+}
+
+.mapping-module-title-bar__description {
+  margin: 0.5rem 0 0;
+  overflow-wrap: anywhere;
 }
 
 @keyframes mapping-module-title-enter {
@@ -266,6 +308,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mapping-controls__chevron,
+  .mapping-module-title-bar__chevron,
   .mapping-actions__button {
     animation: none;
     transition: none;

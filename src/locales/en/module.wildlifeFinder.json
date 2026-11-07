@@ -109,10 +109,6 @@
     }
   },
   "journal": {
-    "summary": "Field notes on how Alberta's wildlife depends on its habitat.",
-    "descriptionImageTitle": "A swift fox in its prairie habitat",
-    "descriptionImageAlt": "A swift fox standing in its grassy prairie habitat.",
-    "openDescriptionImage": "Open the fox habitat image",
     "entries": [
       {
         "id": "foxes-of-alberta-song-started",

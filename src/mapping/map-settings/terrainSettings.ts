@@ -1,7 +1,7 @@
 /**
   File: terrainSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Define terrain source, exaggeration, hillshade, and 3D camera settings.
@@ -10,7 +10,7 @@
   - Imported by AlbertaMap and MapControls.
 
   Notes:
-  - The exaggeration bounds are integers configured for the map controls.
+  - Exaggeration can be adjusted in half-step increments from 0 to 3.
  */
 import type { RasterDEMSourceSpecification } from 'maplibre-gl'
 
@@ -18,8 +18,9 @@ export const TERRAIN_SOURCE_ID = 'alberta-terrain-dem'
 export const HILLSHADE_LAYER_ID = 'alberta-terrain-hillshade'
 
 export const TERRAIN_EXAGGERATION_MIN = 0
-export const TERRAIN_EXAGGERATION_MAX = 4
-export const DEFAULT_TERRAIN_EXAGGERATION = 1
+export const TERRAIN_EXAGGERATION_MAX = 3
+export const TERRAIN_EXAGGERATION_STEP = 0.5
+export const DEFAULT_TERRAIN_EXAGGERATION = 1.5
 
 export const MAX_CAMERA_PITCH = 90
 export const DEFAULT_TERRAIN_PITCH = 60

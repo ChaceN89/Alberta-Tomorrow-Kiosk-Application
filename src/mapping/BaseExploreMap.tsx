@@ -1,7 +1,7 @@
 /**
   File: BaseExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Show the Alberta map with the default explore heading.
@@ -26,8 +26,8 @@ export function BaseExploreMap() {
       <AlbertaMap ariaLabel={t('mapLabel')}>
         <MapControls />
         <MapActionControls />
+        <ExploreMapNavBar />
       </AlbertaMap>
-      <ExploreMapNavBar />
     </main>
   )
 }

@@ -1,7 +1,7 @@
 /**
   File: IntroTutorial.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Show the first-visit tutorial in a click-blocking dialog with anchored arrows.
@@ -120,7 +120,7 @@ function IntroTutorialDialog() {
       position={position}
       isVisible={!isMeasuring}
       className={className}
-      onCancel={handleCancel}
+      onEscape={handleCancel}
     >
       {content}
     </TutorialPopover>

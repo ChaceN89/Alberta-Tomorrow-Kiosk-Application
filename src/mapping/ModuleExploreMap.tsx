@@ -22,6 +22,7 @@ import { MapActionControls } from './components/MapActionControls'
 import { ExploreMapNavBar } from './components/ExploreMapNavBar'
 import { MapControls } from './components/MapControls'
 import { ModuleTitleBar } from './components/ModuleTitleBar'
+import { getModuleActivityPath } from '@/modules/routes'
 
 type ModuleExploreMapProps = {
   module: LearningModule
@@ -29,7 +30,7 @@ type ModuleExploreMapProps = {
 
 export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
   const { t } = useTranslation('mapping')
-  const { t: tModule } = useTranslation(module.translationNamespace)
+  const { t: tModule, i18n } = useTranslation(module.translationNamespace)
   const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
     useExpeditionProgress()
   const moduleName = tModule(module.titleKey)
@@ -48,7 +49,9 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
         {
           id: poi.id,
           coordinates: poi.coordinates,
-          title: tModule(poi.titleKey),
+          title: i18n.t(poi.titleKey, {
+            ns: poi.titleNamespace ?? module.translationNamespace,
+          }),
           isComplete:
             completedCheckpoints.includes(poi.checkpointId) &&
             (poi.additionalCompletionCheckpoints ?? []).every((checkpointId) =>
@@ -75,15 +78,22 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
         modulePois={modulePois}
         defaultPoisVisible={moduleMap?.settings.defaultPoisVisible}
         modulePoisVisible={moduleMap?.settings.modulePoisVisible}
+        moduleStartup={moduleMap?.settings.startup}
       >
         <MapControls />
         <ModuleTitleBar
-          title={t('moduleTitle', { moduleName })}
+          key={module.id}
+          title={moduleName}
           description={tModule('description')}
         />
         <MapActionControls />
+        <ExploreMapNavBar
+          moduleId={module.id}
+          activityPath={
+            module.activityPage ? getModuleActivityPath(module.id) : undefined
+          }
+        />
       </AlbertaMap>
-      <ExploreMapNavBar moduleId={module.id} />
     </main>
   )
 }

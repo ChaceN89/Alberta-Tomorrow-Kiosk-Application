@@ -1,33 +1,27 @@
 /**
   File: GlobalOverlayLayer.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
-  - Keep the developer tools, notification toasts, and status toasts at their layer.
+  - Keep the media player, developer tools, and toasts in one persistent global layer.
 
   Usage:
   - Render once inside the application providers, after startup finishes.
 
   Notes:
-  - Modal dialogs make everything outside them inert, so the developer-tools and
-    notification hosts move into the topmost open dialog without remounting.
-  - Both hosts are top-layer popovers, so they sit above the dialog and ignore its
-    open and close animation instead of becoming part of it.
-  - The host never moves into a dialog it contains; render dialogs opened from
-    the developer tools outside the host (see StatePreview).
-  - Status toasts stay in the page so every dialog and media tool covers them.
+  - The host is shown once and never moves when other overlays open or close.
+  - Keep global overlays out of native modal dialogs, which make outside content inert.
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { DisplayTesting } from '@/components/development/dev-tools/DisplayTesting'
 import { ToastLayer } from './ToastLayer'
 
-// A manual popover renders in the browser's top layer: above modal dialogs, and not
-// scaled, faded, or clipped by the dialog it sits in.
-function createPopoverHost(id: string, zIndex: string) {
+function createGlobalOverlayHost() {
   const host = document.createElement('div')
-  host.id = id
+  host.id = 'global-overlay-host'
   host.setAttribute('popover', 'manual')
   Object.assign(host.style, {
     background: 'transparent',
@@ -43,27 +37,12 @@ function createPopoverHost(id: string, zIndex: string) {
     pointerEvents: 'none',
     position: 'fixed',
     width: '100%',
-    // Fallback for browsers without the popover top layer.
-    zIndex,
+    zIndex: 'var(--z-global-overlay)',
   })
 
   return host
 }
 
-function createOverlayHosts() {
-  return {
-    developerTools: createPopoverHost(
-      'global-dev-tools-host',
-      'var(--z-dev-tools)',
-    ),
-    notifications: createPopoverHost(
-      'global-notification-host',
-      'var(--z-notification-toast)',
-    ),
-  }
-}
-
-// Showing a popover again also moves it back to the top of the top layer.
 function showHost(host: HTMLElement) {
   if (
     typeof host.showPopover === 'function' &&
@@ -74,93 +53,42 @@ function showHost(host: HTMLElement) {
   }
 }
 
-function hideHost(host: HTMLElement) {
-  if (typeof host.hidePopover === 'function' && host.matches(':popover-open')) {
-    host.hidePopover()
-  }
+export type GlobalOverlayLayerProps = {
+  mediaPlayer: ReactNode
 }
 
-function moveHost(host: HTMLElement, target: Element) {
-  if (host.parentElement === target || host.contains(target)) return
-
-  const focused = host.contains(document.activeElement)
-    ? (document.activeElement as HTMLElement)
-    : null
-
-  hideHost(host)
-  target.appendChild(host)
-  focused?.focus({ preventScroll: true })
-}
-
-export function GlobalOverlayLayer() {
+export function GlobalOverlayLayer({ mediaPlayer }: GlobalOverlayLayerProps) {
   const isDevelopment = import.meta.env.VITE_ENVIRONMENT === 'development'
-  const [hosts] = useState(createOverlayHosts)
-  const [topDialog, setTopDialog] = useState<HTMLDialogElement | null>(null)
-  const openDialogs = useRef<HTMLDialogElement[]>([])
+  const [host] = useState(createGlobalOverlayHost)
 
-  // Track the open dialogs in the order they opened; the last one is on top.
   useEffect(() => {
-    const updateTopDialog = () => {
-      const open = Array.from(
-        document.querySelectorAll<HTMLDialogElement>('dialog[open]'),
-      ).filter(
-        (dialog) =>
-          !hosts.developerTools.contains(dialog) &&
-          !hosts.notifications.contains(dialog),
-      )
-      const stillOpen = openDialogs.current.filter((dialog) =>
-        open.includes(dialog),
-      )
+    document.body.appendChild(host)
+    showHost(host)
 
-      openDialogs.current = [
-        ...stillOpen,
-        ...open.filter((dialog) => !stillOpen.includes(dialog)),
-      ]
-      setTopDialog(openDialogs.current.at(-1) ?? null)
+    return () => {
+      if (
+        typeof host.hidePopover === 'function' &&
+        host.matches(':popover-open')
+      ) {
+        host.hidePopover()
+      }
+      host.remove()
     }
+  }, [host])
 
-    const observer = new MutationObserver(updateTopDialog)
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['open'],
-      childList: true,
-      subtree: true,
-    })
-    updateTopDialog()
-
-    return () => observer.disconnect()
-  }, [hosts])
-
-  useEffect(() => {
-    const target = topDialog ?? document.body
-
-    moveHost(hosts.notifications, target)
-    moveHost(hosts.developerTools, target)
-    // Shown in layer order: the developer tools end up above the notifications.
-    showHost(hosts.notifications)
-    if (isDevelopment) showHost(hosts.developerTools)
-  }, [hosts, isDevelopment, topDialog])
-
-  useEffect(
-    () => () => {
-      hideHost(hosts.developerTools)
-      hideHost(hosts.notifications)
-      hosts.developerTools.remove()
-      hosts.notifications.remove()
-    },
-    [hosts],
-  )
-
-  return (
+  return createPortal(
     <>
-      <ToastLayer layer="status" />
-      {createPortal(
+      <div id="global-media-player-root" className="contents">
+        {mediaPlayer}
+      </div>
+      {isDevelopment && (
         <div id="global-dev-tools-root" className="contents">
           <DisplayTesting />
-        </div>,
-        hosts.developerTools,
+        </div>
       )}
-      {createPortal(<ToastLayer layer="notification" />, hosts.notifications)}
-    </>
+      <ToastLayer layer="status" />
+      <ToastLayer layer="notification" />
+    </>,
+    host,
   )
 }

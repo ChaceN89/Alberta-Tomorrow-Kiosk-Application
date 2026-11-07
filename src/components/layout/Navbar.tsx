@@ -1,7 +1,7 @@
 /**
   File: Navbar.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Render the app brand, navigation actions, language switcher, and module preload progress.
@@ -22,6 +22,8 @@ import { useModulePreload } from '@/modules/useModulePreload'
 import { Dropdown } from '@/components/shared/Dropdown'
 import { HelpIcon } from '@/components/icons/HelpIcon'
 import { JournalIcon } from '@/components/icons/JournalIcon'
+import { MapIcon } from '@/components/icons/MapIcon'
+import { Tooltip } from '@/components/shared/Tooltip'
 
 export function Navbar() {
   const { t, i18n } = useTranslation('global')
@@ -58,6 +60,16 @@ export function Navbar() {
             >
               {t('navigation.home')}
             </Link>
+            <Tooltip text={t('navigation.exploreMap')}>
+              <Link
+                to="/explore"
+                className="button-secondary size-12 shrink-0 p-0"
+                aria-label={t('navigation.exploreMap')}
+                aria-current={pathname === '/explore' ? 'page' : undefined}
+              >
+                <MapIcon />
+              </Link>
+            </Tooltip>
             <button
               type="button"
               data-tutorial="journal-button"

@@ -1,17 +1,16 @@
 /**
   File: ToastLayer.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Render one stable toast container: status or notification.
 
   Usage:
-  - Render each layer once inside GlobalOverlayLayer.
+  - Render both layers once inside GlobalOverlayLayer's persistent host.
 
   Notes:
-  - Status toasts stay in the page, below the journal and media tools.
-  - Notification toasts sit above them; the parent moves their host into an active modal.
+  - Both toast layers stay above the media player and app-managed dialogs.
  */
 import { Toaster } from 'react-hot-toast'
 import { NOTIFICATION_TOASTER_ID, STATUS_TOASTER_ID } from './toasterIds'

@@ -1,0 +1,152 @@
+{
+  "title": "Frank Slide",
+  "description": "Explore Frank Slide, then answer a four-question quiz.",
+  "overviewDescription": "Visit Frank Slide on the map, read about the 1903 rock avalanche, and answer four questions to record your discoveries.",
+  "category": "Geology",
+  "launch": "Explore Frank Slide",
+  "backToOverview": "Back to expedition details",
+  "activity": {
+    "introduction": "Start with the map to find Frank Slide and explore Turtle Mountain. Opening Frank Slide records the checkpoint that unlocks the quiz; opening Turtle Mountain adds a separate journal discovery.",
+    "mapFirst": {
+      "heading": "Explore the map first",
+      "description": "Use the button below to open the expedition map and explore the Frank Slide and Turtle Mountain points. The map will fly to the site, then switch to plane mode. Return here after opening Frank Slide to take the quiz."
+    },
+    "quiz": {
+      "heading": "Frank Slide quiz",
+      "lockedTitle": "Quiz locked",
+      "lockedDescription": "Find and select the Frank Slide point on the map first. The four-question quiz will unlock here once that checkpoint is recorded."
+    },
+    "complete": {
+      "title": "Quiz complete!",
+      "description": "Your Frank Slide map discovery and quiz answers are recorded in your expedition journal.",
+      "viewJournal": "View journal entry",
+      "retry": "Take the quiz again"
+    },
+    "questions": {
+      "frank-slide-quiz-event": {
+        "prompt": "What event is known as the Frank Slide?",
+        "options": {
+          "turtle-mountain-rock-avalanche": "A rock avalanche from Turtle Mountain",
+          "river-flood": "A flood from the Crowsnest River",
+          "forest-fire": "A wildfire that burned the town"
+        },
+        "correct": "That's right! Part of Turtle Mountain collapsed in a rock avalanche.",
+        "tryAgain": "Not quite. Think about the mass of rock that came down from Turtle Mountain."
+      },
+      "frank-slide-quiz-mountain": {
+        "prompt": "Which mountain collapsed during the event?",
+        "options": {
+          "turtle-mountain": "Turtle Mountain",
+          "mountain-view": "Mount Mountain View",
+          "castle-mountain": "Castle Mountain"
+        },
+        "correct": "That's right! The rock avalanche came from Turtle Mountain.",
+        "tryAgain": "Not quite. The mountain is beside the community of Frank."
+      },
+      "frank-slide-quiz-date": {
+        "prompt": "On what date did the Frank Slide occur?",
+        "options": {
+          "april-29-1903": "April 29, 1903",
+          "june-1-1910": "June 1, 1910",
+          "october-12-1885": "October 12, 1885"
+        },
+        "correct": "That's right! The Frank Slide occurred on April 29, 1903.",
+        "tryAgain": "Not quite. The event took place in the spring of 1903."
+      },
+      "frank-slide-quiz-location": {
+        "prompt": "In which Alberta region is Frank Slide located?",
+        "options": {
+          "crowsnest-pass": "Crowsnest Pass",
+          "peace-river-country": "Peace River Country",
+          "canadian-badlands": "The Canadian Badlands"
+        },
+        "correct": "That's right! Frank Slide is in Crowsnest Pass in southwestern Alberta.",
+        "tryAgain": "Not quite. Frank Slide is in the Rocky Mountain region of southwestern Alberta."
+      }
+    }
+  },
+  "poi": {
+    "description": "On April 29, 1903, part of Turtle Mountain collapsed and a rock avalanche swept across the valley near the mining community of Frank.",
+    "turtleMountain": {
+      "title": "Turtle Mountain",
+      "description": "Turtle Mountain rises to about 2,210 m above Crowsnest Pass. At 4:10 a.m. on April 29, 1903, part of its east face broke away in the rock avalanche known as the Frank Slide.",
+      "trailHeading": "The modern route",
+      "trailDescription": "An informal route from near Blairmore climbs a steep shoulder to North Peak, and a hiking path connects South and Third Peaks. It is exposed, can be hard to follow, and includes scrambling and route-finding. Treat it as a demanding alpine outing for experienced hikers, not a maintained beginner trail.",
+      "monitoringHeading": "Monitoring and equipment",
+      "monitoringDescription": "Alberta Geological Survey monitoring work has included a weather station, webcam, crack meters, tilt meters, and other sensors on South Peak to track movement. A 2018 government report also documented two blue emergency barrels near the weather station, with a radio, flashlight, blankets, water, first aid, cooking gear, and emergency food for stranded hikers.",
+      "safetyNote": "The emergency supplies are for unexpected survival situations, not a substitute for your own mountain gear. Check local access and weather before setting out, and do not disturb monitoring equipment."
+    },
+    "images": {
+      "mountainTitle": "Frank Slide after the rock avalanche",
+      "mountainDescription": "A historical photograph showing the slope of Turtle Mountain and nearby buildings. The source and date have not been verified.",
+      "mountainAlt": "Black-and-white historical photograph showing a mountainside above buildings in Frank, Alberta.",
+      "openMountain": "Open the Turtle Mountain historical photograph",
+      "streetTitle": "Street below Turtle Mountain",
+      "streetDescription": "A historical photograph showing a street and buildings beneath Turtle Mountain. The source and date have not been verified.",
+      "streetAlt": "Black-and-white historical photograph showing a street and buildings beneath Turtle Mountain.",
+      "openStreet": "Open the street historical photograph"
+    },
+    "imageSourceNote": "Historical photographs supplied for this test module; their original source and exact dates have not yet been verified."
+  },
+  "journal": {
+    "entries": [
+      {
+        "id": "frank-slide-poi-selected",
+        "section": "Map",
+        "title": "Frank Slide found",
+        "summary": "You selected the Frank Slide point and opened its map information.",
+        "imageAlt": "Historical photographs supplied for this test module; their original source and exact dates have not yet been verified."
+      },
+      {
+        "id": "frank-slide-turtle-mountain-poi-opened",
+        "section": "Map",
+        "title": "Turtle Mountain explored",
+        "summary": "You opened the Turtle Mountain point and explored its history, hiking route, and monitoring equipment."
+      },
+      {
+        "id": "frank-slide-mountain-photo-viewed",
+        "section": "Images",
+        "title": "Turtle Mountain photograph viewed",
+        "summary": "You opened the historical photograph showing the slope of Turtle Mountain.",
+        "imageAlt": "Black-and-white historical photograph showing a mountainside above buildings in Frank, Alberta."
+      },
+      {
+        "id": "frank-slide-street-photo-viewed",
+        "section": "Images",
+        "title": "Street photograph viewed",
+        "summary": "You opened the historical photograph showing the street beneath Turtle Mountain.",
+        "imageAlt": "Black-and-white historical photograph showing a street and buildings beneath Turtle Mountain."
+      },
+      {
+        "id": "frank-slide-quiz-event",
+        "section": "Quiz",
+        "title": "A rock avalanche",
+        "summary": "Part of Turtle Mountain collapsed in a rock avalanche known as the Frank Slide."
+      },
+      {
+        "id": "frank-slide-quiz-mountain",
+        "section": "Quiz",
+        "title": "Turtle Mountain",
+        "summary": "The Frank Slide rock avalanche came from Turtle Mountain."
+      },
+      {
+        "id": "frank-slide-quiz-date",
+        "section": "Quiz",
+        "title": "April 29, 1903",
+        "summary": "The Frank Slide occurred on April 29, 1903."
+      },
+      {
+        "id": "frank-slide-quiz-location",
+        "section": "Quiz",
+        "title": "Crowsnest Pass",
+        "summary": "Frank Slide is located in Crowsnest Pass in southwestern Alberta."
+      },
+      {
+        "id": "frank-slide-quiz-completed",
+        "section": "Quiz",
+        "title": "Frank Slide quiz completed",
+        "summary": "You completed all four Frank Slide quiz questions."
+      }
+    ]
+  }
+}

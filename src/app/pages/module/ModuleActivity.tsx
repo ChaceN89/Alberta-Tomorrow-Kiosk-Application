@@ -58,11 +58,15 @@ export function ModuleActivity({ module }: ModuleActivityProps) {
 
   return (
     <div className="space-y-6">
-      {module.map && (
-        <Link className="button-secondary" to={getModuleExplorePath(module.id)}>
-          {t('explore.openActivity')}
-        </Link>
-      )}
+      {module.map &&
+        module.map.settings.activityMapLinkPlacement !== 'insideActivity' && (
+          <Link
+            className="button-secondary"
+            to={getModuleExplorePath(module.id)}
+          >
+            {t('explore.openActivity')}
+          </Link>
+        )}
       <ExpeditionActivity module={module} Activity={Activity} />
     </div>
   )

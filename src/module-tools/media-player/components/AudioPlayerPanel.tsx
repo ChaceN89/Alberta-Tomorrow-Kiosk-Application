@@ -8,19 +8,19 @@
   - Slides out from the left edge; the active media type selects its playback view.
 
   Usage:
-  - Render once under AudioPlayerProvider, outside route layouts.
+  - Render once inside GlobalOverlayLayer under AudioPlayerProvider.
 
   Notes:
+  - Its global portal host stays stable across route and modal transitions.
   - Closing unfinished media or a player with queued items asks for confirmation.
   - The player and scrollable queue have separate tabs; duplicate queue entries are removable.
   - Close flow, text lookup, and the queue, top bar, media, and confirm pieces are split out.
  */
-import { createPortal } from 'react-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import { useJournal } from '@/journal/context/useJournal'
 import { MediaPlayerTutorial } from '@/tutorials/specific-tutorials/media-player-tutorial/MediaPlayerTutorial'
+import { useModalFocusTrap } from '@/components/overlays/useModalFocusTrap'
 import '@/styles/AudioPlayer.css'
 import { useAudioPlayer } from '../hooks/useAudioPlayer'
 import { useFullscreenScrollLock } from '../hooks/useFullscreenScrollLock'
@@ -36,10 +36,10 @@ import { PlayerTopBar } from './PlayerTopBar'
 import { QueueTabView } from './QueueTabView'
 
 export function AudioPlayerPanel() {
+  const dialogRef = useRef<HTMLElement>(null)
   const { t } = useTranslation('moduleTools')
   const { pathname } = useLocation()
   const isExplorePage = pathname === '/explore' || pathname.endsWith('/explore')
-  const { isOpen: isJournalOpen } = useJournal()
   const {
     track,
     isPlaying,
@@ -62,6 +62,7 @@ export function AudioPlayerPanel() {
     stageExitAnimationClass,
     frameExitAnimationClass,
   } = usePlayerClose()
+  useModalFocusTrap(dialogRef, isFullscreen && track !== null)
 
   const currentTrackId = track?.id ?? null
   if (currentTrackId !== previousTrackId) {
@@ -84,13 +85,6 @@ export function AudioPlayerPanel() {
 
   const trackTitle = getTrackTitle(track)
   const trackSubtitle = getTrackSubtitle(track)
-  const journalAudioPortalRoot = isJournalOpen
-    ? document.getElementById('journal-audio-player-root')
-    : null
-
-  if (isJournalOpen && !journalAudioPortalRoot) {
-    throw new Error('The journal audio player portal root is missing.')
-  }
 
   const panel = (
     <div
@@ -115,9 +109,11 @@ export function AudioPlayerPanel() {
         }`}
       >
         <section
+          ref={dialogRef}
           aria-label={t('audioPlayer.label')}
           role={isFullscreen ? 'dialog' : undefined}
           aria-modal={isFullscreen ? true : undefined}
+          tabIndex={isFullscreen ? -1 : undefined}
           inert={!isPanelOpen || isMediaEndClosing}
           className={`audio-player-card flex h-full w-full flex-col overflow-hidden border border-line bg-surface text-ink ${
             isFullscreen
@@ -189,7 +185,5 @@ export function AudioPlayerPanel() {
     </div>
   )
 
-  return isJournalOpen && journalAudioPortalRoot
-    ? createPortal(panel, journalAudioPortalRoot)
-    : panel
+  return panel
 }

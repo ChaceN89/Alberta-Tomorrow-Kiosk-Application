@@ -13,12 +13,15 @@
   - Add settings here when the module gains additional configurable behavior.
  */
 import type { ModuleSettings } from '@/modules/types'
+import { FoxesModuleIcon } from '@/components/icons/module-icons'
+import foxesJournalImage from '../assets/fox-family.png'
 
 export const foxesOfAlbertaSettings: ModuleSettings = {
+  icon: FoxesModuleIcon,
   translationNamespace: 'wildlifeFinder',
   titleKey: 'title',
   descriptionKey: 'description',
   estimatedMinutes: 5,
   startDestination: 'activity',
-  journalDescriptionKey: 'journal.summary',
+  journalImage: foxesJournalImage,
 }

@@ -1,7 +1,7 @@
 /**
   File: useTerrainControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Manage terrain state, exaggeration, and the 2D/3D transition.
@@ -22,6 +22,7 @@ import {
   MAX_CAMERA_PITCH,
   TERRAIN_EXAGGERATION_MAX,
   TERRAIN_EXAGGERATION_MIN,
+  TERRAIN_EXAGGERATION_STEP,
   TERRAIN_SOURCE_ID,
   TERRAIN_TRANSITION_DURATION,
 } from '../map-settings/terrainSettings'
@@ -92,12 +93,15 @@ export function useTerrainControls({
   const changeTerrainExaggeration = (exaggeration: number) => {
     try {
       if (
-        !Number.isInteger(exaggeration) ||
+        !Number.isFinite(exaggeration) ||
+        !Number.isInteger(
+          (exaggeration - TERRAIN_EXAGGERATION_MIN) / TERRAIN_EXAGGERATION_STEP,
+        ) ||
         exaggeration < TERRAIN_EXAGGERATION_MIN ||
         exaggeration > TERRAIN_EXAGGERATION_MAX
       ) {
         throw new Error(
-          `Terrain exaggeration must be an integer from ${TERRAIN_EXAGGERATION_MIN} to ${TERRAIN_EXAGGERATION_MAX}.`,
+          `Terrain exaggeration must be from ${TERRAIN_EXAGGERATION_MIN} to ${TERRAIN_EXAGGERATION_MAX} in increments of ${TERRAIN_EXAGGERATION_STEP}.`,
         )
       }
 

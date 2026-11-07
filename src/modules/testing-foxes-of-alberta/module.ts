@@ -28,7 +28,6 @@ export const foxesOfAlbertaModule: ModuleDefinition = {
   ...foxesOfAlbertaSettings,
   checkpoints: foxesOfAlbertaCheckpoints,
   activityPage: lazy(loadActivityPage),
-  journalDescription: lazy(() => import('./journal/JournalDescription')),
   loadActivityPage,
   journalEntries: foxesJournalEntries,
   preload,

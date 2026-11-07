@@ -1,7 +1,7 @@
 /**
   File: ExploreMapTutorial.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 6, 2026
 
   Description:
   - Introduce the map and its points of interest on the first Explore visit.
@@ -174,7 +174,7 @@ export function ExploreMapTutorial({ isMapReady }: ExploreMapTutorialProps) {
         descriptionId={descriptionId}
         position={null}
         className="w-[min(32rem,calc(100vw-2rem))]"
-        onCancel={finish}
+        onEscape={finish}
       >
         <TutorialStepContent
           titleId={titleId}

@@ -1,7 +1,6 @@
 {
   "title": "Explore Alberta",
   "mapLabel": "Map of Alberta",
-  "moduleTitle": "Explore {{moduleName}}",
   "moduleMapLabel": "{{moduleName}} map",
   "view": {
     "title": "Map view",
@@ -17,8 +16,8 @@
     "basemapHelp": "Changes the colours, roads, labels, water, and land appearance.",
     "albertaBoundaryLabel": "Alberta boundary",
     "albertaBoundaryHelp": "Show or hide the provincial outline of Alberta.",
-    "defaultPoisLabel": "Default points of interest",
-    "defaultPoisHelp": "Show or hide Alberta places available on every map.",
+    "defaultPoisLabel": "Base map points of interest",
+    "defaultPoisHelp": "Show or hide shared Alberta places on every map.",
     "expeditionPoisLabel": "Expedition points of interest",
     "expeditionPoisHelp": "Show or hide points of interest for this expedition.",
     "poiClusterRadiusLabel": "POI cluster radius",
@@ -62,6 +61,7 @@
       "writingOnStone": "Writing-on-Stone Provincial Park"
     },
     "defaultPoiInfo": {
+      "genericDescription": "This featured Alberta location is marked on the map. Zoom in to explore the surrounding area.",
       "banff": {
         "description": "Banff is a mountain town in Banff National Park, surrounded by the Canadian Rockies and connected by the Bow Valley.",
         "imageAlt": "Illustration of a mountain lake and the Canadian Rockies near Banff; not a documentary photograph."
@@ -104,8 +104,11 @@
     "title": "Flyover",
     "panelLabel": "Flyover controls",
     "telemetryLabel": "Flight information",
+    "mapCoordinatesLabel": "Map center coordinates",
     "altitudeLabel": "Altitude",
     "speedLabel": "Speed",
+    "latitudeLabel": "Latitude",
+    "longitudeLabel": "Longitude",
     "metersValue": "{{value}} m",
     "speedValue": "{{value}} m/s",
     "paused": "Paused",
@@ -143,8 +146,14 @@
     "label": "Map navigation",
     "open": "Open map navigation",
     "close": "Close map navigation",
+    "resetView": "Reset map view",
     "home": "Home",
-    "defaultMap": "Default Alberta map",
-    "moduleOverview": "Back to expedition overview"
+    "defaultMap": "Base map",
+    "moduleActivity": "Back to expedition activity",
+    "currentExpedition": "Expedition: {{moduleName}}",
+    "expeditionActivity": "Expedition activity",
+    "expeditionOverview": "Expedition overview",
+    "expeditions": "Expeditions",
+    "expeditionMap": "{{moduleName}} map"
   }
 }

@@ -48,7 +48,7 @@
   "recorded": "Recorded",
   "continue": "Continue expedition",
   "revisit": "Revisit expedition",
-  "details": "Expedition details",
+  "returnToOverview": "Return to expedition overview",
   "toastStarted": "Expedition added to your journal.",
   "toastUpdated": "Journal updated.",
   "toastCompleted": "Expedition completed!",
