@@ -1,7 +1,7 @@
 /**
   File: Navbar.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Render the app brand, navigation actions, language switcher, and module preload progress.
@@ -98,10 +98,7 @@ export function Navbar() {
             items={languages}
             onSelect={(language) => void i18n.changeLanguage(language.id)}
             selectedId={currentLanguage}
-            triggerLabel={
-              languages.find((language) => language.id === currentLanguage)
-                ?.label ?? t('language.en')
-            }
+            triggerLabel={currentLanguage.toUpperCase()}
           />
         </div>
       </div>
