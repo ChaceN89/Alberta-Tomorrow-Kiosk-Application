@@ -13,7 +13,7 @@
   - Map state and interactions are supplied by the AlbertaMap coordinator.
  */
 import type { ReactNode } from 'react'
-import { AttributionControl, Map } from 'react-map-gl/maplibre'
+import { Map } from 'react-map-gl/maplibre'
 import type { MapRef } from 'react-map-gl/maplibre'
 import * as maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap } from 'maplibre-gl'
@@ -101,11 +101,11 @@ export function AlbertaMapCanvas({
         onLoad={(event) => onMapLoad(event.target)}
         onError={(event) => onMapError(event.error)}
       >
-        <AttributionControl
+        {/* <AttributionControl
           position="top-right"
           compact
-          customAttribution='<a href="https://maplibre.org/" target="_blank" rel="noopener">MapLibre</a>'
-        />
+          // customAttribution='<a href="https://maplibre.org/" target="_blank" rel="noopener">MapLibre</a>'
+        /> */}
         <MapPoiLayer
           groups={groups}
           activePoiId={overlayProps.activePoiId}

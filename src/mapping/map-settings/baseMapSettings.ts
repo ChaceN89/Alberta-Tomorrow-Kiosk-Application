@@ -1,7 +1,7 @@
 /**
   File: baseMapSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Define available vector basemaps and satellite imagery.
@@ -67,5 +67,5 @@ export const SATELLITE_SOURCE: RasterSourceSpecification = {
   tileSize: 256,
   maxzoom: 19,
   attribution:
-    'Tiles © Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+    'Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community',
 }

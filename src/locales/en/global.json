@@ -19,7 +19,8 @@
     "openActivity": "Explore this expedition"
   },
   "footer": {
-    "credit": "Alberta Expeditions is part of <brandLink>Alberta Tomorrow's</brandLink> educational platform."
+    "credit": "Alberta Expeditions is part of <brandLink>Alberta Tomorrow's</brandLink> educational platform.",
+    "acknowledgements": "Acknowledgements"
   },
   "preload": {
     "progressLabel": "Activity loading progress",

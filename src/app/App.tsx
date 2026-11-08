@@ -28,6 +28,7 @@ import { GlobalOverlayLayer } from '@/components/toasts/GlobalOverlayLayer'
 import { JournalModal } from '@/journal/journal-ui/JournalModal'
 import { HomePage } from './pages/HomePage'
 import { ModulePage } from './pages/ModulePage'
+import { AcknowledgementsPage } from './pages/AcknowledgementsPage'
 import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { AppStartup } from './AppStartup'
 import { useAppStartupMapGate } from './AppStartupMapContext'
@@ -116,6 +117,10 @@ export function App() {
                             />
                             <Route element={<Layout />}>
                               <Route index element={<HomePage />} />
+                              <Route
+                                path="credits"
+                                element={<AcknowledgementsPage />}
+                              />
                               <Route
                                 path="developer-page"
                                 element={

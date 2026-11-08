@@ -19,7 +19,8 @@
     "openActivity": "Explorer cette expédition"
   },
   "footer": {
-    "credit": "Alberta Expeditions fait partie de la plateforme éducative d’<brandLink>Alberta Tomorrow</brandLink>."
+    "credit": "Alberta Expeditions fait partie de la plateforme éducative d’<brandLink>Alberta Tomorrow</brandLink>.",
+    "acknowledgements": "Remerciements"
   },
   "preload": {
     "progressLabel": "Progression du chargement de l’activité",

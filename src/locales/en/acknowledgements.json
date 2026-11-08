@@ -1,0 +1,31 @@
+{
+  "title": "Acknowledgements",
+  "intro": "Alberta Expeditions uses the following mapping data, imagery, terrain data, and software.",
+  "attributionNote": "This page supplements source credits. Some providers require attribution to remain visible directly on the map.",
+  "sources": {
+    "basemap": {
+      "title": "Vector basemap",
+      "description": "Basemap styles are served by OpenFreeMap and use OpenMapTiles and OpenStreetMap data."
+    },
+    "imagery": {
+      "title": "Satellite imagery",
+      "description": "Esri World Imagery source credit: Esri, Vantor, Earthstar Geographics, and the GIS User Community."
+    },
+    "terrain": {
+      "title": "Terrain elevation",
+      "description": "Terrain tiles are provided by Mapterhorn. Its attribution page lists the underlying data sources and their licenses."
+    },
+    "mappingLibrary": {
+      "title": "Mapping software",
+      "description": "The interactive map is rendered with MapLibre GL JS."
+    }
+  },
+  "links": {
+    "openFreeMap": "OpenFreeMap",
+    "openMapTiles": "OpenMapTiles",
+    "openStreetMap": "OpenStreetMap contributors and copyright",
+    "esriWorldImagery": "Esri World Imagery service details",
+    "mapterhornAttribution": "Mapterhorn data sources and licenses",
+    "mapLibre": "MapLibre GL JS"
+  }
+}

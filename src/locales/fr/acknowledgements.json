@@ -1,0 +1,31 @@
+{
+  "title": "Remerciements",
+  "intro": "Alberta Expeditions utilise les données cartographiques, les images, les données de terrain et les logiciels suivants.",
+  "attributionNote": "Cette page complète les crédits des sources. Certains fournisseurs exigent que l’attribution demeure visible directement sur la carte.",
+  "sources": {
+    "basemap": {
+      "title": "Carte vectorielle",
+      "description": "Les styles de carte sont fournis par OpenFreeMap et utilisent les données d’OpenMapTiles et d’OpenStreetMap."
+    },
+    "imagery": {
+      "title": "Images satellites",
+      "description": "Crédit de la source Esri World Imagery : Esri, Vantor, Earthstar Geographics et la communauté des utilisateurs SIG."
+    },
+    "terrain": {
+      "title": "Élévation du terrain",
+      "description": "Les tuiles de terrain sont fournies par Mapterhorn. Sa page d’attribution répertorie les sources de données sous-jacentes et leurs licences."
+    },
+    "mappingLibrary": {
+      "title": "Logiciel cartographique",
+      "description": "La carte interactive est rendue avec MapLibre GL JS."
+    }
+  },
+  "links": {
+    "openFreeMap": "OpenFreeMap",
+    "openMapTiles": "OpenMapTiles",
+    "openStreetMap": "Contributeurs et droits d’auteur d’OpenStreetMap",
+    "esriWorldImagery": "Détails du service Esri World Imagery",
+    "mapterhornAttribution": "Sources de données et licences de Mapterhorn",
+    "mapLibre": "MapLibre GL JS"
+  }
+}

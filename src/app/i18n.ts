@@ -1,7 +1,7 @@
 /**
   File: i18n.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Register bundled English and French resources with typed keys.
@@ -14,10 +14,13 @@
  */
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+
+// English resources
 import enDevelopment from '@/locales/en/development.json'
 import enGlobal from '@/locales/en/global.json'
 import enFunfacts from '@/locales/en/funfacts.json'
 import enHome from '@/locales/en/home.json'
+import enAcknowledgements from '@/locales/en/acknowledgements.json'
 import enTutorials from '@/locales/en/tutorials.json'
 import enJournal from '@/locales/en/journal.json'
 import enGeology from '@/locales/en/module.geology.json'
@@ -26,10 +29,13 @@ import enModuleTools from '@/locales/en/moduleTools.json'
 import enMapping from '@/locales/en/mapping.json'
 import enResidentialSchool from '@/locales/en/module.residentialSchools.json'
 import enWildlifeFinder from '@/locales/en/module.wildlifeFinder.json'
+
+//french resources
 import frDevelopment from '@/locales/fr/development.json'
 import frGlobal from '@/locales/fr/global.json'
 import frFunfacts from '@/locales/fr/funfacts.json'
 import frHome from '@/locales/fr/home.json'
+import frAcknowledgements from '@/locales/fr/acknowledgements.json'
 import frTutorials from '@/locales/fr/tutorials.json'
 import frJournal from '@/locales/fr/journal.json'
 import frGeology from '@/locales/fr/module.geology.json'
@@ -50,6 +56,7 @@ declare module 'i18next' {
       frankSlide: typeof enFrankSlide // English Frank Slide module resources
       geology: typeof enGeology // English geology module resources
       home: typeof enHome // English home resources
+      acknowledgements: typeof enAcknowledgements
       tutorials: typeof enTutorials // English tutorial resources
       journal: typeof enJournal // English journal resources
       mapping: typeof enMapping // English mapping resources
@@ -70,6 +77,7 @@ void i18n.use(initReactI18next).init({
       frankSlide: enFrankSlide,
       geology: enGeology,
       home: enHome,
+      acknowledgements: enAcknowledgements,
       tutorials: enTutorials,
       journal: enJournal,
       mapping: enMapping,
@@ -84,6 +92,7 @@ void i18n.use(initReactI18next).init({
       frankSlide: frFrankSlide,
       geology: frGeology,
       home: frHome,
+      acknowledgements: frAcknowledgements,
       tutorials: frTutorials,
       journal: frJournal,
       mapping: frMapping,
@@ -96,6 +105,7 @@ void i18n.use(initReactI18next).init({
     'development',
     'global',
     'home',
+    'acknowledgements',
     'tutorials',
     'journal',
     'mapping',
