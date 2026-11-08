@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -14,7 +14,7 @@
  */
 import { createContext, useContext } from 'react'
 import type { BasemapStyleId } from '../map-settings/baseMapSettings'
-import type { DefaultPoiId } from '../map-settings/defaultPOISettings'
+import type { BasePoiId } from '@/site-data/POIs/BasePOIList'
 
 export type MapControlsProps = {
   hasMapError: boolean
@@ -47,7 +47,7 @@ export type MapControlsProps = {
   onStartFlyover: (pauseAfterEntry: boolean) => void
   onSetFlyoverPaused: (isPaused: boolean) => void
   onFlyoverTravelTo: (coordinates: [number, number]) => void
-  onNavigateToPoi: (poiId: DefaultPoiId, offset?: [number, number]) => void
+  onNavigateToPoi: (poiId: BasePoiId, offset?: [number, number]) => void
 }
 
 export type MapControllerControlsProps = Omit<

@@ -1,7 +1,7 @@
 /**
   File: mapSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Store general map defaults, zoom boundaries, and startup feature visibility.
@@ -34,6 +34,7 @@ export const SATELLITE_IMAGE_DEFAULT = false
 
 // Start with terrain enabled.
 export const START_IN_3D_DEFAULT = true
+export const POI_NAVIGATION_DURATION = 1800
 
 // settings related to the Alberta boundary layer
 export const ALBERTA_BOUNDARY_DEFAULT = true

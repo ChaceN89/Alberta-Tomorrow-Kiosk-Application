@@ -74,7 +74,14 @@
       "trailDescription": "Un itinéraire informel part des environs de Blairmore et monte un versant raide jusqu’au pic nord; un sentier de randonnée relie les pics sud et troisième. Le parcours est exposé, parfois difficile à suivre, et comporte des passages sur rocher et de l’orientation. Considérez-le comme une sortie alpine exigeante réservée aux randonneurs expérimentés, pas comme un sentier aménagé pour débutants.",
       "monitoringHeading": "Surveillance et équipement",
       "monitoringDescription": "Les travaux de surveillance de l’Alberta Geological Survey ont inclus une station météo, une caméra, des capteurs de fissures, des inclinomètres et d’autres appareils au pic sud pour suivre les mouvements. Un rapport gouvernemental de 2018 décrit aussi deux barils d’urgence bleus près de la station météo, avec une radio, une lampe de poche, des couvertures, de l’eau, une trousse de premiers soins, du matériel de cuisson et de la nourriture d’urgence pour les randonneurs immobilisés.",
-      "safetyNote": "Les provisions d’urgence sont destinées aux situations imprévues et ne remplacent pas votre propre équipement de montagne. Vérifiez localement l’accès et la météo avant de partir et ne touchez pas aux appareils de surveillance."
+      "safetyNote": "Les provisions d’urgence sont destinées aux situations imprévues et ne remplacent pas votre propre équipement de montagne. Vérifiez localement l’accès et la météo avant de partir et ne touchez pas aux appareils de surveillance.",
+      "image": {
+        "heading": "L’éboulement aujourd’hui",
+        "title": "Le mont Turtle et les débris de l’éboulement de Frank",
+        "description": "Vue des débris de l’éboulement sur le mont Turtle depuis la route.",
+        "alt": "Vue panoramique du champ de débris rocheux au pied du mont Turtle, avec une route au premier plan.",
+        "open": "Ouvrir la photographie de l’éboulement du mont Turtle"
+      }
     },
     "images": {
       "mountainTitle": "L’éboulement de Frank après l’avalanche rocheuse",
@@ -102,6 +109,13 @@
         "section": "Carte",
         "title": "Mont Turtle exploré",
         "summary": "Vous avez ouvert le point du mont Turtle et exploré son histoire, son parcours de randonnée et son équipement de surveillance."
+      },
+      {
+        "id": "frank-slide-turtle-mountain-rockslide-photo-viewed",
+        "section": "Images",
+        "title": "Photographie de l’éboulement du mont Turtle consultée",
+        "summary": "Vous avez ouvert une vue du mont Turtle et des débris de l’éboulement de Frank.",
+        "imageAlt": "Vue panoramique du champ de débris rocheux au pied du mont Turtle, avec une route au premier plan."
       },
       {
         "id": "frank-slide-mountain-photo-viewed",

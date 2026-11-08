@@ -1,7 +1,7 @@
 /**
   File: AlbertaMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Render the shared Alberta map, its controls, and default POI content.
@@ -28,24 +28,15 @@ import { MapPoiMarker, type MapPoi } from './components/MapPoiMarker'
 import { MapPoiSelector } from './components/MapPoiSelector'
 import { clusterMapPois } from './map-functions/clusterMapPois'
 import { getAnimationDuration } from './map-functions/mapAnimationFunctions'
-import {
-  DEFAULT_POI_SETTINGS,
-  isDefaultPoiId,
-  POI_NAVIGATION_DURATION,
-} from './map-settings/defaultPOISettings'
-import { defaultPoiContent } from './poi-content'
+import { BASE_POI_LIST, isBasePoiId } from '@/site-data/POIs/BasePOIList'
+import { POI_NAVIGATION_DURATION } from './map-settings/mapSettings'
 import { FLYOVER_MARKER_UPDATE_INTERVAL } from './map-settings/flyoverSettings'
 import {
   DEFAULT_POI_CLUSTER_RADIUS,
   POI_CLUSTER_ZOOM_OVERSHOOT,
   POI_CLUSTER_ZOOM_DURATION,
 } from './map-settings/poiClusterSettings'
-import banffLandscape from './assets/banff-landscape.jpg'
-import dinosaurBadlands from './assets/dinosaur-badlands.jpg'
-import watertonLakes from './assets/waterton-lakes.jpg'
-import { DEFAULT_POI_VIDEO_TRACKS } from './defaultPoiVideos'
 import { useMapInfoPanel } from '@/module-tools/map-info-panel/hooks/useMapInfoPanel'
-import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import { useAppStartupMapGate } from '@/app/AppStartupMapContext'
 import { useAlbertaMapController } from './map-functions/useAlbertaMapController'
 import {
@@ -263,45 +254,15 @@ export function AlbertaMap({
 
   const defaultPois = useMemo(
     () =>
-      DEFAULT_POI_SETTINGS.map((poi) => {
+      BASE_POI_LIST.map((poi) => {
         const title = t(poi.titleKey)
-        const PoiContent = defaultPoiContent[poi.id]
-        const imageKey = 'imageKey' in poi ? poi.imageKey : undefined
-        const descriptionKey =
-          'descriptionKey' in poi ? poi.descriptionKey : undefined
-        const imageAltKey = 'imageAltKey' in poi ? poi.imageAltKey : undefined
-        const videoTrack = DEFAULT_POI_VIDEO_TRACKS[poi.id]
-        const image = imageKey
-          ? {
-              banff: banffLandscape,
-              dinosaurProvincialPark: dinosaurBadlands,
-              watertonLakes,
-            }[imageKey]
-          : undefined
+        const PoiContent = poi.infoContent
 
         return {
           id: poi.id,
           coordinates: poi.coordinates,
           title,
-          info: PoiContent ? (
-            <PoiContent />
-          ) : (
-            <div className="space-y-4">
-              {image && (
-                <img
-                  src={image}
-                  alt={imageAltKey ? t(imageAltKey) : ''}
-                  className="mapping-poi-info-image"
-                />
-              )}
-              <p>
-                {descriptionKey
-                  ? t(descriptionKey)
-                  : t('view.defaultPoiInfo.genericDescription')}
-              </p>
-              {videoTrack && <TrackPlayButton track={videoTrack} />}
-            </div>
-          ),
+          info: <PoiContent />,
         }
       }),
     [t],
@@ -535,7 +496,7 @@ export function AlbertaMap({
 
     setActivePoiId(poi.id)
     const navigateCamera = (offset: [number, number]) => {
-      if (isDefaultPoiId(poi.id)) {
+      if (isBasePoiId(poi.id)) {
         controls.onNavigateToPoi(poi.id, offset)
       } else {
         mapRef.current?.flyTo({

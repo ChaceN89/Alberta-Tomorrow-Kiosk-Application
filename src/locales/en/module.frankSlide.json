@@ -74,7 +74,14 @@
       "trailDescription": "An informal route from near Blairmore climbs a steep shoulder to North Peak, and a hiking path connects South and Third Peaks. It is exposed, can be hard to follow, and includes scrambling and route-finding. Treat it as a demanding alpine outing for experienced hikers, not a maintained beginner trail.",
       "monitoringHeading": "Monitoring and equipment",
       "monitoringDescription": "Alberta Geological Survey monitoring work has included a weather station, webcam, crack meters, tilt meters, and other sensors on South Peak to track movement. A 2018 government report also documented two blue emergency barrels near the weather station, with a radio, flashlight, blankets, water, first aid, cooking gear, and emergency food for stranded hikers.",
-      "safetyNote": "The emergency supplies are for unexpected survival situations, not a substitute for your own mountain gear. Check local access and weather before setting out, and do not disturb monitoring equipment."
+      "safetyNote": "The emergency supplies are for unexpected survival situations, not a substitute for your own mountain gear. Check local access and weather before setting out, and do not disturb monitoring equipment.",
+      "image": {
+        "heading": "The rockslide today",
+        "title": "Turtle Mountain and the Frank Slide debris field",
+        "description": "A view of Turtle Mountain's rockslide debris from the highway.",
+        "alt": "A wide view of the rocky landslide debris field at the base of Turtle Mountain, with a road in the foreground.",
+        "open": "Open the Turtle Mountain rockslide photograph"
+      }
     },
     "images": {
       "mountainTitle": "Frank Slide after the rock avalanche",
@@ -102,6 +109,13 @@
         "section": "Map",
         "title": "Turtle Mountain explored",
         "summary": "You opened the Turtle Mountain point and explored its history, hiking route, and monitoring equipment."
+      },
+      {
+        "id": "frank-slide-turtle-mountain-rockslide-photo-viewed",
+        "section": "Images",
+        "title": "Turtle Mountain rockslide photograph viewed",
+        "summary": "You opened a view of Turtle Mountain and the Frank Slide debris field.",
+        "imageAlt": "A wide view of the rocky landslide debris field at the base of Turtle Mountain, with a road in the foreground."
       },
       {
         "id": "frank-slide-mountain-photo-viewed",

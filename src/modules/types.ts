@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Define module metadata, launch settings, map POIs, and activity contracts.
@@ -34,12 +34,17 @@ export type MapPoiView = {
   bearing: number
 }
 
+export type MapPoiInfoContentProps = {
+  onInteraction?: (interactionId: string) => void
+}
+
 export type MapPoiDefinition = {
   id: string
   coordinates: [number, number]
   titleKey: ParseKeys<MapPoiTranslationNamespace>
   titleNamespace?: MapPoiTranslationNamespace
   view?: MapPoiView
+  infoContent: ComponentType<MapPoiInfoContentProps>
 }
 
 export type ModuleStartDestination = 'activity' | 'environment' | 'map'
@@ -103,8 +108,9 @@ export type JournalEntryDefinition = {
 }
 
 export type ModuleMapPoi = MapPoiDefinition & {
-  checkpointId: string
+  poiSelectedCheckpointId: string
   additionalCompletionCheckpoints?: readonly string[]
+  infoCheckpoints?: Readonly<Record<string, string>>
 }
 
 export type ModuleMapStartup = {
@@ -119,14 +125,9 @@ export type ModuleMapSettings = {
   startup?: ModuleMapStartup
 }
 
-export type ModuleMapPoiContentProps = {
-  onComplete: (checkpointId: string) => void
-}
-
 export type ModuleMap = {
   settings: ModuleMapSettings
   pois: readonly ModuleMapPoi[]
-  poiContent?: Readonly<Record<string, ComponentType<ModuleMapPoiContentProps>>>
 }
 
 export interface LearningModule {

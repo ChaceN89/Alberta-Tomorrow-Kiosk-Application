@@ -1,7 +1,7 @@
 /**
   File: moduleSettings.ts | Author: Chace Nielson
   Date Created: Nov 6, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Define the Frank Slide module metadata and launch settings.

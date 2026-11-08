@@ -1,7 +1,7 @@
 /**
   File: MediaPlayerExamples.tsx | Author: Chace Nielson
   Date Created: Nov 6, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Exercise queued audio, YouTube, and direct-video tracks from the developer page.
@@ -16,13 +16,11 @@ import { useTranslation } from 'react-i18next'
 import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import { geologyVideos } from '@/modules/testing-geology/data/videos'
 import { bloodSchoolAudioTrack } from '@/modules/testing-residential-schools/data/audio'
-import { DEFAULT_POI_VIDEO_TRACKS } from '@/mapping/defaultPoiVideos'
+import { banffDirectVideoTrack } from '@/site-data/POIs/poi-points/banff'
+import { calgaryDirectVideoTrack } from '@/site-data/POIs/poi-points/calgary'
 
 export function MediaPlayerExamples() {
   const { t } = useTranslation('development')
-  const banffVideo = DEFAULT_POI_VIDEO_TRACKS.banff
-  const calgaryVideo = DEFAULT_POI_VIDEO_TRACKS.calgary
-
   return (
     <section
       aria-labelledby="developer-media-player-title"
@@ -43,18 +41,14 @@ export function MediaPlayerExamples() {
             <TrackPlayButton track={video} />
           </article>
         ))}
-        {banffVideo && (
-          <article className="panel space-y-3 p-5 md:p-6">
-            <h3 className="font-semibold">{t('verticalVideoSample')}</h3>
-            <TrackPlayButton track={banffVideo} />
-          </article>
-        )}
-        {calgaryVideo && (
-          <article className="panel space-y-3 p-5 md:p-6">
-            <h3 className="font-semibold">{t('horizontalVideoSample')}</h3>
-            <TrackPlayButton track={calgaryVideo} />
-          </article>
-        )}
+        <article className="panel space-y-3 p-5 md:p-6">
+          <h3 className="font-semibold">{t('verticalVideoSample')}</h3>
+          <TrackPlayButton track={banffDirectVideoTrack} />
+        </article>
+        <article className="panel space-y-3 p-5 md:p-6">
+          <h3 className="font-semibold">{t('horizontalVideoSample')}</h3>
+          <TrackPlayButton track={calgaryDirectVideoTrack} />
+        </article>
       </div>
     </section>
   )

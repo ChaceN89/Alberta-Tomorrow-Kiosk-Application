@@ -1,7 +1,7 @@
 /**
   File: ModuleExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Show the Alberta map with information for the selected module.
@@ -43,7 +43,7 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
 
   const modulePois: MapPoi[] =
     moduleMap?.pois.flatMap((poi) => {
-      const PoiContent = moduleMap.poiContent?.[poi.id]
+      const PoiContent = poi.infoContent
 
       return [
         {
@@ -53,18 +53,25 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
             ns: poi.titleNamespace ?? module.translationNamespace,
           }),
           isComplete:
-            completedCheckpoints.includes(poi.checkpointId) &&
+            completedCheckpoints.includes(poi.poiSelectedCheckpointId) &&
             (poi.additionalCompletionCheckpoints ?? []).every((checkpointId) =>
               completedCheckpoints.includes(checkpointId),
             ),
-          onActivate: () => completeCheckpoint(module.id, poi.checkpointId),
-          info: PoiContent ? (
+          onActivate: () =>
+            completeCheckpoint(module.id, poi.poiSelectedCheckpointId),
+          info: (
             <PoiContent
-              onComplete={(checkpointId) =>
+              onInteraction={(interactionId) => {
+                const checkpointId = poi.infoCheckpoints?.[interactionId]
+                if (!checkpointId) {
+                  throw new Error(
+                    `No checkpoint is configured for POI interaction "${interactionId}" on "${poi.id}".`,
+                  )
+                }
                 completeCheckpoint(module.id, checkpointId)
-              }
+              }}
             />
-          ) : undefined,
+          ),
         },
       ]
     }) ?? []

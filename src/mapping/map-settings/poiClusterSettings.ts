@@ -14,7 +14,7 @@
  */
 // Starting screen-space distance in pixels; increase to group more POIs and
 // decrease to keep more POIs separate until they are closer together.
-export const DEFAULT_POI_CLUSTER_RADIUS = 90
+export const DEFAULT_POI_CLUSTER_RADIUS = 80
 
 // Smallest slider value in pixels; 0 disables clustering. Raising it enforces
 // a larger minimum grouping distance, while lowering it allows finer control.

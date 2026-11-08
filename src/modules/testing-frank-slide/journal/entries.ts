@@ -1,7 +1,7 @@
 /**
   File: entries.ts | Author: Chace Nielson
   Date Created: Nov 6, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Configure journal media for every Frank Slide checkpoint.
@@ -24,9 +24,11 @@ import {
   frankSlideQuizCompletedCheckpoint,
   frankSlideStreetPhotoViewedCheckpoint,
   frankSlideTurtleMountainPoiOpenedCheckpoint,
+  frankSlideTurtleMountainRockslidePhotoViewedCheckpoint,
 } from './checkpoints'
 import frankSlideMountainArchive from '@/mapping/assets/frank-slide/frank-slide-mountain-archive.png'
 import frankSlideStreetArchive from '@/mapping/assets/frank-slide/frank-slide-street-archive.png'
+import turtleMountainRockslide from '../assets/turtle-mountain-rockslide.png'
 
 export const frankSlideJournalEntries = {
   [frankSlidePoiSelectedCheckpoint]: {
@@ -36,6 +38,19 @@ export const frankSlideJournalEntries = {
     ],
   },
   [frankSlideTurtleMountainPoiOpenedCheckpoint]: { media: [] },
+  [frankSlideTurtleMountainRockslidePhotoViewedCheckpoint]: {
+    media: [
+      {
+        type: 'image',
+        src: turtleMountainRockslide,
+        viewer: {
+          title: 'poi.turtleMountain.image.title',
+          description: 'poi.turtleMountain.image.description',
+          alt: 'poi.turtleMountain.image.alt',
+        },
+      },
+    ],
+  },
   [frankSlideMountainPhotoViewedCheckpoint]: {
     media: [
       {

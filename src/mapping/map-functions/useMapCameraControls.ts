@@ -1,7 +1,7 @@
 /**
   File: useMapCameraControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 7, 2026
 
   Description:
   - Manage terrain-aware camera navigation to points of interest.
@@ -13,11 +13,8 @@
   - Terrain setup is delegated to useTerrainControls.
  */
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import {
-  getDefaultPoi,
-  POI_NAVIGATION_DURATION,
-  type DefaultPoiId,
-} from '../map-settings/defaultPOISettings'
+import { getBasePoi, type BasePoiId } from '@/site-data/POIs/BasePOIList'
+import { POI_NAVIGATION_DURATION } from '../map-settings/mapSettings'
 import { MAX_CAMERA_PITCH } from '../map-settings/terrainSettings'
 import { getAnimationDuration } from './mapAnimationFunctions'
 
@@ -38,12 +35,12 @@ export function useMapCameraControls({
   clearError,
 }: UseMapCameraControlsOptions) {
   // Function: Fly to a configured POI and enable terrain for its view.
-  const navigateToPoi = (poiId: DefaultPoiId, offset?: [number, number]) => {
+  const navigateToPoi = (poiId: BasePoiId, offset?: [number, number]) => {
     if (isTerrainTransitioning || isStyleLoading) return
 
-    let poi: ReturnType<typeof getDefaultPoi>
+    let poi: ReturnType<typeof getBasePoi>
     try {
-      poi = getDefaultPoi(poiId)
+      poi = getBasePoi(poiId)
     } catch (error) {
       reportError(error)
       return
