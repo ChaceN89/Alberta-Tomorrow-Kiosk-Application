@@ -21,6 +21,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const calgaryPoi = {
   id: 'calgary',
   titleKey: 'view.defaultPois.calgary',
+  iconCategory: 'community',
   coordinates: [-114.0719, 51.0447],
   view: {
     center: [-114.0719, 51.0447],

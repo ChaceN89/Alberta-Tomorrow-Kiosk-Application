@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const oilSandsDiscoveryCentrePoi = {
   id: 'oilSandsDiscoveryCentre',
   titleKey: 'view.defaultPois.oilSandsDiscoveryCentre',
+  iconCategory: 'interpretiveCentre',
   coordinates: [-111.346, 56.6711],
   view: {
     center: [-111.346, 56.6711],

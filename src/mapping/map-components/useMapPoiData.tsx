@@ -57,6 +57,7 @@ export function useMapPoiData({
           id: poi.id,
           coordinates: poi.coordinates,
           title,
+          iconCategory: poi.iconCategory,
           info: <PoiContent />,
         }
       }),

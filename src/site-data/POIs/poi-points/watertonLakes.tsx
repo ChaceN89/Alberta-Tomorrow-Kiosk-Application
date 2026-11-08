@@ -19,6 +19,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const watertonLakesPoi = {
   id: 'watertonLakes',
   titleKey: 'view.defaultPois.watertonLakes',
+  iconCategory: 'naturalPlace',
   coordinates: [-113.9179, 49.052],
   view: {
     center: [-113.9179, 49.052],

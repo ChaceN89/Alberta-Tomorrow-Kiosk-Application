@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const writingOnStonePoi = {
   id: 'writingOnStone',
   titleKey: 'view.defaultPois.writingOnStone',
+  iconCategory: 'indigenousHeritage',
   coordinates: [-112.976, 49.078],
   view: {
     center: [-112.976, 49.078],

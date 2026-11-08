@@ -33,6 +33,7 @@ export const residentialSchoolMapPois = [
     infoContent: StMarysBloodPoi,
     coordinates: [-113.45, 49.2],
     titleKey: 'activity.schools.st-marys-blood.name',
+    iconCategory: 'residentialSchool',
     poiSelectedCheckpointId: stMarysBloodSchoolPoiSelectedCheckpoint,
     additionalCompletionCheckpoints: [
       stMarysBloodSchoolPhotoViewedCheckpoint,
@@ -48,6 +49,7 @@ export const residentialSchoolMapPois = [
     infoContent: StAlbertYouvillePoi,
     coordinates: [-113.625, 53.63],
     titleKey: 'activity.schools.st-albert-youville.name',
+    iconCategory: 'residentialSchool',
     poiSelectedCheckpointId: stAlbertYouvilleSchoolPoiSelectedCheckpoint,
     additionalCompletionCheckpoints: [
       stAlbertYouvilleVideoFinishedCheckpoint,
@@ -63,6 +65,7 @@ export const residentialSchoolMapPois = [
     infoContent: LesserSlaveLakeResidentialSchoolPoi,
     coordinates: [-116.126, 55.515],
     titleKey: 'activity.schools.lesser-slave-lake.name',
+    iconCategory: 'residentialSchool',
     poiSelectedCheckpointId: lesserSlaveLakeSchoolPoiSelectedCheckpoint,
     additionalCompletionCheckpoints: [lesserSlaveLakeAudioFinishedCheckpoint],
     infoCheckpoints: {

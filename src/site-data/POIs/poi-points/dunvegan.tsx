@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const dunveganPoi = {
   id: 'dunvegan',
   titleKey: 'view.defaultPois.dunvegan',
+  iconCategory: 'historicSite',
   coordinates: [-118.5969, 55.923],
   view: {
     center: [-118.5969, 55.923],

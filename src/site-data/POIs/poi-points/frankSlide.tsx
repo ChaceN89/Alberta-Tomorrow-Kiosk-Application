@@ -21,6 +21,7 @@ import frankSlideStreetArchive from '@/mapping/assets/frank-slide/frank-slide-st
 export const frankSlidePoi = {
   id: 'frankSlide',
   titleKey: 'view.defaultPois.frankSlide',
+  iconCategory: 'historicSite',
   coordinates: [-114.3943, 49.6],
   view: {
     center: [-114.3943, 49.6],

@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const woodBuffaloPoi = {
   id: 'woodBuffalo',
   titleKey: 'view.defaultPois.woodBuffalo',
+  iconCategory: 'naturalPlace',
   coordinates: [-111.17, 58.72],
   view: {
     center: [-111.17, 58.72],

@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const lakeLouisePoi = {
   id: 'lakeLouise',
   titleKey: 'view.defaultPois.lakeLouise',
+  iconCategory: 'naturalPlace',
   coordinates: [-116.1773, 51.4254],
   view: {
     center: [-116.1773, 51.4254],

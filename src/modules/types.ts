@@ -21,6 +21,7 @@ import type {
 } from '@/module-tools/media-viewer/provider/types'
 import type { MediaTrack } from '@/module-tools/media-player/provider/types'
 import type { ModuleIconComponent } from '@/components/icons/module-icons/types'
+import type { PoiIconCategory } from '@/components/icons/poi-icons/types'
 
 export type ModuleTranslationNamespace =
   'frankSlide' | 'geology' | 'residentialSchool' | 'wildlifeFinder'
@@ -42,6 +43,7 @@ export type MapPoiDefinition = {
   id: string
   coordinates: [number, number]
   titleKey: ParseKeys<MapPoiTranslationNamespace>
+  iconCategory: PoiIconCategory
   titleNamespace?: MapPoiTranslationNamespace
   view?: MapPoiView
   infoContent: ComponentType<MapPoiInfoContentProps>
@@ -116,6 +118,7 @@ export type ModuleMapPoi = MapPoiDefinition & {
 export type ModuleMapStartup = {
   view: MapPoiView
   startFlyover?: boolean
+  startSpeed?: number // base speed in meters per second, before altitude scaling
 }
 
 export type ModuleMapSettings = {

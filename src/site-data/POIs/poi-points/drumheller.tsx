@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const drumhellerPoi = {
   id: 'drumheller',
   titleKey: 'view.defaultPois.drumheller',
+  iconCategory: 'community',
   coordinates: [-112.71, 51.463],
   view: {
     center: [-112.71, 51.463],

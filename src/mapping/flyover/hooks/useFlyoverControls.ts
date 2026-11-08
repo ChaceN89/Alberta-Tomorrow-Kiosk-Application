@@ -1,7 +1,7 @@
 /**
   File: useFlyoverControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Run flyover mode: spawn the plane, fly it, and drive the map camera behind it.
@@ -34,6 +34,8 @@ import {
   FLYOVER_MAX_ALTITUDE_METERS,
   FLYOVER_MAX_FRAME_SECONDS,
   FLYOVER_MIN_ALTITUDE_METERS,
+  FLYOVER_MAX_SPEED,
+  FLYOVER_MIN_SPEED,
   FLYOVER_POI_ARRIVAL_VIEW_SCALE,
   FLYOVER_POI_PEAK_ALTITUDE_RATIO,
   FLYOVER_POI_TRAVEL_DURATION,
@@ -195,7 +197,10 @@ export function useFlyoverControls({
   const dragTurnRef = useFlightDrag({ isActive, mapRef })
 
   // Function: Spawn the plane at the center of the map and begin the entry transition.
-  const startFlyover = (pauseAfterEntry = false) => {
+  const startFlyover = (
+    pauseAfterEntry = false,
+    requestedStartSpeed = FLYOVER_DEFAULT_SPEED,
+  ) => {
     if (
       phaseRef.current !== 'off' ||
       isStyleLoading ||
@@ -234,8 +239,13 @@ export function useFlyoverControls({
       map.setCenterClampedToGround(false)
       map.setCenterElevation(startCamera.elevation)
 
+      const baseStartSpeed = clamp(
+        requestedStartSpeed,
+        FLYOVER_MIN_SPEED,
+        FLYOVER_MAX_SPEED,
+      )
       const startSpeed =
-        FLYOVER_DEFAULT_SPEED * getAltitudeSpeedMultiplier(startAltitude)
+        baseStartSpeed * getAltitudeSpeedMultiplier(startAltitude)
       runtimeRef.current = {
         flight: {
           longitude,
@@ -246,7 +256,7 @@ export function useFlyoverControls({
         },
         cameraBearing: bearing,
         turnRate: 0,
-        throttle: getThrottleForSpeed(FLYOVER_DEFAULT_SPEED),
+        throttle: getThrottleForSpeed(baseStartSpeed),
         climbRate: 0,
         groundElevation: ground,
         targetGroundElevation: ground,
@@ -349,9 +359,13 @@ export function useFlyoverControls({
     }
   }
 
-  const toggleFlyover = (startPaused = false) => {
-    if (phaseRef.current === 'off') startFlyover(startPaused)
-    else stopFlyover()
+  const toggleFlyover = (
+    startPaused = false,
+    requestedStartSpeed = FLYOVER_DEFAULT_SPEED,
+  ) => {
+    if (phaseRef.current === 'off') {
+      startFlyover(startPaused, requestedStartSpeed)
+    } else stopFlyover()
   }
 
   useEffect(() => {

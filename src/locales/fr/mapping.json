@@ -131,11 +131,20 @@
     "hideControls": "Masquer les commandes de vol",
     "controlsTooltip": "Commandes de vol"
   },
+  "poiCategories": {
+    "community": "Ville ou communauté",
+    "naturalPlace": "Lieu naturel ou repère naturel",
+    "historicSite": "Lieu historique ou patrimonial",
+    "indigenousHeritage": "Lieu culturel autochtone",
+    "residentialSchool": "École résidentielle",
+    "interpretiveCentre": "Centre d’interprétation ou centre d’accueil"
+  },
+  "poiMarkerLabel": "{{name}}, catégorie : {{category}}",
   "poiCycle": {
     "label": "Sélecteur de lieu d’intérêt",
     "listLabel": "Choisir un lieu d’intérêt visible",
-    "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}}",
-    "goToActive": "Aller au lieu d’intérêt actif : {{name}}",
+    "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}} ({{category}})",
+    "goToActive": "Aller au lieu d’intérêt actif : {{name}} ({{category}})",
     "previous": "Aller au lieu d’intérêt précédent à partir de {{name}}",
     "next": "Aller au lieu d’intérêt suivant à partir de {{name}}"
   },

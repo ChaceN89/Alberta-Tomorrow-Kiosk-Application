@@ -37,7 +37,7 @@ type UseMapViewActionsOptions = {
   isStyleLoading: boolean
   isTerrainTransitioning: boolean
   flyoverPhase: FlyoverPhase
-  onStartFlyover: (pauseAfterEntry: boolean) => void
+  onStartFlyover: (pauseAfterEntry: boolean, startSpeed?: number) => void
   onToggleFlyover: () => void
   onMapError: (error: unknown) => void
   setIsPlaneTutorialControlsStep: (isControlsStep: boolean) => void
@@ -162,7 +162,9 @@ export function useMapViewActions({
       if (!isEffectActive) return
 
       map.off('moveend', startFlyoverAfterArrival)
-      if (moduleStartup.startFlyover) onStartFlyoverRef.current(false)
+      if (moduleStartup.startFlyover) {
+        onStartFlyoverRef.current(false, moduleStartup.startSpeed)
+      }
     }
 
     if (moduleStartup.startFlyover) {

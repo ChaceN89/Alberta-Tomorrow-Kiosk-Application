@@ -26,5 +26,6 @@ export const frankSlideMapSettings: ModuleMapSettings = {
       bearing: -90,
     },
     startFlyover: true,
+    startSpeed: 600,
   },
 }

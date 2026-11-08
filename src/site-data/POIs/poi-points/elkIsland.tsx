@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const elkIslandPoi = {
   id: 'elkIsland',
   titleKey: 'view.defaultPois.elkIsland',
+  iconCategory: 'naturalPlace',
   coordinates: [-112.86, 53.6],
   view: {
     center: [-112.86, 53.6],

@@ -42,6 +42,7 @@ export const frankSlideMapPois = [
   {
     id: 'turtleMountain',
     titleKey: 'poi.turtleMountain.title',
+    iconCategory: 'naturalPlace',
     coordinates: [-114.4125, 49.5769],
     infoContent: TurtleMountainPoi,
     poiSelectedCheckpointId: frankSlideTurtleMountainPoiOpenedCheckpoint,

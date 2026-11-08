@@ -15,6 +15,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
+import { POI_CATEGORY_ICONS } from '@/components/icons/poi-icons'
 import type { MapPoi } from './MapPoiMarker'
 
 type MapPoiSelectorProps = {
@@ -57,6 +58,12 @@ export function MapPoiSelector({
   const activeIndex = pois.findIndex((poi) => poi.id === activePoiId)
   const currentIndex = activeIndex < 0 ? 0 : activeIndex
   const activePoi = pois[currentIndex]
+  const ActivePoiIcon = activePoi
+    ? POI_CATEGORY_ICONS[activePoi.iconCategory]
+    : null
+  const activePoiCategory = activePoi
+    ? t(`poiCategories.${activePoi.iconCategory}`)
+    : ''
 
   useEffect(() => {
     if (!isListOpen) return
@@ -108,7 +115,10 @@ export function MapPoiSelector({
       <button
         type="button"
         className="mapping-poi-selector__button"
-        aria-label={t('poiCycle.goToActive', { name: activePoi.title })}
+        aria-label={t('poiCycle.goToActive', {
+          name: activePoi.title,
+          category: activePoiCategory,
+        })}
         onClick={() => {
           onSelect(activePoi)
           setIsListOpen(false)
@@ -133,11 +143,17 @@ export function MapPoiSelector({
         ref={triggerRef}
         type="button"
         className="mapping-poi-selector__active"
-        aria-label={t('poiCycle.select', { name: activePoi.title })}
+        aria-label={t('poiCycle.select', {
+          name: activePoi.title,
+          category: activePoiCategory,
+        })}
         aria-expanded={isListOpen}
         aria-controls={listId}
         onClick={() => setIsListOpen((open) => !open)}
       >
+        {ActivePoiIcon && (
+          <ActivePoiIcon className="mapping-poi-selector__active-icon" />
+        )}
         <span className="mapping-poi-selector__active-title">
           {activePoi.title}
         </span>
@@ -167,31 +183,61 @@ export function MapPoiSelector({
           aria-label={t('poiCycle.listLabel')}
         >
           {pois.map((poi) => (
-            <li key={poi.id}>
-              <button
-                type="button"
-                className="mapping-poi-selector__option"
-                aria-pressed={poi.id === activePoi.id}
-                onClick={() => {
-                  onSelect(poi)
-                  setIsListOpen(false)
-                  triggerRef.current?.focus()
-                }}
-              >
-                <span className="mapping-poi-selector__option-title">
-                  {poi.title}
-                </span>
-                {poi.id === activePoi.id && (
-                  <span aria-hidden="true" className="text-pine">
-                    ✓
-                  </span>
-                )}
-              </button>
-            </li>
+            <PoiSelectorOption
+              key={poi.id}
+              poi={poi}
+              isActive={poi.id === activePoi.id}
+              categoryLabel={t(`poiCategories.${poi.iconCategory}`)}
+              onSelect={() => {
+                onSelect(poi)
+                setIsListOpen(false)
+                triggerRef.current?.focus()
+              }}
+            />
           ))}
         </ul>
       )}
     </nav>,
     document.body,
+  )
+}
+
+type PoiSelectorOptionProps = {
+  poi: MapPoi
+  isActive: boolean
+  categoryLabel: string
+  onSelect: () => void
+}
+
+function PoiSelectorOption({
+  poi,
+  isActive,
+  categoryLabel,
+  onSelect,
+}: PoiSelectorOptionProps) {
+  const PoiIcon = POI_CATEGORY_ICONS[poi.iconCategory]
+
+  return (
+    <li>
+      <button
+        type="button"
+        className="mapping-poi-selector__option"
+        aria-pressed={isActive}
+        onClick={onSelect}
+      >
+        <span className="mapping-poi-selector__option-main">
+          <PoiIcon className="mapping-poi-selector__option-icon" />
+          <span className="mapping-poi-selector__option-title">
+            <span className="sr-only">{categoryLabel}: </span>
+            {poi.title}
+          </span>
+        </span>
+        {isActive && (
+          <span aria-hidden="true" className="text-pine">
+            ✓
+          </span>
+        )}
+      </button>
+    </li>
   )
 }

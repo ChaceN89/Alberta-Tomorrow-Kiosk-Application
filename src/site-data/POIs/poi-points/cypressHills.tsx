@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const cypressHillsPoi = {
   id: 'cypressHills',
   titleKey: 'view.defaultPois.cypressHills',
+  iconCategory: 'naturalPlace',
   coordinates: [-110.2823, 49.6614],
   view: {
     center: [-110.2823, 49.6614],

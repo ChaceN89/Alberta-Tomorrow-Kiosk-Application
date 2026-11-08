@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -44,7 +44,7 @@ export type MapControlsProps = {
   onPoiClusterRadiusChange: (radius: number) => void
   onToggleTerrain: () => void
   onToggleFlyover: () => void
-  onStartFlyover: (pauseAfterEntry: boolean) => void
+  onStartFlyover: (pauseAfterEntry: boolean, startSpeed?: number) => void
   onSetFlyoverPaused: (isPaused: boolean) => void
   onFlyoverTravelTo: (coordinates: [number, number]) => void
   onNavigateToPoi: (poiId: BasePoiId, offset?: [number, number]) => void

@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const jasperPoi = {
   id: 'jasper',
   titleKey: 'view.defaultPois.jasper',
+  iconCategory: 'community',
   coordinates: [-118.0814, 52.8737],
   view: {
     center: [-118.0814, 52.8737],

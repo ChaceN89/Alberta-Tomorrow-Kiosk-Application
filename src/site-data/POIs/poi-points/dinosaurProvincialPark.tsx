@@ -19,6 +19,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const dinosaurProvincialParkPoi = {
   id: 'dinosaurProvincialPark',
   titleKey: 'view.defaultPois.dinosaurProvincialPark',
+  iconCategory: 'naturalPlace',
   coordinates: [-111.528, 50.7566],
   view: {
     center: [-111.528, 50.7566],

@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const headSmashedInPoi = {
   id: 'headSmashedIn',
   titleKey: 'view.defaultPois.headSmashedIn',
+  iconCategory: 'indigenousHeritage',
   coordinates: [-113.653, 49.7075],
   view: {
     center: [-113.653, 49.7075],

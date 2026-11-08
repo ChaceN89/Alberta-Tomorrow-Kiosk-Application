@@ -1,7 +1,7 @@
 /**
   File: athabascaFalls.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 8, 2026
 
   Description:
   - Define the Athabasca Falls base-map POI and its information content.
@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const athabascaFallsPoi = {
   id: 'athabascaFalls',
   titleKey: 'view.defaultPois.athabascaFalls',
+  iconCategory: 'naturalPlace',
   coordinates: [-117.884, 52.6648],
   view: {
     center: [-117.884, 52.6648],

@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const lesserSlaveLakePoi = {
   id: 'lesserSlaveLake',
   titleKey: 'view.defaultPois.lesserSlaveLake',
+  iconCategory: 'naturalPlace',
   coordinates: [-114.8128, 55.4434],
   view: {
     center: [-114.8128, 55.4434],

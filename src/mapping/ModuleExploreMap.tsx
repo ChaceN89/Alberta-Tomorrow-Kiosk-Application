@@ -49,6 +49,7 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
         {
           id: poi.id,
           coordinates: poi.coordinates,
+          iconCategory: poi.iconCategory,
           title: i18n.t(poi.titleKey, {
             ns: poi.titleNamespace ?? module.translationNamespace,
           }),

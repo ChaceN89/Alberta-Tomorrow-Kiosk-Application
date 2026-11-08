@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const edmontonPoi = {
   id: 'edmonton',
   titleKey: 'view.defaultPois.edmonton',
+  iconCategory: 'community',
   coordinates: [-113.4938, 53.5461],
   view: {
     center: [-113.4938, 53.5461],

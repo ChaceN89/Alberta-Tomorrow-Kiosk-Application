@@ -131,11 +131,20 @@
     "hideControls": "Hide flight controls",
     "controlsTooltip": "Flight controls"
   },
+  "poiCategories": {
+    "community": "City or community",
+    "naturalPlace": "Natural area or landmark",
+    "historicSite": "Historic or heritage site",
+    "indigenousHeritage": "Indigenous cultural site",
+    "residentialSchool": "Residential school",
+    "interpretiveCentre": "Visitor or interpretive centre"
+  },
+  "poiMarkerLabel": "{{name}}, {{category}}",
   "poiCycle": {
     "label": "Point of interest selector",
     "listLabel": "Choose a visible point of interest",
-    "select": "Choose a point of interest; currently {{name}}",
-    "goToActive": "Go to the active point of interest: {{name}}",
+    "select": "Choose a point of interest; currently {{name}} ({{category}})",
+    "goToActive": "Go to the active point of interest: {{name}} ({{category}})",
     "previous": "Go to the previous point of interest from {{name}}",
     "next": "Go to the next point of interest from {{name}}"
   },

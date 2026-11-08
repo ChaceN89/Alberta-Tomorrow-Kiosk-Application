@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const canmorePoi = {
   id: 'canmore',
   titleKey: 'view.defaultPois.canmore',
+  iconCategory: 'community',
   coordinates: [-115.359, 51.089],
   view: {
     center: [-115.359, 51.089],

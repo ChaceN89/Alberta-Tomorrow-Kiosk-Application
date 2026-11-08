@@ -14,11 +14,15 @@
  */
 import { Marker } from 'react-map-gl/maplibre'
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
+import { POI_CATEGORY_ICONS } from '@/components/icons/poi-icons'
+import type { PoiIconCategory } from '@/components/icons/poi-icons/types'
 
 export type MapPoi = {
   id: string
   coordinates: [number, number]
   title: string
+  iconCategory: PoiIconCategory
   info?: ReactNode
   isActive?: boolean
   isComplete?: boolean
@@ -29,10 +33,19 @@ export function MapPoiMarker({
   id,
   coordinates,
   title,
+  iconCategory,
   isActive = false,
   isComplete = false,
   onActivate,
 }: MapPoi) {
+  const { t } = useTranslation('mapping')
+  const PoiIcon = POI_CATEGORY_ICONS[iconCategory]
+  const categoryLabel = t(`poiCategories.${iconCategory}`)
+  const accessibleLabel = t('poiMarkerLabel', {
+    name: title,
+    category: categoryLabel,
+  })
+
   return (
     <Marker
       longitude={coordinates[0]}
@@ -46,8 +59,8 @@ export function MapPoiMarker({
         data-poi-id={id}
         data-active={isActive}
         data-complete={isComplete}
-        aria-label={title}
-        title={title}
+        aria-label={accessibleLabel}
+        title={accessibleLabel}
         onClick={(event) => {
           onActivate?.(event.currentTarget)
         }}
@@ -68,7 +81,7 @@ export function MapPoiMarker({
           <span className="mapping-poi-marker__bubble" />
         </span>
         <span className="mapping-poi-marker__content">
-          <span className="mapping-poi-marker__pin" aria-hidden="true" />
+          <PoiIcon className="mapping-poi-marker__icon" />
           <span className="mapping-poi-marker__title">{title}</span>
           {isComplete && (
             <span className="mapping-poi-marker__complete" aria-hidden="true">

@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 export const rockyMountainHousePoi = {
   id: 'rockyMountainHouse',
   titleKey: 'view.defaultPois.rockyMountainHouse',
+  iconCategory: 'historicSite',
   coordinates: [-114.9458, 52.362],
   view: {
     center: [-114.9458, 52.362],
