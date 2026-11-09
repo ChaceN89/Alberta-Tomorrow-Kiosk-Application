@@ -14,7 +14,7 @@
  */
 import { createContext, useContext } from 'react'
 import type { BasemapStyleId } from '../map-settings/baseMapSettings'
-import type { BasePoiId } from '@/site-data/POIs/BasePOIList'
+import type { BasePoiId } from '@/mapping/POIs/BasePOIList'
 
 export type MapControlsProps = {
   hasMapError: boolean

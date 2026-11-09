@@ -12,7 +12,7 @@
   Notes:
   - Frank Slide uses the base-map definition; Turtle Mountain is module-specific.
  */
-import { getBasePoi } from '@/site-data/POIs/BasePOIList'
+import { getBasePoi } from '@/mapping/POIs/BasePOIList'
 import type { ModuleMapPoi } from '@/modules/types'
 import { TurtleMountainPoi } from './module-pois/TurtleMountainPoi'
 import {

@@ -15,7 +15,7 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import { BASE_POI_LIST } from '@/site-data/POIs/BasePOIList'
+import { BASE_POI_LIST } from '@/mapping/POIs/BasePOIList'
 import type { MapPoi } from '../components/MapPoiMarker'
 import { clusterMapPois } from '../map-functions/clusterMapPois'
 import { DEFAULT_POI_CLUSTER_RADIUS } from '../map-settings/poiClusterSettings'

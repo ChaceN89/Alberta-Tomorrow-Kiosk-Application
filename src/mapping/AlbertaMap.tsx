@@ -18,7 +18,7 @@ import type { ReactNode } from 'react'
 import type { MapRef } from 'react-map-gl/maplibre'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { MapControlsContext } from './components/MapControlsContext'
-import { isBasePoiId } from '@/site-data/POIs/BasePOIList'
+import { isBasePoiId } from '@/mapping/POIs/BasePOIList'
 import { POI_NAVIGATION_DURATION } from './map-settings/mapSettings'
 import {
   POI_CLUSTER_ZOOM_OVERSHOOT,

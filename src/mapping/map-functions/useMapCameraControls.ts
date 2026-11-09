@@ -13,7 +13,7 @@
   - Terrain setup is delegated to useTerrainControls.
  */
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import { getBasePoi, type BasePoiId } from '@/site-data/POIs/BasePOIList'
+import { getBasePoi, type BasePoiId } from '@/mapping/POIs/BasePOIList'
 import { POI_NAVIGATION_DURATION } from '../map-settings/mapSettings'
 import { MAX_CAMERA_PITCH } from '../map-settings/terrainSettings'
 import { getAnimationDuration } from './mapAnimationFunctions'

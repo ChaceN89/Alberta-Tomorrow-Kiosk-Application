@@ -16,8 +16,8 @@ import { useTranslation } from 'react-i18next'
 import { TrackPlayButton } from '@/module-tools/media-player/components/TrackPlayButton'
 import { geologyVideos } from '@/modules/testing-geology/data/videos'
 import { bloodSchoolAudioTrack } from '@/modules/testing-residential-schools/data/audio'
-import { banffDirectVideoTrack } from '@/site-data/POIs/poi-points/banff'
-import { calgaryDirectVideoTrack } from '@/site-data/POIs/poi-points/calgary'
+import { banffDirectVideoTrack } from '@/mapping/POIs/poi-points/banff'
+import { calgaryDirectVideoTrack } from '@/mapping/POIs/poi-points/calgary'
 
 export function MediaPlayerExamples() {
   const { t } = useTranslation('development')
