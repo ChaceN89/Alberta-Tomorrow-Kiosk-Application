@@ -1,7 +1,7 @@
 /**
   File: frankSlide.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the shared Frank Slide POI and its archival-photo information content.
@@ -11,6 +11,7 @@
 
   Notes:
   - Checkpoint identifiers are supplied only by module POI definitions.
+  - The map point marks slide debris north of Highway 3, not the interpretive centre.
  */
 import { useTranslation } from 'react-i18next'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
@@ -20,11 +21,12 @@ import frankSlideStreetArchive from '@/mapping/assets/frank-slide/frank-slide-st
 
 export const frankSlidePoi = {
   id: 'frankSlide',
+  flyoverPoiFov: 50,
   titleKey: 'view.defaultPois.frankSlide',
   iconCategory: 'historicSite',
-  coordinates: [-114.3943, 49.6],
+  coordinates: [-114.392, 49.5965],
   view: {
-    center: [-114.3943, 49.6],
+    center: [-114.392, 49.5965],
     zoom: 12,
     pitch: 65,
     bearing: -90,

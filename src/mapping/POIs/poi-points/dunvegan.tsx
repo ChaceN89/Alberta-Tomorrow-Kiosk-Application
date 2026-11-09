@@ -1,7 +1,7 @@
 /**
   File: dunvegan.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Historic Dunvegan base-map POI and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const dunveganPoi = {
   id: 'dunvegan',
+  flyoverPoiFov: 37,
   titleKey: 'view.defaultPois.dunvegan',
   iconCategory: 'historicSite',
   coordinates: [-118.5969, 55.923],

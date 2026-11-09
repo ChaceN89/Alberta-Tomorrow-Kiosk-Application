@@ -99,15 +99,110 @@
   transform: translateY(0);
 }
 
-.plane-hud__pause {
+.mapping-actions__pause {
+  align-self: center;
+  pointer-events: none;
+}
+
+.plane-hud__free-look {
   position: absolute;
-  top: 1rem;
+  bottom: calc(100% + 0.5rem);
   left: 50%;
   z-index: var(--z-content-popover);
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   transform: translateX(-50%);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  background: var(--color-ink);
+  color: var(--color-surface);
+  font-size: 0.75rem;
   pointer-events: none;
+}
+
+.plane-hud__compass {
+  position: absolute;
+  top: 5rem;
+  inset-inline-start: 4.75rem;
+  z-index: var(--z-content-popover);
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  width: min(16rem, calc(100vw - 6rem));
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+  padding: 0.375rem 0.75rem;
+  color: var(--color-ink);
+  box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.plane-hud__mini-map {
+  display: block;
+  width: 5rem;
+  height: 8rem;
+}
+
+.plane-hud__mini-map-outline {
+  fill: var(--color-canvas);
+  stroke: var(--color-pine);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.plane-hud__mini-map-position {
+  fill: var(--color-ink);
+  stroke: var(--color-surface);
+  stroke-width: 1.5;
+}
+
+.plane-hud__mini-map-heading {
+  fill: var(--color-pine);
+  stroke: var(--color-surface);
+  stroke-width: 0.75;
+}
+
+.plane-hud__compass-details {
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.plane-hud__compass-dial {
+  width: 3.5rem;
+  height: 2.5rem;
+  perspective: 12rem;
+}
+
+.plane-hud__compass-arrow {
+  transform: rotateX(50deg) rotateZ(var(--compass-bearing, 0deg));
+  filter: drop-shadow(0 4px 1px rgb(23 46 41 / 30%));
+}
+
+.plane-hud__compass-arrow svg {
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  margin: -0.5rem auto 0;
+}
+
+.plane-hud__compass-title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+}
+
+.plane-hud__compass p {
+  margin: 0;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .plane-hud__telemetry p {

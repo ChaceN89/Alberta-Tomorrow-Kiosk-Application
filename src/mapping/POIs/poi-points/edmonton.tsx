@@ -1,7 +1,7 @@
 /**
   File: edmonton.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Edmonton and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const edmontonPoi = {
   id: 'edmonton',
+  flyoverPoiFov: 90,
   titleKey: 'view.defaultPois.edmonton',
   iconCategory: 'community',
   coordinates: [-113.4938, 53.5461],

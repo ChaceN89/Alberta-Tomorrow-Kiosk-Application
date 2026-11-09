@@ -31,7 +31,19 @@ const frankSlideBasePoi = getBasePoi('frankSlide')
 
 export const frankSlideMapPois = [
   {
+    id: 'lundbreckFalls',
+    flyoverPoiFov: 24,
+    flyoverRadiusMultiplier: 0.6,
+    flyoverCylinderHeightMultiplier: 0.7,
+    titleKey: 'poi.lundbreckFalls.title',
+    iconCategory: 'naturalPlace',
+    coordinates: [-114.20861, 49.58222],
+    infoContent: LundbreckFallsPoi,
+    poiSelectedCheckpointId: frankSlideLundbreckFallsPoiOpenedCheckpoint,
+  },
+  {
     ...frankSlideBasePoi,
+    flyoverPoiFov: 50,
     flyoverRadiusMultiplier: 0.6,
     titleNamespace: 'mapping',
     poiSelectedCheckpointId: frankSlidePoiSelectedCheckpoint,
@@ -44,18 +56,10 @@ export const frankSlideMapPois = [
       street: frankSlideStreetPhotoViewedCheckpoint,
     },
   },
-  {
-    id: 'lundbreckFalls',
-    flyoverRadiusMultiplier: 0.6,
-    flyoverCylinderHeightMultiplier: 0.7,
-    titleKey: 'poi.lundbreckFalls.title',
-    iconCategory: 'naturalPlace',
-    coordinates: [-114.20861, 49.58222],
-    infoContent: LundbreckFallsPoi,
-    poiSelectedCheckpointId: frankSlideLundbreckFallsPoiOpenedCheckpoint,
-  },
+
   {
     id: 'turtleMountain',
+    flyoverPoiFov: 55,
     flyoverRadiusMultiplier: 0.6,
     titleKey: 'poi.turtleMountain.title',
     iconCategory: 'naturalPlace',
@@ -72,6 +76,7 @@ export const frankSlideMapPois = [
   },
   {
     id: 'crowsnestPass',
+    flyoverPoiFov: 70,
     flyoverCylinderHeightMultiplier: 0.7,
     titleKey: 'poi.crowsnestPass.title',
     iconCategory: 'naturalPlace',

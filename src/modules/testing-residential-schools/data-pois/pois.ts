@@ -1,7 +1,7 @@
 /**
   File: pois.ts | Author: Chace Nielson
   Date Created: Nov 6, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define residential-school POI locations and their completion requirements.
@@ -30,6 +30,7 @@ import {
 export const residentialSchoolMapPois = [
   {
     id: 'st-marys-blood',
+    flyoverPoiFov: 37,
     infoContent: StMarysBloodPoi,
     coordinates: [-113.45, 49.2],
     titleKey: 'activity.schools.st-marys-blood.name',
@@ -46,6 +47,7 @@ export const residentialSchoolMapPois = [
   },
   {
     id: 'st-albert-youville',
+    flyoverPoiFov: 37,
     infoContent: StAlbertYouvillePoi,
     coordinates: [-113.625, 53.63],
     titleKey: 'activity.schools.st-albert-youville.name',
@@ -62,6 +64,7 @@ export const residentialSchoolMapPois = [
   },
   {
     id: 'lesser-slave-lake-residential-school',
+    flyoverPoiFov: 37,
     infoContent: LesserSlaveLakeResidentialSchoolPoi,
     coordinates: [-116.126, 55.515],
     titleKey: 'activity.schools.lesser-slave-lake.name',

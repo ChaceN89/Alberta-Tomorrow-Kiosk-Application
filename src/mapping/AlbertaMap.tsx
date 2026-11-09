@@ -15,6 +15,7 @@
  */
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
+import { isFlightShortcutIgnored } from './flyover/utils/flightKeyboard'
 import type { MapRef } from 'react-map-gl/maplibre'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { MapControlsContext } from './components/MapControlsContext'
@@ -38,6 +39,7 @@ import { useMapViewport } from './map-components/useMapViewport'
 import { usePlaneTutorialState } from './map-components/usePlaneTutorialState'
 import { useFlyoverPoiVisits } from './flyover/hooks/useFlyoverPoiVisits'
 import { usePlaneLaunchShortcut } from './flyover/hooks/usePlaneLaunchShortcut'
+import { getNextFlightPoi } from './flyover/utils/flightPoiNavigation'
 
 // AlbertaMap component coordinates map state, POI navigation, and helper layers.
 type AlbertaMapProps = {
@@ -66,6 +68,7 @@ export function AlbertaMap({
 }: AlbertaMapProps) {
   // State for the currently active POI on the map
   const [activePoiId, setActivePoiId] = useState<string | null>(null)
+  const isExplicitPoiNavigation = useRef(false)
 
   // use state for the map info panell popout
   const {
@@ -169,7 +172,8 @@ export function AlbertaMap({
     isPanelOpen: isInfoPanelOpen,
     flightPositionRef: flyover.positionRef,
     onEnter: (poi, coordinates) => {
-      flyover.pauseAtPosition(coordinates)
+      isExplicitPoiNavigation.current = false
+      flyover.pauseAtPosition(coordinates, poi.coordinates, poi.flyoverPoiFov)
       setActivePoiId(poi.id)
       poi.onActivate?.()
       openPanel({
@@ -179,8 +183,31 @@ export function AlbertaMap({
         isComplete: poi.isModulePoi && poi.isComplete,
       })
     },
-    onResume: () => controls.onSetFlyoverPaused(false),
+    onResume: (visitedPoiId) => {
+      if (!isExplicitPoiNavigation.current) {
+        const next = getNextFlightPoi(poiData.visiblePois, visitedPoiId)
+        if (next) setActivePoiId(next.id)
+      }
+      controls.onSetFlyoverPaused(false)
+    },
   })
+
+  const { clearPoiFocus } = flyover
+  useEffect(() => {
+    if (!isInfoPanelOpen) clearPoiFocus()
+  }, [isInfoPanelOpen, clearPoiFocus])
+
+  useEffect(() => {
+    if (!isInfoPanelOpen || flyover.phase !== 'flying') return
+    const resumeFromPoi = (event: KeyboardEvent) => {
+      if (event.code !== 'KeyP' || isFlightShortcutIgnored(event)) return
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      if (!event.repeat) closePanel({ restoreFocus: false })
+    }
+    window.addEventListener('keydown', resumeFromPoi, true)
+    return () => window.removeEventListener('keydown', resumeFromPoi, true)
+  }, [isInfoPanelOpen, flyover.phase, closePanel])
 
   const launchPlane = () => {
     closePanel({ restoreFocus: false })
@@ -252,6 +279,7 @@ export function AlbertaMap({
   const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
     if (isResettingMap) return
     if (controls.isFlyoverEnabled) {
+      isExplicitPoiNavigation.current = true
       setActivePoiId(poi.id)
       closePanel({ restoreFocus: false })
       controls.onFlyoverTravelTo(poi.coordinates)
@@ -318,6 +346,7 @@ export function AlbertaMap({
 
   const mapControls = {
     ...controls,
+    isFlyoverPaused: flyover.isPaused,
     onResetMapView,
     isResettingMap,
     onToggleFlyover: () => {
@@ -366,7 +395,7 @@ export function AlbertaMap({
         onPoiSelect={navigateToPoi}
         isFlyoverActive={flyover.phase !== 'off'}
         isPreparingFlyover={isPreparingFlyover}
-        isFlyoverPaused={flyover.isPaused}
+        isFreeLooking={flyover.isFreeLooking}
         altitudeMeters={flyover.altitudeMeters}
         speedMetersPerSecond={flyover.speedMetersPerSecond}
         latitude={mapViewport.mapViewport?.center[1] ?? initialMapView.latitude}

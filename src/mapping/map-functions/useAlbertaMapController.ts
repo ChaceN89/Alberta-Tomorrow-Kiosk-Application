@@ -166,6 +166,8 @@ export function useAlbertaMapController(
     visualRef: flyoverControls.flightVisualRef,
     positionRef: flyoverControls.flightPositionRef,
     pauseAtPosition: flyoverControls.pauseAtPosition,
+    clearPoiFocus: flyoverControls.clearPoiFocus,
+    isFreeLooking: flyoverControls.isFreeLooking,
   }
 
   return {

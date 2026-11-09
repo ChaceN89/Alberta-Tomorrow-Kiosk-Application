@@ -59,6 +59,7 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
             flyoverRadiusMultiplier: poi.flyoverRadiusMultiplier,
             flyoverCylinderHeightMultiplier:
               poi.flyoverCylinderHeightMultiplier,
+            flyoverPoiFov: poi.flyoverPoiFov,
             title: i18n.t(poi.titleKey, {
               ns: poi.titleNamespace ?? module.translationNamespace,
               lng: language,

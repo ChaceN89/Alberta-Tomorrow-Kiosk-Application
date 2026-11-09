@@ -38,6 +38,7 @@ import {
   FLYOVER_MAX_SPEED,
   FLYOVER_MIN_SPEED,
   FLYOVER_POI_ARRIVAL_VIEW_SCALE,
+  FLYOVER_POI_ARRIVAL_SPEED,
   FLYOVER_POI_PEAK_ALTITUDE_RATIO,
   FLYOVER_POI_TRAVEL_DURATION,
   FLYOVER_START_ALTITUDE_METERS,
@@ -45,6 +46,9 @@ import {
   FLYOVER_TERRAIN_FALL_RESPONSE,
   FLYOVER_TERRAIN_RISE_RESPONSE,
   FLYOVER_TERRAIN_SAMPLE_INTERVAL,
+  FLYOVER_FOV_DEFAULT,
+  FLYOVER_LOOK_RESPONSE,
+  FLYOVER_LOOK_RETURN_RESPONSE,
 } from '../../map-settings/flyoverSettings'
 import { MAX_CAMERA_PITCH } from '../../map-settings/terrainSettings'
 import { getAnimationDuration } from '../../map-functions/mapAnimationFunctions'
@@ -60,6 +64,10 @@ import {
   blendEntryCameras,
   getEntryFlightProgress,
   getFlightCamera,
+  getPoiFreeLookAngles,
+  getPoiFreeLookFov,
+  updateFlightCameraAnchor,
+  type FlightCameraAnchor,
 } from '../utils/flightCamera'
 import {
   advanceFlight,
@@ -148,12 +156,19 @@ export function useFlyoverControls({
   const phaseRef = useRef<FlyoverPhase>('off')
   const isPausedRef = useRef(false)
   const runtimeRef = useRef<FlightRuntime | null>(null)
+  const cameraAnchorRef = useRef<FlightCameraAnchor | null>(null)
   const flightPositionRef = useRef<FlightState | null>(null)
   const visualRef = useRef(createFlightVisualState())
   const reportErrorRef = useRef(reportError)
   const pausedAtRef = useRef<number | null>(null)
   const pauseAfterEntryRef = useRef(false)
   const isActive = phase !== 'off'
+  const viewRef = useRef({
+    yaw: 0,
+    pitch: 0,
+    fov: FLYOVER_FOV_DEFAULT,
+    freeLookProgress: 0,
+  })
 
   useEffect(() => {
     reportErrorRef.current = reportError
@@ -207,7 +222,16 @@ export function useFlyoverControls({
     onTogglePause: togglePause,
     onExit: exitFromKeyboard,
   })
-  const dragTurnRef = useFlightDrag({ isActive, mapRef })
+  const {
+    inputRef: pointerInputRef,
+    isFreeLooking,
+    enterPoiLook,
+    clearPoiLook,
+  } = useFlightDrag({
+    isActive: phase === 'flying',
+    mapRef,
+    viewRef,
+  })
 
   // Function: Spawn the plane at the center of the map and begin the entry transition.
   const startFlyover = (
@@ -323,6 +347,7 @@ export function useFlyoverControls({
     if (phaseRef.current !== 'flying' || !runtime || !map) return
 
     const visual = visualRef.current
+    clearPoiLook()
     runtime.exitFrom = {
       yawDegrees: visual.yawDegrees,
       pitchDegrees: visual.pitchDegrees,
@@ -393,23 +418,31 @@ export function useFlyoverControls({
   }
 
   const pauseAtPosition = useCallback(
-    (coordinates: [number, number]) => {
+    (
+      coordinates: [number, number],
+      poiCoordinates: [number, number],
+      poiFov?: number,
+    ) => {
       const runtime = runtimeRef.current
       const map = mapRef.current?.getMap()
       if (!runtime || !map || phaseRef.current !== 'flying') return
       runtime.flight.longitude = coordinates[0]
       runtime.flight.latitude = coordinates[1]
       runtime.travel = null
-      setFlyoverPaused(true)
-      map.jumpTo(
-        getFlightCamera(
-          runtime,
-          map.getCanvas().clientHeight,
-          map.getVerticalFieldOfView(),
-        ),
+      const terrain =
+        map.queryTerrainElevation(poiCoordinates) ?? runtime.groundElevation
+      const fieldOfView = getPoiFreeLookFov(poiFov)
+      const { yaw, pitch } = getPoiFreeLookAngles(
+        runtime,
+        poiCoordinates,
+        terrain,
+        fieldOfView,
+        cameraAnchorRef.current ?? undefined,
       )
+      enterPoiLook(yaw, pitch, fieldOfView)
+      setFlyoverPaused(true)
     },
-    [mapRef, setFlyoverPaused],
+    [mapRef, setFlyoverPaused, enterPoiLook],
   )
 
   useEffect(() => {
@@ -439,11 +472,20 @@ export function useFlyoverControls({
       map.touchPitch,
     ].filter((handler) => handler.isEnabled())
     handlers.forEach((handler) => handler.disable())
+    const previousFov = map.getVerticalFieldOfView()
+    viewRef.current = {
+      yaw: 0,
+      pitch: 0,
+      fov: FLYOVER_FOV_DEFAULT,
+      freeLookProgress: 0,
+    }
+    map.setVerticalFieldOfView(FLYOVER_FOV_DEFAULT)
 
     return () => {
       try {
         handlers.forEach((handler) => handler.enable())
         map.setCenterClampedToGround(true)
+        map.setVerticalFieldOfView(previousFov)
       } catch (error) {
         console.error('Unable to restore map controls.', error)
       }
@@ -459,9 +501,17 @@ export function useFlyoverControls({
     if (!map || !runtime) return
 
     const visual = visualRef.current
+    const cameraAnchor = {
+      longitude: runtime.flight.longitude,
+      latitude: runtime.flight.latitude,
+      altitudeMeters: runtime.flight.altitudeMeters,
+      groundElevation: runtime.groundElevation,
+    }
+    cameraAnchorRef.current = cameraAnchor
     let frameId = 0
     let lastTime = performance.now()
     let lastReadoutPublish = 0
+    let stabilization = 0
     const flightInput: FlightInput = { turn: 0, climb: 0, throttle: 0 }
 
     // Function: Stop flying after an error so the map is not left locked.
@@ -498,8 +548,7 @@ export function useFlyoverControls({
     }
 
     // Function: Place the plane along its trip toward a marker, climbing and then
-    // returning to its starting altitude. On arrival the throttle drops to its
-    // lowest so the plane slows to the slowest speed.
+    // returning to its starting altitude and easing down to the arrival speed.
     const advanceTravel = (
       now: number,
       seconds: number,
@@ -528,7 +577,10 @@ export function useFlyoverControls({
         seconds > 0 ? (flight.altitudeMeters - previousAltitude) / seconds : 0
       if (progress >= 1) {
         runtime.travel = null
-        runtime.throttle = 0
+        runtime.throttle = Math.min(
+          runtime.throttle,
+          getThrottleForSpeed(FLYOVER_POI_ARRIVAL_SPEED),
+        )
         runtime.climbRate = 0
       }
     }
@@ -543,8 +595,6 @@ export function useFlyoverControls({
       lastTime = now
 
       try {
-        if (isPausedRef.current) return
-
         const viewportHeight = map.getCanvas().clientHeight
         const fov = map.getVerticalFieldOfView()
 
@@ -587,17 +637,83 @@ export function useFlyoverControls({
         } else if (phase === 'flying') {
           const keys = inputRef.current
           const previousAltitude = runtime.flight.altitudeMeters
+          const previousBearing = runtime.cameraBearing
           // Steering comes from the keys and the map drag together; a trip takes all control.
           flightInput.turn = runtime.travel
             ? 0
-            : clamp(keys.turn + dragTurnRef.current, -1, 1)
-          flightInput.climb = runtime.travel ? 0 : keys.climb
+            : clamp(keys.turn + pointerInputRef.current.turn, -1, 1)
+          flightInput.climb = runtime.travel
+            ? 0
+            : clamp(keys.climb + pointerInputRef.current.climb, -1, 1)
           flightInput.throttle = runtime.travel ? 0 : keys.throttle
-          advanceFlight(runtime, flightInput, seconds)
-          advanceTravel(now, seconds, previousAltitude)
-          updateGround(now, seconds)
-          map.jumpTo(getFlightCamera(runtime, viewportHeight, fov))
+          if (!isPausedRef.current) {
+            advanceFlight(runtime, flightInput, seconds)
+            advanceTravel(now, seconds, previousAltitude)
+            updateGround(now, seconds)
+          }
+          const pointer = pointerInputRef.current
+          const view = viewRef.current
+          const isStabilized =
+            (pointer.isLooking || pointer.isPoiLooking) &&
+            pointer.fov < FLYOVER_FOV_DEFAULT
+          if (isStabilized) {
+            const turn = shortestAngleDelta(
+              previousBearing,
+              runtime.cameraBearing,
+            )
+            // Cancel aircraft rotation before easing mouse input, keeping world bearing fixed.
+            pointer.yaw -= turn
+            view.yaw -= turn
+          }
+          const reducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+          ).matches
+          const response = reducedMotion
+            ? 1
+            : 1 - Math.exp(-FLYOVER_LOOK_RESPONSE * seconds)
+          const isLooking = pointer.isLooking || pointer.isPoiLooking
+          const lookResponse =
+            reducedMotion || isLooking
+              ? response
+              : 1 - Math.exp(-FLYOVER_LOOK_RETURN_RESPONSE * seconds)
+          view.yaw += shortestAngleDelta(view.yaw, pointer.yaw) * lookResponse
+          view.pitch = lerp(view.pitch, pointer.pitch, lookResponse)
+          view.fov = lerp(view.fov, pointer.fov, response)
+          view.freeLookProgress = lerp(
+            view.freeLookProgress,
+            isLooking ? 1 : 0,
+            lookResponse,
+          )
+          stabilization = lerp(stabilization, isStabilized ? 1 : 0, response)
+          updateFlightCameraAnchor(
+            cameraAnchor,
+            runtime,
+            stabilization,
+            seconds,
+            reducedMotion,
+          )
+          map.setVerticalFieldOfView(view.fov)
+          map.jumpTo(
+            getFlightCamera(
+              runtime,
+              viewportHeight,
+              view.fov,
+              view.yaw,
+              view.pitch,
+              view.freeLookProgress,
+              cameraAnchor,
+            ),
+          )
           updateFlightVisual(visual, runtime)
+          visual.lookYaw = view.yaw
+          visual.lookPitch = view.pitch
+          visual.fieldOfView = view.fov
+          visual.freeLookProgress = view.freeLookProgress
+          visual.poiFocusProgress = lerp(
+            visual.poiFocusProgress,
+            pointer.isPoiLooking ? 1 : 0,
+            response,
+          )
 
           if (now - lastReadoutPublish >= READOUT_PUBLISH_INTERVAL) {
             lastReadoutPublish = now
@@ -640,13 +756,15 @@ export function useFlyoverControls({
     frameId = window.requestAnimationFrame(tick)
 
     return () => window.cancelAnimationFrame(frameId)
-  }, [phase, mapRef, inputRef, dragTurnRef, changePhase])
+  }, [phase, mapRef, inputRef, pointerInputRef, changePhase])
 
   return {
     flyoverPhase: phase,
     isFlyoverEnabled: isActive,
     isFlyoverTransitioning: phase === 'entering' || phase === 'exiting',
     isFlyoverPaused: isPaused,
+    isFreeLooking,
+    clearPoiFocus: clearPoiLook,
     setFlyoverPaused,
     flyoverAltitudeMeters: altitudeMeters,
     flyoverSpeedMetersPerSecond: speedMetersPerSecond,

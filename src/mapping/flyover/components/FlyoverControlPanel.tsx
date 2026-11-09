@@ -14,6 +14,7 @@
  */
 import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { GloveIcon } from '@/components/icons/GloveIcon'
 
 type FlyoverControlPanelProps = {
   isTutorialActive: boolean
@@ -26,6 +27,8 @@ const CONTROLS = [
   { key: 'A', labelKey: 'flyover.controls.left' },
   { key: 'D', labelKey: 'flyover.controls.right' },
   { key: 'drag', labelKey: 'flyover.controls.drag' },
+  { key: 'rightMouse', labelKey: 'flyover.controls.freeLook' },
+  { key: 'wheel', labelKey: 'flyover.controls.zoom' },
   { key: 'up', labelKey: 'flyover.controls.faster' },
   { key: 'down', labelKey: 'flyover.controls.slower' },
   { key: 'P', labelKey: 'flyover.controls.pause' },
@@ -46,7 +49,15 @@ export function FlyoverControlPanel({
   const getKeyLabel = (key: (typeof CONTROLS)[number]['key']) => {
     switch (key) {
       case 'drag':
-        return t('flyover.keys.drag')
+        return (
+          <span aria-label={t('flyover.keys.drag')}>
+            <GloveIcon />
+          </span>
+        )
+      case 'rightMouse':
+        return t('flyover.keys.rightMouse')
+      case 'wheel':
+        return t('flyover.keys.wheel')
       case 'up':
         return '↑'
       case 'down':

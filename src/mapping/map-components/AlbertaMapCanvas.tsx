@@ -136,6 +136,8 @@ export function AlbertaMapCanvas({
       </Map>
       <MapOverlayLayer
         {...overlayProps}
+        infoPoiId={infoPoiId}
+        flightPositionRef={flightPositionRef}
         isMapReady={overlayProps.isMapReady}
         isPlaneTutorialActive={isPlaneTutorialActive}
         isPlaneTutorialControlsStep={isPlaneTutorialControlsStep}

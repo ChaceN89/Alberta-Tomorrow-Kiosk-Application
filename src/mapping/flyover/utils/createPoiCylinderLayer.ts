@@ -65,6 +65,8 @@ export function createPoiCylinderLayer(
     growth: number,
     outlines: readonly FlightPoiDepthLine[],
   ) => void,
+  getInfoPoiId: () => string | null,
+  getActivePoiId: () => string | null,
 ): CustomLayerInterface {
   const scene = new Scene()
   const camera = new Camera()
@@ -196,7 +198,8 @@ export function createPoiCylinderLayer(
             Math.min(Math.abs(target - previous), step)
         opacities.set(poi.id, opacity)
         if (opacity !== target) isAnimating = true
-        mesh.visible = opacity > 0
+        mesh.visible = opacity > 0 && poi.id !== getInfoPoiId()
+        material.color.set(getPoiColor(poi, poi.id === getActivePoiId()))
         material.opacity = opacity * FLYOVER_POI_CYLINDER_OPACITY
         outlineMaterial.opacity = opacity * FLYOVER_POI_CYLINDER_OUTLINE_OPACITY
         const dx = eye.x - mesh.position.x

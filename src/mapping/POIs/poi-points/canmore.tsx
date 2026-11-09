@@ -1,7 +1,7 @@
 /**
   File: canmore.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Canmore base-map POI and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const canmorePoi = {
   id: 'canmore',
+  flyoverPoiFov: 55,
   titleKey: 'view.defaultPois.canmore',
   iconCategory: 'community',
   coordinates: [-115.359, 51.089],

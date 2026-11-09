@@ -1,7 +1,7 @@
 /**
   File: jasper.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Jasper and its localized information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const jasperPoi = {
   id: 'jasper',
+  flyoverPoiFov: 55,
   titleKey: 'view.defaultPois.jasper',
   iconCategory: 'community',
   coordinates: [-118.0814, 52.8737],

@@ -31,22 +31,26 @@ type UseFlyoverPoiVisitsOptions = {
   isPanelOpen: boolean
   flightPositionRef: RefObject<FlightState | null>
   onEnter: (poi: MapPoi, coordinates: [number, number]) => void
-  onResume: () => void
+  onResume: (visitedPoiId: string) => void
 }
 
 export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
   const { isPanelOpen, phase, isBlocked, onResume } = options
   const latest = useRef(options)
-  const ownedPanel = useRef<'opening' | 'open' | null>(null)
+  const ownedPanel = useRef<{
+    poiId: string
+    state: 'opening' | 'open'
+  } | null>(null)
   useEffect(() => {
     latest.current = options
   })
 
   useEffect(() => {
-    if (isPanelOpen && ownedPanel.current) ownedPanel.current = 'open'
-    if (!isPanelOpen && ownedPanel.current === 'open') {
+    if (isPanelOpen && ownedPanel.current) ownedPanel.current.state = 'open'
+    if (!isPanelOpen && ownedPanel.current?.state === 'open') {
+      const visitedPoiId = ownedPanel.current.poiId
       ownedPanel.current = null
-      if (phase === 'flying' && !isBlocked) onResume()
+      if (phase === 'flying' && !isBlocked) onResume(visitedPoiId)
     }
     if (phase === 'exiting' || phase === 'off') ownedPanel.current = null
   }, [isPanelOpen, phase, isBlocked, onResume])
@@ -99,7 +103,7 @@ export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
       }
       if (!candidate) return
       visits.set(candidate.poi.id, null)
-      ownedPanel.current = 'opening'
+      ownedPanel.current = { poiId: candidate.poi.id, state: 'opening' }
       const coordinates: [number, number] = [
         from[0] + (current[0] - from[0]) * candidate.entry,
         from[1] + (current[1] - from[1]) * candidate.entry,

@@ -25,6 +25,7 @@ export function MapActionControls() {
     isTerrainEnabled,
     isTerrainTransitioning,
     isFlyoverEnabled,
+    isFlyoverPaused,
     isFlyoverTransitioning,
     onToggleTerrain,
     onToggleFlyover,
@@ -40,6 +41,13 @@ export function MapActionControls() {
 
   return (
     <section className="mapping-actions" aria-label={t('view.actions')}>
+      {isFlyoverEnabled && isFlyoverPaused && (
+        <div className="mapping-actions__pause" role="status">
+          <strong className="mapping-flyover-panel__badge">
+            {t('flyover.paused')}
+          </strong>
+        </div>
+      )}
       {!isFlyoverEnabled && (
         <button
           type="button"

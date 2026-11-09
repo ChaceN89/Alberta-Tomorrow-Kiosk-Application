@@ -111,8 +111,19 @@
     "metersValue": "{{value}} m",
     "speedValue": "{{value}} m/s",
     "paused": "En pause",
+    "freeLookActive": "Vue libre",
+    "compass": {
+      "miniMapLabel": "Aperçu de l’Alberta orienté vers le nord avec votre position et votre cap",
+      "label": "Direction vers {{name}}",
+      "ahead": "Tout droit",
+      "left": "Tournez à gauche",
+      "right": "Tournez à droite",
+      "behind": "Faites demi-tour"
+    },
     "keys": {
       "drag": "Glisser",
+      "rightMouse": "Clic droit",
+      "wheel": "Molette",
       "escape": "Échap"
     },
     "controls": {
@@ -120,10 +131,12 @@
       "descend": "Maintenir pour descendre",
       "left": "Tourner à gauche",
       "right": "Tourner à droite",
-      "drag": "Faire glisser la carte pour tourner",
+      "drag": "Glisser sur les côtés pour tourner; vers le haut pour monter, vers le bas pour descendre",
+      "freeLook": "Maintenir le clic droit pour tourner; zoomer pour une vue stabilisée. À un lieu, glisser pour regarder",
+      "zoom": "Molette pour zoomer ou dézoomer à tout moment",
       "faster": "Maintenir pour accélérer",
       "slower": "Maintenir pour ralentir",
-      "pause": "Pause ou reprise",
+      "pause": "Pause ou reprise; fermer le lieu actif",
       "exit": "Quitter le survol"
     },
     "showControls": "Afficher les commandes de vol",

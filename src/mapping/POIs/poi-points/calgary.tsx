@@ -1,7 +1,7 @@
 /**
   File: calgary.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Calgary base-map POI and its video information content.
@@ -22,6 +22,7 @@ export const calgaryPoi = {
   id: 'calgary',
   titleKey: 'view.defaultPois.calgary',
   iconCategory: 'community',
+  flyoverPoiFov: 90,
   coordinates: [-114.0719, 51.0447],
   view: {
     center: [-114.0719, 51.0447],

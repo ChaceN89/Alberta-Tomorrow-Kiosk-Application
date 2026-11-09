@@ -14,33 +14,48 @@
  */
 import { FlyoverControlPanel } from './FlyoverControlPanel'
 import { FlyoverTelemetry } from './FlyoverTelemetry'
+import { FlyoverPoiCompass } from './FlyoverPoiCompass'
+import type { RefObject } from 'react'
+import type { FlightState } from '../types'
+import type { MapPoi } from '../../components/MapPoiMarker'
 
 type PlaneHudProps = {
   isActive: boolean
-  isPaused: boolean
+  isFreeLooking: boolean
   altitudeMeters: number
   speedMetersPerSecond: number
   latitude: number
   longitude: number
   isTutorialActive: boolean
   isTutorialControlsStep: boolean
+  activePoi?: MapPoi
+  flightPositionRef: RefObject<FlightState | null>
 }
 
 export function PlaneHud({
   isActive,
-  isPaused,
+  isFreeLooking,
   altitudeMeters,
   speedMetersPerSecond,
   latitude,
   longitude,
   isTutorialActive,
   isTutorialControlsStep,
+  activePoi,
+  flightPositionRef,
 }: PlaneHudProps) {
   return (
     <>
+      {isActive && activePoi && (
+        <FlyoverPoiCompass
+          key={activePoi.id}
+          poi={activePoi}
+          flightPositionRef={flightPositionRef}
+        />
+      )}
       <FlyoverTelemetry
         isFlightActive={isActive}
-        isPaused={isPaused}
+        isFreeLooking={isFreeLooking}
         altitudeMeters={altitudeMeters}
         speedMetersPerSecond={speedMetersPerSecond}
         latitude={latitude}

@@ -1,7 +1,7 @@
 /**
   File: writingOnStone.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Writing-on-Stone and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const writingOnStonePoi = {
   id: 'writingOnStone',
+  flyoverPoiFov: 50,
   titleKey: 'view.defaultPois.writingOnStone',
   iconCategory: 'indigenousHeritage',
   coordinates: [-112.976, 49.078],

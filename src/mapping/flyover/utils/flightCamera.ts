@@ -12,18 +12,28 @@
   Notes:
   - Altitude sets the camera distance above the view center. The view center
     sits at the smoothed ground elevation instead of following every bump.
+  - Zoomed freelook smooths a camera-only anchor without changing flight physics.
  */
 import { ZOOM_MAX, ZOOM_MIN } from '../../map-settings/mapSettings'
+import { Euler, Vector3 } from 'three'
 import {
   FLYOVER_CAMERA_PITCH,
   FLYOVER_ENTER_DURATION,
   FLYOVER_BASE_MAP_RELOCATION_DURATION,
+  FLYOVER_FOV_DEFAULT,
+  FLYOVER_FOV_ZOOM_IN,
+  FLYOVER_FOV_ZOOM_OUT,
+  FLYOVER_FOV_POI_FREE_LOOK,
+  FLYOVER_PLANE_VIEW,
+  FLYOVER_STABILIZED_FOLLOW_RESPONSE,
 } from '../../map-settings/flyoverSettings'
 import type { FlightCamera, FlightRuntime } from '../types'
 import {
   clamp,
   degreesToRadians,
   easeInOutCubic,
+  getBearingDegrees,
+  getDistanceMeters,
   lerp,
   moveAlongHeading,
   shortestAngleDelta,
@@ -31,6 +41,73 @@ import {
 
 const EARTH_CIRCUMFERENCE_METERS = 2 * Math.PI * 6371008.8
 const MAP_TILE_SIZE = 512
+
+export type FlightCameraAnchor = {
+  longitude: number
+  latitude: number
+  altitudeMeters: number
+  groundElevation: number
+}
+
+export function updateFlightCameraAnchor(
+  anchor: FlightCameraAnchor,
+  runtime: FlightRuntime,
+  strength: number,
+  seconds: number,
+  reducedMotion: boolean,
+) {
+  const response = reducedMotion
+    ? 1
+    : lerp(
+        1,
+        1 - Math.exp(-FLYOVER_STABILIZED_FOLLOW_RESPONSE * seconds),
+        strength,
+      )
+  anchor.longitude +=
+    shortestAngleDelta(anchor.longitude, runtime.flight.longitude) * response
+  anchor.latitude = lerp(anchor.latitude, runtime.flight.latitude, response)
+  anchor.altitudeMeters = lerp(
+    anchor.altitudeMeters,
+    runtime.flight.altitudeMeters,
+    response,
+  )
+  anchor.groundElevation = lerp(
+    anchor.groundElevation,
+    runtime.groundElevation,
+    response,
+  )
+}
+export const FLIGHT_ORBIT_CAMERA_PITCH =
+  (Math.atan2(
+    FLYOVER_PLANE_VIEW.cameraPosition[2],
+    FLYOVER_PLANE_VIEW.cameraPosition[1],
+  ) *
+    180) /
+  Math.PI
+
+// Both renderers orbit the aircraft's origin and cross it along the same radius.
+export function getFlightOrbitCamera(
+  yaw: number,
+  pitch: number,
+  fieldOfView: number,
+) {
+  const position = new Vector3(...FLYOVER_PLANE_VIEW.cameraPosition)
+  const radius = position.length()
+  const zoom = clamp(
+    (FLYOVER_FOV_DEFAULT - fieldOfView) /
+      (FLYOVER_FOV_DEFAULT - FLYOVER_FOV_ZOOM_IN),
+    0,
+    1,
+  )
+  const easedZoom = zoom * zoom * (3 - 2 * zoom)
+  const distance = radius - easedZoom * (radius + 2)
+  position
+    .multiplyScalar(distance / radius)
+    .applyEuler(
+      new Euler(degreesToRadians(pitch), -degreesToRadians(yaw), 0, 'YXZ'),
+    )
+  return { position, distance }
+}
 
 // Function: Find the map zoom that places the camera at an altitude above the view center.
 export function getZoomForAltitude(
@@ -88,19 +165,114 @@ export function blendEntryCameras(
   return camera
 }
 
+function getFlightCameraPosition(
+  runtime: FlightRuntime,
+  verticalFovDegrees: number,
+  lookYaw: number,
+  lookPitch: number,
+  anchor: Pick<
+    FlightCameraAnchor,
+    'longitude' | 'latitude' | 'altitudeMeters'
+  > = runtime.flight,
+) {
+  const { cameraBearing } = runtime
+  const orbit = getFlightOrbitCamera(lookYaw, lookPitch, verticalFovDegrees)
+  // Match the model-space orbit at a small scale relative to flight altitude.
+  const scale = anchor.altitudeMeters * 0.01
+  const east = orbit.position.x * scale
+  const north =
+    (FLYOVER_PLANE_VIEW.cameraPosition[2] - orbit.position.z) * scale
+  const cameraPosition = moveAlongHeading(
+    anchor.longitude,
+    anchor.latitude,
+    cameraBearing + (Math.atan2(east, north) * 180) / Math.PI,
+    Math.hypot(east, north),
+  )
+  const altitude = Math.max(
+    1,
+    anchor.altitudeMeters +
+      (orbit.position.y - FLYOVER_PLANE_VIEW.cameraPosition[1]) * scale,
+  )
+  return { ...cameraPosition, altitude }
+}
+
+export function getPoiFreeLookAngles(
+  runtime: FlightRuntime,
+  coordinates: [number, number],
+  terrainElevation: number,
+  fieldOfView: number,
+  anchor?: FlightCameraAnchor,
+) {
+  let yaw = 0
+  let pitch = 0
+  // Re-aim from the zoomed orbit position, not from the aircraft's center.
+  for (let iteration = 0; iteration < 4; iteration++) {
+    const camera = getFlightCameraPosition(
+      runtime,
+      fieldOfView,
+      yaw,
+      pitch,
+      anchor,
+    )
+    const from: [number, number] = [camera.longitude, camera.latitude]
+    yaw = shortestAngleDelta(
+      runtime.cameraBearing,
+      getBearingDegrees(from, coordinates),
+    )
+    const height =
+      (anchor?.groundElevation ?? runtime.groundElevation) +
+      camera.altitude -
+      terrainElevation
+    pitch =
+      clamp(
+        (Math.atan2(getDistanceMeters(from, coordinates), Math.max(1, height)) *
+          180) /
+          Math.PI,
+        5,
+        89,
+      ) - FLIGHT_ORBIT_CAMERA_PITCH
+  }
+  return { yaw, pitch }
+}
+
+export function getPoiFreeLookFov(fieldOfView = FLYOVER_FOV_POI_FREE_LOOK) {
+  if (!Number.isFinite(fieldOfView) || fieldOfView <= 0) {
+    throw new Error('POI flyoverPoiFov must be a positive, finite angle.')
+  }
+  return clamp(fieldOfView, FLYOVER_FOV_ZOOM_IN, FLYOVER_FOV_ZOOM_OUT)
+}
+
 // Function: Build the chase camera for the plane's current position and altitude.
 export function getFlightCamera(
   runtime: FlightRuntime,
   viewportHeight: number,
   verticalFovDegrees: number,
+  lookYaw = 0,
+  lookPitch = 0,
+  freeLookProgress = 0,
+  anchor?: FlightCameraAnchor,
 ): FlightCamera {
   const { flight, cameraBearing } = runtime
-  const lookAheadMeters =
-    flight.altitudeMeters * Math.tan(degreesToRadians(FLYOVER_CAMERA_PITCH))
+  const pitch = clamp(
+    lerp(FLYOVER_CAMERA_PITCH, FLIGHT_ORBIT_CAMERA_PITCH, freeLookProgress) +
+      lookPitch,
+    5,
+    89,
+  )
+  const bearing = cameraBearing + lookYaw
+  const cameraPosition = getFlightCameraPosition(
+    runtime,
+    verticalFovDegrees,
+    lookYaw,
+    lookPitch,
+    anchor,
+  )
+  const { altitude } = cameraPosition
+  const lookAheadMeters = altitude * Math.tan(degreesToRadians(pitch))
   const center = moveAlongHeading(
-    flight.longitude,
-    flight.latitude,
-    cameraBearing,
+    cameraPosition.longitude,
+    cameraPosition.latitude,
+    bearing,
     lookAheadMeters,
   )
 
@@ -108,18 +280,18 @@ export function getFlightCamera(
     center: [center.longitude, center.latitude],
     zoom: clamp(
       getZoomForAltitude(
-        flight.altitudeMeters,
-        flight.latitude,
-        FLYOVER_CAMERA_PITCH,
+        altitude,
+        anchor?.latitude ?? flight.latitude,
+        pitch,
         viewportHeight,
         verticalFovDegrees,
       ),
       ZOOM_MIN,
       ZOOM_MAX,
     ),
-    bearing: cameraBearing,
-    pitch: FLYOVER_CAMERA_PITCH,
-    elevation: runtime.groundElevation,
+    bearing,
+    pitch,
+    elevation: anchor?.groundElevation ?? runtime.groundElevation,
   }
 }
 

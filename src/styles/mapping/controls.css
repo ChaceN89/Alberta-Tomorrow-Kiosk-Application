@@ -1,7 +1,7 @@
 /*
   File: controls.css | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Style map titles, attribution, settings, and action controls.
@@ -27,7 +27,7 @@
 .mapping-module-title-bar {
   position: absolute;
   top: 1rem;
-  inset-inline-end: 4.5rem;
+  inset-inline-end: 1rem;
   z-index: var(--z-content-popover);
   width: max-content;
   max-width: min(32rem, calc(100vw - 6rem));
@@ -326,11 +326,5 @@
 
   .mapping-actions {
     bottom: 4.5rem;
-  }
-}
-
-@media (max-width: 64rem) {
-  .mapping-module-title-bar {
-    top: 5.25rem;
   }
 }

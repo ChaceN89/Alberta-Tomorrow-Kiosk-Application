@@ -1,7 +1,7 @@
 /**
   File: lesserSlaveLake.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Lesser Slave Lake and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const lesserSlaveLakePoi = {
   id: 'lesserSlaveLake',
+  flyoverPoiFov: 80,
   titleKey: 'view.defaultPois.lesserSlaveLake',
   iconCategory: 'naturalPlace',
   coordinates: [-114.8128, 55.4434],

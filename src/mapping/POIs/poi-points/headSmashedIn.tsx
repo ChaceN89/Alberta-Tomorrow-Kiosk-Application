@@ -1,7 +1,7 @@
 /**
   File: headSmashedIn.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Head-Smashed-In Buffalo Jump base POI and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const headSmashedInPoi = {
   id: 'headSmashedIn',
+  flyoverPoiFov: 37,
   titleKey: 'view.defaultPois.headSmashedIn',
   iconCategory: 'indigenousHeritage',
   coordinates: [-113.653, 49.7075],

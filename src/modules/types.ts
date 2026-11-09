@@ -46,6 +46,7 @@ export type MapPoiDefinition = {
   iconCategory: PoiIconCategory
   flyoverRadiusMultiplier?: number // Positive scale of the shared flight radius; defaults to 1.
   flyoverCylinderHeightMultiplier?: number // Positive cylinder height scale; defaults to 1.
+  flyoverPoiFov?: number // Initial POI lens in degrees; defaults to the shared POI FOV and clamps to flight limits.
   titleNamespace?: MapPoiTranslationNamespace
   view?: MapPoiView
   infoContent: ComponentType<MapPoiInfoContentProps>

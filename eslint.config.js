@@ -1,7 +1,7 @@
 /**
   File: eslint.config.js | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Lint browser TypeScript, React hooks, and tooling configuration.
@@ -36,7 +36,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/site-data/POIs/poi-points/**/*.tsx'],
+    files: ['src/mapping/POIs/poi-points/**/*.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },

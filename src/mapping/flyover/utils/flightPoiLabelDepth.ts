@@ -42,6 +42,7 @@ export function createPoiLabelDepthPainter(
   viewportWidth: number,
   viewportHeight: number,
   depthLines: readonly FlightPoiDepthLine[] = [],
+  activePoiId: string | null = null,
 ) {
   const inverse = matrix.clone().invert()
   const point = new Vector4()
@@ -109,7 +110,9 @@ export function createPoiLabelDepthPainter(
         radius,
         height,
         opacity,
-        color: new Color(getPoiColor(poi)).convertLinearToSRGB(),
+        color: new Color(
+          getPoiColor(poi, poi.id === activePoiId),
+        ).convertLinearToSRGB(),
         left: crossesCamera ? -Infinity : left - 1,
         right: crossesCamera ? Infinity : right + 1,
         top: crossesCamera ? -Infinity : top - 1,

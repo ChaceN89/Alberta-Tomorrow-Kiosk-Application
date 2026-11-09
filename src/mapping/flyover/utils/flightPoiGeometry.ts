@@ -40,7 +40,11 @@ export function getPoiRadiusMeters(
   return FLYOVER_POI_RADIUS_METERS * multiplier
 }
 
-export function getPoiColor(poi: Pick<MapPoi, 'isModulePoi' | 'isComplete'>) {
+export function getPoiColor(
+  poi: Pick<MapPoi, 'isModulePoi' | 'isComplete'>,
+  isActive = false,
+) {
+  if (isActive) return FLYOVER_POI_COLORS.active
   return poi.isModulePoi
     ? poi.isComplete
       ? FLYOVER_POI_COLORS.complete

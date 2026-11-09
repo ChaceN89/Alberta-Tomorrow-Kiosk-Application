@@ -12,6 +12,7 @@
   Notes:
   - Labels and cylinders share sea-level heights and plane-distance fading.
   - The volume renderer shares MapLibre's GL context and frame loop.
+  - Style diffs preserve custom layers; keep cylinders above restored basemap layers.
  */
 import { useEffect, useEffectEvent, useRef } from 'react'
 import type { RefObject } from 'react'
@@ -21,7 +22,10 @@ import { MercatorCoordinate } from 'maplibre-gl'
 import { Matrix4, Vector4 } from 'three'
 import { MapPoiMarkerButton, type MapPoi } from '../../components/MapPoiMarker'
 import type { FlightState } from '../types'
-import { FLYOVER_POI_INSIDE_TINT_OPACITY } from '../../map-settings/flyoverPoiSettings'
+import {
+  FLYOVER_POI_INSIDE_TINT_OPACITY,
+  FLYOVER_POI_LABEL_TOP_PADDING_PIXELS,
+} from '../../map-settings/flyoverPoiSettings'
 import {
   getPoiColor,
   getPoiHeights,
@@ -38,6 +42,7 @@ import {
 } from '../utils/flightPoiLabelDepth'
 import {
   layoutFlightPoiLabels,
+  getFlightPoiLabelTopOpacity,
   type FlightPoiLabelBounds,
   type FlightPoiLabelOffset,
 } from '../utils/flightPoiLabelLayout'
@@ -68,6 +73,10 @@ export function FlyoverPoiLayer({
   const overlayHost = mapRef?.getMap().getContainer().parentElement
   const getInfoPoiId = useEffectEvent(() => infoPoiId)
   const getActivePoiId = useEffectEvent(() => activePoiId)
+
+  useEffect(() => {
+    mapRef?.getMap().triggerRepaint()
+  }, [infoPoiId, activePoiId, mapRef])
 
   useEffect(() => {
     const map = mapRef?.getMap()
@@ -113,14 +122,7 @@ export function FlyoverPoiLayer({
       const tetherColor = getComputedStyle(map.getContainer())
         .getPropertyValue('--color-pine')
         .trim()
-      const pauseBadge = map
-        .getContainer()
-        .parentElement?.querySelector('.plane-hud__pause')
-      const minimumTop = pauseBadge
-        ? pauseBadge.getBoundingClientRect().bottom -
-          map.getCanvas().getBoundingClientRect().top +
-          12
-        : 16
+      const minimumTop = FLYOVER_POI_LABEL_TOP_PADDING_PIXELS
       const bounds: FlightPoiLabelBounds[] = []
       for (const poi of pois) {
         const element = elements.current.get(poi.id)
@@ -137,6 +139,7 @@ export function FlyoverPoiLayer({
         const y = ((1 - projected.y / projected.w) * height) / 2
         if (
           projected.w <= 0 ||
+          getFlightPoiLabelTopOpacity(y) <= 0 ||
           x <= -200 ||
           x >= width + 200 ||
           y >= height + 100
@@ -180,8 +183,9 @@ export function FlyoverPoiLayer({
           : 0
         if (
           flight &&
+          poi.id !== getInfoPoiId() &&
           distance <= getPoiRadiusMeters(poi) + 0.01 &&
-          (!insidePoi || poi.id === getInfoPoiId())
+          !insidePoi
         )
           insidePoi = poi
         const groundElevation = map.queryTerrainElevation(poi.coordinates) ?? 0
@@ -196,9 +200,10 @@ export function FlyoverPoiLayer({
         const anchorX = ((projected.x / projected.w + 1) * width) / 2
         const x = anchorX + (labelOffsets.current.get(poi.id)?.current ?? 0)
         const y = ((1 - projected.y / projected.w) * height) / 2
+        const labelOpacity = opacity * getFlightPoiLabelTopOpacity(y)
         const labelDepth = projected.z / projected.w
         const visible =
-          opacity > 0 &&
+          labelOpacity > 0 &&
           projected.w > 0 &&
           anchorX > -200 &&
           anchorX < width + 200 &&
@@ -210,7 +215,7 @@ export function FlyoverPoiLayer({
             (labelOffsets.current.get(poi.id)?.lift ?? 0),
         )
         element.style.transform = `translate(${x}px, ${markerBottom}px) translate(-50%, -100%)`
-        element.style.opacity = String(opacity)
+        element.style.opacity = String(labelOpacity)
         const depthCanvas = depthCanvases.current.get(poi.id)
         if (visible && depthCanvas) {
           labels.push({
@@ -245,7 +250,7 @@ export function FlyoverPoiLayer({
             'y2',
             String(((1 - projected.y / projected.w) * height) / 2),
           )
-          tether.style.opacity = String(opacity)
+          tether.style.opacity = String(labelOpacity)
           if (visible && groundVisible && markerElevation > groundElevation) {
             depthLines.push({
               id: poi.id,
@@ -260,20 +265,21 @@ export function FlyoverPoiLayer({
                 z: projected.z / projected.w,
               },
               color: tetherColor,
-              opacity,
+              opacity: labelOpacity,
               dashed: true,
             })
           }
         }
       }
       const paintDepth = createPoiLabelDepthPainter(
-        pois,
+        pois.filter((poi) => poi.id !== getInfoPoiId()),
         opacities.current,
         matrix,
         growth,
         width,
         height,
         depthLines,
+        getActivePoiId(),
       )
       for (const label of labels)
         paintDepth(
@@ -290,9 +296,18 @@ export function FlyoverPoiLayer({
         tint.style.opacity = insidePoi
           ? String(FLYOVER_POI_INSIDE_TINT_OPACITY)
           : '0'
-        tint.style.backgroundColor = insidePoi ? getPoiColor(insidePoi) : ''
+        tint.style.backgroundColor = insidePoi
+          ? getPoiColor(insidePoi, insidePoi.id === getActivePoiId())
+          : ''
         tint.dataset.poiId = insidePoi?.id ?? ''
       }
+    }
+    const ensureProjectionOrder = () => {
+      if (
+        map.getLayer(POI_CYLINDER_LAYER_ID) &&
+        map.getLayersOrder().at(-1) !== POI_CYLINDER_LAYER_ID
+      )
+        map.moveLayer(POI_CYLINDER_LAYER_ID)
     }
     const addProjection = () => {
       if (!map.getLayer(POI_CYLINDER_LAYER_ID))
@@ -303,15 +318,20 @@ export function FlyoverPoiLayer({
             opacities.current,
             entryStartedAt.current ?? performance.now(),
             renderLabels,
+            getInfoPoiId,
+            getActivePoiId,
           ),
         )
+      ensureProjectionOrder()
     }
     addProjection()
     map.on('style.load', addProjection)
+    map.on('styledata', ensureProjectionOrder)
     const markerElements = elements.current
     const tetherElements = tethers.current
     return () => {
       map.off('style.load', addProjection)
+      map.off('styledata', ensureProjectionOrder)
       if (map.getLayer(POI_CYLINDER_LAYER_ID))
         map.removeLayer(POI_CYLINDER_LAYER_ID)
       markerElements.forEach((element) => {

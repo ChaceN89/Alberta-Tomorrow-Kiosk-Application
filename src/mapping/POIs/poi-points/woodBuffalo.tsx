@@ -1,7 +1,7 @@
 /**
   File: woodBuffalo.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Wood Buffalo and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const woodBuffaloPoi = {
   id: 'woodBuffalo',
+  flyoverPoiFov: 80,
   titleKey: 'view.defaultPois.woodBuffalo',
   iconCategory: 'naturalPlace',
   coordinates: [-111.17, 58.72],

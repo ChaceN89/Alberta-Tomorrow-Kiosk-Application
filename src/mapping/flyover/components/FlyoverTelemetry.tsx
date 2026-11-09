@@ -14,10 +14,11 @@
   - Both map and flight readings share the same bottom-centered layout.
  */
 import { useTranslation } from 'react-i18next'
+import { FreeLookIcon } from '@/components/icons/FreeLookIcon'
 
 type FlyoverTelemetryProps = {
   isFlightActive: boolean
-  isPaused: boolean
+  isFreeLooking: boolean
   altitudeMeters: number
   speedMetersPerSecond: number
   latitude: number
@@ -26,7 +27,7 @@ type FlyoverTelemetryProps = {
 
 export function FlyoverTelemetry({
   isFlightActive,
-  isPaused,
+  isFreeLooking,
   altitudeMeters,
   speedMetersPerSecond,
   latitude,
@@ -49,6 +50,16 @@ export function FlyoverTelemetry({
         )}
         aria-live="off"
       >
+        {isFlightActive && isFreeLooking && (
+          <div
+            className="plane-hud__free-look"
+            role="status"
+            aria-label={t('flyover.freeLookActive')}
+          >
+            <FreeLookIcon />
+            <span>{t('flyover.freeLookActive')}</span>
+          </div>
+        )}
         <div className="plane-hud__readings">
           <div
             className="plane-hud__flight-readings"
@@ -81,13 +92,6 @@ export function FlyoverTelemetry({
           </p>
         </div>
       </section>
-      {isFlightActive && isPaused && (
-        <div className="plane-hud__pause" role="status">
-          <strong className="mapping-flyover-panel__badge">
-            {t('flyover.paused')}
-          </strong>
-        </div>
-      )}
     </>
   )
 }

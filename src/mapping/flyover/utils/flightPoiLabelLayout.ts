@@ -17,7 +17,21 @@ import {
   FLYOVER_POI_LABEL_MAX_OFFSET_PIXELS,
   FLYOVER_POI_LABEL_MAX_LIFT_PIXELS,
   FLYOVER_POI_LABEL_MOVE_DURATION_MS,
+  FLYOVER_POI_LABEL_TOP_PULL_PIXELS,
+  FLYOVER_POI_LABEL_TOP_FADE_PIXELS,
 } from '../../map-settings/flyoverPoiSettings'
+
+export function getFlightPoiLabelTopOpacity(projectedBottom: number) {
+  const progress = Math.max(
+    0,
+    Math.min(
+      1,
+      (projectedBottom + FLYOVER_POI_LABEL_TOP_PULL_PIXELS) /
+        FLYOVER_POI_LABEL_TOP_FADE_PIXELS,
+    ),
+  )
+  return progress * progress * (3 - 2 * progress)
+}
 
 export type FlightPoiLabelBounds = {
   id: string

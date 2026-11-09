@@ -29,6 +29,7 @@ export type MapPoi = {
   isModulePoi?: boolean
   flyoverRadiusMultiplier?: number
   flyoverCylinderHeightMultiplier?: number
+  flyoverPoiFov?: number
   isInfoOpen?: boolean
   onActivate?: (origin?: Element | null) => void
 }

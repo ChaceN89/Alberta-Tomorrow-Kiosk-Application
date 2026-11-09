@@ -49,6 +49,11 @@ export type FlightVisualState = {
   offsetX: number
   offsetY: number
   scale: number
+  lookYaw: number
+  lookPitch: number
+  fieldOfView: number
+  freeLookProgress: number
+  poiFocusProgress: number
 }
 
 export type FlightPoseAngles = {

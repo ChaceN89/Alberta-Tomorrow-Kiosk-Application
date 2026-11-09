@@ -1,7 +1,7 @@
 /**
   File: drumheller.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Drumheller base-map POI and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const drumhellerPoi = {
   id: 'drumheller',
+  flyoverPoiFov: 60,
   titleKey: 'view.defaultPois.drumheller',
   iconCategory: 'community',
   coordinates: [-112.71, 51.463],

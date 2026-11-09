@@ -1,7 +1,7 @@
 /**
   File: banff.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Banff base-map POI and its image and video information content.
@@ -22,6 +22,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 //The POI Content
 export const banffPoi = {
   id: 'banff',
+  flyoverPoiFov: 55,
   titleKey: 'view.defaultPois.banff',
   iconCategory: 'community',
   coordinates: [-115.5708, 51.1784],

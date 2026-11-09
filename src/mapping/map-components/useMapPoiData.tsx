@@ -61,6 +61,7 @@ export function useMapPoiData({
           iconCategory: poi.iconCategory,
           flyoverRadiusMultiplier: poi.flyoverRadiusMultiplier,
           flyoverCylinderHeightMultiplier: poi.flyoverCylinderHeightMultiplier,
+          flyoverPoiFov: poi.flyoverPoiFov,
           info: <PoiContent />,
         }
       }),

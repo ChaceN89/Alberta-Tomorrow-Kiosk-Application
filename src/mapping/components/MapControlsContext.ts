@@ -24,6 +24,7 @@ export type MapControlsProps = {
   isTerrainEnabled: boolean
   isTerrainTransitioning: boolean
   isFlyoverEnabled: boolean
+  isFlyoverPaused: boolean
   isFlyoverTransitioning: boolean
   terrainExaggeration: number
   basemapStyleId: BasemapStyleId
@@ -55,6 +56,7 @@ export type MapControllerControlsProps = Omit<
   | 'onPoiClusterRadiusChange'
   | 'onResetMapView'
   | 'isResettingMap'
+  | 'isFlyoverPaused'
 >
 
 export const MapControlsContext = createContext<MapControlsProps | null>(null)

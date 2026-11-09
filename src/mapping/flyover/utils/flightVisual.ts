@@ -1,7 +1,7 @@
 /**
   File: flightVisual.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Work out how the plane looks on screen while flying and during transitions.
@@ -24,6 +24,11 @@ import {
   FLYOVER_PLANE_MAX_BANK,
   FLYOVER_PLANE_MAX_PITCH,
   FLYOVER_TURN_RATE,
+  FLYOVER_FOV_DEFAULT,
+  FLYOVER_FOV_ZOOM_OUT,
+  FLYOVER_POI_PLANE_REVEAL_FOV_RANGE,
+  FLYOVER_PLANE_FADE_START_DISTANCE,
+  FLYOVER_PLANE_FADE_END_DISTANCE,
 } from '../../map-settings/flyoverSettings'
 import type {
   FlightPoseAngles,
@@ -48,7 +53,41 @@ export function createFlightVisualState(): FlightVisualState {
     offsetX: 0,
     offsetY: FLYOVER_PLANE_ENTER_OFFSET,
     scale: 1,
+    lookYaw: 0,
+    lookPitch: 0,
+    fieldOfView: FLYOVER_FOV_DEFAULT,
+    freeLookProgress: 0,
+    poiFocusProgress: 0,
   }
+}
+
+export function getFlightPlaneOpacity(
+  distance: number,
+  fieldOfView: number,
+  poiFocusProgress: number,
+) {
+  const proximity = clamp(
+    (distance - FLYOVER_PLANE_FADE_END_DISTANCE) /
+      Math.max(
+        0.001,
+        FLYOVER_PLANE_FADE_START_DISTANCE - FLYOVER_PLANE_FADE_END_DISTANCE,
+      ),
+    0,
+    1,
+  )
+  const reveal = clamp(
+    (fieldOfView -
+      (FLYOVER_FOV_ZOOM_OUT - FLYOVER_POI_PLANE_REVEAL_FOV_RANGE)) /
+      FLYOVER_POI_PLANE_REVEAL_FOV_RANGE,
+    0,
+    1,
+  )
+  return (
+    proximity *
+    proximity *
+    (3 - 2 * proximity) *
+    lerp(1, reveal * reveal * (3 - 2 * reveal), poiFocusProgress)
+  )
 }
 
 // Function: Pose the plane from steering and climbing while it is flying.

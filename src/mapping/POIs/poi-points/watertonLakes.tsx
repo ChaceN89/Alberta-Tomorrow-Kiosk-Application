@@ -1,7 +1,7 @@
 /**
   File: watertonLakes.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Waterton Lakes and its image information content.
@@ -18,6 +18,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const watertonLakesPoi = {
   id: 'watertonLakes',
+  flyoverPoiFov: 70,
   titleKey: 'view.defaultPois.watertonLakes',
   iconCategory: 'naturalPlace',
   coordinates: [-113.9179, 49.052],

@@ -1,7 +1,7 @@
 /**
   File: elkIsland.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Elk Island base POI and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const elkIslandPoi = {
   id: 'elkIsland',
+  flyoverPoiFov: 65,
   titleKey: 'view.defaultPois.elkIsland',
   iconCategory: 'naturalPlace',
   coordinates: [-112.86, 53.6],

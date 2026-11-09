@@ -1,7 +1,7 @@
 /**
   File: oilSandsDiscoveryCentre.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define the Oil Sands Discovery Centre and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const oilSandsDiscoveryCentrePoi = {
   id: 'oilSandsDiscoveryCentre',
+  flyoverPoiFov: 37,
   titleKey: 'view.defaultPois.oilSandsDiscoveryCentre',
   iconCategory: 'interpretiveCentre',
   coordinates: [-111.346, 56.6711],

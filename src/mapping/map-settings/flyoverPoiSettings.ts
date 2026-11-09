@@ -21,7 +21,7 @@ export const FLYOVER_POI_RADIUS_METERS = 2000
 
 // Cylinder top elevation in meters above sea level. Cylinders grow from 0 m
 // during plane entry. Each POI can scale this with flyoverCylinderHeightMultiplier.
-export const FLYOVER_POI_HEIGHT_METERS = 5000
+export const FLYOVER_POI_HEIGHT_METERS = 6000
 
 // Marker height above the cylinder top, in meters; positive places it above.
 // This fixed offset is shared by all POIs, regardless of their cylinder height scale.
@@ -34,6 +34,10 @@ export const FLYOVER_POI_LABEL_MAX_OFFSET_PIXELS = 50
 export const FLYOVER_POI_LABEL_MAX_LIFT_PIXELS = 80
 // Smooth damping time (ms); reduced motion applies offsets instantly.
 export const FLYOVER_POI_LABEL_MOVE_DURATION_MS = 650
+export const FLYOVER_POI_LABEL_TOP_PADDING_PIXELS = 8
+// Only pull labels just above the viewport onto its top edge; fade over this band.
+export const FLYOVER_POI_LABEL_TOP_PULL_PIXELS = 120
+export const FLYOVER_POI_LABEL_TOP_FADE_PIXELS = 60
 
 // Continuous time outside a visited cylinder before it can trigger again (ms).
 // Returning inside before this delay finishes restarts the outside timer.
@@ -68,6 +72,7 @@ export const FLYOVER_POI_INSIDE_TINT_OPACITY = 0.12
 
 // Cylinder and inside-tint colors; marker selection colors are configured separately.
 export const FLYOVER_POI_COLORS = {
+  active: '#ea580c', // Orange selected destination, ahead of completion colors.
   base: '#2563eb', // Shared base-map POIs.
   module: '#afb9c9', // Incomplete expedition POIs.
   complete: '#16a34a', // Completed expedition POIs.

@@ -111,8 +111,19 @@
     "metersValue": "{{value}} m",
     "speedValue": "{{value}} m/s",
     "paused": "Paused",
+    "freeLookActive": "Freelook",
+    "compass": {
+      "miniMapLabel": "North-up Alberta overview with your flight position and heading",
+      "label": "Direction to {{name}}",
+      "ahead": "Straight ahead",
+      "left": "Turn left",
+      "right": "Turn right",
+      "behind": "Turn around"
+    },
     "keys": {
       "drag": "Drag",
+      "rightMouse": "Right hold",
+      "wheel": "Wheel",
       "escape": "Esc"
     },
     "controls": {
@@ -120,10 +131,12 @@
       "descend": "Hold to descend",
       "left": "Steer left",
       "right": "Steer right",
-      "drag": "Drag the map to steer",
+      "drag": "Drag sideways to steer; up to climb, down to descend",
+      "freeLook": "Hold right mouse to orbit; zoom in for a stabilized view. At a POI, drag to look around",
+      "zoom": "Wheel to zoom in or out anytime",
       "faster": "Hold to speed up",
       "slower": "Hold to slow down",
-      "pause": "Pause or resume",
+      "pause": "Pause or resume; close an active POI",
       "exit": "Exit flyover"
     },
     "showControls": "Show flight controls",

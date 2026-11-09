@@ -73,6 +73,20 @@ export const FLYOVER_DRAG_DEAD_ZONE = 6 // pixels before a drag starts steering
 // The chase camera that follows the plane.
 export const FLYOVER_CAMERA_PITCH = 80 // 0 looks straight down, 90 the horizon
 export const FLYOVER_CAMERA_BEARING_RESPONSE = 5 // higher values follow heading tighter
+// Lens limits in degrees. POI visits and held right-click share free look.
+export const FLYOVER_FOV_ZOOM_IN = 12
+export const FLYOVER_FOV_DEFAULT = 37
+export const FLYOVER_FOV_ZOOM_OUT = 100
+export const FLYOVER_FOV_POI_FREE_LOOK = FLYOVER_FOV_DEFAULT
+export const FLYOVER_POI_PLANE_REVEAL_FOV_RANGE = 10 // fade the plane back in over the last degrees before max FOV
+// Camera distance from the plane center in model units; fade before crossing it.
+export const FLYOVER_PLANE_FADE_START_DISTANCE = 3
+export const FLYOVER_PLANE_FADE_END_DISTANCE = 1.5
+export const FLYOVER_LOOK_SENSITIVITY = 0.2 // degrees per mouse pixel
+export const FLYOVER_LOOK_RESPONSE = 5 // camera easing while looking and zooming
+export const FLYOVER_LOOK_RETURN_RESPONSE = 3.8 // lower values return to forward view more slowly
+export const FLYOVER_STABILIZED_FOLLOW_RESPONSE = 4 // zoomed freelook position smoothing; higher follows sooner
+export const FLYOVER_WHEEL_SENSITIVITY = 0.04 // degrees per normalized wheel pixel
 export const FLYOVER_MAX_FRAME_SECONDS = 0.1 // longest step after a stalled frame
 
 // The camera follows a ground level smoothed from the terrain around the plane,
@@ -95,8 +109,9 @@ export const FLYOVER_EXIT_CAMERA_DURATION = 1600
 
 // Selecting a map marker while flying carries the plane toward it. The plane
 // climbs on the way, returns to its starting altitude, stops short of the marker,
-// and slows to the slowest speed.
+// and slows to the arrival base speed unless already flying slower.
 export const FLYOVER_POI_TRAVEL_DURATION = 1200
+export const FLYOVER_POI_ARRIVAL_SPEED = 500 // meters per second before altitude scaling
 export const FLYOVER_POI_PEAK_ALTITUDE_RATIO = 0.2 // peak altitude as a share of the trip distance
 export const FLYOVER_POI_ARRIVAL_VIEW_SCALE = 1 // 1 puts the marker at the view center; more stops further back
 

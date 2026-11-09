@@ -1,7 +1,7 @@
 /**
   File: FlightPlaneOverlay.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Draw the aircraft over the map and pose it from the flight visual state.
@@ -17,17 +17,24 @@ import { useEffect, useRef } from 'react'
 import type { RefObject } from 'react'
 import {
   DirectionalLight,
+  Euler,
   Group,
   HemisphereLight,
   PerspectiveCamera,
+  Quaternion,
   Scene,
   SRGBColorSpace,
   Vector3,
   WebGLRenderer,
 } from 'three'
-import { FLYOVER_PLANE_VIEW } from '../../map-settings/flyoverSettings'
+import {
+  FLYOVER_PLANE_VIEW,
+  FLYOVER_FOV_DEFAULT,
+} from '../../map-settings/flyoverSettings'
 import type { FlightVisualState } from '../types'
 import { degreesToRadians } from '../utils/flightMath'
+import { getFlightOrbitCamera } from '../utils/flightCamera'
+import { getFlightPlaneOpacity } from '../utils/flightVisual'
 import { loadFlightPlane } from '../utils/planeModel'
 
 type FlightPlaneOverlayProps = {
@@ -57,6 +64,12 @@ export function FlightPlaneOverlay({ visualRef }: FlightPlaneOverlayProps) {
     camera.position.set(...FLYOVER_PLANE_VIEW.cameraPosition)
     camera.lookAt(...FLYOVER_PLANE_VIEW.lookAt)
     camera.updateMatrixWorld()
+    const forwardRotation = camera.quaternion.clone()
+    camera.lookAt(0, 0, 0)
+    const centeredRotation = camera.quaternion.clone()
+    camera.quaternion.copy(forwardRotation)
+    const lookRotation = new Euler(0, 0, 0, 'YXZ')
+    const lookQuaternion = new Quaternion()
     const keyLight = new DirectionalLight(0xffffff, 2.5)
     keyLight.position.set(4, 6, 5)
     scene.add(new HemisphereLight(0xffffff, 0x4a6259, 2), keyLight)
@@ -98,6 +111,31 @@ export function FlightPlaneOverlay({ visualRef }: FlightPlaneOverlayProps) {
       frameId = window.requestAnimationFrame(renderFrame)
 
       const visual = visualRef.current
+      lookRotation.set(
+        degreesToRadians(visual.lookPitch),
+        -degreesToRadians(visual.lookYaw),
+        0,
+      )
+      camera.quaternion
+        .copy(forwardRotation)
+        .slerp(centeredRotation, visual.freeLookProgress)
+        .premultiply(lookQuaternion.setFromEuler(lookRotation))
+      const orbit = getFlightOrbitCamera(
+        visual.lookYaw,
+        visual.lookPitch,
+        visual.fieldOfView,
+      )
+      camera.position.copy(orbit.position)
+      canvas.style.opacity = String(
+        getFlightPlaneOpacity(
+          orbit.distance,
+          visual.fieldOfView,
+          visual.poiFocusProgress,
+        ),
+      )
+      camera.fov =
+        (FLYOVER_PLANE_VIEW.fov * visual.fieldOfView) / FLYOVER_FOV_DEFAULT
+      camera.updateProjectionMatrix()
       pivot.visible = visual.isVisible
       pivot.position
         .set(0, 0, 0)

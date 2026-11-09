@@ -1,7 +1,7 @@
 /**
   File: rockyMountainHouse.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define Rocky Mountain House and its information content.
@@ -17,6 +17,7 @@ import type { MapPoiDefinition } from '@/modules/types'
 
 export const rockyMountainHousePoi = {
   id: 'rockyMountainHouse',
+  flyoverPoiFov: 37,
   titleKey: 'view.defaultPois.rockyMountainHouse',
   iconCategory: 'historicSite',
   coordinates: [-114.9458, 52.362],
