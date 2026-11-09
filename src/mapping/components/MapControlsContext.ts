@@ -1,7 +1,7 @@
 /**
   File: MapControlsContext.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Share map view state and actions with the explore-page controls.
@@ -27,7 +27,6 @@ export type MapControlsProps = {
   terrainExaggeration: number
   basemapStyleId: BasemapStyleId
   isHillshadeEnabled: boolean
-  isSatelliteEnabled: boolean
   isAlbertaBoundaryEnabled: boolean
   onResetMapView: () => void
   defaultPoisVisible?: boolean
@@ -37,7 +36,6 @@ export type MapControlsProps = {
   onTerrainExaggerationChange: (exaggeration: number) => void
   onBasemapStyleChange: (styleId: string) => void
   onHillshadeChange: (enabled: boolean) => void
-  onSatelliteChange: (enabled: boolean) => void
   onAlbertaBoundaryChange: (enabled: boolean) => void
   onDefaultPoisChange?: (enabled: boolean) => void
   onModulePoisChange?: (enabled: boolean) => void

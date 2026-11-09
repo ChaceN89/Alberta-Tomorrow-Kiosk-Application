@@ -1,7 +1,7 @@
 /**
   File: mapSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Store general map defaults, zoom boundaries, and startup feature visibility.
@@ -28,9 +28,6 @@ export const INITIAL_VIEW = {
 
 // Hillshading starts enabled.
 export const HILLSHADING_DEFAULT = true
-
-// Satellite imagery starts disabled.
-export const SATELLITE_IMAGE_DEFAULT = false
 
 // Start with terrain enabled.
 export const START_IN_3D_DEFAULT = true

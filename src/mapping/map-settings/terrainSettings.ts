@@ -20,11 +20,11 @@ export const HILLSHADE_LAYER_ID = 'alberta-terrain-hillshade'
 export const TERRAIN_EXAGGERATION_MIN = 0
 export const TERRAIN_EXAGGERATION_MAX = 3
 export const TERRAIN_EXAGGERATION_STEP = 0.5
-export const DEFAULT_TERRAIN_EXAGGERATION = 1.5
+export const DEFAULT_TERRAIN_EXAGGERATION = 1
 
 export const MAX_CAMERA_PITCH = 90
-export const DEFAULT_TERRAIN_PITCH = 60
-export const TERRAIN_TRANSITION_DURATION = 700
+export const DEFAULT_TERRAIN_PITCH = 50
+export const TERRAIN_TRANSITION_DURATION = 500
 
 export const TERRAIN_SOURCE: RasterDEMSourceSpecification = {
   type: 'raster-dem',

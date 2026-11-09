@@ -1,7 +1,7 @@
 /**
   File: useAlbertaMapController.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Connect map state, layer, terrain, camera, and flyover controls.
@@ -121,12 +121,10 @@ export function useAlbertaMapController() {
     terrainExaggeration: terrainControls.terrainExaggeration,
     basemapStyleId: layerControls.basemapStyleId,
     isHillshadeEnabled: layerControls.isHillshadeEnabled,
-    isSatelliteEnabled: layerControls.isSatelliteEnabled,
     isAlbertaBoundaryEnabled: layerControls.isAlbertaBoundaryEnabled,
     onTerrainExaggerationChange: terrainControls.changeTerrainExaggeration,
     onBasemapStyleChange: layerControls.changeBasemapStyle,
     onHillshadeChange: layerControls.changeHillshade,
-    onSatelliteChange: layerControls.changeSatellite,
     onAlbertaBoundaryChange: layerControls.changeAlbertaBoundaryVisibility,
     onToggleTerrain: terrainControls.toggleTerrain,
     onToggleFlyover: () => flyoverControls.toggleFlyover(),
@@ -150,7 +148,7 @@ export function useAlbertaMapController() {
     mapRef,
     mapInstance,
     initialMapView,
-    mapStyle: getBasemapStyle(layerControls.basemapStyleId).url,
+    mapStyle: getBasemapStyle(layerControls.basemapStyleId).style,
     minZoom: ZOOM_MIN,
     maxZoom: ZOOM_MAX,
     onMapLoad: initializeMap,

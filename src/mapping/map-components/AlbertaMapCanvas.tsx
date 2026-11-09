@@ -1,7 +1,7 @@
 /**
   File: AlbertaMapCanvas.tsx | Author: Chace Nielson
   Date Created: Nov 8, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Render the MapLibre canvas, POI layer, and map overlays.
@@ -15,6 +15,7 @@
 import type { ReactNode } from 'react'
 import { Map } from 'react-map-gl/maplibre'
 import type { MapRef } from 'react-map-gl/maplibre'
+import type { StyleSpecification } from 'maplibre-gl'
 import * as maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import mapWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
@@ -44,7 +45,7 @@ type AlbertaMapCanvasProps = Omit<
   ariaLabel: string
   moduleId?: string
   initialMapView: InitialMapView
-  mapStyle: string
+  mapStyle: string | StyleSpecification
   minZoom: number
   maxZoom: number
   mapRefCallback: (map: MapRef | null) => void

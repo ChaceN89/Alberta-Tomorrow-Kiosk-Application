@@ -37,16 +37,18 @@ import { useMapViewActions } from './map-components/useMapViewActions'
 import { useMapViewport } from './map-components/useMapViewport'
 import { usePlaneTutorialState } from './map-components/usePlaneTutorialState'
 
+// AlbertaMap component coordinates map state, POI navigation, and helper layers.
 type AlbertaMapProps = {
-  ariaLabel: string
-  moduleId?: string
-  modulePois?: readonly MapPoi[]
-  defaultPoisVisible?: boolean
-  modulePoisVisible?: boolean
-  moduleStartup?: ModuleMapStartup
+  ariaLabel: string // Accessible label for the map container
+  moduleId?: string // Optional module identifier for the map context
+  modulePois?: readonly MapPoi[] // POIs specific to the module
+  defaultPoisVisible?: boolean // Whether default POIs are visible
+  modulePoisVisible?: boolean // Whether module-specific POIs are visible
+  moduleStartup?: ModuleMapStartup // Startup configuration for the module map
   children?: ReactNode
 }
 
+// main component for the albeta map
 export function AlbertaMap({
   ariaLabel,
   moduleId,
@@ -56,9 +58,16 @@ export function AlbertaMap({
   moduleStartup,
   children,
 }: AlbertaMapProps) {
+  // State for the currently active POI on the map
   const [activePoiId, setActivePoiId] = useState<string | null>(null)
+
+  // use state for the map info panell popout
   const { openPanel, closePanel } = useMapInfoPanel()
+
+  // Startup map gate for coordinating map readiness with app startup - ensures the map is ready before proceeding with app initialization
   const startupMapGate = useAppStartupMapGate()
+
+  // Alberta map controller for managing map state, flyover, and map instance references
   const {
     controls,
     flyover,
@@ -72,7 +81,11 @@ export function AlbertaMap({
     onMapAvailable,
     onMapError,
   } = useAlbertaMapController()
+
+  // state for if the map viewport is currently being controlled by the flyover
   const mapViewport = useMapViewport(mapInstance, controls.isFlyoverEnabled)
+
+  // use map POI data hook to manage visible POIs and clustering
   const poiData = useMapPoiData({
     modulePois,
     defaultPoisVisible,
@@ -81,6 +94,8 @@ export function AlbertaMap({
     hasMapError: controls.hasMapError,
     mapViewport: mapViewport.mapViewport,
   })
+
+  // Plane tutorial state for managing the tutorial overlay and controls
   const planeTutorial = usePlaneTutorialState({
     flyoverPhase: flyover.phase,
     isMapReady: controls.isMapReady,
@@ -88,6 +103,8 @@ export function AlbertaMap({
     onStartFlyover: controls.onStartFlyover,
     onSetFlyoverPaused: controls.onSetFlyoverPaused,
   })
+
+  // Map view actions for handling map resets, flyover controls, and tutorial steps
   const { onResetMapView } = useMapViewActions({
     moduleId,
     moduleStartup,
@@ -104,6 +121,7 @@ export function AlbertaMap({
       planeTutorial.setIsPlaneTutorialControlsStep,
   })
 
+  // Collapse map attribution when appropriate
   useMapAttributionCollapse(mapInstance)
 
   useEffect(() => {

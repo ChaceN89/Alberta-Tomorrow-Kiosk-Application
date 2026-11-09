@@ -119,6 +119,7 @@ export type ModuleMapStartup = {
   view: MapPoiView
   startFlyover?: boolean
   startSpeed?: number // base speed in meters per second, before altitude scaling
+  // satellite is active at the start of the map view if true
 }
 
 export type ModuleMapSettings = {

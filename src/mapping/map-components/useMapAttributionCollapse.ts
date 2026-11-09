@@ -30,7 +30,7 @@ export function useMapAttributionCollapse(mapInstance: MapLibreMap | null) {
       attribution
         .querySelector<HTMLElement>('.maplibregl-ctrl-attrib-button')
         ?.click()
-    }, 5000)
+    }, 1000)
 
     return () => window.clearTimeout(timer)
   }, [mapInstance])

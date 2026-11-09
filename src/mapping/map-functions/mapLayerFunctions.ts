@@ -1,7 +1,7 @@
 /**
   File: mapLayerFunctions.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Create and control the shared map's custom sources and layers.
@@ -23,11 +23,6 @@ import {
   ALBERTA_BOUNDARY_SOURCE_ID,
   ALBERTA_BOUNDARY_URL,
 } from '../map-settings/mapSettings'
-import {
-  SATELLITE_LAYER_ID,
-  SATELLITE_SOURCE,
-  SATELLITE_SOURCE_ID,
-} from '../map-settings/baseMapSettings'
 import {
   HILLSHADE_LAYER_ID,
   TERRAIN_SOURCE,
@@ -63,27 +58,6 @@ export function ensureHillshadeLayer(map: MapLibreMap) {
         },
       },
       getFirstSymbolLayerId(map),
-    )
-  }
-}
-
-// Function: Add satellite imagery below hillshade and labels.
-export function ensureSatelliteLayer(map: MapLibreMap) {
-  if (!map.getSource(SATELLITE_SOURCE_ID)) {
-    map.addSource(SATELLITE_SOURCE_ID, SATELLITE_SOURCE)
-  }
-
-  if (!map.getLayer(SATELLITE_LAYER_ID)) {
-    map.addLayer(
-      {
-        id: SATELLITE_LAYER_ID,
-        type: 'raster',
-        source: SATELLITE_SOURCE_ID,
-        layout: { visibility: 'visible' },
-      },
-      map.getLayer(HILLSHADE_LAYER_ID)
-        ? HILLSHADE_LAYER_ID
-        : getFirstSymbolLayerId(map),
     )
   }
 }

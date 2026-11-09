@@ -13,7 +13,7 @@
     "enableFlyover": "Fly Plane",
     "disableFlyover": "Return to Map",
     "basemapLabel": "Basemap style",
-    "basemapHelp": "Changes the colours, roads, labels, water, and land appearance.",
+    "basemapHelp": "Choose the map appearance, including satellite imagery.",
     "albertaBoundaryLabel": "Alberta boundary",
     "albertaBoundaryHelp": "Show or hide the provincial outline of Alberta.",
     "defaultPoisLabel": "Base map points of interest",
@@ -27,14 +27,12 @@
     "basemapStyles": {
       "liberty": "Standard",
       "bright": "Bright",
-      "positron": "Light",
       "dark": "Dark",
-      "fiord": "Fiord"
+      "fiord": "Fiord",
+      "satellite": "Satellite"
     },
     "hillshadeLabel": "Hillshading",
     "hillshadeHelp": "Adds light and shadow to slopes, making landforms easier to read.",
-    "satelliteLabel": "Satellite imagery",
-    "satelliteHelp": "Uses aerial and satellite images as the ground surface.",
     "exaggerationLabel": "Terrain exaggeration",
     "exaggerationValue": "{{value}}×",
     "exaggerationHelp": "Makes elevation differences physically taller.",

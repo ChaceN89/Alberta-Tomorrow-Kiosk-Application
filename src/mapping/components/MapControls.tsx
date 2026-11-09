@@ -1,7 +1,7 @@
 /**
   File: MapControls.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Render accessible controls for map appearance and camera settings.
@@ -36,7 +36,6 @@ export function MapControls() {
     terrainExaggeration,
     basemapStyleId,
     isHillshadeEnabled,
-    isSatelliteEnabled,
     isAlbertaBoundaryEnabled,
     defaultPoisVisible,
     modulePoisVisible,
@@ -45,7 +44,6 @@ export function MapControls() {
     onTerrainExaggerationChange,
     onBasemapStyleChange,
     onHillshadeChange,
-    onSatelliteChange,
     onAlbertaBoundaryChange,
     onDefaultPoisChange,
     onModulePoisChange,
@@ -57,7 +55,6 @@ export function MapControls() {
   const exaggerationId = useId()
   const exaggerationHelpId = useId()
   const hillshadeId = useId()
-  const satelliteId = useId()
   const albertaBoundaryId = useId()
   const defaultPoisId = useId()
   const modulePoisId = useId()
@@ -234,26 +231,6 @@ export function MapControls() {
               </span>
               <span className="mapping-controls__help">
                 {t('view.hillshadeHelp')}
-              </span>
-            </span>
-          </label>
-
-          <label className="mapping-controls__check" htmlFor={satelliteId}>
-            <input
-              id={satelliteId}
-              type="checkbox"
-              checked={isSatelliteEnabled}
-              disabled={isDisabled}
-              onChange={(event) =>
-                onSatelliteChange(event.currentTarget.checked)
-              }
-            />
-            <span className="mapping-controls__check-copy">
-              <span className="mapping-controls__label">
-                {t('view.satelliteLabel')}
-              </span>
-              <span className="mapping-controls__help">
-                {t('view.satelliteHelp')}
               </span>
             </span>
           </label>

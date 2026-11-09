@@ -1,7 +1,7 @@
 /**
   File: poiClusterSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Configure the screen-space distance used to group nearby map markers.
@@ -26,7 +26,7 @@ export const MAX_POI_CLUSTER_RADIUS = 160
 
 // Slider increment in pixels; increase for coarser adjustments or decrease
 // for finer adjustments to the cluster distance.
-export const POI_CLUSTER_RADIUS_STEP = 10
+export const POI_CLUSTER_RADIUS_STEP = 5
 
 // Additional zoom levels applied after a cluster's calculated split zoom.
 export const POI_CLUSTER_ZOOM_OVERSHOOT = 2

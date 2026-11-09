@@ -13,7 +13,7 @@
     "enableFlyover": "Faire voler l’avion",
     "disableFlyover": "Retourner à la carte",
     "basemapLabel": "Style de fond de carte",
-    "basemapHelp": "Modifie les couleurs, les routes, les étiquettes, l’eau et l’apparence des terres.",
+    "basemapHelp": "Choisissez l’apparence de la carte, y compris l’imagerie satellite.",
     "albertaBoundaryLabel": "Limite de l’Alberta",
     "albertaBoundaryHelp": "Afficher ou masquer la limite provinciale de l’Alberta.",
     "defaultPoisLabel": "Lieux d’intérêt de la carte de base",
@@ -27,14 +27,12 @@
     "basemapStyles": {
       "liberty": "Standard",
       "bright": "Vif",
-      "positron": "Clair",
       "dark": "Sombre",
-      "fiord": "Fiord"
+      "fiord": "Fiord",
+      "satellite": "Satellite"
     },
     "hillshadeLabel": "Ombrage du relief",
     "hillshadeHelp": "Ajoute de la lumière et des ombres aux pentes afin de mieux distinguer le relief.",
-    "satelliteLabel": "Imagerie satellite",
-    "satelliteHelp": "Utilise des images aériennes et satellites comme surface de fond.",
     "exaggerationLabel": "Exagération du relief",
     "exaggerationValue": "{{value}}×",
     "exaggerationHelp": "Amplifie la hauteur apparente des différences d’altitude.",
