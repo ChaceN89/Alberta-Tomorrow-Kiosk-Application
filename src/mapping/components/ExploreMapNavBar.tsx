@@ -1,7 +1,7 @@
 /**
   File: ExploreMapNavBar.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Provide map navigation, module links, and journal access outside the map.
@@ -40,8 +40,13 @@ export function ExploreMapNavBar({
   const { t, i18n } = useTranslation('mapping')
   const { t: tJournal } = useTranslation('journal')
   const { openJournal } = useJournal()
-  const { isMapReady, isStyleLoading, isTerrainTransitioning, onResetMapView } =
-    useMapControls()
+  const {
+    isMapReady,
+    isStyleLoading,
+    isTerrainTransitioning,
+    isResettingMap,
+    onResetMapView,
+  } = useMapControls()
   const { progress } = useExpeditionProgress()
   const [isOpen, setIsOpen] = useState(false)
   const navigationId = useId()
@@ -147,7 +152,12 @@ export function ExploreMapNavBar({
             type="button"
             className="flex size-12 items-center justify-center rounded-full border border-line bg-surface text-pine shadow-lg hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-50"
             aria-label={t('navigation.resetView')}
-            disabled={!isMapReady || isStyleLoading || isTerrainTransitioning}
+            disabled={
+              !isMapReady ||
+              isStyleLoading ||
+              isTerrainTransitioning ||
+              isResettingMap
+            }
             onClick={onResetMapView}
           >
             <MapResetIcon className="size-6" />

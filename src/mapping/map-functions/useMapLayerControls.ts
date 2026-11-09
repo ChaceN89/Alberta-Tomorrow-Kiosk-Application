@@ -12,10 +12,10 @@
   Notes:
   - Custom layer creation and visibility helpers live in mapLayerFunctions.
  */
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Dispatch, RefObject, SetStateAction } from 'react'
 import type { MapRef } from 'react-map-gl/maplibre'
-import type { Map as MapLibreMap } from 'maplibre-gl'
+import type { ErrorEvent, Map as MapLibreMap } from 'maplibre-gl'
 import {
   DEFAULT_BASEMAP_STYLE_ID,
   getBasemapStyle,
@@ -41,6 +41,7 @@ import {
 type UseMapLayerControlsOptions = {
   mapRef: RefObject<MapRef | null>
   isMapReady: boolean
+  startSatellite: boolean
   isTerrainEnabled: boolean
   terrainExaggeration: number
   setIsStyleLoading: Dispatch<SetStateAction<boolean>>
@@ -52,6 +53,7 @@ type UseMapLayerControlsOptions = {
 export function useMapLayerControls({
   mapRef,
   isMapReady,
+  startSatellite,
   isTerrainEnabled,
   terrainExaggeration,
   setIsStyleLoading,
@@ -59,33 +61,46 @@ export function useMapLayerControls({
   clearError,
 }: UseMapLayerControlsOptions) {
   const [basemapStyleId, setBasemapStyleId] = useState<BasemapStyleId>(
-    DEFAULT_BASEMAP_STYLE_ID,
+    startSatellite ? SATELLITE_BASEMAP_STYLE_ID : DEFAULT_BASEMAP_STYLE_ID,
   )
   const [isHillshadeEnabled, setIsHillshadeEnabled] =
     useState(HILLSHADING_DEFAULT)
   const [isAlbertaBoundaryEnabled, setIsAlbertaBoundaryEnabled] = useState(
     ALBERTA_BOUNDARY_DEFAULT,
   )
+  const cancelStyleChange = useRef<(() => void) | null>(null)
+
+  useEffect(() => () => cancelStyleChange.current?.(), [])
 
   // Function: Add startup layers and apply their configured default visibility.
-  const initializeMapLayers = (map: MapLibreMap) => {
+  const initializeMapLayers = (map: MapLibreMap, styleId: BasemapStyleId) => {
     ensureTerrainSource(map)
     if (HILLSHADING_DEFAULT) ensureHillshadeLayer(map)
-    setBasemapPlacesVisibility(map, false)
-    if (ALBERTA_BOUNDARY_DEFAULT) {
-      setAlbertaBoundaryVisibility(map, ALBERTA_BOUNDARY_DEFAULT)
-    }
-  }
-
-  // Function: Reapply custom layers and terrain after a basemap style is loaded.
-  const restoreMapLayers = (map: MapLibreMap, styleId: BasemapStyleId) => {
-    ensureTerrainSource(map)
-    if (isHillshadeEnabled) ensureHillshadeLayer(map)
+    else if (map.getLayer(HILLSHADE_LAYER_ID))
+      map.removeLayer(HILLSHADE_LAYER_ID)
     if (styleId !== SATELLITE_BASEMAP_STYLE_ID) {
       setBasemapPlacesVisibility(map, false)
     }
-    if (isAlbertaBoundaryEnabled) {
-      setAlbertaBoundaryVisibility(map, isAlbertaBoundaryEnabled)
+    setAlbertaBoundaryVisibility(map, ALBERTA_BOUNDARY_DEFAULT)
+  }
+
+  // Function: Reapply custom layers and terrain after a basemap style is loaded.
+  const restoreMapLayers = (
+    map: MapLibreMap,
+    styleId: BasemapStyleId,
+    resetDefaults: boolean,
+  ) => {
+    if (resetDefaults) {
+      initializeMapLayers(map, styleId)
+    } else {
+      ensureTerrainSource(map)
+      if (isHillshadeEnabled) ensureHillshadeLayer(map)
+      if (styleId !== SATELLITE_BASEMAP_STYLE_ID) {
+        setBasemapPlacesVisibility(map, false)
+      }
+      if (isAlbertaBoundaryEnabled) {
+        setAlbertaBoundaryVisibility(map, isAlbertaBoundaryEnabled)
+      }
     }
     map.setTerrain(
       isTerrainEnabled
@@ -99,38 +114,73 @@ export function useMapLayerControls({
   }
 
   // Function: Change basemap and restore the active layers when its style loads.
-  const changeBasemapStyle = (styleId: string) => {
+  const changeBasemapStyle = async (styleId: string, resetDefaults = false) => {
     const map = mapRef.current?.getMap()
-    if (!map || !isMapReady) return
+    if (!map || !isMapReady) {
+      reportError(new Error('Cannot change basemap before the map is ready.'))
+      return false
+    }
 
-    let restoreMapSettings: (() => void) | null = null
     try {
       const style = getBasemapStyle(styleId)
+      cancelStyleChange.current?.()
       clearError()
-      setIsStyleLoading(true)
+      if (resetDefaults) {
+        setIsHillshadeEnabled(HILLSHADING_DEFAULT)
+        setIsAlbertaBoundaryEnabled(ALBERTA_BOUNDARY_DEFAULT)
+      }
+      if (style.id === basemapStyleId) {
+        restoreMapLayers(map, style.id, resetDefaults)
+        return true
+      }
 
-      // Function: Restore custom layers and terrain after the new style loads.
-      restoreMapSettings = () => {
-        try {
-          restoreMapLayers(map, style.id)
-          clearError()
-        } catch (error) {
-          reportError(error)
-        } finally {
-          setIsStyleLoading(false)
+      return await new Promise<boolean>((resolve) => {
+        const cleanup = () => {
+          map.off('style.load', restoreMapSettings)
+          map.off('error', failStyleChange)
+          cancelStyleChange.current = null
         }
-      }
-
-      map.once('style.load', restoreMapSettings)
-      setBasemapStyleId(style.id)
+        const restoreMapSettings = () => {
+          cleanup()
+          try {
+            restoreMapLayers(map, style.id, resetDefaults)
+            clearError()
+            resolve(true)
+          } catch (error) {
+            reportError(error)
+            resolve(false)
+          } finally {
+            setIsStyleLoading(false)
+          }
+        }
+        const failStyleChange = (event: ErrorEvent) => {
+          cleanup()
+          reportError(event.error)
+          setIsStyleLoading(false)
+          resolve(false)
+        }
+        cancelStyleChange.current = () => {
+          cleanup()
+          resolve(false)
+        }
+        setIsStyleLoading(true)
+        map.once('style.load', restoreMapSettings)
+        map.once('error', failStyleChange)
+        setBasemapStyleId(style.id)
+      })
     } catch (error) {
-      if (restoreMapSettings) {
-        map.off('style.load', restoreMapSettings)
-      }
+      cancelStyleChange.current?.()
       setIsStyleLoading(false)
       reportError(error)
+      return false
     }
   }
+
+  const resetMapLayers = () =>
+    changeBasemapStyle(
+      startSatellite ? SATELLITE_BASEMAP_STYLE_ID : DEFAULT_BASEMAP_STYLE_ID,
+      true,
+    )
 
   // Function: Add or remove hillshading and update its checkbox state.
   const changeHillshade = (enabled: boolean) => {
@@ -173,5 +223,6 @@ export function useMapLayerControls({
     changeBasemapStyle,
     changeHillshade,
     changeAlbertaBoundaryVisibility,
+    resetMapLayers,
   }
 }

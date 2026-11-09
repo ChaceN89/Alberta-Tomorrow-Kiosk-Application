@@ -1,7 +1,7 @@
 /**
   File: map-settings.ts | Author: Chace Nielson
   Date Created: Nov 6, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Configure Frank Slide map visibility and its startup flyover.
@@ -27,5 +27,6 @@ export const frankSlideMapSettings: ModuleMapSettings = {
     },
     startFlyover: true,
     startSpeed: 600,
+    startSatellite: true,
   },
 }

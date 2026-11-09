@@ -1,7 +1,7 @@
 /**
   File: useMapViewActions.ts | Author: Chace Nielson
   Date Created: Nov 8, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Coordinate startup camera movement, reset requests, and startup flyovers.
@@ -10,9 +10,9 @@
   - Used by AlbertaMap to provide its map reset control and module startup.
 
   Notes:
-  - Reset requests wait for an active flyover to exit before moving the camera.
+  - Reset exits flight, restores settings, and replays the configured startup.
  */
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 import type { MapRef } from 'react-map-gl/maplibre'
 import type { ModuleMapStartup } from '@/modules/types'
@@ -40,6 +40,7 @@ type UseMapViewActionsOptions = {
   onStartFlyover: (pauseAfterEntry: boolean, startSpeed?: number) => void
   onToggleFlyover: () => void
   onMapError: (error: unknown) => void
+  onResetMapSettings: () => Promise<boolean>
   setIsPlaneTutorialControlsStep: (isControlsStep: boolean) => void
 }
 
@@ -55,22 +56,39 @@ export function useMapViewActions({
   onStartFlyover,
   onToggleFlyover,
   onMapError,
+  onResetMapSettings,
   setIsPlaneTutorialControlsStep,
 }: UseMapViewActionsOptions) {
   const pendingMapReset = useRef(false)
   const pendingMapResetExitRequested = useRef(false)
   const moduleStartupHasRun = useRef(false)
+  const [isResettingMap, setIsResettingMap] = useState(false)
+  const isMounted = useRef(false)
+  const resetIsRunning = useRef(false)
+  const cancelCameraMove = useRef<(() => void) | null>(null)
   const onStartFlyoverRef = useRef(onStartFlyover)
   const onMapErrorRef = useRef(onMapError)
+  const onResetMapSettingsRef = useRef(onResetMapSettings)
 
   useEffect(() => {
     onStartFlyoverRef.current = onStartFlyover
     onMapErrorRef.current = onMapError
-  }, [onMapError, onStartFlyover])
+    onResetMapSettingsRef.current = onResetMapSettings
+  }, [onMapError, onStartFlyover, onResetMapSettings])
 
-  const resetMapToStart = useCallback(() => {
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+      cancelCameraMove.current?.()
+    }
+  }, [])
+
+  const resetMapToStart = useCallback((): Promise<boolean> => {
     const map = mapRef.current?.getMap()
-    if (!map) return
+    if (!map) return Promise.resolve(false)
+
+    cancelCameraMove.current?.()
 
     const center: [number, number] = [
       initialMapView.longitude,
@@ -83,14 +101,27 @@ export function useMapViewActions({
       bearing: initialMapView.bearing,
     }
 
-    try {
-      map.flyTo({
-        ...startView,
-        duration: getAnimationDuration(POI_NAVIGATION_DURATION),
-      })
-    } catch (error) {
-      onMapErrorRef.current(error)
-    }
+    return new Promise((resolve) => {
+      const finish = (arrived: boolean) => {
+        map.off('moveend', onArrival)
+        cancelCameraMove.current = null
+        resolve(arrived)
+      }
+      const onArrival = () => finish(true)
+      cancelCameraMove.current = () => finish(false)
+      try {
+        map.stop()
+        map.once('moveend', onArrival)
+        map.flyTo({
+          ...startView,
+          duration: getAnimationDuration(POI_NAVIGATION_DURATION),
+        })
+        if (!map.isMoving()) onArrival()
+      } catch (error) {
+        finish(false)
+        onMapErrorRef.current(error)
+      }
+    })
   }, [
     initialMapView.bearing,
     initialMapView.latitude,
@@ -101,18 +132,49 @@ export function useMapViewActions({
     moduleStartup?.view,
   ])
 
-  const onResetMapView = useCallback(() => {
-    if (!isMapReady || isStyleLoading || isTerrainTransitioning) return
-
-    if (flyoverPhase === 'off') {
+  const performReset = useCallback(async () => {
+    if (resetIsRunning.current) return
+    resetIsRunning.current = true
+    try {
+      if (!(await onResetMapSettingsRef.current()) || !isMounted.current) return
+      // Allow the restored terrain and layer state to reach the flight controls.
+      await new Promise<void>((resolve) =>
+        window.requestAnimationFrame(() => resolve()),
+      )
+      if (!isMounted.current) return
+      const arrived = await resetMapToStart()
+      if (arrived && isMounted.current && moduleStartup?.startFlyover) {
+        onStartFlyoverRef.current(false, moduleStartup.startSpeed)
+      }
+    } catch (error) {
+      if (isMounted.current) onMapErrorRef.current(error)
+    } finally {
       pendingMapReset.current = false
       pendingMapResetExitRequested.current = false
-      resetMapToStart()
+      resetIsRunning.current = false
+      if (isMounted.current) setIsResettingMap(false)
+    }
+  }, [moduleStartup, resetMapToStart])
+
+  const onResetMapView = useCallback(() => {
+    if (
+      !isMapReady ||
+      isStyleLoading ||
+      isTerrainTransitioning ||
+      pendingMapReset.current ||
+      resetIsRunning.current
+    )
+      return
+
+    cancelCameraMove.current?.()
+    moduleStartupHasRun.current = true
+    pendingMapReset.current = true
+    setIsResettingMap(true)
+    setIsPlaneTutorialControlsStep(false)
+    if (flyoverPhase === 'off') {
+      void performReset()
       return
     }
-
-    pendingMapReset.current = true
-    setIsPlaneTutorialControlsStep(false)
     pendingMapResetExitRequested.current = flyoverPhase === 'flying'
     if (pendingMapResetExitRequested.current) onToggleFlyover()
   }, [
@@ -121,12 +183,12 @@ export function useMapViewActions({
     isStyleLoading,
     isTerrainTransitioning,
     onToggleFlyover,
-    resetMapToStart,
+    performReset,
     setIsPlaneTutorialControlsStep,
   ])
 
   useEffect(() => {
-    if (!pendingMapReset.current) return
+    if (!pendingMapReset.current || resetIsRunning.current) return
     if (flyoverPhase === 'flying') {
       if (!pendingMapResetExitRequested.current) {
         pendingMapResetExitRequested.current = true
@@ -136,10 +198,8 @@ export function useMapViewActions({
     }
     if (flyoverPhase !== 'off') return
 
-    pendingMapReset.current = false
-    pendingMapResetExitRequested.current = false
-    resetMapToStart()
-  }, [flyoverPhase, onToggleFlyover, resetMapToStart])
+    void performReset()
+  }, [flyoverPhase, onToggleFlyover, performReset])
 
   useEffect(() => {
     if (
@@ -153,48 +213,26 @@ export function useMapViewActions({
       return
     }
 
-    const map = mapRef.current?.getMap()
-    if (!map) return
-
     moduleStartupHasRun.current = true
     let isEffectActive = true
-    const startFlyoverAfterArrival = () => {
-      if (!isEffectActive) return
-
-      map.off('moveend', startFlyoverAfterArrival)
-      if (moduleStartup.startFlyover) {
+    void resetMapToStart().then((arrived) => {
+      if (arrived && isEffectActive && moduleStartup.startFlyover) {
         onStartFlyoverRef.current(false, moduleStartup.startSpeed)
       }
-    }
-
-    if (moduleStartup.startFlyover) {
-      map.once('moveend', startFlyoverAfterArrival)
-    }
-
-    try {
-      map.flyTo({
-        ...moduleStartup.view,
-        duration: POI_NAVIGATION_DURATION,
-      })
-      if (!map.isMoving()) startFlyoverAfterArrival()
-    } catch (error) {
-      map.off('moveend', startFlyoverAfterArrival)
-      moduleStartupHasRun.current = false
-      onMapErrorRef.current(error)
-    }
+    })
 
     return () => {
       isEffectActive = false
-      map.off('moveend', startFlyoverAfterArrival)
+      cancelCameraMove.current?.()
     }
   }, [
     isMapReady,
     isStyleLoading,
     isTerrainTransitioning,
-    mapRef,
     moduleId,
     moduleStartup,
+    resetMapToStart,
   ])
 
-  return { onResetMapView }
+  return { onResetMapView, isResettingMap }
 }

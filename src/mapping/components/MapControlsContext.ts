@@ -20,6 +20,7 @@ export type MapControlsProps = {
   hasMapError: boolean
   isMapReady: boolean
   isStyleLoading: boolean
+  isResettingMap: boolean
   isTerrainEnabled: boolean
   isTerrainTransitioning: boolean
   isFlyoverEnabled: boolean
@@ -50,7 +51,10 @@ export type MapControlsProps = {
 
 export type MapControllerControlsProps = Omit<
   MapControlsProps,
-  'poiClusterRadius' | 'onPoiClusterRadiusChange' | 'onResetMapView'
+  | 'poiClusterRadius'
+  | 'onPoiClusterRadiusChange'
+  | 'onResetMapView'
+  | 'isResettingMap'
 >
 
 export const MapControlsContext = createContext<MapControlsProps | null>(null)

@@ -1,7 +1,7 @@
 /**
   File: AlbertaMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Coordinate map state, POI navigation, and the map-specific helper layers.
@@ -80,7 +80,8 @@ export function AlbertaMap({
     onMapLoad,
     onMapAvailable,
     onMapError,
-  } = useAlbertaMapController()
+    resetMapSettings,
+  } = useAlbertaMapController(moduleStartup?.startSatellite === true)
 
   // state for if the map viewport is currently being controlled by the flyover
   const mapViewport = useMapViewport(mapInstance, controls.isFlyoverEnabled)
@@ -105,7 +106,7 @@ export function AlbertaMap({
   })
 
   // Map view actions for handling map resets, flyover controls, and tutorial steps
-  const { onResetMapView } = useMapViewActions({
+  const { onResetMapView, isResettingMap } = useMapViewActions({
     moduleId,
     moduleStartup,
     mapRef,
@@ -117,6 +118,12 @@ export function AlbertaMap({
     onStartFlyover: controls.onStartFlyover,
     onToggleFlyover: controls.onToggleFlyover,
     onMapError,
+    onResetMapSettings: async () => {
+      closePanel({ restoreFocus: false })
+      setActivePoiId(null)
+      poiData.resetPoiSettings()
+      return resetMapSettings()
+    },
     setIsPlaneTutorialControlsStep:
       planeTutorial.setIsPlaneTutorialControlsStep,
   })
@@ -150,6 +157,7 @@ export function AlbertaMap({
     : (poiData.visiblePois[0]?.id ?? null)
 
   const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
+    if (isResettingMap) return
     if (controls.isFlyoverEnabled) {
       setActivePoiId(poi.id)
       controls.onFlyoverTravelTo(poi.coordinates)
@@ -196,6 +204,7 @@ export function AlbertaMap({
     coordinates: [number, number],
     expansionZoom: number,
   ) => {
+    if (isResettingMap) return
     if (controls.isFlyoverEnabled) {
       controls.onFlyoverTravelTo(coordinates)
       return
@@ -214,6 +223,7 @@ export function AlbertaMap({
   const mapControls = {
     ...controls,
     onResetMapView,
+    isResettingMap,
     onToggleFlyover: () => {
       if (controls.isFlyoverEnabled) {
         planeTutorial.setIsPlaneTutorialControlsStep(false)

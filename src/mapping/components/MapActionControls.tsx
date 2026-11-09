@@ -1,7 +1,7 @@
 /**
   File: MapActionControls.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Render terrain and flyover mode switches for the explore map.
@@ -21,6 +21,7 @@ export function MapActionControls() {
   const {
     isMapReady,
     isStyleLoading,
+    isResettingMap,
     isTerrainEnabled,
     isTerrainTransitioning,
     isFlyoverEnabled,
@@ -29,7 +30,8 @@ export function MapActionControls() {
     onToggleFlyover,
   } = useMapControls()
   const { t } = useTranslation('mapping')
-  const isDisabled = !isMapReady || isStyleLoading || isTerrainTransitioning
+  const isDisabled =
+    !isMapReady || isStyleLoading || isTerrainTransitioning || isResettingMap
   const switchLabel = t(
     isTerrainEnabled ? 'terrain.switchTo2d' : 'terrain.switchTo3d',
   )

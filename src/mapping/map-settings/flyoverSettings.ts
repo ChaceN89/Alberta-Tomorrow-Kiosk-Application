@@ -1,7 +1,7 @@
 /**
   File: flyoverSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define flyover flight, camera, transition, and plane display settings.
@@ -63,13 +63,13 @@ export const FLYOVER_TERRAIN_RISE_RESPONSE = 2 // higher values climb over ridge
 export const FLYOVER_TERRAIN_FALL_RESPONSE = 0.7 // higher values follow valleys down sooner
 
 // Transitions into and out of flyover mode, in milliseconds.
-export const FLYOVER_ENTER_DURATION = 2600
-export const FLYOVER_EXIT_DURATION = 1800 // the plane leaving the screen
+export const FLYOVER_ENTER_DURATION = 2100
+export const FLYOVER_EXIT_DURATION = 1000 // the plane leaving the screen
 
 // When flyover ends the map zooms out to this level and tilts to this pitch.
 export const FLYOVER_EXIT_ZOOM = 12
 export const FLYOVER_EXIT_PITCH = 60
-export const FLYOVER_EXIT_CAMERA_DURATION = 2800
+export const FLYOVER_EXIT_CAMERA_DURATION = 1600
 
 // Selecting a map marker while flying carries the plane toward it. The plane
 // climbs on the way, returns to its starting altitude, stops short of the marker,

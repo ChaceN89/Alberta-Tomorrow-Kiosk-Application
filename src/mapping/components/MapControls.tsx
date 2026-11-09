@@ -33,6 +33,7 @@ export function MapControls() {
     hasMapError,
     isMapReady,
     isStyleLoading,
+    isResettingMap,
     terrainExaggeration,
     basemapStyleId,
     isHillshadeEnabled,
@@ -59,7 +60,7 @@ export function MapControls() {
   const defaultPoisId = useId()
   const modulePoisId = useId()
   const poiClusterRadiusId = useId()
-  const isDisabled = !isMapReady || isStyleLoading
+  const isDisabled = !isMapReady || isStyleLoading || isResettingMap
 
   return (
     <section

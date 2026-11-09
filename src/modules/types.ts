@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define module metadata, launch settings, map POIs, and activity contracts.
@@ -119,7 +119,7 @@ export type ModuleMapStartup = {
   view: MapPoiView
   startFlyover?: boolean
   startSpeed?: number // base speed in meters per second, before altitude scaling
-  // satellite is active at the start of the map view if true
+  startSatellite?: boolean // Defaults to false; reset restores this startup choice.
 }
 
 export type ModuleMapSettings = {

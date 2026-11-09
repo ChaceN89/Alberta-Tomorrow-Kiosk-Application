@@ -1,7 +1,7 @@
 /**
   File: useTerrainControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Manage terrain state, exaggeration, and the 2D/3D transition.
@@ -87,6 +87,12 @@ export function useTerrainControls({
         : null,
     )
     map.setMaxPitch(START_IN_3D_DEFAULT ? MAX_CAMERA_PITCH : 0)
+  }
+
+  const resetTerrain = (map: MapLibreMap) => {
+    initializeTerrain(map)
+    setIsTerrainEnabled(START_IN_3D_DEFAULT)
+    setTerrainExaggeration(DEFAULT_TERRAIN_EXAGGERATION)
   }
 
   // Function: Validate and apply a new terrain exaggeration value.
@@ -208,5 +214,6 @@ export function useTerrainControls({
     initializeTerrain,
     changeTerrainExaggeration,
     toggleTerrain,
+    resetTerrain,
   }
 }

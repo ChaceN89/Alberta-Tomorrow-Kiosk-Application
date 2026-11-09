@@ -1,7 +1,7 @@
 /**
   File: useMapPoiData.ts | Author: Chace Nielson
   Date Created: Nov 8, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Build translated POI data and manage visibility, clustering, and readiness.
@@ -106,6 +106,12 @@ export function useMapPoiData({
   const isPoiDataReady =
     mapInstance !== null && (visiblePois.length === 0 || poiGroups.length > 0)
 
+  const resetPoiSettings = () => {
+    setAreDefaultPoisVisible(defaultPoisVisible)
+    setAreModulePoisVisible(modulePoisVisible)
+    setPoiClusterRadius(DEFAULT_POI_CLUSTER_RADIUS)
+  }
+
   return {
     areDefaultPoisVisible,
     setAreDefaultPoisVisible,
@@ -116,5 +122,6 @@ export function useMapPoiData({
     visiblePois,
     poiGroups,
     isPoiDataReady,
+    resetPoiSettings,
   }
 }

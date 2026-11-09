@@ -30,7 +30,7 @@ import { useMapLayerControls } from './useMapLayerControls'
 import { useTerrainControls } from './useTerrainControls'
 
 // Function: Coordinate map state and control hooks for the Alberta map.
-export function useAlbertaMapController() {
+export function useAlbertaMapController(startSatellite = false) {
   const mapRef = useRef<MapRef>(null)
   const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null)
   const [isMapReady, setIsMapReady] = useState(false)
@@ -66,6 +66,7 @@ export function useAlbertaMapController() {
   const layerControls = useMapLayerControls({
     mapRef,
     isMapReady,
+    startSatellite,
     isTerrainEnabled: terrainControls.isTerrainEnabled,
     terrainExaggeration: terrainControls.terrainExaggeration,
     setIsStyleLoading,
@@ -89,7 +90,7 @@ export function useAlbertaMapController() {
   // Function: Apply startup layers and map defaults when MapLibre finishes loading.
   const initializeMap = (map: MapLibreMap) => {
     try {
-      layerControls.initializeMapLayers(map)
+      layerControls.initializeMapLayers(map, layerControls.basemapStyleId)
       terrainControls.initializeTerrain(map)
       setMapInstance(map)
 
@@ -103,6 +104,14 @@ export function useAlbertaMapController() {
     (map: MapLibreMap | null) => setMapInstance(map),
     [],
   )
+
+  const resetMapSettings = async () => {
+    if (!(await layerControls.resetMapLayers())) return false
+    const map = mapRef.current?.getMap()
+    if (!map) return false
+    terrainControls.resetTerrain(map)
+    return true
+  }
 
   // Function: Report MapLibre errors and end any pending style loading state.
   const handleMapError = (error: unknown) => {
@@ -154,5 +163,6 @@ export function useAlbertaMapController() {
     onMapLoad: initializeMap,
     onMapAvailable,
     onMapError: handleMapError,
+    resetMapSettings,
   }
 }

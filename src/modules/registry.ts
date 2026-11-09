@@ -21,6 +21,11 @@ import type { LearningModule } from './types'
 export const modules: readonly LearningModule[] = [
   {
     visible: true,
+    id: 'frank-slide-test',
+    ...frankSlideModule,
+  },
+  {
+    visible: true,
     id: 'foxes-of-alberta-test',
     ...foxesOfAlbertaModule,
   },
@@ -33,11 +38,6 @@ export const modules: readonly LearningModule[] = [
     visible: true,
     id: 'geology-test',
     ...geologyModule,
-  },
-  {
-    visible: true,
-    id: 'frank-slide-test',
-    ...frankSlideModule,
   },
 ]
 
