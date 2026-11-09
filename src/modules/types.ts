@@ -44,6 +44,8 @@ export type MapPoiDefinition = {
   coordinates: [number, number]
   titleKey: ParseKeys<MapPoiTranslationNamespace>
   iconCategory: PoiIconCategory
+  flyoverRadiusMultiplier?: number // Positive scale of the shared flight radius; defaults to 1.
+  flyoverCylinderHeightMultiplier?: number // Positive cylinder height scale; defaults to 1.
   titleNamespace?: MapPoiTranslationNamespace
   view?: MapPoiView
   infoContent: ComponentType<MapPoiInfoContentProps>
@@ -110,7 +112,7 @@ export type JournalEntryDefinition = {
 }
 
 export type ModuleMapPoi = MapPoiDefinition & {
-  poiSelectedCheckpointId: string
+  poiSelectedCheckpointId?: string // Omit for informational POIs with no exploration checkpoint.
   additionalCompletionCheckpoints?: readonly string[]
   infoCheckpoints?: Readonly<Record<string, string>>
 }

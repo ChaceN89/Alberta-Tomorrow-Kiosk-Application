@@ -16,6 +16,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { BASE_POI_LIST } from '@/mapping/POIs/BasePOIList'
+import type { BasePoiDefinition } from '@/mapping/POIs/BasePOIList'
 import type { MapPoi } from '../components/MapPoiMarker'
 import { clusterMapPois } from '../map-functions/clusterMapPois'
 import { DEFAULT_POI_CLUSTER_RADIUS } from '../map-settings/poiClusterSettings'
@@ -49,7 +50,7 @@ export function useMapPoiData({
 
   const defaultPois = useMemo(
     () =>
-      BASE_POI_LIST.map((poi) => {
+      BASE_POI_LIST.map((poi: BasePoiDefinition) => {
         const title = t(poi.titleKey)
         const PoiContent = poi.infoContent
 
@@ -58,6 +59,8 @@ export function useMapPoiData({
           coordinates: poi.coordinates,
           title,
           iconCategory: poi.iconCategory,
+          flyoverRadiusMultiplier: poi.flyoverRadiusMultiplier,
+          flyoverCylinderHeightMultiplier: poi.flyoverCylinderHeightMultiplier,
           info: <PoiContent />,
         }
       }),
@@ -74,12 +77,12 @@ export function useMapPoiData({
     if (areModulePoisVisible) {
       modulePois.forEach((poi) => {
         const defaultPoi = poisById.get(poi.id)
-        poisById.set(
-          poi.id,
-          defaultPoi
+        poisById.set(poi.id, {
+          ...(defaultPoi
             ? { ...defaultPoi, ...poi, info: poi.info ?? defaultPoi.info }
-            : poi,
-        )
+            : poi),
+          isModulePoi: true,
+        })
       })
     }
 

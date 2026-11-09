@@ -1,7 +1,7 @@
 /**
   File: ModuleExploreMap.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Show the Alberta map with information for the selected module.
@@ -12,7 +12,7 @@
   Notes:
   - Module POI descriptions are supplied by each module's POI content components.
  */
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import type { LearningModule } from '@/modules/types'
@@ -35,47 +35,69 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
     useExpeditionProgress()
   const moduleName = tModule(module.titleKey)
   const moduleMap = module.map
-  const completedCheckpoints = getCompletedCheckpoints(module.id)
+  const completedCheckpoints = useMemo(
+    () => getCompletedCheckpoints(module.id),
+    [getCompletedCheckpoints, module.id],
+  )
+  const language = i18n.resolvedLanguage
 
   useEffect(() => {
     startExpedition(module.id)
   }, [module.id, startExpedition])
 
-  const modulePois: MapPoi[] =
-    moduleMap?.pois.flatMap((poi) => {
-      const PoiContent = poi.infoContent
+  const modulePois = useMemo<MapPoi[]>(
+    () =>
+      moduleMap?.pois.flatMap((poi) => {
+        const PoiContent = poi.infoContent
+        const selectedCheckpointId = poi.poiSelectedCheckpointId
 
-      return [
-        {
-          id: poi.id,
-          coordinates: poi.coordinates,
-          iconCategory: poi.iconCategory,
-          title: i18n.t(poi.titleKey, {
-            ns: poi.titleNamespace ?? module.translationNamespace,
-          }),
-          isComplete:
-            completedCheckpoints.includes(poi.poiSelectedCheckpointId) &&
-            (poi.additionalCompletionCheckpoints ?? []).every((checkpointId) =>
-              completedCheckpoints.includes(checkpointId),
+        return [
+          {
+            id: poi.id,
+            coordinates: poi.coordinates,
+            iconCategory: poi.iconCategory,
+            flyoverRadiusMultiplier: poi.flyoverRadiusMultiplier,
+            flyoverCylinderHeightMultiplier:
+              poi.flyoverCylinderHeightMultiplier,
+            title: i18n.t(poi.titleKey, {
+              ns: poi.titleNamespace ?? module.translationNamespace,
+              lng: language,
+            }),
+            isComplete:
+              selectedCheckpointId !== undefined &&
+              completedCheckpoints.includes(selectedCheckpointId) &&
+              (poi.additionalCompletionCheckpoints ?? []).every(
+                (checkpointId) => completedCheckpoints.includes(checkpointId),
+              ),
+            onActivate: selectedCheckpointId
+              ? () => completeCheckpoint(module.id, selectedCheckpointId)
+              : undefined,
+            info: (
+              <PoiContent
+                onInteraction={(interactionId) => {
+                  const checkpointId = poi.infoCheckpoints?.[interactionId]
+                  if (!checkpointId) {
+                    throw new Error(
+                      `No checkpoint is configured for POI interaction "${interactionId}" on "${poi.id}".`,
+                    )
+                  }
+                  completeCheckpoint(module.id, checkpointId)
+                }}
+              />
             ),
-          onActivate: () =>
-            completeCheckpoint(module.id, poi.poiSelectedCheckpointId),
-          info: (
-            <PoiContent
-              onInteraction={(interactionId) => {
-                const checkpointId = poi.infoCheckpoints?.[interactionId]
-                if (!checkpointId) {
-                  throw new Error(
-                    `No checkpoint is configured for POI interaction "${interactionId}" on "${poi.id}".`,
-                  )
-                }
-                completeCheckpoint(module.id, checkpointId)
-              }}
-            />
-          ),
-        },
-      ]
-    }) ?? []
+          },
+        ]
+      }) ?? [],
+    [
+      moduleMap,
+      module.id,
+      module.translationNamespace,
+      completedCheckpoints,
+      completeCheckpoint,
+      i18n,
+      language,
+    ],
+  )
 
   return (
     <main className="relative h-dvh w-full overflow-hidden">

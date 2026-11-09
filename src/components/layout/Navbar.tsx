@@ -23,6 +23,7 @@ import { Dropdown } from '@/components/shared/Dropdown'
 import { HelpIcon } from '@/components/icons/HelpIcon'
 import { JournalIcon } from '@/components/icons/JournalIcon'
 import { MapIcon } from '@/components/icons/MapIcon'
+import { PlaneIcon } from '@/components/icons/PlaneIcon'
 import { Tooltip } from '@/components/shared/Tooltip'
 
 export function Navbar() {
@@ -68,6 +69,15 @@ export function Navbar() {
                 aria-current={pathname === '/explore' ? 'page' : undefined}
               >
                 <MapIcon />
+              </Link>
+            </Tooltip>
+            <Tooltip text={t('navigation.flyoverMap')}>
+              <Link
+                to="/explore?flyover=true"
+                className="button-secondary size-12 shrink-0 p-0"
+                aria-label={t('navigation.flyoverMap')}
+              >
+                <PlaneIcon />
               </Link>
             </Tooltip>
             <button

@@ -1,7 +1,7 @@
 /**
   File: MapInfoPanel.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Render titled, authored map location content in an anchored panel.
@@ -36,6 +36,12 @@ export function MapInfoPanel({ content, isOpen, onClose }: MapInfoPanelProps) {
       <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line px-5 py-4 md:px-6">
         <h2 id="map-info-panel-title" className="text-xl">
           {content.title}
+          {content.isComplete && (
+            <span className="ms-2 inline-flex text-pine" role="status">
+              <span aria-hidden="true">✓</span>
+              <span className="sr-only">{t('mapInfoPanel.complete')}</span>
+            </span>
+          )}
         </h2>
         <button
           type="button"

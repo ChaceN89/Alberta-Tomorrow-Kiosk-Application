@@ -1,7 +1,7 @@
 /**
   File: flightCamera.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Convert the plane's flight state into the map camera that chases it.
@@ -14,11 +14,16 @@
     sits at the smoothed ground elevation instead of following every bump.
  */
 import { ZOOM_MAX, ZOOM_MIN } from '../../map-settings/mapSettings'
-import { FLYOVER_CAMERA_PITCH } from '../../map-settings/flyoverSettings'
+import {
+  FLYOVER_CAMERA_PITCH,
+  FLYOVER_ENTER_DURATION,
+  FLYOVER_BASE_MAP_RELOCATION_DURATION,
+} from '../../map-settings/flyoverSettings'
 import type { FlightCamera, FlightRuntime } from '../types'
 import {
   clamp,
   degreesToRadians,
+  easeInOutCubic,
   lerp,
   moveAlongHeading,
   shortestAngleDelta,
@@ -43,6 +48,44 @@ export function getZoomForAltitude(
     MAP_TILE_SIZE
 
   return Math.log2((cameraHeight * metersPerPixelAtZoomZero) / altitudeMeters)
+}
+
+export function getEntryFlightProgress(
+  progress: number,
+  hasDistantStart: boolean,
+) {
+  if (!hasDistantStart) return progress
+  const relocationShare =
+    FLYOVER_BASE_MAP_RELOCATION_DURATION /
+    (FLYOVER_BASE_MAP_RELOCATION_DURATION + FLYOVER_ENTER_DURATION)
+  return clamp((progress - relocationShare) / (1 - relocationShare), 0, 1)
+}
+
+// Relocate first, then use the normal zoom and aircraft-entry timing.
+export function blendEntryCameras(
+  from: FlightCamera,
+  to: FlightCamera,
+  progress: number,
+  hasDistantStart: boolean,
+): FlightCamera {
+  if (!hasDistantStart) return blendCameras(from, to, easeInOutCubic(progress))
+  const camera = blendCameras(
+    from,
+    to,
+    easeInOutCubic(getEntryFlightProgress(progress, true)),
+  )
+  const relocationShare =
+    FLYOVER_BASE_MAP_RELOCATION_DURATION /
+    (FLYOVER_BASE_MAP_RELOCATION_DURATION + FLYOVER_ENTER_DURATION)
+  const travel =
+    relocationShare <= 0
+      ? 1
+      : easeInOutCubic(clamp(progress / relocationShare, 0, 1))
+  camera.center = [
+    lerp(from.center[0], to.center[0], travel),
+    lerp(from.center[1], to.center[1], travel),
+  ]
+  return camera
 }
 
 // Function: Build the chase camera for the plane's current position and altitude.

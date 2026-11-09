@@ -1,7 +1,7 @@
 /**
   File: MapPoiLayer.tsx | Author: Chace Nielson
   Date Created: Nov 8, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Render individual POI markers and clustered POI markers.
@@ -19,6 +19,8 @@ import type { PoiRenderGroup } from '../map-functions/clusterMapPois'
 export type MapPoiLayerProps = {
   groups: readonly PoiRenderGroup[]
   activePoiId: string | null
+  infoPoiId: string | null
+  isPreparingFlyover?: boolean
   onPoiActivate: (poi: MapPoi, origin?: Element | null) => void
   onClusterActivate: (
     coordinates: [number, number],
@@ -29,11 +31,17 @@ export type MapPoiLayerProps = {
 export function MapPoiLayer({
   groups,
   activePoiId,
+  infoPoiId,
+  isPreparingFlyover = false,
   onPoiActivate,
   onClusterActivate,
 }: MapPoiLayerProps) {
   return groups.map((group) => {
-    if (group.type === 'cluster') {
+    if (
+      group.type === 'cluster' &&
+      !group.pois.some((poi) => poi.id === infoPoiId) &&
+      !isPreparingFlyover
+    ) {
       return (
         <MapPoiClusterMarker
           key={group.id}
@@ -47,15 +55,15 @@ export function MapPoiLayer({
       )
     }
 
-    const { poi } = group
-
-    return (
+    return (group.type === 'cluster' ? group.pois : [group.poi]).map((poi) => (
       <MapPoiMarker
-        key={group.id}
+        key={poi.id}
         {...poi}
         isActive={poi.id === activePoiId}
+        isInfoOpen={poi.id === infoPoiId}
+        opacityWhenCovered={isPreparingFlyover ? 1 : undefined}
         onActivate={(origin) => onPoiActivate(poi, origin)}
       />
-    )
+    ))
   })
 }

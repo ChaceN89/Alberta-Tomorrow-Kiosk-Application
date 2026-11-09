@@ -1,7 +1,7 @@
 /*
   File: points-of-interest.css | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Style the POI selector, clusters, and map markers.
@@ -310,6 +310,80 @@
 .mapping-poi-marker__complete {
   color: var(--color-pine);
   font-size: 0.875rem;
+}
+
+.mapping-flight-poi-markers {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-content-popover);
+  pointer-events: none;
+}
+
+.mapping-flight-poi {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-poi-depth-order);
+  visibility: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.mapping-flight-poi-tethers {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mapping-flight-poi__depth {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-content-popover);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.mapping-flight-poi-tethers line {
+  visibility: hidden;
+  stroke: var(--color-pine);
+  stroke-width: 2;
+  stroke-dasharray: 1 6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 1px var(--color-surface));
+}
+
+.mapping-poi-marker-host--flyover .mapping-poi-marker {
+  animation: none;
+}
+
+.mapping-flight-poi .mapping-poi-marker {
+  animation: none;
+  pointer-events: auto;
+}
+
+.mapping-poi-marker[data-info-open='true'] {
+  color: var(--color-ink);
+}
+
+.mapping-poi-marker[data-info-open='true'] .mapping-poi-marker__bubble {
+  border-color: var(--color-ink);
+  background: var(--color-poi-info-active);
+}
+
+.mapping-poi-marker[data-info-open='true'] .mapping-poi-marker__tail-fill {
+  fill: var(--color-poi-info-active);
+}
+
+.mapping-poi-marker[data-info-open='true'] .mapping-poi-marker__tail-outline {
+  stroke: var(--color-ink);
+}
+
+.mapping-poi-marker[data-info-open='true'] .mapping-poi-marker__icon {
+  color: var(--color-ink);
 }
 
 .mapping-poi-info-image {

@@ -66,6 +66,16 @@
     }
   },
   "poi": {
+    "crowsnestPass": {
+      "title": "Col Crowsnest",
+      "description": "Le col Crowsnest traverse les Rocheuses entre le sud-ouest de l’Alberta et le sud-est de la Colombie-Britannique. Des versants montagneux, des lacs et des vallées boisées entourent ce passage à travers les montagnes.",
+      "imageAlt": "Paysage montagneux au col Crowsnest, avec des lacs turquoise, une route sinueuse, des versants boisés et des sommets enneigés sous les nuages."
+    },
+    "lundbreckFalls": {
+      "title": "Chutes Lundbreck",
+      "description": "Les chutes Lundbreck se trouvent sur la rivière Crowsnest, près de Lundbreck, dans le sud-ouest de l’Alberta. La rivière descend d’environ 12 mètres par-dessus une corniche rocheuse.",
+      "imageAlt": "L’eau descend une large corniche rocheuse aux chutes Lundbreck, avec des arbres et un pont ferroviaire en arrière-plan."
+    },
     "description": "Le 29 avril 1903, une partie du mont Turtle s’est effondrée et une avalanche rocheuse a traversé la vallée près de la communauté minière de Frank.",
     "turtleMountain": {
       "title": "Mont Turtle",
@@ -97,6 +107,20 @@
   },
   "journal": {
     "entries": [
+      {
+        "id": "frank-slide-crowsnest-pass-poi-opened",
+        "section": "Carte",
+        "title": "Col Crowsnest exploré",
+        "summary": "Vous avez ouvert les renseignements du col Crowsnest sur la carte et exploré ce passage à travers les Rocheuses.",
+        "imageAlt": "Versants montagneux et lacs turquoise au col Crowsnest."
+      },
+      {
+        "id": "frank-slide-lundbreck-falls-poi-opened",
+        "section": "Carte",
+        "title": "Chutes Lundbreck explorées",
+        "summary": "Vous avez ouvert les renseignements des chutes Lundbreck sur la carte et découvert cette chute sur la rivière Crowsnest.",
+        "imageAlt": "L’eau descend une corniche rocheuse aux chutes Lundbreck."
+      },
       {
         "id": "frank-slide-poi-selected",
         "section": "Carte",

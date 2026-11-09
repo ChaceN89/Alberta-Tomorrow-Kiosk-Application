@@ -11,6 +11,7 @@
 
   Notes:
   - Basemap style layers are selected by their source-layer metadata.
+  - Built-in place symbols are optional; Dark and Fiord omit them.
  */
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
@@ -137,10 +138,6 @@ export function setBasemapPlacesVisibility(
           'source-layer' in layer &&
           (layer['source-layer'] === 'poi' || layer['source-layer'] === 'park'),
       ) ?? []
-
-  if (placeLayers.length === 0) {
-    throw new Error('The active basemap has no built-in place symbol layers.')
-  }
 
   const visibility = isVisible ? 'visible' : 'none'
   for (const layer of placeLayers) {

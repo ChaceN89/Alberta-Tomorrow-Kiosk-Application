@@ -10,6 +10,7 @@
   "navigation": {
     "home": "Accueil",
     "exploreMap": "Explorer la carte de base",
+    "flyoverMap": "Survoler l’Alberta",
     "returnHome": "Retour à l'accueil",
     "startTutorial": "Lancer la visite guidée",
     "skip": "Aller au contenu principal",

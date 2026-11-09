@@ -34,14 +34,14 @@
     },
     "flyPlane": {
       "title": "Prenez les airs avec l’avion",
-      "description": "Choisissez « Faire voler l’avion » pour découvrir l’Alberta depuis les airs. Votre premier vol comprend un court guide sur le choix des destinations et l’utilisation des commandes de vol."
+      "description": "Choisissez « Faire voler l’avion » ou appuyez sur P pour découvrir l’Alberta depuis les airs. En vol, P met l’avion en pause ou reprend le vol. Votre premier vol comprend un court guide sur le choix des destinations et l’utilisation des commandes de vol."
     },
     "done": "Explorer la carte"
   },
   "plane": {
     "explore": {
       "title": "Explorez l’Alberta",
-      "description": "Une fois l’avion au-dessus de la province, il se met en pause. Utilisez le sélecteur de lieux d’intérêt en bas pour choisir un endroit à survoler et à découvrir. Continuez lorsque vous êtes prêt à voir les commandes de vol."
+      "description": "Utilisez le sélecteur de lieux d’intérêt en bas pour voler vers un endroit. Entrez dans un cylindre bleu pour un lieu de la carte de base ou gris pour un lieu d’expédition afin de mettre le vol en pause et d’ouvrir ses informations. Les cylindres des lieux d’expédition terminés sont verts. Fermer les informations reprend le vol. Continuez pour voir les commandes de vol."
     },
     "controls": {
       "title": "Commandes de vol",

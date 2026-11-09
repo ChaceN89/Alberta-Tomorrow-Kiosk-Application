@@ -62,6 +62,7 @@
     "modelInstructions": "Drag to rotate and scroll to zoom."
   },
   "mapInfoPanel": {
+    "complete": "All location checkpoints completed",
     "close": "Close location details"
   }
 }

@@ -62,6 +62,7 @@
     "modelInstructions": "Faites glisser pour faire pivoter et faites défiler pour zoomer."
   },
   "mapInfoPanel": {
+    "complete": "Tous les objectifs du lieu sont terminés",
     "close": "Fermer les détails du lieu"
   }
 }

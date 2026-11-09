@@ -1,7 +1,7 @@
 /**
   File: useFlightInput.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Read the flight keys: hold W/S to descend/climb, A/D to steer, and Up/Down
@@ -18,6 +18,7 @@
  */
 import { useEffect, useRef } from 'react'
 import type { FlightInput } from '../types'
+import { isFlightShortcutIgnored } from '../utils/flightKeyboard'
 
 type UseFlightInputOptions = {
   isActive: boolean
@@ -25,8 +26,6 @@ type UseFlightInputOptions = {
   onExit: () => void
 }
 
-const TEXT_ENTRY_SELECTOR =
-  'input:not([type="range"]):not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable=""], [contenteditable="true"]'
 const HELD_KEYS = new Set([
   'KeyA',
   'KeyD',
@@ -35,20 +34,6 @@ const HELD_KEYS = new Set([
   'ArrowUp',
   'ArrowDown',
 ])
-
-// Function: Decide whether a key press belongs to something other than flying.
-function isIgnoredTarget(event: KeyboardEvent) {
-  const target = event.target
-  if (!(target instanceof Element)) return false
-
-  return (
-    event.ctrlKey ||
-    event.metaKey ||
-    event.altKey ||
-    target.matches(TEXT_ENTRY_SELECTOR) ||
-    target.closest('dialog') !== null
-  )
-}
 
 // Function: Track the flight keys while flyover mode is active.
 export function useFlightInput({
@@ -89,7 +74,11 @@ export function useFlightInput({
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isIgnoredTarget(event)) return
+      if (
+        isFlightShortcutIgnored(event) ||
+        document.querySelector('.map-info-panel--open') !== null
+      )
+        return
 
       if (HELD_KEYS.has(event.code)) {
         pressedKeys.add(event.code)

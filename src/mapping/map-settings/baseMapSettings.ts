@@ -51,9 +51,9 @@ export const BASEMAP_STYLES = [
     labelKey: 'view.basemapStyles.liberty',
   },
   {
-    id: 'bright',
-    style: 'https://tiles.openfreemap.org/styles/bright',
-    labelKey: 'view.basemapStyles.bright',
+    id: SATELLITE_BASEMAP_STYLE_ID,
+    style: SATELLITE_BASEMAP_STYLE,
+    labelKey: 'view.basemapStyles.satellite',
   },
   {
     id: 'dark',
@@ -61,14 +61,14 @@ export const BASEMAP_STYLES = [
     labelKey: 'view.basemapStyles.dark',
   },
   {
+    id: 'bright',
+    style: 'https://tiles.openfreemap.org/styles/bright',
+    labelKey: 'view.basemapStyles.bright',
+  },
+  {
     id: 'fiord',
     style: 'https://tiles.openfreemap.org/styles/fiord',
     labelKey: 'view.basemapStyles.fiord',
-  },
-  {
-    id: SATELLITE_BASEMAP_STYLE_ID,
-    style: SATELLITE_BASEMAP_STYLE,
-    labelKey: 'view.basemapStyles.satellite',
   },
 ] as const
 

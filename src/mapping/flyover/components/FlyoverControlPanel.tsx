@@ -1,7 +1,7 @@
 /**
   File: FlyoverControlPanel.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Show flight controls in a vertically centered, collapsible map panel.
@@ -16,7 +16,6 @@ import { useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 type FlyoverControlPanelProps = {
-  isPaused: boolean
   isTutorialActive: boolean
   isTutorialControlsStep: boolean
 }
@@ -34,7 +33,6 @@ const CONTROLS = [
 ] as const
 
 export function FlyoverControlPanel({
-  isPaused,
   isTutorialActive,
   isTutorialControlsStep,
 }: FlyoverControlPanelProps) {
@@ -101,13 +99,6 @@ export function FlyoverControlPanel({
       >
         <header className="mapping-flyover-panel__header">
           <h2 className="mapping-flyover-panel__title">{t('flyover.title')}</h2>
-          <p className="mapping-flyover-panel__badges" role="status">
-            {isPaused && (
-              <strong className="mapping-flyover-panel__badge">
-                {t('flyover.paused')}
-              </strong>
-            )}
-          </p>
         </header>
         <ul className="mapping-flyover-panel__controls">
           {CONTROLS.map(({ key, labelKey }) => (

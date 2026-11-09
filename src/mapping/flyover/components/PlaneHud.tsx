@@ -1,7 +1,7 @@
 /**
   File: PlaneHud.tsx | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Keep map telemetry visible while limiting the controls panel to flyover mode.
@@ -40,6 +40,7 @@ export function PlaneHud({
     <>
       <FlyoverTelemetry
         isFlightActive={isActive}
+        isPaused={isPaused}
         altitudeMeters={altitudeMeters}
         speedMetersPerSecond={speedMetersPerSecond}
         latitude={latitude}
@@ -51,7 +52,6 @@ export function PlaneHud({
         inert={!isActive}
       >
         <FlyoverControlPanel
-          isPaused={isPaused}
           isTutorialActive={isTutorialActive}
           isTutorialControlsStep={isTutorialControlsStep}
         />

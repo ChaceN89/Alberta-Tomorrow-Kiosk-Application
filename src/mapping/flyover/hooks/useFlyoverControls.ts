@@ -1,7 +1,7 @@
 /**
   File: useFlyoverControls.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Run flyover mode: spawn the plane, fly it, and drive the map camera behind it.
@@ -27,6 +27,7 @@ import {
   FLYOVER_CAMERA_PITCH,
   FLYOVER_DEFAULT_SPEED,
   FLYOVER_ENTER_DURATION,
+  FLYOVER_BASE_MAP_RELOCATION_DURATION,
   FLYOVER_EXIT_CAMERA_DURATION,
   FLYOVER_EXIT_DURATION,
   FLYOVER_EXIT_PITCH,
@@ -51,9 +52,15 @@ import type {
   FlightCamera,
   FlightInput,
   FlightRuntime,
+  FlightState,
   FlyoverPhase,
 } from '../types'
-import { blendCameras, getFlightCamera } from '../utils/flightCamera'
+import {
+  blendCameras,
+  blendEntryCameras,
+  getEntryFlightProgress,
+  getFlightCamera,
+} from '../utils/flightCamera'
 import {
   advanceFlight,
   approach,
@@ -90,6 +97,10 @@ type UseFlyoverControlsOptions = {
   isTerrainTransitioning: boolean
   applyTerrain: (enabled: boolean) => MapLibreMap | null
   reportError: (error: unknown) => void
+  takeInitialSpawn?: () => Pick<
+    FlightState,
+    'longitude' | 'latitude' | 'headingDegrees'
+  > | null
 }
 
 // Function: Fraction of a transition completed, finishing at once for reduced motion.
@@ -124,6 +135,7 @@ export function useFlyoverControls({
   isTerrainTransitioning,
   applyTerrain,
   reportError,
+  takeInitialSpawn,
 }: UseFlyoverControlsOptions) {
   const [phase, setPhase] = useState<FlyoverPhase>('off')
   const [isPaused, setIsPaused] = useState(false)
@@ -136,6 +148,7 @@ export function useFlyoverControls({
   const phaseRef = useRef<FlyoverPhase>('off')
   const isPausedRef = useRef(false)
   const runtimeRef = useRef<FlightRuntime | null>(null)
+  const flightPositionRef = useRef<FlightState | null>(null)
   const visualRef = useRef(createFlightVisualState())
   const reportErrorRef = useRef(reportError)
   const pausedAtRef = useRef<number | null>(null)
@@ -216,7 +229,10 @@ export function useFlyoverControls({
       map.stop()
       map.setMaxPitch(MAX_CAMERA_PITCH)
       const startCamera = readMapCamera(map)
-      const bearing = normalizeDegrees(startCamera.bearing)
+      const spawn = takeInitialSpawn?.()
+      const bearing = normalizeDegrees(
+        spawn?.headingDegrees ?? startCamera.bearing,
+      )
       const startAltitude = clamp(
         FLYOVER_START_ALTITUDE_METERS,
         FLYOVER_MIN_ALTITUDE_METERS,
@@ -224,14 +240,16 @@ export function useFlyoverControls({
       )
       // The camera backs up first: the plane spawns behind the view center, by
       // the distance the chase camera looks ahead, so the view lands where it was.
-      const { longitude, latitude } = moveAlongHeading(
-        startCamera.center[0],
-        startCamera.center[1],
-        bearing + 180,
-        startAltitude *
-          Math.tan(degreesToRadians(FLYOVER_CAMERA_PITCH)) *
-          FLYOVER_START_BACKUP_SCALE,
-      )
+      const { longitude, latitude } =
+        spawn ??
+        moveAlongHeading(
+          startCamera.center[0],
+          startCamera.center[1],
+          bearing + 180,
+          startAltitude *
+            Math.tan(degreesToRadians(FLYOVER_CAMERA_PITCH)) *
+            FLYOVER_START_BACKUP_SCALE,
+        )
       const ground =
         sampleGroundElevation(map, longitude, latitude) ?? startCamera.elevation
 
@@ -264,10 +282,16 @@ export function useFlyoverControls({
         travel: null,
         transitionStartedAt: performance.now(),
         startCamera,
+        hasDistantStart: Boolean(
+          spawn &&
+          (Math.abs(startCamera.center[0] - spawn.longitude) > 0.01 ||
+            Math.abs(startCamera.center[1] - spawn.latitude) > 0.01),
+        ),
         exitFrom: { yawDegrees: 0, pitchDegrees: 0, rollDegrees: 0 },
         exitCameraFrom: startCamera,
         exitCameraTo: startCamera,
       }
+      flightPositionRef.current = runtimeRef.current.flight
       visualRef.current = createFlightVisualState()
       setAltitudeMeters(startAltitude)
       setSpeedMetersPerSecond(Math.round(startSpeed / 10) * 10)
@@ -367,6 +391,26 @@ export function useFlyoverControls({
       startFlyover(startPaused, requestedStartSpeed)
     } else stopFlyover()
   }
+
+  const pauseAtPosition = useCallback(
+    (coordinates: [number, number]) => {
+      const runtime = runtimeRef.current
+      const map = mapRef.current?.getMap()
+      if (!runtime || !map || phaseRef.current !== 'flying') return
+      runtime.flight.longitude = coordinates[0]
+      runtime.flight.latitude = coordinates[1]
+      runtime.travel = null
+      setFlyoverPaused(true)
+      map.jumpTo(
+        getFlightCamera(
+          runtime,
+          map.getCanvas().clientHeight,
+          map.getVerticalFieldOfView(),
+        ),
+      )
+    },
+    [mapRef, setFlyoverPaused],
+  )
 
   useEffect(() => {
     stopFlyoverRef.current = stopFlyover
@@ -508,19 +552,29 @@ export function useFlyoverControls({
           const progress = getTransitionProgress(
             now,
             runtime.transitionStartedAt,
-            FLYOVER_ENTER_DURATION,
+            FLYOVER_ENTER_DURATION +
+              (runtime.hasDistantStart
+                ? FLYOVER_BASE_MAP_RELOCATION_DURATION
+                : 0),
           )
-          advanceFlight(runtime, IDLE_FLIGHT_INPUT, seconds)
+          const flightProgress = getEntryFlightProgress(
+            progress,
+            runtime.hasDistantStart,
+          )
+          if (!runtime.hasDistantStart || flightProgress > 0)
+            advanceFlight(runtime, IDLE_FLIGHT_INPUT, seconds)
           updateGround(now, seconds)
           map.jumpTo(
-            blendCameras(
+            blendEntryCameras(
               runtime.startCamera,
               getFlightCamera(runtime, viewportHeight, fov),
-              easeInOutCubic(progress),
+              progress,
+              runtime.hasDistantStart,
             ),
           )
           updateFlightVisual(visual, runtime)
-          applyEnterVisual(visual, progress)
+          applyEnterVisual(visual, flightProgress)
+          visual.isVisible = !runtime.hasDistantStart || flightProgress > 0
           if (progress >= 1) {
             changePhase('flying')
             if (pauseAfterEntryRef.current) {
@@ -598,6 +652,8 @@ export function useFlyoverControls({
     flyoverSpeedMetersPerSecond: speedMetersPerSecond,
     flightVisualRef: visualRef,
     toggleFlyover,
+    flightPositionRef,
+    pauseAtPosition,
     travelTo,
   }
 }

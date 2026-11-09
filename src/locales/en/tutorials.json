@@ -34,14 +34,14 @@
     },
     "flyPlane": {
       "title": "Take off with Fly Plane",
-      "description": "Choose Fly Plane to explore Alberta from above. Your first flight includes a short guide to choosing destinations and using the flight controls."
+      "description": "Choose Fly Plane or press P to explore Alberta from above. During flight, P pauses or resumes the plane. Your first flight includes a short guide to choosing destinations and using the flight controls."
     },
     "done": "Explore the map"
   },
   "plane": {
     "explore": {
       "title": "Explore Alberta",
-      "description": "Once the plane settles above the province. Use the point-of-interest selector along the bottom to choose a place to fly to and explore. When you're ready, continue to see the flight controls."
+      "description": "Use the point-of-interest selector along the bottom to fly toward a place. Enter a blue cylinder for a base-map place or a gray cylinder for an expedition place to pause and open its information. Completed expedition cylinders are green. Closing the information resumes flight. Continue to see the flight controls."
     },
     "controls": {
       "title": "Your flight controls",

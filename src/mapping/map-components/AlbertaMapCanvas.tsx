@@ -12,7 +12,7 @@
   Notes:
   - Map state and interactions are supplied by the AlbertaMap coordinator.
  */
-import type { ReactNode } from 'react'
+import type { ReactNode, RefObject } from 'react'
 import { Map } from 'react-map-gl/maplibre'
 import type { MapRef } from 'react-map-gl/maplibre'
 import type { StyleSpecification } from 'maplibre-gl'
@@ -23,6 +23,8 @@ import type { MapPoi } from '../components/MapPoiMarker'
 import type { PoiRenderGroup } from '../map-functions/clusterMapPois'
 import { MapOverlayLayer, type MapOverlayLayerProps } from './MapOverlayLayer'
 import { MapPoiLayer } from './MapPoiLayer'
+import { FlyoverPoiLayer } from '../flyover/components/FlyoverPoiLayer'
+import type { FlightState } from '../flyover/types'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 maplibregl.setWorkerUrl(mapWorkerUrl)
@@ -52,6 +54,9 @@ type AlbertaMapCanvasProps = Omit<
   onMapLoad: (map: MapLibreMap) => void
   onMapError: (error: unknown) => void
   groups: readonly PoiRenderGroup[]
+  infoPoiId: string | null
+  flightPositionRef: RefObject<FlightState | null>
+  isPreparingFlyover: boolean
   onPoiActivate: (poi: MapPoi, origin?: Element | null) => void
   onClusterActivate: (
     coordinates: [number, number],
@@ -75,6 +80,9 @@ export function AlbertaMapCanvas({
   onMapLoad,
   onMapError,
   groups,
+  infoPoiId,
+  flightPositionRef,
+  isPreparingFlyover,
   onPoiActivate,
   onClusterActivate,
   isPlaneTutorialActive,
@@ -107,12 +115,24 @@ export function AlbertaMapCanvas({
           compact
           // customAttribution='<a href="https://maplibre.org/" target="_blank" rel="noopener">MapLibre</a>'
         /> */}
-        <MapPoiLayer
-          groups={groups}
-          activePoiId={overlayProps.activePoiId}
-          onPoiActivate={onPoiActivate}
-          onClusterActivate={onClusterActivate}
-        />
+        {overlayProps.isFlyoverActive ? (
+          <FlyoverPoiLayer
+            pois={overlayProps.pois}
+            activePoiId={overlayProps.activePoiId}
+            infoPoiId={infoPoiId}
+            flightPositionRef={flightPositionRef}
+            onPoiActivate={onPoiActivate}
+          />
+        ) : (
+          <MapPoiLayer
+            groups={groups}
+            activePoiId={overlayProps.activePoiId}
+            infoPoiId={infoPoiId}
+            onPoiActivate={onPoiActivate}
+            onClusterActivate={onClusterActivate}
+            isPreparingFlyover={isPreparingFlyover}
+          />
+        )}
       </Map>
       <MapOverlayLayer
         {...overlayProps}

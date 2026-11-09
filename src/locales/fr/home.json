@@ -3,6 +3,7 @@
   "title": "Découvrez l'Alberta, une expédition à la fois.",
   "description": "Explorez les paysages et la faune qui rendent l'Alberta unique. Choisissez une expédition pour commencer.",
   "exploreAlberta": "Explorer la carte de l’Alberta",
+  "flyoverAlberta": "Survoler l’Alberta",
   "exploreModule": "Découvrir cette expédition",
   "moduleDuration": "Environ {{count}} minutes"
 }

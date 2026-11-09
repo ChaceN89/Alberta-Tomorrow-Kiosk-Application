@@ -1,7 +1,7 @@
 /**
   File: types.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define flight state, input, camera, and plane display types for flyover mode.
@@ -82,6 +82,7 @@ export type FlightRuntime = {
   travel: FlightTravel | null
   transitionStartedAt: number
   startCamera: FlightCamera
+  hasDistantStart: boolean
   exitFrom: FlightPoseAngles
   exitCameraFrom: FlightCamera
   exitCameraTo: FlightCamera

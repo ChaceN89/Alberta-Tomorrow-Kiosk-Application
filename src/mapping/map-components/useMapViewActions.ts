@@ -40,6 +40,7 @@ type UseMapViewActionsOptions = {
   onStartFlyover: (pauseAfterEntry: boolean, startSpeed?: number) => void
   onToggleFlyover: () => void
   onMapError: (error: unknown) => void
+  onResetComplete: () => void
   onResetMapSettings: () => Promise<boolean>
   setIsPlaneTutorialControlsStep: (isControlsStep: boolean) => void
 }
@@ -56,6 +57,7 @@ export function useMapViewActions({
   onStartFlyover,
   onToggleFlyover,
   onMapError,
+  onResetComplete,
   onResetMapSettings,
   setIsPlaneTutorialControlsStep,
 }: UseMapViewActionsOptions) {
@@ -63,6 +65,9 @@ export function useMapViewActions({
   const pendingMapResetExitRequested = useRef(false)
   const moduleStartupHasRun = useRef(false)
   const [isResettingMap, setIsResettingMap] = useState(false)
+  const [isPreparingFlyover, setIsPreparingFlyover] = useState(
+    Boolean(moduleStartup?.startFlyover),
+  )
   const isMounted = useRef(false)
   const resetIsRunning = useRef(false)
   const cancelCameraMove = useRef<(() => void) | null>(null)
@@ -143,6 +148,7 @@ export function useMapViewActions({
       )
       if (!isMounted.current) return
       const arrived = await resetMapToStart()
+      if (arrived && isMounted.current) onResetComplete()
       if (arrived && isMounted.current && moduleStartup?.startFlyover) {
         onStartFlyoverRef.current(false, moduleStartup.startSpeed)
       }
@@ -154,7 +160,7 @@ export function useMapViewActions({
       resetIsRunning.current = false
       if (isMounted.current) setIsResettingMap(false)
     }
-  }, [moduleStartup, resetMapToStart])
+  }, [moduleStartup, onResetComplete, resetMapToStart])
 
   const onResetMapView = useCallback(() => {
     if (
@@ -219,6 +225,7 @@ export function useMapViewActions({
       if (arrived && isEffectActive && moduleStartup.startFlyover) {
         onStartFlyoverRef.current(false, moduleStartup.startSpeed)
       }
+      if (isEffectActive) setIsPreparingFlyover(false)
     })
 
     return () => {
@@ -234,5 +241,5 @@ export function useMapViewActions({
     resetMapToStart,
   ])
 
-  return { onResetMapView, isResettingMap }
+  return { onResetMapView, isResettingMap, isPreparingFlyover }
 }

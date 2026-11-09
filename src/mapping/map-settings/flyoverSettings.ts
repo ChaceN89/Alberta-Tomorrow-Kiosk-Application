@@ -24,6 +24,28 @@ export const FLYOVER_START_ALTITUDE_METERS = 3000
 // 0 spawns the plane right at the view center.
 export const FLYOVER_START_BACKUP_SCALE = 1
 
+// Exact plane position for a fresh/reset base map whose camera has not moved.
+// The 2D/3D toggle is exempt. Module maps always use their own camera/startup.
+// Longitude/latitude are degrees; heading 0 points north toward Alberta.
+export const FLYOVER_BASE_MAP_INITIAL_SPAWN = {
+  longitude: -113.5,
+  latitude: 48.26,
+  headingDegrees: 0,
+} as const
+
+// Plane-link overview faces north across Alberta before entering the chase view.
+export const FLYOVER_BASE_MAP_INITIAL_VIEW = {
+  longitude: FLYOVER_BASE_MAP_INITIAL_SPAWN.longitude,
+  latitude: FLYOVER_BASE_MAP_INITIAL_SPAWN.latitude,
+  bearing: FLYOVER_BASE_MAP_INITIAL_SPAWN.headingDegrees,
+  zoom: 5,
+  pitch: 80,
+} as const
+
+// Extra camera-only relocation before the normal entry at the southern spawn (ms).
+// The aircraft stays hidden and stationary until this move finishes.
+export const FLYOVER_BASE_MAP_RELOCATION_DURATION = 1200
+
 // Climb and descent speed: the larger of a fixed rate and a share of the current
 // altitude each second, so high altitudes change as quickly as low ones.
 export const FLYOVER_ALTITUDE_CHANGE_RATE = 220 // meters per second

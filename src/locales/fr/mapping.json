@@ -59,6 +59,7 @@
       "writingOnStone": "Parc provincial Writing-on-Stone"
     },
     "defaultPoiInfo": {
+      "openImage": "Ouvrir l’image : {{title}}",
       "genericDescription": "Ce lieu d’intérêt de l’Alberta est indiqué sur la carte. Zoomez pour explorer les environs.",
       "banff": {
         "description": "Banff est une ville de montagne du parc national Banff, entourée des Rocheuses canadiennes et située dans la vallée de la Bow.",

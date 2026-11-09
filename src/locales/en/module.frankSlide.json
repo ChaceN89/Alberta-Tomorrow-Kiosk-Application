@@ -66,6 +66,16 @@
     }
   },
   "poi": {
+    "crowsnestPass": {
+      "title": "Crowsnest Pass",
+      "description": "Crowsnest Pass crosses the Rocky Mountains between southwestern Alberta and southeastern British Columbia. Mountain slopes, lakes, and forested valleys surround this route through the mountains.",
+      "imageAlt": "Mountain landscape at Crowsnest Pass, with turquoise lakes, a winding highway, forested slopes, and snow-streaked peaks beneath clouds."
+    },
+    "lundbreckFalls": {
+      "title": "Lundbreck Falls",
+      "description": "Lundbreck Falls is a waterfall on the Crowsnest River near Lundbreck in southwestern Alberta. The river drops about 12 metres over a rocky ledge.",
+      "imageAlt": "Water cascading over a broad rocky ledge at Lundbreck Falls, with trees and a railway bridge in the background."
+    },
     "description": "On April 29, 1903, part of Turtle Mountain collapsed and a rock avalanche swept across the valley near the mining community of Frank.",
     "turtleMountain": {
       "title": "Turtle Mountain",
@@ -97,6 +107,20 @@
   },
   "journal": {
     "entries": [
+      {
+        "id": "frank-slide-crowsnest-pass-poi-opened",
+        "section": "Map",
+        "title": "Crowsnest Pass explored",
+        "summary": "You opened the Crowsnest Pass map information and explored this route through the Rocky Mountains.",
+        "imageAlt": "Mountain slopes and turquoise lakes at Crowsnest Pass."
+      },
+      {
+        "id": "frank-slide-lundbreck-falls-poi-opened",
+        "section": "Map",
+        "title": "Lundbreck Falls explored",
+        "summary": "You opened the Lundbreck Falls map information and discovered this waterfall on the Crowsnest River.",
+        "imageAlt": "Water cascading over a rocky ledge at Lundbreck Falls."
+      },
       {
         "id": "frank-slide-poi-selected",
         "section": "Map",

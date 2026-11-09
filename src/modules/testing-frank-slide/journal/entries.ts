@@ -1,7 +1,7 @@
 /**
   File: entries.ts | Author: Chace Nielson
   Date Created: Nov 6, 2026
-  Date Updated: Nov 8, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Configure journal media for every Frank Slide checkpoint.
@@ -15,6 +15,8 @@
 import type { JournalEntryDefinition } from '@/modules/types'
 import {
   frankSlideCheckpoints,
+  frankSlideCrowsnestPassPoiOpenedCheckpoint,
+  frankSlideLundbreckFallsPoiOpenedCheckpoint,
   frankSlideDateQuizCheckpoint,
   frankSlideEventQuizCheckpoint,
   frankSlideLocationQuizCheckpoint,
@@ -29,8 +31,36 @@ import {
 import frankSlideMountainArchive from '@/mapping/assets/frank-slide/frank-slide-mountain-archive.png'
 import frankSlideStreetArchive from '@/mapping/assets/frank-slide/frank-slide-street-archive.png'
 import turtleMountainRockslide from '../assets/turtle-mountain-rockslide.png'
+import lundbreckFalls from '../assets/lundbreck-falls.png'
+import crowsnestPass from '../assets/crowsnest-pass.png'
 
 export const frankSlideJournalEntries = {
+  [frankSlideCrowsnestPassPoiOpenedCheckpoint]: {
+    media: [
+      {
+        type: 'image',
+        src: crowsnestPass,
+        viewer: {
+          title: 'poi.crowsnestPass.title',
+          description: 'poi.crowsnestPass.description',
+          alt: 'poi.crowsnestPass.imageAlt',
+        },
+      },
+    ],
+  },
+  [frankSlideLundbreckFallsPoiOpenedCheckpoint]: {
+    media: [
+      {
+        type: 'image',
+        src: lundbreckFalls,
+        viewer: {
+          title: 'poi.lundbreckFalls.title',
+          description: 'poi.lundbreckFalls.description',
+          alt: 'poi.lundbreckFalls.imageAlt',
+        },
+      },
+    ],
+  },
   [frankSlidePoiSelectedCheckpoint]: {
     media: [
       { type: 'image', src: frankSlideMountainArchive },

@@ -24,18 +24,25 @@ import {
   ZOOM_MIN,
 } from '../map-settings/mapSettings'
 import { DEFAULT_TERRAIN_PITCH } from '../map-settings/terrainSettings'
+import { FLYOVER_BASE_MAP_INITIAL_VIEW } from '../map-settings/flyoverSettings'
 import { useFlyoverControls } from '../flyover/hooks/useFlyoverControls'
+import { useBaseMapFlightSpawn } from '../flyover/hooks/useBaseMapFlightSpawn'
 import { useMapCameraControls } from './useMapCameraControls'
 import { useMapLayerControls } from './useMapLayerControls'
 import { useTerrainControls } from './useTerrainControls'
 
 // Function: Coordinate map state and control hooks for the Alberta map.
-export function useAlbertaMapController(startSatellite = false) {
+export function useAlbertaMapController(
+  startSatellite = false,
+  isBaseMap = false,
+  startFlyover = false,
+) {
   const mapRef = useRef<MapRef>(null)
   const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null)
   const [isMapReady, setIsMapReady] = useState(false)
   const [isStyleLoading, setIsStyleLoading] = useState(false)
   const [hasMapError, setHasMapError] = useState(false)
+  const initialSpawn = useBaseMapFlightSpawn(mapInstance, isMapReady, isBaseMap)
 
   // Function: Log map failures and expose them to the map settings UI.
   const reportError = (error: unknown) => {
@@ -61,6 +68,7 @@ export function useAlbertaMapController(startSatellite = false) {
     isTerrainTransitioning: terrainControls.isTerrainTransitioning,
     applyTerrain: terrainControls.applyTerrain,
     reportError,
+    takeInitialSpawn: initialSpawn.takeInitialSpawn,
   })
 
   const layerControls = useMapLayerControls({
@@ -74,10 +82,15 @@ export function useAlbertaMapController(startSatellite = false) {
     clearError,
   })
 
-  const initialMapView = {
-    ...INITIAL_VIEW,
-    pitch: START_IN_3D_DEFAULT ? DEFAULT_TERRAIN_PITCH : INITIAL_VIEW.pitch,
-  }
+  const initialMapView =
+    isBaseMap && startFlyover
+      ? FLYOVER_BASE_MAP_INITIAL_VIEW
+      : {
+          ...INITIAL_VIEW,
+          pitch: START_IN_3D_DEFAULT
+            ? DEFAULT_TERRAIN_PITCH
+            : INITIAL_VIEW.pitch,
+        }
 
   const cameraControls = useMapCameraControls({
     isStyleLoading,
@@ -135,7 +148,9 @@ export function useAlbertaMapController(startSatellite = false) {
     onBasemapStyleChange: layerControls.changeBasemapStyle,
     onHillshadeChange: layerControls.changeHillshade,
     onAlbertaBoundaryChange: layerControls.changeAlbertaBoundaryVisibility,
-    onToggleTerrain: terrainControls.toggleTerrain,
+    onToggleTerrain: () => {
+      initialSpawn.runTerrainToggle(terrainControls.toggleTerrain)
+    },
     onToggleFlyover: () => flyoverControls.toggleFlyover(),
     onStartFlyover: flyoverControls.toggleFlyover,
     onSetFlyoverPaused: flyoverControls.setFlyoverPaused,
@@ -149,6 +164,8 @@ export function useAlbertaMapController(startSatellite = false) {
     altitudeMeters: flyoverControls.flyoverAltitudeMeters,
     speedMetersPerSecond: flyoverControls.flyoverSpeedMetersPerSecond,
     visualRef: flyoverControls.flightVisualRef,
+    positionRef: flyoverControls.flightPositionRef,
+    pauseAtPosition: flyoverControls.pauseAtPosition,
   }
 
   return {
@@ -164,5 +181,6 @@ export function useAlbertaMapController(startSatellite = false) {
     onMapAvailable,
     onMapError: handleMapError,
     resetMapSettings,
+    resetInitialSpawn: initialSpawn.resetInitialSpawn,
   }
 }
