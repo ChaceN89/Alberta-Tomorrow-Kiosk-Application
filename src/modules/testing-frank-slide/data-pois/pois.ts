@@ -77,7 +77,7 @@ export const frankSlideMapPois = [
   {
     id: 'crowsnestPass',
     flyoverPoiFov: 70,
-    flyoverCylinderHeightMultiplier: 0.5,
+    flyoverCylinderHeightMultiplier: 0.75,
     titleKey: 'poi.crowsnestPass.title',
     iconCategory: 'naturalPlace',
     coordinates: [-114.69, 49.633],

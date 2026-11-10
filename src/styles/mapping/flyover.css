@@ -139,6 +139,22 @@
   box-shadow: 0 0.5rem 1.25rem rgb(23 46 41 / 18%);
   text-align: center;
   pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 240ms ease,
+    visibility 240ms;
+}
+
+.plane-hud__compass--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@starting-style {
+  .plane-hud__compass--visible {
+    opacity: 0;
+  }
 }
 
 .plane-hud__mini-map {
@@ -386,6 +402,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .plane-hud,
+  .plane-hud__compass,
   .plane-hud__readings,
   .plane-hud__flight-readings,
   .mapping-flyover-panel,

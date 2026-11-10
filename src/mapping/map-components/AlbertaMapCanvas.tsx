@@ -24,6 +24,7 @@ import type { PoiRenderGroup } from '../map-functions/clusterMapPois'
 import { MapOverlayLayer, type MapOverlayLayerProps } from './MapOverlayLayer'
 import { MapPoiLayer } from './MapPoiLayer'
 import { FlyoverPoiLayer } from '../flyover/components/FlyoverPoiLayer'
+import { FlightPlaneLayer } from '../flyover/components/FlightPlaneLayer'
 import type { FlightState } from '../flyover/types'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
@@ -45,6 +46,10 @@ type AlbertaMapCanvasProps = Omit<
   | 'onPlaneTutorialControlsStepChange'
 > & {
   ariaLabel: string
+  isInteractive: boolean
+  isFlyoverExiting: boolean
+  onAircraftReady: () => void
+  onAircraftError: (error: unknown) => void
   moduleId?: string
   initialMapView: InitialMapView
   mapStyle: string | StyleSpecification
@@ -56,6 +61,7 @@ type AlbertaMapCanvasProps = Omit<
   groups: readonly PoiRenderGroup[]
   infoPoiId: string | null
   flightPositionRef: RefObject<FlightState | null>
+  getFlightElevation: () => number | null
   isPreparingFlyover: boolean
   onPoiActivate: (poi: MapPoi, origin?: Element | null) => void
   onClusterActivate: (
@@ -71,6 +77,10 @@ type AlbertaMapCanvasProps = Omit<
 
 export function AlbertaMapCanvas({
   ariaLabel,
+  isInteractive,
+  isFlyoverExiting,
+  onAircraftReady,
+  onAircraftError,
   moduleId,
   initialMapView,
   mapStyle,
@@ -82,6 +92,7 @@ export function AlbertaMapCanvas({
   groups,
   infoPoiId,
   flightPositionRef,
+  getFlightElevation,
   isPreparingFlyover,
   onPoiActivate,
   onClusterActivate,
@@ -105,6 +116,14 @@ export function AlbertaMapCanvas({
         mapStyle={mapStyle}
         minZoom={minZoom}
         maxZoom={maxZoom}
+        scrollZoom={isInteractive && !overlayProps.isFlyoverActive}
+        boxZoom={isInteractive && !overlayProps.isFlyoverActive}
+        dragRotate={isInteractive && !overlayProps.isFlyoverActive}
+        dragPan={isInteractive && !overlayProps.isFlyoverActive}
+        keyboard={isInteractive && !overlayProps.isFlyoverActive}
+        doubleClickZoom={isInteractive && !overlayProps.isFlyoverActive}
+        touchZoomRotate={isInteractive && !overlayProps.isFlyoverActive}
+        touchPitch={isInteractive && !overlayProps.isFlyoverActive}
         attributionControl={false}
         style={{ width: '100%', height: '100%' }}
         onLoad={(event) => onMapLoad(event.target)}
@@ -117,10 +136,12 @@ export function AlbertaMapCanvas({
         /> */}
         {overlayProps.isFlyoverActive ? (
           <FlyoverPoiLayer
+            isExiting={isFlyoverExiting}
             pois={overlayProps.pois}
             activePoiId={overlayProps.activePoiId}
             infoPoiId={infoPoiId}
             flightPositionRef={flightPositionRef}
+            getFlightElevation={getFlightElevation}
             onPoiActivate={onPoiActivate}
           />
         ) : (
@@ -134,11 +155,19 @@ export function AlbertaMapCanvas({
           />
         )}
       </Map>
+      {overlayProps.isFlyoverActive && (
+        <FlightPlaneLayer
+          visualRef={overlayProps.visualRef}
+          onReady={onAircraftReady}
+          onError={onAircraftError}
+        />
+      )}
       <MapOverlayLayer
+        isInteractive={isInteractive}
         {...overlayProps}
         infoPoiId={infoPoiId}
         flightPositionRef={flightPositionRef}
-        isMapReady={overlayProps.isMapReady}
+        isMapReady={overlayProps.isMapReady && isInteractive}
         isPlaneTutorialActive={isPlaneTutorialActive}
         isPlaneTutorialControlsStep={isPlaneTutorialControlsStep}
         onFinishPlaneTutorial={onFinishPlaneTutorial}

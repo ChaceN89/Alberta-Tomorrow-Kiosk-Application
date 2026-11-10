@@ -18,6 +18,8 @@
 export const FLYOVER_MIN_ALTITUDE_METERS = 100
 export const FLYOVER_MAX_ALTITUDE_METERS = 100000
 export const FLYOVER_START_ALTITUDE_METERS = 3000
+// Direct flight links and the fresh/reset base map's southern spawn use this altitude.
+export const FLYOVER_LINK_START_ALTITUDE_METERS = 40000
 
 // The plane spawns this far behind the view center, as a share of how far ahead
 // the camera looks. At 1 what you were looking at ends up ahead of the plane;
@@ -29,17 +31,8 @@ export const FLYOVER_START_BACKUP_SCALE = 1
 // Longitude/latitude are degrees; heading 0 points north toward Alberta.
 export const FLYOVER_BASE_MAP_INITIAL_SPAWN = {
   longitude: -113.5,
-  latitude: 48.26,
+  latitude: 47,
   headingDegrees: 0,
-} as const
-
-// Plane-link overview faces north across Alberta before entering the chase view.
-export const FLYOVER_BASE_MAP_INITIAL_VIEW = {
-  longitude: FLYOVER_BASE_MAP_INITIAL_SPAWN.longitude,
-  latitude: FLYOVER_BASE_MAP_INITIAL_SPAWN.latitude,
-  bearing: FLYOVER_BASE_MAP_INITIAL_SPAWN.headingDegrees,
-  zoom: 5,
-  pitch: 80,
 } as const
 
 // Extra camera-only relocation before the normal entry at the southern spawn (ms).
@@ -74,7 +67,7 @@ export const FLYOVER_DRAG_DEAD_ZONE = 6 // pixels before a drag starts steering
 export const FLYOVER_CAMERA_PITCH = 80 // 0 looks straight down, 90 the horizon
 export const FLYOVER_CAMERA_BEARING_RESPONSE = 5 // higher values follow heading tighter
 // Lens limits in degrees. POI visits and held right-click share free look.
-export const FLYOVER_FOV_ZOOM_IN = 12
+export const FLYOVER_FOV_ZOOM_IN = 8
 export const FLYOVER_FOV_DEFAULT = 37
 export const FLYOVER_FOV_ZOOM_OUT = 100
 export const FLYOVER_FOV_POI_FREE_LOOK = FLYOVER_FOV_DEFAULT
@@ -103,7 +96,7 @@ export const FLYOVER_ENTER_DURATION = 2100
 export const FLYOVER_EXIT_DURATION = 1000 // the plane leaving the screen
 
 // When flyover ends the map zooms out to this level and tilts to this pitch.
-export const FLYOVER_EXIT_ZOOM = 12
+export const FLYOVER_EXIT_ZOOM = 10
 export const FLYOVER_EXIT_PITCH = 60
 export const FLYOVER_EXIT_CAMERA_DURATION = 1600
 

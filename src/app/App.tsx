@@ -9,7 +9,7 @@
   - AlbertaDiscoveriesProvider independently saves base-map visits;
   - IntroTutorialProvider manages onboarding;
   - ModulePreloadProvider tracks activity loading for each of the different module pages/module data.
-  - Map routes mount behind the AppStartup splash; global overlays mount after startup is ready.
+  - Maps own scene loading; global overlays mount after app startup is ready.
 
   Usage:
   - Rendered by main.tsx as the root of the routed application.
@@ -17,7 +17,7 @@
   Notes:
   - None.
  */
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense } from 'react'
 import type { ReactNode } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/layout/Layout'
@@ -32,7 +32,6 @@ import { ModulePage } from './pages/ModulePage'
 import { AcknowledgementsPage } from './pages/AcknowledgementsPage'
 import { AudioPlayerPanel } from '@/module-tools/media-player/components/AudioPlayerPanel'
 import { AppStartup } from './AppStartup'
-import { useAppStartupMapGate } from './AppStartupMapContext'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/context/JournalProvider'
 import { AlbertaDiscoveriesProvider } from '@/save-data/alberta-discoveries/AlbertaDiscoveriesProvider'
@@ -58,13 +57,6 @@ const DeveloperPage = lazy(() =>
 )
 
 function ExploreMapRoute() {
-  const mapGate = useAppStartupMapGate()
-
-  useEffect(() => {
-    mapGate?.setMapRequired(true)
-    return () => mapGate?.setMapRequired(false)
-  }, [mapGate])
-
   return (
     <Suspense fallback={<Loading />}>
       <ExploreMap />

@@ -10,11 +10,11 @@
   - Shared by flight POI rendering and entry detection.
 
   Notes:
-  - POIs may multiply the shared radius; entry ignores flight altitude.
+  - POIs may multiply the shared radius and height; entry uses the finite volume.
   - Settings apply only during flyover; normal map markers are unchanged.
   - Cylinder bottoms share sea level (0 m), regardless of local terrain.
  */
-// Horizontal entry radius in meters, independent of flight altitude.
+// Horizontal entry radius in meters; flight must also be within the cylinder height.
 // Each POI can scale this with flyoverRadiusMultiplier (default 1; 0.5 halves it).
 // Rendering, entry detection, repeat visits, and the inside tint share this radius.
 export const FLYOVER_POI_RADIUS_METERS = 2000
@@ -50,7 +50,7 @@ export const FLYOVER_POI_ENTRY_DISTANCE_METERS = 500000 // 500 km
 // Horizontal distance within which markers reach full opacity (m).
 // Between this and ENTRY_DISTANCE_METERS, visibility fades linearly to zero.
 // Cylinders use the same fade, multiplied by CYLINDER_OPACITY.
-export const FLYOVER_POI_FADE_DISTANCE_METERS = 50000 // 50 km
+export const FLYOVER_POI_FADE_DISTANCE_METERS = 200000 // 200 km
 
 // Time for a full opacity transition (ms). POIs start fully visible and fade
 // toward their distance-based opacity while their heights animate into place.
@@ -65,15 +65,16 @@ export const FLYOVER_POI_CYLINDER_OPACITY = 0.25
 export const FLYOVER_POI_CYLINDER_OUTLINE_ENABLED = true
 export const FLYOVER_POI_CYLINDER_OUTLINE_OPACITY = 0.7
 
-// Screen tint opacity while the plane is within a cylinder's horizontal radius.
+// Screen tint opacity while the plane is within a cylinder's radius and height.
 // Uses that POI's color; 0 disables the tint, 1 completely covers the map/plane.
-// The tint does not block controls and ignores flight altitude like entry detection.
+// The tint does not block controls and shares entry detection's sea-level bounds.
 export const FLYOVER_POI_INSIDE_TINT_OPACITY = 0.12
 
 // Cylinder and inside-tint colors; marker selection colors are configured separately.
 export const FLYOVER_POI_COLORS = {
   active: '#ea580c', // Orange selected destination, ahead of completion colors.
-  base: '#2563eb', // Shared base-map POIs.
+  base: '#2563eb', // Visited base-map POIs.
+  baseUnvisited: '#93c5fd', // Undiscovered base-map POIs.
   module: '#afb9c9', // Incomplete expedition POIs.
   complete: '#16a34a', // Completed expedition POIs.
 } as const

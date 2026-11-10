@@ -13,7 +13,7 @@
   - The chase camera keeps the plane in the same place on screen, so the plane
     is drawn on its own transparent canvas instead of inside the map.
  */
-import { useEffect, useRef } from 'react'
+import { useEffect, useEffectEvent, useRef } from 'react'
 import type { RefObject } from 'react'
 import {
   DirectionalLight,
@@ -39,10 +39,18 @@ import { loadFlightPlane } from '../utils/planeModel'
 
 type FlightPlaneOverlayProps = {
   visualRef: RefObject<FlightVisualState>
+  onReady?: () => void
+  onError?: (error: unknown) => void
 }
 
-export function FlightPlaneOverlay({ visualRef }: FlightPlaneOverlayProps) {
+export function FlightPlaneOverlay({
+  visualRef,
+  onReady,
+  onError,
+}: FlightPlaneOverlayProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const notifyReady = useEffectEvent(() => onReady?.())
+  const notifyError = useEffectEvent((error: unknown) => onError?.(error))
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -53,6 +61,7 @@ export function FlightPlaneOverlay({ visualRef }: FlightPlaneOverlayProps) {
       renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true })
     } catch (error) {
       console.error('Unable to initialize the flyover plane.', error)
+      notifyError(error)
       return
     }
 
@@ -102,11 +111,13 @@ export function FlightPlaneOverlay({ visualRef }: FlightPlaneOverlayProps) {
       .then((template) => {
         if (!isDisposed) pivot.add(template.clone(true))
       })
-      .catch((error: unknown) =>
-        console.error('Unable to load the flyover aircraft.', error),
-      )
+      .catch((error: unknown) => {
+        console.error('Unable to load the flyover aircraft.', error)
+        if (!isDisposed) notifyError(error)
+      })
 
     let frameId = 0
+    let hasRenderedAircraft = false
     const renderFrame = () => {
       frameId = window.requestAnimationFrame(renderFrame)
 
@@ -151,7 +162,21 @@ export function FlightPlaneOverlay({ visualRef }: FlightPlaneOverlayProps) {
         degreesToRadians(-visual.yawDegrees),
         degreesToRadians(-visual.rollDegrees),
       )
-      renderer.render(scene, camera)
+      try {
+        renderer.render(scene, camera)
+        if (
+          !hasRenderedAircraft &&
+          pivot.children.length > 0 &&
+          pivot.visible
+        ) {
+          hasRenderedAircraft = true
+          notifyReady()
+        }
+      } catch (error) {
+        window.cancelAnimationFrame(frameId)
+        console.error('Unable to render the flyover aircraft.', error)
+        notifyError(error)
+      }
     }
     renderFrame()
 

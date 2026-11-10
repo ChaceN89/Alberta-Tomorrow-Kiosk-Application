@@ -24,7 +24,6 @@ import {
   ZOOM_MIN,
 } from '../map-settings/mapSettings'
 import { DEFAULT_TERRAIN_PITCH } from '../map-settings/terrainSettings'
-import { FLYOVER_BASE_MAP_INITIAL_VIEW } from '../map-settings/flyoverSettings'
 import { useFlyoverControls } from '../flyover/hooks/useFlyoverControls'
 import { useBaseMapFlightSpawn } from '../flyover/hooks/useBaseMapFlightSpawn'
 import { useMapCameraControls } from './useMapCameraControls'
@@ -35,7 +34,7 @@ import { useTerrainControls } from './useTerrainControls'
 export function useAlbertaMapController(
   startSatellite = false,
   isBaseMap = false,
-  startFlyover = false,
+  isStartupBlocked = false,
 ) {
   const mapRef = useRef<MapRef>(null)
   const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null)
@@ -62,6 +61,7 @@ export function useAlbertaMapController(
   })
 
   const flyoverControls = useFlyoverControls({
+    isStartupBlocked,
     mapRef,
     isMapReady,
     isStyleLoading,
@@ -82,15 +82,10 @@ export function useAlbertaMapController(
     clearError,
   })
 
-  const initialMapView =
-    isBaseMap && startFlyover
-      ? FLYOVER_BASE_MAP_INITIAL_VIEW
-      : {
-          ...INITIAL_VIEW,
-          pitch: START_IN_3D_DEFAULT
-            ? DEFAULT_TERRAIN_PITCH
-            : INITIAL_VIEW.pitch,
-        }
+  const initialMapView = {
+    ...INITIAL_VIEW,
+    pitch: START_IN_3D_DEFAULT ? DEFAULT_TERRAIN_PITCH : INITIAL_VIEW.pitch,
+  }
 
   const cameraControls = useMapCameraControls({
     isStyleLoading,
@@ -168,7 +163,9 @@ export function useAlbertaMapController(
     speedMetersPerSecond: flyoverControls.flyoverSpeedMetersPerSecond,
     visualRef: flyoverControls.flightVisualRef,
     positionRef: flyoverControls.flightPositionRef,
+    getFlightElevation: flyoverControls.getFlightElevation,
     pauseAtPosition: flyoverControls.pauseAtPosition,
+    resumeFromPoi: flyoverControls.resumeFromPoi,
     clearPoiFocus: flyoverControls.clearPoiFocus,
     isFreeLooking: flyoverControls.isFreeLooking,
   }

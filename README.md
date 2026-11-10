@@ -118,6 +118,42 @@ language; switching to French updates the entire interface and document language
 without resetting the current activity. A page reload resets language and
 activity state, but the expedition journal is kept (see below).
 
+### Map loading
+
+Every map visit has a local **Preparing your map** screen. The map stays mounted
+and renders underneath, including the main HUD and POI selector, so those elements
+are ready before the loading screen fades. Controls, tutorials, and keyboard
+shortcuts stay unavailable until the opening scene is ready. Flight-only UI,
+including the mini-map, still appears when plane mode starts. A spinner signals
+ongoing loading. The screen fades over one second, followed by a one-second pause
+before the module arrival animation or direct flight entry begins.
+
+Readiness requires setup, visible initial-view tiles, terrain,
+POIs, enabled boundary data, and a rendered boundary wall with its initial loaded
+terrain profile. Flight startup also preloads the aircraft overlay, model, and its
+texture. A short stable interval and confirming rendered frame precede the fade.
+Missing content or a 30-second timeout shows **Retry** and **Back to home**;
+retry recreates only the map and preserves saved progress. Later tile streaming
+does not reopen the startup screen.
+
+`src/mapping/map-settings/mapLoadingSettings.ts` configures the timeout, settling,
+`MAP_REVEAL_DURATION_MS` (1000 ms), `MAP_STARTUP_MOVEMENT_DELAY_MS` (1000 ms),
+and `MAP_TERRAIN_BUFFER_KM` (200 km). Terrain and hillshade tile
+requests use Alberta's bounding rectangle plus this buffer, with another
+`MAP_TERRAIN_EXTRA_WEST_BUFFER_KM` (200 km) westward into BC; tile-edge overlap
+is expected. This is not a polygon clip or a camera restriction. Basemap imagery
+still streams beyond those bounds, while terrain outside coverage is unavailable.
+Only the opening view is prepared, not all of Alberta.
+`/explore?flyover=true` uses the same opening camera and Fly Plane action as
+`/explore`, automatically launching after loading instead of requiring a click.
+Modules retain their overview-to-startup-camera animation after
+loading. Newly exposed areas stream during these visible camera transitions.
+Direct `/explore?flyover=true` launches and the fresh/reset base map's initial
+southern flight spawn share the altitude configured by
+`FLYOVER_LINK_START_ALTITUDE_METERS` in `src/mapping/map-settings/flyoverSettings.ts`.
+Manual launches after navigating the map and module flights retain their
+3,000 m starting altitude.
+
 ### Save data
 
 `src/save-data/expedition-progress/` owns expedition progress types, learner-facing
@@ -140,6 +176,21 @@ place appears inside an expedition or is entered during flight. Selecting a
 flight destination alone does not count. Repeated visits preserve the first date.
 Opening the journal from a map pauses active flight. Closing it leaves flight
 paused until the player resumes.
+Closing an encountered flight POI caps the base speed at the POI arrival speed
+(500 m/s), preserving slower speeds and applying the usual altitude multiplier.
+The throttle is capped too, so releasing a POI does not accelerate the plane.
+Ordinary pause/resume keeps the chosen speed.
+Flight POI encounters require entry into the cylinder's radius and height
+(sea level to its configured top, including each POI's height multiplier).
+Flying above a cylinder does not trigger it or its inside tint; descending
+through its top does. Swept detection includes vertical movement.
+Unvisited base-map flight cylinders use light blue; saved discoveries use deeper
+blue. Active targets stay orange, and module completion colors are unchanged.
+The flight mini-map and compass fade in and out over 240 ms when shown or hidden,
+including during POI visits. Reduced-motion preferences disable the fade.
+Flight POI cylinders retract during the exit camera transition, reversing their
+entry growth; labels and dotted tethers descend with them. Reduced motion skips
+the height transitions.
 
 `src/save-data/alberta-discoveries/` owns the provider, learner hook, and asynchronous
 `AlbertaDiscoveryRepository`. Its browser adapter stores

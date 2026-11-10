@@ -42,6 +42,7 @@ import {
   FLYOVER_POI_PEAK_ALTITUDE_RATIO,
   FLYOVER_POI_TRAVEL_DURATION,
   FLYOVER_START_ALTITUDE_METERS,
+  FLYOVER_LINK_START_ALTITUDE_METERS,
   FLYOVER_START_BACKUP_SCALE,
   FLYOVER_TERRAIN_FALL_RESPONSE,
   FLYOVER_TERRAIN_RISE_RESPONSE,
@@ -99,6 +100,7 @@ import { useFlightInput } from './useFlightInput'
 const READOUT_PUBLISH_INTERVAL = 100 // milliseconds between altitude and speed readouts
 
 type UseFlyoverControlsOptions = {
+  isStartupBlocked?: boolean
   mapRef: RefObject<MapRef | null>
   isMapReady: boolean
   isStyleLoading: boolean
@@ -137,6 +139,7 @@ function readMapCamera(map: MapLibreMap): FlightCamera {
 
 // Function: Run flyover mode and expose its state to the map controls.
 export function useFlyoverControls({
+  isStartupBlocked = false,
   mapRef,
   isMapReady,
   isStyleLoading,
@@ -155,6 +158,10 @@ export function useFlyoverControls({
   )
   const phaseRef = useRef<FlyoverPhase>('off')
   const isPausedRef = useRef(false)
+  const startupBlockedRef = useRef(isStartupBlocked)
+  useEffect(() => {
+    startupBlockedRef.current = isStartupBlocked
+  }, [isStartupBlocked])
   const runtimeRef = useRef<FlightRuntime | null>(null)
   const cameraAnchorRef = useRef<FlightCameraAnchor | null>(null)
   const flightPositionRef = useRef<FlightState | null>(null)
@@ -213,12 +220,35 @@ export function useFlyoverControls({
     setFlyoverPaused(!isPausedRef.current)
   }, [setFlyoverPaused])
 
+  const resumeFromPoi = useCallback(() => {
+    const runtime = runtimeRef.current
+    if (!runtime || phaseRef.current !== 'flying') return
+
+    const altitudeMultiplier = getAltitudeSpeedMultiplier(
+      runtime.flight.altitudeMeters,
+    )
+    runtime.flight.speedMetersPerSecond = Math.min(
+      runtime.flight.speedMetersPerSecond,
+      FLYOVER_POI_ARRIVAL_SPEED * altitudeMultiplier,
+    )
+    runtime.throttle = Math.min(
+      runtime.throttle,
+      getThrottleForSpeed(
+        runtime.flight.speedMetersPerSecond / altitudeMultiplier,
+      ),
+    )
+    setSpeedMetersPerSecond(
+      Math.round(runtime.flight.speedMetersPerSecond / 10) * 10,
+    )
+    setFlyoverPaused(false)
+  }, [setFlyoverPaused])
+
   // Function: Leave flyover mode from the keyboard.
   const stopFlyoverRef = useRef<() => void>(() => {})
   const exitFromKeyboard = useCallback(() => stopFlyoverRef.current(), [])
 
   const inputRef = useFlightInput({
-    isActive,
+    isActive: isActive && !isStartupBlocked,
     onTogglePause: togglePause,
     onExit: exitFromKeyboard,
   })
@@ -228,7 +258,7 @@ export function useFlyoverControls({
     enterPoiLook,
     clearPoiLook,
   } = useFlightDrag({
-    isActive: phase === 'flying',
+    isActive: phase === 'flying' && !isStartupBlocked,
     mapRef,
     viewRef,
   })
@@ -237,6 +267,7 @@ export function useFlyoverControls({
   const startFlyover = (
     pauseAfterEntry = false,
     requestedStartSpeed = FLYOVER_DEFAULT_SPEED,
+    requestedStartAltitude?: number,
   ) => {
     if (
       phaseRef.current !== 'off' ||
@@ -258,7 +289,10 @@ export function useFlyoverControls({
         spawn?.headingDegrees ?? startCamera.bearing,
       )
       const startAltitude = clamp(
-        FLYOVER_START_ALTITUDE_METERS,
+        requestedStartAltitude ??
+          (spawn
+            ? FLYOVER_LINK_START_ALTITUDE_METERS
+            : FLYOVER_START_ALTITUDE_METERS),
         FLYOVER_MIN_ALTITUDE_METERS,
         FLYOVER_MAX_ALTITUDE_METERS,
       )
@@ -411,15 +445,16 @@ export function useFlyoverControls({
   const toggleFlyover = (
     startPaused = false,
     requestedStartSpeed = FLYOVER_DEFAULT_SPEED,
+    requestedStartAltitude?: number,
   ) => {
     if (phaseRef.current === 'off') {
-      startFlyover(startPaused, requestedStartSpeed)
+      startFlyover(startPaused, requestedStartSpeed, requestedStartAltitude)
     } else stopFlyover()
   }
 
   const pauseAtPosition = useCallback(
     (
-      coordinates: [number, number],
+      coordinates: [number, number, number],
       poiCoordinates: [number, number],
       poiFov?: number,
     ) => {
@@ -428,6 +463,8 @@ export function useFlyoverControls({
       if (!runtime || !map || phaseRef.current !== 'flying') return
       runtime.flight.longitude = coordinates[0]
       runtime.flight.latitude = coordinates[1]
+      runtime.flight.altitudeMeters = coordinates[2] - runtime.groundElevation
+      setAltitudeMeters(Math.round(runtime.flight.altitudeMeters))
       runtime.travel = null
       const terrain =
         map.queryTerrainElevation(poiCoordinates) ?? runtime.groundElevation
@@ -444,6 +481,13 @@ export function useFlyoverControls({
     },
     [mapRef, setFlyoverPaused, enterPoiLook],
   )
+
+  const getFlightElevation = useCallback(() => {
+    const runtime = runtimeRef.current
+    return runtime
+      ? runtime.groundElevation + runtime.flight.altitudeMeters
+      : null
+  }, [])
 
   useEffect(() => {
     stopFlyoverRef.current = stopFlyover
@@ -611,7 +655,10 @@ export function useFlyoverControls({
             progress,
             runtime.hasDistantStart,
           )
-          if (!runtime.hasDistantStart || flightProgress > 0)
+          if (
+            !startupBlockedRef.current &&
+            (!runtime.hasDistantStart || flightProgress > 0)
+          )
             advanceFlight(runtime, IDLE_FLIGHT_INPUT, seconds)
           updateGround(now, seconds)
           map.jumpTo(
@@ -635,6 +682,15 @@ export function useFlyoverControls({
             }
           }
         } else if (phase === 'flying') {
+          if (startupBlockedRef.current) {
+            const previousGround = runtime.groundElevation
+            updateGround(now, seconds)
+            // The hidden opening view can settle immediately without an animated climb.
+            runtime.groundElevation = runtime.targetGroundElevation
+            if (Math.abs(runtime.groundElevation - previousGround) > 0.01)
+              map.jumpTo(getFlightCamera(runtime, viewportHeight, fov))
+            return
+          }
           const keys = inputRef.current
           const previousAltitude = runtime.flight.altitudeMeters
           const previousBearing = runtime.cameraBearing
@@ -771,7 +827,9 @@ export function useFlyoverControls({
     flightVisualRef: visualRef,
     toggleFlyover,
     flightPositionRef,
+    getFlightElevation,
     pauseAtPosition,
+    resumeFromPoi,
     travelTo,
   }
 }

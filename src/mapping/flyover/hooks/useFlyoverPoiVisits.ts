@@ -17,10 +17,11 @@ import type { RefObject } from 'react'
 import type { MapPoi } from '../../components/MapPoiMarker'
 import type { FlightState, FlyoverPhase } from '../types'
 import { FLYOVER_POI_REARM_DELAY_MS } from '../../map-settings/flyoverPoiSettings'
-import { getDistanceMeters } from '../utils/flightMath'
 import {
   getCylinderEntry,
+  getPoiHeights,
   getPoiRadiusMeters,
+  isInsidePoiCylinder,
 } from '../utils/flightPoiGeometry'
 
 type UseFlyoverPoiVisitsOptions = {
@@ -30,7 +31,8 @@ type UseFlyoverPoiVisitsOptions = {
   isBlocked: boolean
   isPanelOpen: boolean
   flightPositionRef: RefObject<FlightState | null>
-  onEnter: (poi: MapPoi, coordinates: [number, number]) => void
+  getFlightElevation: () => number | null
+  onEnter: (poi: MapPoi, coordinates: [number, number, number]) => void
   onResume: (visitedPoiId: string) => void
 }
 
@@ -57,7 +59,7 @@ export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
 
   useEffect(() => {
     let frame = 0
-    let previous: [number, number] | null = null
+    let previous: [number, number, number] | null = null
     const visits = new Map<string, number | null>()
     const tick = (now: number) => {
       frame = window.requestAnimationFrame(tick)
@@ -68,15 +70,21 @@ export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
         isBlocked,
         isPanelOpen,
         flightPositionRef,
+        getFlightElevation,
         onEnter,
       } = latest.current
       const flight = flightPositionRef.current
-      if (!flight || phase !== 'flying') {
+      const elevation = getFlightElevation()
+      if (!flight || elevation === null || phase !== 'flying') {
         previous = null
         visits.clear()
         return
       }
-      const current: [number, number] = [flight.longitude, flight.latitude]
+      const current: [number, number, number] = [
+        flight.longitude,
+        flight.latitude,
+        elevation,
+      ]
       const from = previous ?? current
       previous = current
       if (isPaused || isBlocked || isPanelOpen) return
@@ -84,9 +92,9 @@ export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
       for (const poi of pois) {
         if (!poi.info) continue
         const radius = getPoiRadiusMeters(poi)
-        const distance = getDistanceMeters(current, poi.coordinates)
+        const height = getPoiHeights(poi).cylinder
         if (visits.has(poi.id)) {
-          if (distance <= radius) {
+          if (isInsidePoiCylinder(current, poi.coordinates, radius, height)) {
             visits.set(poi.id, null)
           } else {
             const outsideSince = visits.get(poi.id)
@@ -97,16 +105,23 @@ export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
           }
           continue
         }
-        const entry = getCylinderEntry(from, current, poi.coordinates, radius)
+        const entry = getCylinderEntry(
+          from,
+          current,
+          poi.coordinates,
+          radius,
+          height,
+        )
         if (entry !== null && (!candidate || entry < candidate.entry))
           candidate = { poi, entry }
       }
       if (!candidate) return
       visits.set(candidate.poi.id, null)
       ownedPanel.current = { poiId: candidate.poi.id, state: 'opening' }
-      const coordinates: [number, number] = [
+      const coordinates: [number, number, number] = [
         from[0] + (current[0] - from[0]) * candidate.entry,
         from[1] + (current[1] - from[1]) * candidate.entry,
+        from[2] + (current[2] - from[2]) * candidate.entry,
       ]
       onEnter(candidate.poi, coordinates)
     }

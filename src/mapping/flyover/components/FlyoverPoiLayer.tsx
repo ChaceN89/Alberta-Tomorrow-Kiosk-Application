@@ -30,6 +30,7 @@ import {
   getPoiColor,
   getPoiHeights,
   getPoiRadiusMeters,
+  isInsidePoiCylinder,
 } from '../utils/flightPoiGeometry'
 import {
   createPoiCylinderLayer,
@@ -48,16 +49,20 @@ import {
 } from '../utils/flightPoiLabelLayout'
 
 type FlyoverPoiLayerProps = {
+  isExiting: boolean
   pois: readonly MapPoi[]
   flightPositionRef: RefObject<FlightState | null>
+  getFlightElevation: () => number | null
   activePoiId: string | null
   infoPoiId: string | null
   onPoiActivate: (poi: MapPoi, origin?: Element | null) => void
 }
 
 export function FlyoverPoiLayer({
+  isExiting,
   pois,
   flightPositionRef,
+  getFlightElevation,
   activePoiId,
   infoPoiId,
   onPoiActivate,
@@ -73,10 +78,12 @@ export function FlyoverPoiLayer({
   const overlayHost = mapRef?.getMap().getContainer().parentElement
   const getInfoPoiId = useEffectEvent(() => infoPoiId)
   const getActivePoiId = useEffectEvent(() => activePoiId)
+  const getIsExiting = useEffectEvent(() => isExiting)
+  const readFlightElevation = useEffectEvent(getFlightElevation)
 
   useEffect(() => {
     mapRef?.getMap().triggerRepaint()
-  }, [infoPoiId, activePoiId, mapRef])
+  }, [infoPoiId, activePoiId, isExiting, mapRef])
 
   useEffect(() => {
     const map = mapRef?.getMap()
@@ -175,16 +182,17 @@ export function FlyoverPoiLayer({
         const element = elements.current.get(poi.id)
         if (!element) continue
         const opacity = opacities.current.get(poi.id) ?? 0
-        const distance = flight
-          ? getDistanceMeters(
-              [flight.longitude, flight.latitude],
-              poi.coordinates,
-            )
-          : 0
+        const flightElevation = readFlightElevation()
         if (
           flight &&
+          flightElevation !== null &&
           poi.id !== getInfoPoiId() &&
-          distance <= getPoiRadiusMeters(poi) + 0.01 &&
+          isInsidePoiCylinder(
+            [flight.longitude, flight.latitude, flightElevation],
+            poi.coordinates,
+            getPoiRadiusMeters(poi) + 0.01,
+            getPoiHeights(poi).cylinder * growth,
+          ) &&
           !insidePoi
         )
           insidePoi = poi
@@ -320,6 +328,7 @@ export function FlyoverPoiLayer({
             renderLabels,
             getInfoPoiId,
             getActivePoiId,
+            getIsExiting,
           ),
         )
       ensureProjectionOrder()

@@ -2,6 +2,14 @@
   "title": "Explore Alberta",
   "mapLabel": "Map of Alberta",
   "moduleMapLabel": "{{moduleName}} map",
+  "loading": {
+    "title": "Preparing your map…",
+    "description": "Loading the landscape, Alberta boundary, and places for your opening view.",
+    "errorTitle": "The map could not be prepared",
+    "errorDescription": "Some map content could not finish loading. Check your connection and try again.",
+    "retry": "Retry",
+    "back": "Back to home"
+  },
   "view": {
     "title": "Map view",
     "controls": "Map view settings",
@@ -163,6 +171,7 @@
     "listLabel": "Choose a visible point of interest",
     "select": "Choose a point of interest; currently {{name}} ({{category}})",
     "goToActive": "Go to the active point of interest: {{name}} ({{category}})",
+    "goToTooltip": "Go to {{name}}",
     "previous": "Select the previous point of interest from {{name}}",
     "next": "Select the next point of interest from {{name}}"
   },

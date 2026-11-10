@@ -14,7 +14,6 @@
  */
 import type { ReactNode, RefObject } from 'react'
 import { MapPoiSelector } from '../components/MapPoiSelector'
-import { FlightPlaneLayer } from '../flyover/components/FlightPlaneLayer'
 import { PlaneHud } from '../flyover/components/PlaneHud'
 import type { FlightState, FlightVisualState } from '../flyover/types'
 import { ExploreMapTutorial } from '@/tutorials/specific-tutorials/explore-map/ExploreMapTutorial'
@@ -22,6 +21,7 @@ import { PlaneTutorial } from '@/tutorials/specific-tutorials/plane-tutorial/Pla
 import type { MapPoi } from '../components/MapPoiMarker'
 
 export type MapOverlayLayerProps = {
+  isInteractive: boolean
   pois: readonly MapPoi[]
   activePoiId: string | null
   infoPoiId: string | null
@@ -45,6 +45,7 @@ export type MapOverlayLayerProps = {
 }
 
 export function MapOverlayLayer({
+  isInteractive,
   pois,
   activePoiId,
   infoPoiId,
@@ -56,7 +57,6 @@ export function MapOverlayLayer({
   speedMetersPerSecond,
   latitude,
   longitude,
-  visualRef,
   flightPositionRef,
   isPlaneTutorialActive,
   isPlaneTutorialControlsStep,
@@ -69,18 +69,15 @@ export function MapOverlayLayer({
   return (
     <>
       <MapPoiSelector
+        isInteractive={isInteractive}
         pois={pois}
         activePoiId={activePoiId}
         onSelect={onPoiSelect}
         onLocate={onPoiLocate}
       />
-      {isFlyoverActive && <FlightPlaneLayer visualRef={visualRef} />}
       <PlaneHud
-        activePoi={
-          infoPoiId === null
-            ? pois.find((poi) => poi.id === activePoiId)
-            : undefined
-        }
+        activePoi={pois.find((poi) => poi.id === activePoiId)}
+        isCompassVisible={infoPoiId === null}
         flightPositionRef={flightPositionRef}
         isActive={isFlyoverActive}
         isFreeLooking={isFreeLooking}
@@ -91,7 +88,7 @@ export function MapOverlayLayer({
         isTutorialActive={isPlaneTutorialActive}
         isTutorialControlsStep={isPlaneTutorialControlsStep}
       />
-      {isPlaneTutorialActive && (
+      {isInteractive && isPlaneTutorialActive && (
         <PlaneTutorial
           onFinish={onFinishPlaneTutorial}
           onPause={onSetFlyoverPaused}

@@ -28,7 +28,6 @@ import {
   POI_CLUSTER_ZOOM_DURATION,
 } from './map-settings/poiClusterSettings'
 import { useMapInfoPanel } from '@/module-tools/map-info-panel/hooks/useMapInfoPanel'
-import { useAppStartupMapGate } from '@/app/AppStartupMapContext'
 import { useAlbertaMapController } from './map-functions/useAlbertaMapController'
 import type { ModuleMapStartup } from '@/modules/types'
 import type { MapPoi } from './components/MapPoiMarker'
@@ -42,6 +41,10 @@ import { usePlaneTutorialState } from './map-components/usePlaneTutorialState'
 import { useFlyoverPoiVisits } from './flyover/hooks/useFlyoverPoiVisits'
 import { usePlaneLaunchShortcut } from './flyover/hooks/usePlaneLaunchShortcut'
 import { getNextFlightPoi } from './flyover/utils/flightPoiNavigation'
+import { useMapStartup } from './map-components/useMapStartup'
+import { MapLoadingScreen } from './components/MapLoadingScreen'
+import { MAP_REVEAL_DURATION_MS } from './map-settings/mapLoadingSettings'
+import { loadFlightPlaneOverlay } from './flyover/utils/preloadFlightPlane'
 
 // AlbertaMap component coordinates map state, POI navigation, and helper layers.
 type AlbertaMapProps = {
@@ -58,7 +61,18 @@ type AlbertaMapProps = {
 const EMPTY_MODULE_POIS: readonly MapPoi[] = []
 
 // main component for the albeta map
-export function AlbertaMap({
+export function AlbertaMap(props: AlbertaMapProps) {
+  const [attempt, setAttempt] = useState(0)
+  return (
+    <AlbertaMapScene
+      key={attempt}
+      {...props}
+      onRetry={() => setAttempt((current) => current + 1)}
+    />
+  )
+}
+
+function AlbertaMapScene({
   ariaLabel,
   moduleId,
   modulePois = EMPTY_MODULE_POIS,
@@ -67,7 +81,10 @@ export function AlbertaMap({
   moduleStartup,
   startFlyover = false,
   children,
-}: AlbertaMapProps) {
+  onRetry,
+}: AlbertaMapProps & { onRetry: () => void }) {
+  const [isInteractive, setIsInteractive] = useState(false)
+  const [isAircraftReady, setIsAircraftReady] = useState(false)
   // State for the currently active POI on the map
   const [activePoiId, setActivePoiId] = useState<string | null>(null)
   const isExplicitPoiNavigation = useRef(false)
@@ -80,9 +97,6 @@ export function AlbertaMap({
     closePanel,
     updatePanel,
   } = useMapInfoPanel()
-
-  // Startup map gate for coordinating map readiness with app startup - ensures the map is ready before proceeding with app initialization
-  const startupMapGate = useAppStartupMapGate()
 
   // Alberta map controller for managing map state, flyover, and map instance references
   const {
@@ -102,7 +116,7 @@ export function AlbertaMap({
   } = useAlbertaMapController(
     moduleStartup?.startSatellite === true,
     !moduleId,
-    startFlyover,
+    !isInteractive,
   )
 
   // state for if the map viewport is currently being controlled by the flyover
@@ -145,7 +159,7 @@ export function AlbertaMap({
   // Plane tutorial state for managing the tutorial overlay and controls
   const planeTutorial = usePlaneTutorialState({
     flyoverPhase: flyover.phase,
-    isMapReady: controls.isMapReady,
+    isMapReady: controls.isMapReady && isInteractive,
     isStyleLoading: controls.isStyleLoading,
     onStartFlyover: controls.onStartFlyover,
     onSetFlyoverPaused: controls.onSetFlyoverPaused,
@@ -158,7 +172,7 @@ export function AlbertaMap({
       moduleStartup,
       mapRef,
       initialMapView,
-      isMapReady: controls.isMapReady,
+      isMapReady: controls.isMapReady && isInteractive,
       isStyleLoading: controls.isStyleLoading,
       isTerrainTransitioning: controls.isTerrainTransitioning,
       flyoverPhase: flyover.phase,
@@ -176,17 +190,59 @@ export function AlbertaMap({
         planeTutorial.setIsPlaneTutorialControlsStep,
     })
 
+  const startup = useMapStartup({
+    onReady: () => setIsInteractive(true),
+    map: mapInstance,
+    isSetupReady:
+      controls.isMapReady &&
+      !controls.isStyleLoading &&
+      !controls.isTerrainTransitioning,
+    isCameraReady: !isResettingMap && flyover.phase === 'off',
+    isPoiDataReady: poiData.isPoiDataReady,
+    needsAircraft: startFlyover || moduleStartup?.startFlyover === true,
+    isAircraftReady,
+    isBoundaryEnabled: controls.isAlbertaBoundaryEnabled,
+    isWallEnabled: controls.isAlbertaBoundaryWallEnabled,
+  })
+  const { fail: failStartup } = startup
+  useEffect(() => {
+    if (!startFlyover && !moduleStartup?.startFlyover) return
+    let active = true
+    void Promise.all([
+      loadFlightPlaneOverlay(),
+      import('./flyover/utils/planeModel').then((module) =>
+        module.loadFlightPlane(),
+      ),
+    ]).then(
+      () => {
+        if (active) setIsAircraftReady(true)
+      },
+      (error: unknown) => {
+        if (active) failStartup(error)
+      },
+    )
+    return () => {
+      active = false
+    }
+  }, [startFlyover, moduleStartup?.startFlyover, failStartup])
+  useEffect(() => {
+    if (controls.hasMapError && !isInteractive)
+      failStartup(new Error('The map reported an error during startup.'))
+  }, [controls.hasMapError, isInteractive, failStartup])
+
   useFlyoverPoiVisits({
     pois: poiData.visiblePois,
     phase: flyover.phase,
     isPaused: flyover.isPaused,
     isBlocked:
+      !isInteractive ||
       isJournalOpen ||
       isResettingMap ||
       controls.isStyleLoading ||
       planeTutorial.isPlaneTutorialActive,
     isPanelOpen: isInfoPanelOpen,
     flightPositionRef: flyover.positionRef,
+    getFlightElevation: flyover.getFlightElevation,
     onEnter: (poi, coordinates) => {
       isExplicitPoiNavigation.current = false
       flyover.pauseAtPosition(coordinates, poi.coordinates, poi.flyoverPoiFov)
@@ -204,7 +260,7 @@ export function AlbertaMap({
         const next = getNextFlightPoi(poiData.visiblePois, visitedPoiId)
         if (next) setActivePoiId(next.id)
       }
-      controls.onSetFlyoverPaused(false)
+      flyover.resumeFromPoi()
     },
   })
 
@@ -234,6 +290,7 @@ export function AlbertaMap({
   useEffect(() => {
     if (
       !startFlyover ||
+      !isInteractive ||
       moduleId ||
       autoLaunchHasRun.current ||
       !controls.isMapReady ||
@@ -247,6 +304,7 @@ export function AlbertaMap({
     autoLaunchPlane()
   }, [
     startFlyover,
+    isInteractive,
     moduleId,
     controls.isMapReady,
     controls.isStyleLoading,
@@ -256,6 +314,7 @@ export function AlbertaMap({
   ])
   usePlaneLaunchShortcut({
     isEnabled:
+      isInteractive &&
       controls.isMapReady &&
       !controls.isStyleLoading &&
       !controls.isTerrainTransitioning &&
@@ -266,17 +325,6 @@ export function AlbertaMap({
 
   // Collapse map attribution when appropriate
   useMapAttributionCollapse(mapInstance)
-
-  useEffect(() => {
-    if (controls.isMapReady || controls.hasMapError || poiData.isPoiDataReady) {
-      startupMapGate?.markMapReady()
-    }
-  }, [
-    controls.hasMapError,
-    controls.isMapReady,
-    poiData.isPoiDataReady,
-    startupMapGate,
-  ])
 
   const mapRefCallback = useCallback(
     (map: MapRef | null) => {
@@ -293,7 +341,7 @@ export function AlbertaMap({
     : (poiData.visiblePois[0]?.id ?? null)
 
   const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
-    if (isResettingMap) return
+    if (!isInteractive || isResettingMap) return
     if (controls.isFlyoverEnabled) {
       isExplicitPoiNavigation.current = true
       setActivePoiId(poi.id)
@@ -344,7 +392,7 @@ export function AlbertaMap({
     coordinates: [number, number],
     expansionZoom: number,
   ) => {
-    if (isResettingMap) return
+    if (!isInteractive || isResettingMap) return
     if (controls.isFlyoverEnabled) {
       controls.onFlyoverTravelTo(coordinates)
       return
@@ -362,6 +410,7 @@ export function AlbertaMap({
 
   const mapControls = {
     ...controls,
+    isMapReady: controls.isMapReady && isInteractive,
     isFlyoverPaused: flyover.isPaused,
     onResetMapView,
     isResettingMap,
@@ -391,49 +440,72 @@ export function AlbertaMap({
 
   return (
     <MapControlsContext.Provider value={mapControls}>
-      <AlbertaMapCanvas
-        ariaLabel={ariaLabel}
-        moduleId={moduleId}
-        initialMapView={initialMapView}
-        mapStyle={mapStyle}
-        minZoom={minZoom}
-        maxZoom={maxZoom}
-        mapRefCallback={mapRefCallback}
-        onMapLoad={handleMapLoad}
-        onMapError={onMapError}
-        groups={poiData.poiGroups}
-        infoPoiId={infoPoiId}
-        flightPositionRef={flyover.positionRef}
-        onPoiActivate={navigateToPoi}
-        onClusterActivate={zoomToPoiCluster}
-        pois={poiData.visiblePois}
-        activePoiId={visibleActivePoiId}
-        onPoiSelect={(poi) => {
-          isExplicitPoiNavigation.current = true
-          setActivePoiId(poi.id)
-        }}
-        onPoiLocate={navigateToPoi}
-        isFlyoverActive={flyover.phase !== 'off'}
-        isPreparingFlyover={isPreparingFlyover}
-        isFreeLooking={flyover.isFreeLooking}
-        altitudeMeters={flyover.altitudeMeters}
-        speedMetersPerSecond={flyover.speedMetersPerSecond}
-        latitude={mapViewport.mapViewport?.center[1] ?? initialMapView.latitude}
-        longitude={
-          mapViewport.mapViewport?.center[0] ?? initialMapView.longitude
-        }
-        visualRef={flyover.visualRef}
-        isPlaneTutorialActive={planeTutorial.isPlaneTutorialActive}
-        isPlaneTutorialControlsStep={planeTutorial.isPlaneTutorialControlsStep}
-        isMapReady={controls.isMapReady}
-        onFinishPlaneTutorial={planeTutorial.finishPlaneTutorial}
-        onSetFlyoverPaused={controls.onSetFlyoverPaused}
-        onPlaneTutorialControlsStepChange={
-          planeTutorial.setIsPlaneTutorialControlsStep
-        }
+      <div
+        className={`absolute inset-0 transition-opacity motion-reduce:transition-none ${startup.isVisible ? 'opacity-100' : 'opacity-0'}`}
+        style={{ transitionDuration: `${MAP_REVEAL_DURATION_MS}ms` }}
+        inert={!isInteractive}
+        aria-hidden={!isInteractive}
       >
-        {children}
-      </AlbertaMapCanvas>
+        <AlbertaMapCanvas
+          isInteractive={isInteractive}
+          onAircraftReady={() => setIsAircraftReady(true)}
+          onAircraftError={failStartup}
+          ariaLabel={ariaLabel}
+          moduleId={moduleId}
+          initialMapView={initialMapView}
+          mapStyle={mapStyle}
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+          mapRefCallback={mapRefCallback}
+          onMapLoad={handleMapLoad}
+          onMapError={onMapError}
+          groups={poiData.poiGroups}
+          infoPoiId={infoPoiId}
+          flightPositionRef={flyover.positionRef}
+          getFlightElevation={flyover.getFlightElevation}
+          onPoiActivate={navigateToPoi}
+          onClusterActivate={zoomToPoiCluster}
+          pois={poiData.visiblePois}
+          activePoiId={visibleActivePoiId}
+          onPoiSelect={(poi) => {
+            isExplicitPoiNavigation.current = true
+            setActivePoiId(poi.id)
+          }}
+          onPoiLocate={navigateToPoi}
+          isFlyoverActive={flyover.phase !== 'off'}
+          isFlyoverExiting={flyover.phase === 'exiting'}
+          isPreparingFlyover={isPreparingFlyover}
+          isFreeLooking={flyover.isFreeLooking}
+          altitudeMeters={flyover.altitudeMeters}
+          speedMetersPerSecond={flyover.speedMetersPerSecond}
+          latitude={
+            mapViewport.mapViewport?.center[1] ?? initialMapView.latitude
+          }
+          longitude={
+            mapViewport.mapViewport?.center[0] ?? initialMapView.longitude
+          }
+          visualRef={flyover.visualRef}
+          isPlaneTutorialActive={planeTutorial.isPlaneTutorialActive}
+          isPlaneTutorialControlsStep={
+            planeTutorial.isPlaneTutorialControlsStep
+          }
+          isMapReady={controls.isMapReady}
+          onFinishPlaneTutorial={planeTutorial.finishPlaneTutorial}
+          onSetFlyoverPaused={controls.onSetFlyoverPaused}
+          onPlaneTutorialControlsStepChange={
+            planeTutorial.setIsPlaneTutorialControlsStep
+          }
+        >
+          {children}
+        </AlbertaMapCanvas>
+      </div>
+      {startup.isLoadingScreenVisible && (
+        <MapLoadingScreen
+          hasError={startup.state === 'error'}
+          isRevealing={startup.state === 'revealing'}
+          onRetry={onRetry}
+        />
+      )}
     </MapControlsContext.Provider>
   )
 }

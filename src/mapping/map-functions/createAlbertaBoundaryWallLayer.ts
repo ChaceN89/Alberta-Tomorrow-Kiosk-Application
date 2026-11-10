@@ -50,6 +50,12 @@ import {
   FLYOVER_POI_CYLINDER_OUTLINE_OPACITY,
 } from '../map-settings/flyoverPoiSettings'
 
+const readiness = new WeakMap<MapLibreMap, boolean>()
+
+export function isAlbertaBoundaryWallReady(map: MapLibreMap) {
+  return readiness.get(map) === true
+}
+
 function getBoundaryRings(data: GeoJSON): Position[][] {
   switch (data.type) {
     case 'FeatureCollection':
@@ -96,6 +102,7 @@ export function createAlbertaBoundaryWallLayer(): CustomLayerInterface {
   let lastTerrainUpdate = -Infinity
   let terrainTimer: ReturnType<typeof setTimeout> | null = null
   let detachTerrainEvents: (() => void) | null = null
+  let hasLoadedTerrainProfile = false
   const profiles: {
     coordinates: [number, number][]
     points: number[][]
@@ -175,6 +182,8 @@ export function createAlbertaBoundaryWallLayer(): CustomLayerInterface {
     }
     updatePositions(wallGeometry, walls)
     updatePositions(rimGeometry, rim)
+    hasLoadedTerrainProfile =
+      !map.getTerrain() || map.isSourceLoaded(TERRAIN_SOURCE_ID)
   }
 
   return {
@@ -183,12 +192,15 @@ export function createAlbertaBoundaryWallLayer(): CustomLayerInterface {
     renderingMode: '3d',
     onAdd(map, gl) {
       mapInstance = map
+      readiness.set(map, false)
       removed = false
       renderer = new WebGLRenderer({ canvas: map.getCanvas(), context: gl })
       renderer.autoClear = false
       const source = map.getSource<GeoJSONSource>(ALBERTA_BOUNDARY_SOURCE_ID)
       if (!source) throw new Error('Alberta boundary source is missing.')
       const scheduleTerrainUpdate = () => {
+        readiness.set(map, false)
+        hasLoadedTerrainProfile = false
         if (terrainTimer !== null) return
         terrainTimer = setTimeout(() => {
           terrainTimer = null
@@ -303,9 +315,15 @@ export function createAlbertaBoundaryWallLayer(): CustomLayerInterface {
         .multiply(world)
       renderer.resetState()
       renderer.render(scene, camera)
+      if (mapInstance)
+        readiness.set(
+          mapInstance,
+          hasLoadedTerrainProfile && terrainTimer === null,
+        )
     },
     onRemove() {
       removed = true
+      if (mapInstance) readiness.delete(mapInstance)
       mapInstance = null
       detachTerrainEvents?.()
       if (terrainTimer !== null) clearTimeout(terrainTimer)

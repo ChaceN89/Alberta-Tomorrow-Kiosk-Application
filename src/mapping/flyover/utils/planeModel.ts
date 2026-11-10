@@ -1,7 +1,7 @@
 /**
   File: planeModel.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Oct 30, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Load the aircraft FBX once and hand out sized, correctly facing copies.
@@ -74,17 +74,24 @@ function prepareModel(model: Group) {
 export function loadFlightPlane() {
   planeTemplate ??= new Promise<Group>((resolve, reject) => {
     const manager = new LoadingManager()
+    let prepared: Group | null = null
     manager.setURLModifier((url) =>
       url.toLowerCase().endsWith('.psd') ? planeTextureUrl : url,
     )
-    manager.onError = (url) =>
-      console.error(new Error(`Unable to load aircraft asset: ${url}`))
+    manager.onError = (url) => {
+      const error = new Error(`Unable to load aircraft asset: ${url}`)
+      console.error(error)
+      reject(error)
+    }
+    manager.onLoad = () => {
+      if (prepared) resolve(prepared)
+    }
 
     new FBXLoader(manager).load(
       planeModelUrl,
       (model) => {
         try {
-          resolve(prepareModel(model))
+          prepared = prepareModel(model)
         } catch (error) {
           reject(error)
         }

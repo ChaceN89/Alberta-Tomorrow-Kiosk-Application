@@ -29,6 +29,7 @@ type PlaneHudProps = {
   isTutorialActive: boolean
   isTutorialControlsStep: boolean
   activePoi?: MapPoi
+  isCompassVisible: boolean
   flightPositionRef: RefObject<FlightState | null>
 }
 
@@ -42,14 +43,15 @@ export function PlaneHud({
   isTutorialActive,
   isTutorialControlsStep,
   activePoi,
+  isCompassVisible,
   flightPositionRef,
 }: PlaneHudProps) {
   return (
     <>
-      {isActive && activePoi && (
+      {activePoi && (
         <FlyoverPoiCompass
-          key={activePoi.id}
           poi={activePoi}
+          isVisible={isActive && isCompassVisible}
           flightPositionRef={flightPositionRef}
         />
       )}

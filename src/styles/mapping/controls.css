@@ -35,7 +35,7 @@
   overflow-y: auto;
   text-align: center;
   animation: mapping-module-title-enter 1000ms cubic-bezier(0.2, 0.75, 0.2, 1)
-    1500ms both;
+    2500ms both;
 }
 
 .mapping-module-title-bar__toggle {

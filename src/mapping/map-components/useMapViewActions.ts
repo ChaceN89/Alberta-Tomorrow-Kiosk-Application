@@ -66,7 +66,7 @@ export function useMapViewActions({
   const moduleStartupHasRun = useRef(false)
   const [isResettingMap, setIsResettingMap] = useState(false)
   const [isPreparingFlyover, setIsPreparingFlyover] = useState(
-    Boolean(moduleStartup?.startFlyover),
+    Boolean(moduleStartup),
   )
   const isMounted = useRef(false)
   const resetIsRunning = useRef(false)

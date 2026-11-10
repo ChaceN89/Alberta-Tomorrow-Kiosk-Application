@@ -41,7 +41,10 @@ import {
   FLYOVER_POI_FADE_DURATION_MS,
 } from '../../map-settings/flyoverPoiSettings'
 import type { FlightState } from '../types'
-import { FLYOVER_ENTER_DURATION } from '../../map-settings/flyoverSettings'
+import {
+  FLYOVER_ENTER_DURATION,
+  FLYOVER_EXIT_CAMERA_DURATION,
+} from '../../map-settings/flyoverSettings'
 import { getAnimationDuration } from '../../map-functions/mapAnimationFunctions'
 import { easeInOutCubic } from './flightMath'
 import { getDistanceMeters } from './flightMath'
@@ -67,6 +70,7 @@ export function createPoiCylinderLayer(
   ) => void,
   getInfoPoiId: () => string | null,
   getActivePoiId: () => string | null,
+  getIsExiting: () => boolean,
 ): CustomLayerInterface {
   const scene = new Scene()
   const camera = new Camera()
@@ -135,6 +139,8 @@ export function createPoiCylinderLayer(
   let renderer: WebGLRenderer | null = null
   let repaint: (() => void) | null = null
   let lastFrameAt = performance.now()
+  let exitStartedAt: number | null = null
+  let exitStartGrowth = 1
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
   return {
     id: POI_CYLINDER_LAYER_ID,
@@ -165,13 +171,25 @@ export function createPoiCylinderLayer(
       lastFrameAt = now
       let isAnimating = false
       const duration = getAnimationDuration(FLYOVER_ENTER_DURATION)
-      const growth =
+      let growth =
         duration <= 0
           ? 1
           : easeInOutCubic(
               Math.min(Math.max((now - entryStartedAt) / duration, 0), 1),
             )
-      if (growth < 1) isAnimating = true
+      if (getIsExiting()) {
+        if (exitStartedAt === null) {
+          exitStartedAt = now
+          exitStartGrowth = growth
+        }
+        const exitDuration = getAnimationDuration(FLYOVER_EXIT_CAMERA_DURATION)
+        const progress =
+          exitDuration <= 0
+            ? 1
+            : Math.min((now - exitStartedAt) / exitDuration, 1)
+        growth = exitStartGrowth * (1 - easeInOutCubic(progress))
+        if (progress < 1) isAnimating = true
+      } else if (growth < 1) isAnimating = true
       for (const {
         poi,
         mesh,

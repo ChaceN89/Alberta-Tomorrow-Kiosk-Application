@@ -14,13 +14,14 @@
   - Selection never navigates; only the locate button invokes navigation.
  */
 import { useEffect, useId, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { POI_CATEGORY_ICONS } from '@/components/icons/poi-icons'
+import { Tooltip } from '@/components/shared/Tooltip'
 import type { MapPoi } from './MapPoiMarker'
 import { isFlightShortcutIgnored } from '../flyover/utils/flightKeyboard'
 
 type MapPoiSelectorProps = {
+  isInteractive: boolean
   pois: readonly MapPoi[]
   activePoiId: string | null
   onSelect: (poi: MapPoi) => void
@@ -49,6 +50,7 @@ function PoiArrow({ direction }: PoiArrowProps) {
 }
 
 export function MapPoiSelector({
+  isInteractive,
   pois,
   activePoiId,
   onSelect,
@@ -70,6 +72,7 @@ export function MapPoiSelector({
     : ''
 
   useEffect(() => {
+    if (!isInteractive) return
     const cycleTarget = (event: KeyboardEvent) => {
       if (
         (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') ||
@@ -93,7 +96,7 @@ export function MapPoiSelector({
 
     window.addEventListener('keydown', cycleTarget, true)
     return () => window.removeEventListener('keydown', cycleTarget, true)
-  }, [currentIndex, onSelect, pois])
+  }, [currentIndex, isInteractive, onSelect, pois])
 
   useEffect(() => {
     if (!isListOpen) return
@@ -128,7 +131,7 @@ export function MapPoiSelector({
     onSelect(pois[nextIndex])
   }
 
-  return createPortal(
+  return (
     <nav
       ref={rootRef}
       className="mapping-poi-selector"
@@ -143,33 +146,35 @@ export function MapPoiSelector({
       >
         <PoiArrow direction="previous" />
       </button>
-      <button
-        type="button"
-        className="mapping-poi-selector__button"
-        aria-label={t('poiCycle.goToActive', {
-          name: activePoi.title,
-          category: activePoiCategory,
-        })}
-        onClick={() => {
-          onLocate(activePoi)
-          setIsListOpen(false)
-        }}
-      >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mapping-poi-selector__locate-icon"
+      <Tooltip text={t('poiCycle.goToTooltip', { name: activePoi.title })}>
+        <button
+          type="button"
+          className="mapping-poi-selector__button"
+          aria-label={t('poiCycle.goToActive', {
+            name: activePoi.title,
+            category: activePoiCategory,
+          })}
+          onClick={() => {
+            onLocate(activePoi)
+            setIsListOpen(false)
+          }}
         >
-          <circle cx="12" cy="12" r="8" />
-          <circle cx="12" cy="12" r="2" />
-          <path d="M12 2v2m0 16v2M2 12h2m16 0h2" />
-        </svg>
-      </button>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mapping-poi-selector__locate-icon"
+          >
+            <circle cx="12" cy="12" r="8" />
+            <circle cx="12" cy="12" r="2" />
+            <path d="M12 2v2m0 16v2M2 12h2m16 0h2" />
+          </svg>
+        </button>
+      </Tooltip>
       <button
         ref={triggerRef}
         type="button"
@@ -228,8 +233,7 @@ export function MapPoiSelector({
           ))}
         </ul>
       )}
-    </nav>,
-    document.body,
+    </nav>
   )
 }
 

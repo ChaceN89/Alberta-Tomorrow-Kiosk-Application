@@ -46,7 +46,11 @@ export type MapControlsProps = {
   onPoiClusterRadiusChange: (radius: number) => void
   onToggleTerrain: () => void
   onToggleFlyover: () => void
-  onStartFlyover: (pauseAfterEntry: boolean, startSpeed?: number) => void
+  onStartFlyover: (
+    pauseAfterEntry: boolean,
+    startSpeed?: number,
+    startAltitude?: number,
+  ) => void
   onSetFlyoverPaused: (isPaused: boolean) => void
   onFlyoverTravelTo: (coordinates: [number, number]) => void
   onNavigateToPoi: (poiId: BasePoiId, offset?: [number, number]) => void

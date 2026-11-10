@@ -1,7 +1,7 @@
 /**
   File: terrainSettings.ts | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Define terrain source, exaggeration, hillshade, and 3D camera settings.
@@ -13,6 +13,7 @@
   - Exaggeration can be adjusted in half-step increments from 0 to 3.
  */
 import type { RasterDEMSourceSpecification } from 'maplibre-gl'
+import { MAP_TERRAIN_BOUNDS } from './mapLoadingSettings'
 
 export const TERRAIN_SOURCE_ID = 'alberta-terrain-dem'
 export const HILLSHADE_LAYER_ID = 'alberta-terrain-hillshade'
@@ -31,6 +32,7 @@ export const TERRAIN_SOURCE: RasterDEMSourceSpecification = {
   tiles: ['https://tiles.mapterhorn.com/{z}/{x}/{y}.webp'],
   encoding: 'terrarium',
   tileSize: 512,
+  bounds: MAP_TERRAIN_BOUNDS,
   maxzoom: 15, // Mapterhorn has no tiles above 15; closer views reuse them.
   attribution: '<a href="https://mapterhorn.com/attribution">© Mapterhorn</a>',
 }

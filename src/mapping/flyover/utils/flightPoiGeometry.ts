@@ -4,7 +4,7 @@
   Date Updated: Nov 9, 2026
 
   Description:
-  - Share POI radius, color, fading, and swept horizontal flight entry calculations.
+  - Share POI radius, height, color, fading, and swept flight entry calculations.
 
   Usage:
   - Shared by the cylinder renderer and flight POI interaction hook.
@@ -49,7 +49,9 @@ export function getPoiColor(
     ? poi.isComplete
       ? FLYOVER_POI_COLORS.complete
       : FLYOVER_POI_COLORS.module
-    : FLYOVER_POI_COLORS.base
+    : poi.isComplete
+      ? FLYOVER_POI_COLORS.base
+      : FLYOVER_POI_COLORS.baseUnvisited
 }
 
 export function getPoiOpacity(distance: number) {
@@ -80,27 +82,60 @@ export function getPoiHeights(
   }
 }
 
-export function getCylinderEntry(
-  from: [number, number],
-  to: [number, number],
+export function isInsidePoiCylinder(
+  position: [number, number, number],
   center: [number, number],
-  radius = FLYOVER_POI_RADIUS_METERS,
+  radius: number,
+  height: number,
+) {
+  return (
+    position[2] >= 0 &&
+    position[2] <= height &&
+    getDistanceMeters(center, [position[0], position[1]]) <= radius
+  )
+}
+
+export function getCylinderEntry(
+  from: [number, number, number],
+  to: [number, number, number],
+  center: [number, number],
+  radius: number,
+  height: number,
 ): number | null {
-  const distance = getDistanceMeters(center, from)
-  if (distance <= radius) return 0
-  const heading = degreesToRadians(getBearingDegrees(center, from))
+  const fromCoordinates: [number, number] = [from[0], from[1]]
+  const toCoordinates: [number, number] = [to[0], to[1]]
+  const distance = getDistanceMeters(center, fromCoordinates)
+  const heading = degreesToRadians(getBearingDegrees(center, fromCoordinates))
   const x = Math.sin(heading) * distance
   const y = Math.cos(heading) * distance
-  const segmentDistance = getDistanceMeters(from, to)
-  if (segmentDistance === 0) return null
-  const segmentHeading = degreesToRadians(getBearingDegrees(from, to))
+  const segmentDistance = getDistanceMeters(fromCoordinates, toCoordinates)
+  const segmentHeading = degreesToRadians(
+    getBearingDegrees(fromCoordinates, toCoordinates),
+  )
   const dx = Math.sin(segmentHeading) * segmentDistance
   const dy = Math.cos(segmentHeading) * segmentDistance
   const a = dx * dx + dy * dy
   const b = 2 * (x * dx + y * dy)
   const c = x * x + y * y - radius * radius
-  const discriminant = b * b - 4 * a * c
-  if (discriminant < 0) return null
-  const entry = (-b - Math.sqrt(discriminant)) / (2 * a)
-  return entry >= 0 && entry <= 1 ? entry : null
+  let entry = 0
+  let exit = 1
+  if (a === 0) {
+    if (c > 0) return null
+  } else {
+    const discriminant = b * b - 4 * a * c
+    if (discriminant < 0) return null
+    const root = Math.sqrt(discriminant)
+    entry = Math.max(entry, (-b - root) / (2 * a))
+    exit = Math.min(exit, (-b + root) / (2 * a))
+  }
+  const dz = to[2] - from[2]
+  if (dz === 0) {
+    if (from[2] < 0 || from[2] > height) return null
+  } else {
+    const bottom = -from[2] / dz
+    const top = (height - from[2]) / dz
+    entry = Math.max(entry, Math.min(bottom, top))
+    exit = Math.min(exit, Math.max(bottom, top))
+  }
+  return entry <= exit ? entry : null
 }

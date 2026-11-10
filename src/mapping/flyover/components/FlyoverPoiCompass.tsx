@@ -32,11 +32,13 @@ import {
 
 type FlyoverPoiCompassProps = {
   poi: MapPoi
+  isVisible: boolean
   flightPositionRef: RefObject<FlightState | null>
 }
 
 export function FlyoverPoiCompass({
   poi,
+  isVisible,
   flightPositionRef,
 }: FlyoverPoiCompassProps) {
   const { t, i18n } = useTranslation('mapping')
@@ -50,6 +52,7 @@ export function FlyoverPoiCompass({
   const [longitude, latitude] = poi.coordinates
 
   useEffect(() => {
+    if (!isVisible) return
     let frame = 0
     let lastFrameAt = performance.now()
     let lastPublishAt = -Infinity
@@ -102,11 +105,12 @@ export function FlyoverPoiCompass({
     }
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [flightPositionRef, longitude, latitude])
+  }, [flightPositionRef, isVisible, longitude, latitude])
 
   return (
     <section
-      className="plane-hud__compass"
+      className={`plane-hud__compass ${isVisible ? 'plane-hud__compass--visible' : ''}`}
+      aria-hidden={!isVisible}
       aria-label={t('flyover.compass.label', { name: poi.title })}
       aria-live="off"
     >

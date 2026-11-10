@@ -2,6 +2,14 @@
   "title": "Explorer l’Alberta",
   "mapLabel": "Carte de l’Alberta",
   "moduleMapLabel": "Carte : {{moduleName}}",
+  "loading": {
+    "title": "Préparation de votre carte…",
+    "description": "Chargement du paysage, de la limite de l’Alberta et des lieux pour votre vue initiale.",
+    "errorTitle": "La carte n’a pas pu être préparée",
+    "errorDescription": "Certains éléments de la carte n’ont pas pu terminer leur chargement. Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer",
+    "back": "Retour à l’accueil"
+  },
   "view": {
     "title": "Vue de la carte",
     "controls": "Paramètres de la vue de la carte",
@@ -163,6 +171,7 @@
     "listLabel": "Choisir un lieu d’intérêt visible",
     "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}} ({{category}})",
     "goToActive": "Aller au lieu d’intérêt actif : {{name}} ({{category}})",
+    "goToTooltip": "Aller à {{name}}",
     "previous": "Sélectionner le lieu d’intérêt précédent à partir de {{name}}",
     "next": "Sélectionner le lieu d’intérêt suivant à partir de {{name}}"
   },
