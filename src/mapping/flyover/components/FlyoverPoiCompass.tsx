@@ -124,7 +124,7 @@ export function FlyoverPoiCompass({
           <g ref={headingRef} className="plane-hud__mini-map-heading">
             <path d="M0 -12 6 -2 0 -4 -6 -2Z" />
           </g>
-          <circle className="plane-hud__mini-map-position" r="4" />
+          <circle className="plane-hud__mini-map-position" r="5" />
         </g>
       </svg>
       <div className="plane-hud__compass-details">
