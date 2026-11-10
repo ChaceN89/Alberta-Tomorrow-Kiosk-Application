@@ -169,6 +169,39 @@ Tutorial completion flags are separate under `src/save-data/tutorial-progress/`.
 
 ### Alberta discoveries
 
+Map-enabled modules must provide `map.settings.baseMapEntry` with coordinates and
+optional flight radius, cylinder height, and lens overrides. The map generates
+entry POIs from visible registry modules with this metadata, independently of
+ordinary base POIs and expedition checkpoints. The **Base map module entry
+points** setting defaults on in base exploration and off inside module maps;
+reset restores that default. Entry markers are available only in plane mode.
+Enabled entries remain selectable outside flight; using their locate button
+launches the plane rather than opening their information remotely.
+Their cylinders and labels use the same distance fading as every other flight
+POI: hidden at 500 km and beyond, fully visible within 200 km, controlled by
+`FLYOVER_POI_ENTRY_DISTANCE_METERS` and `FLYOVER_POI_FADE_DISTANCE_METERS`.
+
+Entries use each module's icon, the shared flight `module` color, and the title
+“{{name}} Expedition” (“Expédition {{name}}” in French). Their map,
+selector, and compass names stay blurred until existing expedition progress shows
+the module has started; accessible labels and tooltips use an undiscovered label.
+Opening entry information shows the description, saved status/checkpoint
+progress, and a link to the same module map as the navigation menu. Opening it
+does not start the module or create discovery save data; following the map link
+starts it through the normal module flow.
+
+Map navigation lists all visible map-enabled modules, not just started ones.
+Unstarted modules have blurred names; clicking one enables the entry layer and
+selects its expedition target on the current map without moving, starting it, or
+opening its information. Started modules retain their direct map links.
+The destination dropdown groups Alberta POIs, the current module's POIs (when
+present), and Expeditions. Started expeditions precede blurred unstarted ones;
+arrow buttons and keyboard cycling follow the same order as the dropdown.
+For every module, the developer module panel provides **Set discovered**
+(start without navigating, preserving existing progress) and **Set undiscovered**
+(remove that module's progress and checkpoints). These use the existing expedition
+record, not a separate discovery flag.
+
 The journal always contains a title page and an **Alberta Map** section before
 started expeditions. Alberta Map is a journal destination, not a learning module.
 Opening a base POI's information panel records a discovery, including when that
@@ -181,8 +214,11 @@ Closing an encountered flight POI caps the base speed at the POI arrival speed
 The throttle is capped too, so releasing a POI does not accelerate the plane.
 Ordinary pause/resume keeps the chosen speed.
 Flight POI encounters require entry into the cylinder's radius and height
-(sea level to its configured top, including each POI's height multiplier).
-Flying above a cylinder does not trigger it or its inside tint; descending
+(sea level to its scaled top plus `FLYOVER_POI_HEIGHT_PADDING_METERS`).
+The shared height padding defaults to 2,000 m, is added after each POI's height
+multiplier, and affects entry and repeat-visit rearming only. Set it to 0 to
+disable the buffer. Cylinders, labels, and inside tint keep their visible heights.
+Flying above the padded hit zone does not trigger an encounter; descending
 through its top does. Swept detection includes vertical movement.
 Unvisited base-map flight cylinders use light blue; saved discoveries use deeper
 blue. Active targets stay orange, and module completion colors are unchanged.

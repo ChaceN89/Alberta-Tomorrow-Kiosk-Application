@@ -1,7 +1,7 @@
 /**
   File: useExpeditionProgressDevTools.ts | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Expose reset and simulated progress actions to development UI.
@@ -22,6 +22,7 @@ export type ExpeditionProgressDevToolsContextValue = {
   completeModule: (moduleId: string) => boolean
   randomizeModuleCheckpoints: (moduleId: string) => boolean
   restartModule: (moduleId: string) => boolean
+  setModuleDiscovered: (moduleId: string, discovered: boolean) => boolean
   completeAllModules: () => void
 }
 

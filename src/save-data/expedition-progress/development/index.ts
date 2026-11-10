@@ -1,7 +1,7 @@
 /**
   File: index.ts | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Export progress mutations used only by development tools.
@@ -20,3 +20,4 @@ export { randomizeModuleCheckpoints } from './randomizeModuleCheckpoints'
 export { resetExpeditionProgress } from './resetExpeditionProgress'
 export { restartModule } from './restartModule'
 export { startAllExpeditions } from './startAllExpeditions'
+export { setModuleDiscovered } from './setModuleDiscovered'

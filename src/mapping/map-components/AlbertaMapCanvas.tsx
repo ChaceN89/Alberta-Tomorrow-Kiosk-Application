@@ -45,6 +45,7 @@ type AlbertaMapCanvasProps = Omit<
   | 'onFinishPlaneTutorial'
   | 'onPlaneTutorialControlsStepChange'
 > & {
+  pois: readonly MapPoi[]
   ariaLabel: string
   isInteractive: boolean
   isFlyoverExiting: boolean
@@ -94,6 +95,7 @@ export function AlbertaMapCanvas({
   flightPositionRef,
   getFlightElevation,
   isPreparingFlyover,
+  pois,
   onPoiActivate,
   onClusterActivate,
   isPlaneTutorialActive,
@@ -137,7 +139,7 @@ export function AlbertaMapCanvas({
         {overlayProps.isFlyoverActive ? (
           <FlyoverPoiLayer
             isExiting={isFlyoverExiting}
-            pois={overlayProps.pois}
+            pois={pois}
             activePoiId={overlayProps.activePoiId}
             infoPoiId={infoPoiId}
             flightPositionRef={flightPositionRef}

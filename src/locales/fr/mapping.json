@@ -2,6 +2,13 @@
   "title": "Explorer l’Alberta",
   "mapLabel": "Carte de l’Alberta",
   "moduleMapLabel": "Carte : {{moduleName}}",
+  "moduleEntry": {
+    "title": "Expédition {{name}}",
+    "category": "Point de départ d’une expédition",
+    "unknown": "Expédition à découvrir",
+    "start": "Commencer {{name}}",
+    "open": "Voir la carte de {{name}}"
+  },
   "loading": {
     "title": "Préparation de votre carte…",
     "description": "Chargement du paysage, de la limite de l’Alberta et des lieux pour votre vue initiale.",
@@ -28,6 +35,8 @@
     "albertaBoundaryWallHelp": "Afficher ou masquer la bordure surélevée translucide indépendamment du contour au sol.",
     "defaultPoisLabel": "Lieux d’intérêt de la carte de base",
     "defaultPoisHelp": "Afficher ou masquer les lieux partagés de l’Alberta sur toutes les cartes.",
+    "moduleEntriesLabel": "Points de départ des modules sur la carte de base",
+    "moduleEntriesHelp": "Afficher les points de départ des expéditions uniquement en vol, progressivement à l’approche. Les noms sont révélés lorsque vous commencez l’expédition.",
     "expeditionPoisLabel": "Lieux d’intérêt de l’expédition",
     "expeditionPoisHelp": "Afficher ou masquer les lieux d’intérêt de cette expédition.",
     "poiClusterRadiusLabel": "Rayon de regroupement des lieux",
@@ -168,7 +177,8 @@
   "poiMarkerLabel": "{{name}}, catégorie : {{category}}",
   "poiCycle": {
     "label": "Sélecteur de lieu d’intérêt",
-    "listLabel": "Choisir un lieu d’intérêt visible",
+    "listLabel": "Choisir un lieu d’intérêt ou une expédition",
+    "albertaPoints": "Lieux d’intérêt de l’Alberta",
     "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}} ({{category}})",
     "goToActive": "Aller au lieu d’intérêt actif : {{name}} ({{category}})",
     "goToTooltip": "Aller à {{name}}",
@@ -190,6 +200,7 @@
     "expeditionActivity": "Activité de l’expédition",
     "expeditionOverview": "Aperçu de l’expédition",
     "expeditions": "Expéditions",
+    "selectUndiscovered": "Choisir une expédition non découverte comme destination",
     "expeditionMap": "Carte : {{moduleName}}"
   }
 }

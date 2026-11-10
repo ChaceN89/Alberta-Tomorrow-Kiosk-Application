@@ -124,6 +124,8 @@ function AlbertaMapScene({
 
   // use map POI data hook to manage visible POIs and clustering
   const poiData = useMapPoiData({
+    isFlyoverActive: flyover.phase !== 'off',
+    isBaseMap: !moduleId,
     modulePois,
     defaultPoisVisible,
     modulePoisVisible,
@@ -334,14 +336,20 @@ function AlbertaMapScene({
     [mapRef, onMapAvailable],
   )
 
-  const visibleActivePoiId = poiData.visiblePois.some(
+  const visibleActivePoiId = poiData.selectablePois.some(
     (poi) => poi.id === activePoiId,
   )
     ? activePoiId
-    : (poiData.visiblePois[0]?.id ?? null)
+    : (poiData.selectablePois[0]?.id ?? null)
 
   const navigateToPoi = (poi: MapPoi, origin?: Element | null) => {
     if (!isInteractive || isResettingMap) return
+    if (poi.isModuleEntry && !controls.isFlyoverEnabled) {
+      isExplicitPoiNavigation.current = true
+      setActivePoiId(poi.id)
+      launchPlane()
+      return
+    }
     if (controls.isFlyoverEnabled) {
       isExplicitPoiNavigation.current = true
       setActivePoiId(poi.id)
@@ -426,6 +434,13 @@ function AlbertaMapScene({
       controls.onStartFlyover(pauseAfterEntry),
     defaultPoisVisible: poiData.areDefaultPoisVisible,
     modulePoisVisible: poiData.areModulePoisVisible,
+    moduleEntriesVisible: poiData.areModuleEntriesVisible,
+    onModuleEntriesChange: poiData.setAreModuleEntriesVisible,
+    onSelectModuleEntry: (entryModuleId: string) => {
+      isExplicitPoiNavigation.current = true
+      poiData.setAreModuleEntriesVisible(true)
+      setActivePoiId(`module-entry:${entryModuleId}`)
+    },
     hasModulePois: modulePois.length > 0,
     poiClusterRadius: poiData.poiClusterRadius,
     onDefaultPoisChange: poiData.setAreDefaultPoisVisible,
@@ -466,6 +481,7 @@ function AlbertaMapScene({
           onPoiActivate={navigateToPoi}
           onClusterActivate={zoomToPoiCluster}
           pois={poiData.visiblePois}
+          selectorPois={poiData.selectablePois}
           activePoiId={visibleActivePoiId}
           onPoiSelect={(poi) => {
             isExplicitPoiNavigation.current = true

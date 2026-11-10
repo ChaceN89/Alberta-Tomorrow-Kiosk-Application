@@ -126,6 +126,13 @@ export type ModuleMapStartup = {
 }
 
 export type ModuleMapSettings = {
+  baseMapEntry: Pick<
+    MapPoiDefinition,
+    | 'coordinates'
+    | 'flyoverRadiusMultiplier'
+    | 'flyoverCylinderHeightMultiplier'
+    | 'flyoverPoiFov'
+  >
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
   activityMapLinkPlacement?: 'outsideActivity' | 'insideActivity'

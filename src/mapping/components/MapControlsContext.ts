@@ -34,6 +34,7 @@ export type MapControlsProps = {
   onResetMapView: () => void
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
+  moduleEntriesVisible?: boolean
   hasModulePois?: boolean
   poiClusterRadius: number
   onTerrainExaggerationChange: (exaggeration: number) => void
@@ -43,6 +44,8 @@ export type MapControlsProps = {
   onAlbertaBoundaryWallChange: (enabled: boolean) => void
   onDefaultPoisChange?: (enabled: boolean) => void
   onModulePoisChange?: (enabled: boolean) => void
+  onModuleEntriesChange?: (enabled: boolean) => void
+  onSelectModuleEntry: (moduleId: string) => void
   onPoiClusterRadiusChange: (radius: number) => void
   onToggleTerrain: () => void
   onToggleFlyover: () => void
@@ -63,6 +66,7 @@ export type MapControllerControlsProps = Omit<
   | 'onResetMapView'
   | 'isResettingMap'
   | 'isFlyoverPaused'
+  | 'onSelectModuleEntry'
 >
 
 export const MapControlsContext = createContext<MapControlsProps | null>(null)

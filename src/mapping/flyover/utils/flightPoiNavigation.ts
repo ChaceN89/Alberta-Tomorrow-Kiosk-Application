@@ -20,9 +20,11 @@ export function getNextFlightPoi(
 ): MapPoi | undefined {
   const visited = pois.find((poi) => poi.id === visitedPoiId)
   if (!visited) return undefined
-  const candidates = visited.isModulePoi
-    ? pois.filter((poi) => poi.isModulePoi)
-    : pois
+  const candidates = visited.isModuleEntry
+    ? pois.filter((poi) => poi.isModuleEntry)
+    : visited.isModulePoi
+      ? pois.filter((poi) => poi.isModulePoi)
+      : pois.filter((poi) => !poi.isModuleEntry)
   const index = candidates.findIndex((poi) => poi.id === visitedPoiId)
   const next = Array.from(
     { length: candidates.length },

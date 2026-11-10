@@ -92,7 +92,7 @@ export function useFlyoverPoiVisits(options: UseFlyoverPoiVisitsOptions) {
       for (const poi of pois) {
         if (!poi.info) continue
         const radius = getPoiRadiusMeters(poi)
-        const height = getPoiHeights(poi).cylinder
+        const height = getPoiHeights(poi).entry
         if (visits.has(poi.id)) {
           if (isInsidePoiCylinder(current, poi.coordinates, radius, height)) {
             visits.set(poi.id, null)

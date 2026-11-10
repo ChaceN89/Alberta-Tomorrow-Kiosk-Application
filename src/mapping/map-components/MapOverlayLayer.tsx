@@ -22,7 +22,7 @@ import type { MapPoi } from '../components/MapPoiMarker'
 
 export type MapOverlayLayerProps = {
   isInteractive: boolean
-  pois: readonly MapPoi[]
+  selectorPois: readonly MapPoi[]
   activePoiId: string | null
   infoPoiId: string | null
   onPoiSelect: (poi: MapPoi) => void
@@ -46,7 +46,7 @@ export type MapOverlayLayerProps = {
 
 export function MapOverlayLayer({
   isInteractive,
-  pois,
+  selectorPois,
   activePoiId,
   infoPoiId,
   onPoiSelect,
@@ -70,13 +70,13 @@ export function MapOverlayLayer({
     <>
       <MapPoiSelector
         isInteractive={isInteractive}
-        pois={pois}
+        pois={selectorPois}
         activePoiId={activePoiId}
         onSelect={onPoiSelect}
         onLocate={onPoiLocate}
       />
       <PlaneHud
-        activePoi={pois.find((poi) => poi.id === activePoiId)}
+        activePoi={selectorPois.find((poi) => poi.id === activePoiId)}
         isCompassVisible={infoPoiId === null}
         flightPositionRef={flightPositionRef}
         isActive={isFlyoverActive}

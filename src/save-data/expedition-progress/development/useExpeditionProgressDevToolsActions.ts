@@ -1,7 +1,7 @@
 /**
   File: useExpeditionProgressDevToolsActions.ts | Author: Chace Nielson
   Date Created: Nov 5, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Connect developer-only progress mutations to the provider's state callbacks.
@@ -112,6 +112,18 @@ export function useExpeditionProgressDevToolsActions({
     [commitProgress, progressRef],
   )
 
+  const setModuleDiscovered = useCallback(
+    (moduleId: string, discovered: boolean) =>
+      developmentActions.setModuleDiscovered(
+        moduleId,
+        discovered,
+        progressRef.current,
+        commitProgress,
+        notifyChange,
+      ),
+    [commitProgress, notifyChange, progressRef],
+  )
+
   return useMemo<ExpeditionProgressDevToolsContextValue>(
     () => ({
       resetExpeditionProgress,
@@ -122,6 +134,7 @@ export function useExpeditionProgressDevToolsActions({
       randomizeModuleCheckpoints,
       restartModule,
       completeAllModules,
+      setModuleDiscovered,
     }),
     [
       resetExpeditionProgress,
@@ -132,6 +145,7 @@ export function useExpeditionProgressDevToolsActions({
       randomizeModuleCheckpoints,
       restartModule,
       completeAllModules,
+      setModuleDiscovered,
     ],
   )
 }

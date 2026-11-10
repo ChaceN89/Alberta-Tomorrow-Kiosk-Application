@@ -17,6 +17,7 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { POI_CATEGORY_ICONS } from '@/components/icons/poi-icons'
 import type { PoiIconCategory } from '@/components/icons/poi-icons/types'
+import type { ModuleIconComponent } from '@/components/icons/module-icons/types'
 
 export type MapPoi = {
   id: string
@@ -27,6 +28,9 @@ export type MapPoi = {
   isActive?: boolean
   isComplete?: boolean
   isModulePoi?: boolean
+  isModuleEntry?: boolean
+  icon?: ModuleIconComponent
+  concealedTitle?: string
   flyoverRadiusMultiplier?: number
   flyoverCylinderHeightMultiplier?: number
   flyoverPoiFov?: number
@@ -61,14 +65,19 @@ export function MapPoiMarkerButton({
   id,
   title,
   iconCategory,
+  icon,
+  isModuleEntry = false,
+  concealedTitle,
   isActive = false,
   isComplete = false,
   isInfoOpen = false,
   onActivate,
 }: Omit<MapPoi, 'coordinates'>) {
   const { t } = useTranslation('mapping')
-  const PoiIcon = POI_CATEGORY_ICONS[iconCategory]
-  const categoryLabel = t(`poiCategories.${iconCategory}`)
+  const PoiIcon = icon ?? POI_CATEGORY_ICONS[iconCategory]
+  const categoryLabel = isModuleEntry
+    ? t('moduleEntry.category')
+    : t(`poiCategories.${iconCategory}`)
   const accessibleLabel = t('poiMarkerLabel', {
     name: title,
     category: categoryLabel,
@@ -81,6 +90,7 @@ export function MapPoiMarkerButton({
       data-poi-id={id}
       data-active={isActive}
       data-complete={isComplete}
+      data-module-entry={isModuleEntry}
       data-info-open={isInfoOpen}
       aria-expanded={isInfoOpen}
       aria-label={accessibleLabel}
@@ -106,7 +116,12 @@ export function MapPoiMarkerButton({
       </span>
       <span className="mapping-poi-marker__content">
         <PoiIcon className="mapping-poi-marker__icon" />
-        <span className="mapping-poi-marker__title">{title}</span>
+        <span
+          className={`mapping-poi-marker__title ${concealedTitle ? 'mapping-poi-title--concealed' : ''}`}
+          aria-hidden={concealedTitle ? true : undefined}
+        >
+          {concealedTitle ?? title}
+        </span>
         {isComplete && (
           <span className="mapping-poi-marker__complete" aria-hidden="true">
             ✓

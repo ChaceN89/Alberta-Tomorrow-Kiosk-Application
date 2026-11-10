@@ -209,7 +209,7 @@ export function createPoiCylinderLayer(
         mesh.scale.z = Math.max(height * scale * growth, 0.001)
         mesh.position.z = mesh.scale.z / 2
         const target = flight ? getPoiOpacity(distance) : 0
-        const previous = opacities.get(poi.id) ?? 1
+        const previous = opacities.get(poi.id) ?? (poi.isModuleEntry ? 0 : 1)
         const opacity =
           previous +
           Math.sign(target - previous) *

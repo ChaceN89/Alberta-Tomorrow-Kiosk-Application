@@ -10,7 +10,7 @@
   - Rendered by the default and module-specific explore map views.
 
   Notes:
-  - Module links are shown only when the map belongs to a module.
+  - Unstarted expeditions select a concealed entry target instead of opening a map.
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,8 +47,9 @@ export function ExploreMapNavBar({
     isTerrainTransitioning,
     isResettingMap,
     onResetMapView,
+    onSelectModuleEntry,
   } = useMapControls()
-  const { progress } = useExpeditionProgress()
+  const { getExpeditionProgress } = useExpeditionProgress()
   const [isOpen, setIsOpen] = useState(false)
   const navigationId = useId()
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -90,9 +91,8 @@ export function ExploreMapNavBar({
         ns: currentModule.translationNamespace,
       })
     : undefined
-  const startedMapModules = visibleModules.filter(
-    (module) =>
-      module.id !== moduleId && module.map && progress[module.id] !== undefined,
+  const mapModules = visibleModules.filter(
+    (module) => module.id !== moduleId && module.map,
   )
 
   return (
@@ -286,7 +286,7 @@ export function ExploreMapNavBar({
               </section>
             )}
 
-            {startedMapModules.length > 0 && (
+            {mapModules.length > 0 && (
               <section
                 aria-labelledby={`${navigationId}-expeditions`}
                 className="mt-6 border-t border-line pt-5"
@@ -298,24 +298,46 @@ export function ExploreMapNavBar({
                   {t('navigation.expeditions')}
                 </h3>
                 <ul className="space-y-2">
-                  {startedMapModules.map((module) => {
+                  {mapModules.map((module) => {
                     const ModuleIcon = module.icon
                     const moduleName = i18n.t(module.titleKey, {
                       ns: module.translationNamespace,
                     })
+                    const isUndiscovered =
+                      getExpeditionProgress(module).status === 'notStarted'
 
                     return (
                       <li key={module.id}>
-                        <Link
-                          to={getModuleExplorePath(module.id)}
-                          className={navigationLinkClassName}
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <ModuleIcon className="size-6 shrink-0 text-pine" />
-                          <span>
-                            {t('navigation.expeditionMap', { moduleName })}
-                          </span>
-                        </Link>
+                        {isUndiscovered ? (
+                          <button
+                            type="button"
+                            className={`${navigationLinkClassName} w-full text-left`}
+                            aria-label={t('navigation.selectUndiscovered')}
+                            onClick={() => {
+                              onSelectModuleEntry(module.id)
+                              closeNavigation()
+                            }}
+                          >
+                            <ModuleIcon className="size-6 shrink-0 text-pine" />
+                            <span
+                              className="mapping-poi-title--concealed"
+                              aria-hidden="true"
+                            >
+                              {t('moduleEntry.title', { name: moduleName })}
+                            </span>
+                          </button>
+                        ) : (
+                          <Link
+                            to={getModuleExplorePath(module.id)}
+                            className={navigationLinkClassName}
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <ModuleIcon className="size-6 shrink-0 text-pine" />
+                            <span>
+                              {t('navigation.expeditionMap', { moduleName })}
+                            </span>
+                          </Link>
+                        )}
                       </li>
                     )
                   })}

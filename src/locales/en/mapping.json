@@ -2,6 +2,13 @@
   "title": "Explore Alberta",
   "mapLabel": "Map of Alberta",
   "moduleMapLabel": "{{moduleName}} map",
+  "moduleEntry": {
+    "title": "{{name}} Expedition",
+    "category": "Expedition entry point",
+    "unknown": "Undiscovered expedition",
+    "start": "Start {{name}}",
+    "open": "View {{name}} map"
+  },
   "loading": {
     "title": "Preparing your map…",
     "description": "Loading the landscape, Alberta boundary, and places for your opening view.",
@@ -28,6 +35,8 @@
     "albertaBoundaryWallHelp": "Show or hide the raised translucent border independently of the ground outline.",
     "defaultPoisLabel": "Base map points of interest",
     "defaultPoisHelp": "Show or hide shared Alberta places on every map.",
+    "moduleEntriesLabel": "Base map module entry points",
+    "moduleEntriesHelp": "Show expedition starting points only in flight, fading in as you approach. Names are revealed once you start their expedition.",
     "expeditionPoisLabel": "Expedition points of interest",
     "expeditionPoisHelp": "Show or hide points of interest for this expedition.",
     "poiClusterRadiusLabel": "POI cluster radius",
@@ -168,7 +177,8 @@
   "poiMarkerLabel": "{{name}}, {{category}}",
   "poiCycle": {
     "label": "Point of interest selector",
-    "listLabel": "Choose a visible point of interest",
+    "listLabel": "Choose a point of interest or expedition",
+    "albertaPoints": "Alberta Points of Interest",
     "select": "Choose a point of interest; currently {{name}} ({{category}})",
     "goToActive": "Go to the active point of interest: {{name}} ({{category}})",
     "goToTooltip": "Go to {{name}}",
@@ -190,6 +200,7 @@
     "expeditionActivity": "Expedition activity",
     "expeditionOverview": "Expedition overview",
     "expeditions": "Expeditions",
+    "selectUndiscovered": "Select an undiscovered expedition as your destination",
     "expeditionMap": "{{moduleName}} map"
   }
 }

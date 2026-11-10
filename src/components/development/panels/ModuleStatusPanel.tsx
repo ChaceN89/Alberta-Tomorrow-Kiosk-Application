@@ -1,7 +1,7 @@
 /**
   File: ModuleStatusPanel.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Show preload status and progress for every registered module.
@@ -48,6 +48,7 @@ function ModuleStatusItem({
     progressNextCheckpoint,
     randomizeModuleCheckpoints,
     restartModule,
+    setModuleDiscovered,
   } = useExpeditionProgressDevTools()
   const isCurrent = preloadState.moduleId === module.id
   const status = isCurrent
@@ -179,6 +180,28 @@ function ModuleStatusItem({
           <span aria-hidden="true">🎲</span>
           {t('moduleRandomize')}
         </button>
+      </div>
+      <div className="mt-3 border-t border-line pt-3">
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            className="button-secondary dev-module-button"
+            aria-label={t('setModuleDiscoveredFor', { title })}
+            disabled={expeditionProgress.status !== 'notStarted'}
+            onClick={() => setModuleDiscovered(module.id, true)}
+          >
+            {t('setModuleDiscovered')}
+          </button>
+          <button
+            type="button"
+            className="button-danger dev-module-button"
+            aria-label={t('setModuleUndiscoveredFor', { title })}
+            disabled={expeditionProgress.status === 'notStarted'}
+            onClick={() => setModuleDiscovered(module.id, false)}
+          >
+            {t('setModuleUndiscovered')}
+          </button>
+        </div>
       </div>
     </li>
   )

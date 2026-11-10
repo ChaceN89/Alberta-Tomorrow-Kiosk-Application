@@ -132,8 +132,14 @@ export function FlyoverPoiCompass({
         </g>
       </svg>
       <div className="plane-hud__compass-details">
-        <strong className="plane-hud__compass-title" title={poi.title}>
-          {poi.title}
+        <strong
+          className={`plane-hud__compass-title ${poi.concealedTitle ? 'mapping-poi-title--concealed' : ''}`}
+          aria-label={poi.title}
+          title={poi.title}
+        >
+          <span aria-hidden={poi.concealedTitle ? true : undefined}>
+            {poi.concealedTitle ?? poi.title}
+          </span>
         </strong>
         {reading && (
           <p className="plane-hud__compass-reading">

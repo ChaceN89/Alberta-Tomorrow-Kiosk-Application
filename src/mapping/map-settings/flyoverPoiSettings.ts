@@ -23,6 +23,10 @@ export const FLYOVER_POI_RADIUS_METERS = 2000
 // during plane entry. Each POI can scale this with flyoverCylinderHeightMultiplier.
 export const FLYOVER_POI_HEIGHT_METERS = 6000
 
+// Extra entry height above the scaled cylinder top (m); does not change visuals.
+// Shared by entry detection and repeat-visit rearming; 0 disables the buffer.
+export const FLYOVER_POI_HEIGHT_PADDING_METERS = 2000
+
 // Marker height above the cylinder top, in meters; positive places it above.
 // This fixed offset is shared by all POIs, regardless of their cylinder height scale.
 // Markers rise from local terrain to this final elevation during plane entry.
@@ -67,7 +71,7 @@ export const FLYOVER_POI_CYLINDER_OUTLINE_OPACITY = 0.7
 
 // Screen tint opacity while the plane is within a cylinder's radius and height.
 // Uses that POI's color; 0 disables the tint, 1 completely covers the map/plane.
-// The tint does not block controls and shares entry detection's sea-level bounds.
+// The tint does not block controls; it follows the visible cylinder, not entry padding.
 export const FLYOVER_POI_INSIDE_TINT_OPACITY = 0.12
 
 // Cylinder and inside-tint colors; marker selection colors are configured separately.
@@ -75,6 +79,6 @@ export const FLYOVER_POI_COLORS = {
   active: '#ea580c', // Orange selected destination, ahead of completion colors.
   base: '#2563eb', // Visited base-map POIs.
   baseUnvisited: '#93c5fd', // Undiscovered base-map POIs.
-  module: '#afb9c9', // Incomplete expedition POIs.
+  module: '#afb9c9', // Module entry points and incomplete expedition POIs.
   complete: '#16a34a', // Completed expedition POIs.
 } as const

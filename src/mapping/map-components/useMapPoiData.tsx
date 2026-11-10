@@ -22,11 +22,16 @@ import type { MapPoi } from '../components/MapPoiMarker'
 import { clusterMapPois } from '../map-functions/clusterMapPois'
 import { DEFAULT_POI_CLUSTER_RADIUS } from '../map-settings/poiClusterSettings'
 import type { MapViewport } from './useMapViewport'
+import { visibleModules } from '@/modules/registry'
+import { useExpeditionProgress } from '@/save-data/expedition-progress'
+import { ModuleEntryPoiContent } from '../components/ModuleEntryPoiContent'
 
 type UseMapPoiDataOptions = {
   modulePois: readonly MapPoi[]
   defaultPoisVisible: boolean
   modulePoisVisible: boolean
+  isBaseMap: boolean
+  isFlyoverActive: boolean
   mapInstance: MapLibreMap | null
   hasMapError: boolean
   mapViewport: MapViewport | null
@@ -36,12 +41,17 @@ export function useMapPoiData({
   modulePois,
   defaultPoisVisible,
   modulePoisVisible,
+  isBaseMap,
+  isFlyoverActive,
   mapInstance,
   hasMapError,
   mapViewport,
 }: UseMapPoiDataOptions) {
-  const { t } = useTranslation('mapping')
+  const { t, i18n } = useTranslation('mapping')
   const { discoveries } = useAlbertaDiscoveries()
+  const { getExpeditionProgress } = useExpeditionProgress()
+  const [areModuleEntriesVisible, setAreModuleEntriesVisible] =
+    useState(isBaseMap)
   const [areDefaultPoisVisible, setAreDefaultPoisVisible] =
     useState(defaultPoisVisible)
   const [areModulePoisVisible, setAreModulePoisVisible] =
@@ -71,7 +81,7 @@ export function useMapPoiData({
     [discoveries, t],
   )
 
-  const visiblePois = useMemo(() => {
+  const selectablePois = useMemo(() => {
     const poisById = new globalThis.Map<string, MapPoi>()
 
     if (areDefaultPoisVisible) {
@@ -90,18 +100,66 @@ export function useMapPoiData({
       })
     }
 
+    if (areModuleEntriesVisible) {
+      visibleModules.forEach((module) => {
+        const entry = module.map?.settings.baseMapEntry
+        if (!entry) return
+        const progress = getExpeditionProgress(module)
+        const title = t('moduleEntry.title', {
+          name: i18n.t(module.titleKey, {
+            ns: module.translationNamespace,
+          }),
+        })
+        const isUnstarted = progress.status === 'notStarted'
+        const id = `module-entry:${module.id}`
+        poisById.set(id, {
+          ...entry,
+          id,
+          title: isUnstarted ? t('moduleEntry.unknown') : title,
+          concealedTitle: isUnstarted ? title : undefined,
+          iconCategory: 'interpretiveCentre',
+          icon: module.icon,
+          isModuleEntry: true,
+          isComplete: progress.status === 'complete',
+          info: <ModuleEntryPoiContent module={module} />,
+        })
+      })
+    }
+
     return [...poisById.values()]
-  }, [areDefaultPoisVisible, areModulePoisVisible, defaultPois, modulePois])
+  }, [
+    areDefaultPoisVisible,
+    areModulePoisVisible,
+    areModuleEntriesVisible,
+    defaultPois,
+    modulePois,
+    getExpeditionProgress,
+    i18n,
+    t,
+  ])
+
+  const visiblePois = useMemo(
+    () => selectablePois.filter((poi) => !poi.isModuleEntry || isFlyoverActive),
+    [selectablePois, isFlyoverActive],
+  )
 
   const poiGroups = useMemo(() => {
     if (!mapInstance && !hasMapError) return []
 
-    return clusterMapPois(
-      visiblePois,
-      mapInstance,
-      poiClusterRadius,
-      mapViewport?.zoom,
-    )
+    return [
+      ...clusterMapPois(
+        visiblePois.filter((poi) => !poi.isModuleEntry),
+        mapInstance,
+        poiClusterRadius,
+        mapViewport?.zoom,
+      ),
+      ...clusterMapPois(
+        visiblePois.filter((poi) => poi.isModuleEntry),
+        mapInstance,
+        poiClusterRadius,
+        mapViewport?.zoom,
+      ),
+    ]
   }, [
     hasMapError,
     mapInstance,
@@ -116,10 +174,13 @@ export function useMapPoiData({
   const resetPoiSettings = () => {
     setAreDefaultPoisVisible(defaultPoisVisible)
     setAreModulePoisVisible(modulePoisVisible)
+    setAreModuleEntriesVisible(isBaseMap)
     setPoiClusterRadius(DEFAULT_POI_CLUSTER_RADIUS)
   }
 
   return {
+    areModuleEntriesVisible,
+    setAreModuleEntriesVisible,
     areDefaultPoisVisible,
     setAreDefaultPoisVisible,
     areModulePoisVisible,
@@ -127,6 +188,7 @@ export function useMapPoiData({
     poiClusterRadius,
     setPoiClusterRadius,
     visiblePois,
+    selectablePois,
     poiGroups,
     isPoiDataReady,
     resetPoiSettings,

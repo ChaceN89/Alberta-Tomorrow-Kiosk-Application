@@ -15,6 +15,9 @@
 import type { ModuleMapSettings } from '@/modules/types'
 
 export const frankSlideMapSettings: ModuleMapSettings = {
+  baseMapEntry: {
+    coordinates: [-113.85, 49.58],
+  },
   defaultPoisVisible: false,
   modulePoisVisible: true,
   activityMapLinkPlacement: 'insideActivity',

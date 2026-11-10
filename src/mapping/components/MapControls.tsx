@@ -41,6 +41,7 @@ export function MapControls() {
     isAlbertaBoundaryWallEnabled,
     defaultPoisVisible,
     modulePoisVisible,
+    moduleEntriesVisible,
     hasModulePois,
     poiClusterRadius,
     onTerrainExaggerationChange,
@@ -50,6 +51,7 @@ export function MapControls() {
     onAlbertaBoundaryWallChange,
     onDefaultPoisChange,
     onModulePoisChange,
+    onModuleEntriesChange,
     onPoiClusterRadiusChange,
   } = controls
   const { t } = useTranslation('mapping')
@@ -62,6 +64,7 @@ export function MapControls() {
   const albertaBoundaryWallId = useId()
   const defaultPoisId = useId()
   const modulePoisId = useId()
+  const moduleEntriesId = useId()
   const poiClusterRadiusId = useId()
   const isDisabled = !isMapReady || isStyleLoading || isResettingMap
 
@@ -182,6 +185,26 @@ export function MapControls() {
               </span>
               <span className="mapping-controls__help">
                 {t('view.defaultPoisHelp')}
+              </span>
+            </span>
+          </label>
+
+          <label className="mapping-controls__check" htmlFor={moduleEntriesId}>
+            <input
+              id={moduleEntriesId}
+              type="checkbox"
+              checked={moduleEntriesVisible ?? false}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onModuleEntriesChange?.(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.moduleEntriesLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.moduleEntriesHelp')}
               </span>
             </span>
           </label>

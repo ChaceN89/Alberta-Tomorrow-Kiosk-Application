@@ -51,7 +51,7 @@ function PoiArrow({ direction }: PoiArrowProps) {
 
 export function MapPoiSelector({
   isInteractive,
-  pois,
+  pois: availablePois,
   activePoiId,
   onSelect,
   onLocate,
@@ -61,14 +61,45 @@ export function MapPoiSelector({
   const listId = useId()
   const rootRef = useRef<HTMLElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const groups = [
+    {
+      id: 'alberta',
+      title: t('poiCycle.albertaPoints'),
+      pois: availablePois.filter(
+        (poi) => !poi.isModuleEntry && !poi.isModulePoi,
+      ),
+    },
+    {
+      id: 'module',
+      title: t('view.expeditionPoisLabel'),
+      pois: availablePois.filter(
+        (poi) => poi.isModulePoi && !poi.isModuleEntry,
+      ),
+    },
+    {
+      id: 'expeditions',
+      title: t('navigation.expeditions'),
+      pois: [
+        ...availablePois.filter(
+          (poi) => poi.isModuleEntry && !poi.concealedTitle,
+        ),
+        ...availablePois.filter(
+          (poi) => poi.isModuleEntry && poi.concealedTitle,
+        ),
+      ],
+    },
+  ].filter((group) => group.pois.length > 0)
+  const pois = groups.flatMap((group) => group.pois)
   const activeIndex = pois.findIndex((poi) => poi.id === activePoiId)
   const currentIndex = activeIndex < 0 ? 0 : activeIndex
   const activePoi = pois[currentIndex]
   const ActivePoiIcon = activePoi
-    ? POI_CATEGORY_ICONS[activePoi.iconCategory]
+    ? (activePoi.icon ?? POI_CATEGORY_ICONS[activePoi.iconCategory])
     : null
   const activePoiCategory = activePoi
-    ? t(`poiCategories.${activePoi.iconCategory}`)
+    ? activePoi.isModuleEntry
+      ? t('moduleEntry.category')
+      : t(`poiCategories.${activePoi.iconCategory}`)
     : ''
 
   useEffect(() => {
@@ -190,8 +221,11 @@ export function MapPoiSelector({
         {ActivePoiIcon && (
           <ActivePoiIcon className="mapping-poi-selector__active-icon" />
         )}
-        <span className="mapping-poi-selector__active-title">
-          {activePoi.title}
+        <span
+          className={`mapping-poi-selector__active-title ${activePoi.concealedTitle ? 'mapping-poi-title--concealed' : ''}`}
+          aria-hidden={activePoi.concealedTitle ? true : undefined}
+        >
+          {activePoi.concealedTitle ?? activePoi.title}
         </span>
         <svg
           aria-hidden="true"
@@ -218,18 +252,34 @@ export function MapPoiSelector({
           className="mapping-poi-selector__list"
           aria-label={t('poiCycle.listLabel')}
         >
-          {pois.map((poi) => (
-            <PoiSelectorOption
-              key={poi.id}
-              poi={poi}
-              isActive={poi.id === activePoi.id}
-              categoryLabel={t(`poiCategories.${poi.iconCategory}`)}
-              onSelect={() => {
-                onSelect(poi)
-                setIsListOpen(false)
-                triggerRef.current?.focus()
-              }}
-            />
+          {groups.map((group) => (
+            <li key={group.id} className="mapping-poi-selector__group">
+              <h3
+                id={`${listId}-${group.id}`}
+                className="mapping-poi-selector__group-title"
+              >
+                {group.title}
+              </h3>
+              <ul aria-labelledby={`${listId}-${group.id}`}>
+                {group.pois.map((poi) => (
+                  <PoiSelectorOption
+                    key={poi.id}
+                    poi={poi}
+                    isActive={poi.id === activePoi.id}
+                    categoryLabel={
+                      poi.isModuleEntry
+                        ? t('moduleEntry.category')
+                        : t(`poiCategories.${poi.iconCategory}`)
+                    }
+                    onSelect={() => {
+                      onSelect(poi)
+                      setIsListOpen(false)
+                      triggerRef.current?.focus()
+                    }}
+                  />
+                ))}
+              </ul>
+            </li>
           ))}
         </ul>
       )}
@@ -250,21 +300,25 @@ function PoiSelectorOption({
   categoryLabel,
   onSelect,
 }: PoiSelectorOptionProps) {
-  const PoiIcon = POI_CATEGORY_ICONS[poi.iconCategory]
+  const PoiIcon = poi.icon ?? POI_CATEGORY_ICONS[poi.iconCategory]
 
   return (
     <li>
       <button
         type="button"
         className="mapping-poi-selector__option"
+        aria-label={`${categoryLabel}: ${poi.title}`}
         aria-pressed={isActive}
         onClick={onSelect}
       >
         <span className="mapping-poi-selector__option-main">
           <PoiIcon className="mapping-poi-selector__option-icon" />
-          <span className="mapping-poi-selector__option-title">
+          <span
+            className={`mapping-poi-selector__option-title ${poi.concealedTitle ? 'mapping-poi-title--concealed' : ''}`}
+            aria-hidden={poi.concealedTitle ? true : undefined}
+          >
             <span className="sr-only">{categoryLabel}: </span>
-            {poi.title}
+            {poi.concealedTitle ?? poi.title}
           </span>
         </span>
         {isActive && (

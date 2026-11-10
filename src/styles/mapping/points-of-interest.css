@@ -119,6 +119,19 @@
   box-shadow: 0 0.75rem 1.75rem rgb(23 46 41 / 24%);
 }
 
+.mapping-poi-selector__group + .mapping-poi-selector__group {
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--color-line);
+  padding-top: 0.5rem;
+}
+
+.mapping-poi-selector__group-title {
+  padding: 0.5rem 0.75rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 .mapping-poi-selector__option {
   display: flex;
   width: 100%;
@@ -181,6 +194,11 @@
     0 0 0 2px var(--color-surface),
     0 0 0 4px var(--color-pine),
     0 0.4rem 1rem rgb(23 46 41 / 30%);
+}
+
+.mapping-poi-title--concealed {
+  filter: blur(3px);
+  user-select: none;
 }
 
 .mapping-poi-marker {

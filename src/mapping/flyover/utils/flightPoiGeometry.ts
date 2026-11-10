@@ -19,6 +19,7 @@ import {
   FLYOVER_POI_FADE_DISTANCE_METERS,
   FLYOVER_POI_RADIUS_METERS,
   FLYOVER_POI_HEIGHT_METERS,
+  FLYOVER_POI_HEIGHT_PADDING_METERS,
   FLYOVER_POI_HEIGHT_ABOVE_CYLINDER_METERS,
 } from '../../map-settings/flyoverPoiSettings'
 import {
@@ -41,10 +42,11 @@ export function getPoiRadiusMeters(
 }
 
 export function getPoiColor(
-  poi: Pick<MapPoi, 'isModulePoi' | 'isComplete'>,
+  poi: Pick<MapPoi, 'isModulePoi' | 'isModuleEntry' | 'isComplete'>,
   isActive = false,
 ) {
   if (isActive) return FLYOVER_POI_COLORS.active
+  if (poi.isModuleEntry) return FLYOVER_POI_COLORS.module
   return poi.isModulePoi
     ? poi.isComplete
       ? FLYOVER_POI_COLORS.complete
@@ -78,6 +80,7 @@ export function getPoiHeights(
   const cylinder = FLYOVER_POI_HEIGHT_METERS * heightMultiplier
   return {
     cylinder,
+    entry: cylinder + FLYOVER_POI_HEIGHT_PADDING_METERS,
     marker: cylinder + FLYOVER_POI_HEIGHT_ABOVE_CYLINDER_METERS,
   }
 }
