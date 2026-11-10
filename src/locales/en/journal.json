@@ -9,16 +9,25 @@
   "viewJournalFor": "View journal for {{title}}",
   "titlePage": "Title page",
   "aboutNav": "About this journal",
+  "alberta": {
+    "title": "Alberta Map",
+    "description": "Discover Alberta’s places on any map. Open a place’s information to record your first visit and unlock its field notes here.",
+    "progress": "{{completed}} of {{total}} places discovered",
+    "locked": "Not yet visited. Find this location on the map to unlock this entry.",
+    "visitedOn": "First visited: {{date}}",
+    "explore": "Explore Alberta"
+  },
   "about": {
     "heading": "Your expedition journal",
-    "description": "This journal keeps track of the expeditions you've started. Each expedition gets its own page, and field notes are added as you explore, so you can look back on what you've discovered.",
+    "description": "This journal keeps your Alberta discoveries and expedition field notes together. The Alberta Map page is always available, and each expedition you start gets its own page.",
     "stepsHeading": "How it works",
     "steps": [
+      "Open a base-map place’s information while exploring or flying to unlock its Alberta Map entry.",
       "Start an expedition to add its page to this journal.",
       "Complete checkpoints to record field notes about what you learned.",
       "Record every note to reach the summit and earn a flag on your mountain."
     ],
-    "saved": "Your journal is saved in this browser.",
+    "saved": "Your journal is saved in this browser. Alberta discoveries are saved separately from expedition checkpoints.",
     "empty": "You haven't started any expeditions yet.",
     "browse": "Browse expeditions"
   },

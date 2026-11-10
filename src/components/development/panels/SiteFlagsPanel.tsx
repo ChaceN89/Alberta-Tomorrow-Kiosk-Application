@@ -1,7 +1,7 @@
 /**
   File: SiteFlagsPanel.tsx | Author: Chace Nielson
   Date Created: Oct 28, 2026
-  Date Updated: Oct 29, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Group developer actions that change saved site and module state.
@@ -19,6 +19,7 @@ type SiteFlagsPanelProps = {
   onClose: () => void
   onResetSite: () => void
   onResetJournal: () => void
+  onResetBaseMap: () => void
   onStartAllExpeditions: () => void
   onProgressAllNextCheckpoints: () => void
   onCompleteAllModules: () => void
@@ -28,6 +29,7 @@ export function SiteFlagsPanel({
   onClose,
   onResetSite,
   onResetJournal,
+  onResetBaseMap,
   onStartAllExpeditions,
   onProgressAllNextCheckpoints,
   onCompleteAllModules,
@@ -55,6 +57,13 @@ export function SiteFlagsPanel({
               onClick={onResetJournal}
             >
               {t('resetJournal')}
+            </button>
+            <button
+              type="button"
+              className="button-danger w-full"
+              onClick={onResetBaseMap}
+            >
+              {t('resetBaseMap')}
             </button>
           </div>
         </section>

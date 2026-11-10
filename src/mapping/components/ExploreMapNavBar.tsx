@@ -23,6 +23,7 @@ import { MapResetIcon } from '@/components/icons/MapResetIcon'
 import { OverviewIcon } from '@/components/icons/OverviewIcon'
 import { Tooltip } from '@/components/shared/Tooltip'
 import { useJournal } from '@/journal/context/useJournal'
+import { ALBERTA_JOURNAL_PAGE_ID } from '@/journal/journal-ui/journalPages'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import { modules, visibleModules } from '@/modules/registry'
 import { getModuleExplorePath, getModuleOverviewPath } from '@/modules/routes'
@@ -142,7 +143,7 @@ export function ExploreMapNavBar({
             type="button"
             className="flex size-12 items-center justify-center rounded-full border border-line bg-surface text-pine shadow-lg hover:bg-canvas"
             aria-label={tJournal('openLabel')}
-            onClick={() => openJournal(moduleId)}
+            onClick={() => openJournal(moduleId ?? ALBERTA_JOURNAL_PAGE_ID)}
           >
             <JournalIcon className="size-6" />
           </button>

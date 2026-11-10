@@ -14,6 +14,7 @@
  */
 import { BasePoiInfoContent } from '../poi-components/BasePoiInfoContent'
 import type { MapPoiDefinition } from '@/modules/types'
+import athabascaFallsImage from '@/mapping/assets/athabasca-falls.png'
 
 export const athabascaFallsPoi = {
   id: 'athabascaFalls',
@@ -31,5 +32,13 @@ export const athabascaFallsPoi = {
 } as const satisfies MapPoiDefinition
 
 function AthabascaFallsInfoContent() {
-  return <BasePoiInfoContent />
+  return (
+    <BasePoiInfoContent
+      descriptionKey="view.defaultPoiInfo.athabascaFalls.description"
+      image={{
+        src: athabascaFallsImage,
+        altKey: 'view.defaultPoiInfo.athabascaFalls.imageAlt',
+      }}
+    />
+  )
 }

@@ -10,7 +10,7 @@
   - Rendered inside the MapLibre canvas by AlbertaMapCanvas.
 
   Notes:
-  - Marker activation and cluster zoom behavior stay with the map coordinator.
+  - Flat, stable marker keys preserve mounted POIs as cluster membership changes.
  */
 import { MapPoiClusterMarker } from '../components/MapPoiClusterMarker'
 import { MapPoiMarker, type MapPoi } from '../components/MapPoiMarker'
@@ -36,13 +36,13 @@ export function MapPoiLayer({
   onPoiActivate,
   onClusterActivate,
 }: MapPoiLayerProps) {
-  return groups.map((group) => {
+  return groups.flatMap((group) => {
     if (
       group.type === 'cluster' &&
       !group.pois.some((poi) => poi.id === infoPoiId) &&
       !isPreparingFlyover
     ) {
-      return (
+      return [
         <MapPoiClusterMarker
           key={group.id}
           coordinates={group.coordinates}
@@ -51,8 +51,8 @@ export function MapPoiLayer({
           onClick={() =>
             onClusterActivate(group.coordinates, group.expansionZoom)
           }
-        />
-      )
+        />,
+      ]
     }
 
     return (group.type === 'cluster' ? group.pois : [group.poi]).map((poi) => (

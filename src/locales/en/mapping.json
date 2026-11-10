@@ -63,6 +63,10 @@
     "defaultPoiInfo": {
       "openImage": "Open image: {{title}}",
       "genericDescription": "This featured Alberta location is marked on the map. Zoom in to explore the surrounding area.",
+      "athabascaFalls": {
+        "description": "At Athabasca Falls in Jasper National Park, the Athabasca River rushes over rock ledges into a narrow gorge, surrounded by forest and the Canadian Rockies.",
+        "imageAlt": "Turquoise water cascades over rocky ledges at Athabasca Falls, with evergreen forest and a mountain beneath a cloudy sky."
+      },
       "banff": {
         "description": "Banff is a mountain town in Banff National Park, surrounded by the Canadian Rockies and connected by the Bow Valley.",
         "imageAlt": "Illustration of a mountain lake and the Canadian Rockies near Banff; not a documentary photograph."
@@ -159,8 +163,8 @@
     "listLabel": "Choose a visible point of interest",
     "select": "Choose a point of interest; currently {{name}} ({{category}})",
     "goToActive": "Go to the active point of interest: {{name}} ({{category}})",
-    "previous": "Go to the previous point of interest from {{name}}",
-    "next": "Go to the next point of interest from {{name}}"
+    "previous": "Select the previous point of interest from {{name}}",
+    "next": "Select the next point of interest from {{name}}"
   },
   "poiCluster": {
     "select": "{{count}} nearby points of interest. Zoom in to separate them."

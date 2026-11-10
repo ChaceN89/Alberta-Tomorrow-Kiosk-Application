@@ -26,6 +26,7 @@ export type MapOverlayLayerProps = {
   activePoiId: string | null
   infoPoiId: string | null
   onPoiSelect: (poi: MapPoi) => void
+  onPoiLocate: (poi: MapPoi) => void
   isFlyoverActive: boolean
   isFreeLooking: boolean
   altitudeMeters: number
@@ -48,6 +49,7 @@ export function MapOverlayLayer({
   activePoiId,
   infoPoiId,
   onPoiSelect,
+  onPoiLocate,
   isFlyoverActive,
   isFreeLooking,
   altitudeMeters,
@@ -70,6 +72,7 @@ export function MapOverlayLayer({
         pois={pois}
         activePoiId={activePoiId}
         onSelect={onPoiSelect}
+        onLocate={onPoiLocate}
       />
       {isFlyoverActive && <FlightPlaneLayer visualRef={visualRef} />}
       <PlaneHud

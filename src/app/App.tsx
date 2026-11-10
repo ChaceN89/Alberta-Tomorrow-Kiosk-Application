@@ -1,11 +1,12 @@
 /**
   File: App.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Compose the route tree under BrowserRouter, enabling client-side navigation and deep links.
   - ExpeditionProgressProvider shares saved module progress; JournalProvider controls its UI;
+  - AlbertaDiscoveriesProvider independently saves base-map visits;
   - IntroTutorialProvider manages onboarding;
   - ModulePreloadProvider tracks activity loading for each of the different module pages/module data.
   - Map routes mount behind the AppStartup splash; global overlays mount after startup is ready.
@@ -34,6 +35,7 @@ import { AppStartup } from './AppStartup'
 import { useAppStartupMapGate } from './AppStartupMapContext'
 import { ModulePreloadProvider } from '@/modules/ModulePreloadProvider'
 import { JournalProvider } from '@/journal/context/JournalProvider'
+import { AlbertaDiscoveriesProvider } from '@/save-data/alberta-discoveries/AlbertaDiscoveriesProvider'
 import { useJournal } from '@/journal/context/useJournal'
 import { ExpeditionProgressProvider } from '@/save-data/expedition-progress'
 import { IntroTutorialProvider } from '@/tutorials/specific-tutorials/intro-tutorial/IntroTutorialProvider'
@@ -86,75 +88,79 @@ export function App() {
   return (
     <BrowserRouter>
       <ExpeditionProgressProvider fallback={<SplashScreen isExiting={false} />}>
-        <JournalProvider>
-          <IntroTutorialProvider>
-            <ModulePreloadProvider>
-              {/* Above the routes so media keeps playing while learners navigate */}
-              <AudioPlayerProvider>
-                <MediaViewerProvider>
-                  <ErrorBoundary>
-                    <MapInfoPanelProvider>
-                      <AppStartup
-                        overlays={
-                          <GlobalOverlayLayer
-                            mediaPlayer={<AudioPlayerPanel />}
-                          />
-                        }
-                      >
-                        <AppRouteContent>
-                          <Routes>
-                            <Route
-                              path="explore"
-                              element={<ExploreMapRoute />}
+        <AlbertaDiscoveriesProvider
+          fallback={<SplashScreen isExiting={false} />}
+        >
+          <JournalProvider>
+            <IntroTutorialProvider>
+              <ModulePreloadProvider>
+                {/* Above the routes so media keeps playing while learners navigate */}
+                <AudioPlayerProvider>
+                  <MediaViewerProvider>
+                    <ErrorBoundary>
+                      <MapInfoPanelProvider>
+                        <AppStartup
+                          overlays={
+                            <GlobalOverlayLayer
+                              mediaPlayer={<AudioPlayerPanel />}
                             />
-                            <Route
-                              path="expeditions/:moduleId/explore"
-                              element={<ExploreMapRoute />}
-                            />
-                            <Route
-                              path="expeditions/:moduleId/activity/explore"
-                              element={<ExploreMapRoute />}
-                            />
-                            <Route element={<Layout />}>
-                              <Route index element={<HomePage />} />
+                          }
+                        >
+                          <AppRouteContent>
+                            <Routes>
                               <Route
-                                path="credits"
-                                element={<AcknowledgementsPage />}
+                                path="explore"
+                                element={<ExploreMapRoute />}
                               />
                               <Route
-                                path="developer-page"
-                                element={
-                                  import.meta.env.VITE_ENVIRONMENT ===
-                                  'development' ? (
-                                    <Suspense fallback={<Loading />}>
-                                      <DeveloperPage />
-                                    </Suspense>
-                                  ) : (
-                                    <NotFound />
-                                  )
-                                }
+                                path="expeditions/:moduleId/explore"
+                                element={<ExploreMapRoute />}
                               />
                               <Route
-                                path="expeditions/modules/*"
-                                element={<NotFound />}
+                                path="expeditions/:moduleId/activity/explore"
+                                element={<ExploreMapRoute />}
                               />
-                              <Route
-                                path="expeditions/:moduleId/*"
-                                element={<ModulePage />}
-                              />
-                              <Route path="*" element={<NotFound />} />
-                            </Route>
-                          </Routes>
-                        </AppRouteContent>
-                      </AppStartup>
-                    </MapInfoPanelProvider>
-                  </ErrorBoundary>
-                  <JournalModal />
-                </MediaViewerProvider>
-              </AudioPlayerProvider>
-            </ModulePreloadProvider>
-          </IntroTutorialProvider>
-        </JournalProvider>
+                              <Route element={<Layout />}>
+                                <Route index element={<HomePage />} />
+                                <Route
+                                  path="credits"
+                                  element={<AcknowledgementsPage />}
+                                />
+                                <Route
+                                  path="developer-page"
+                                  element={
+                                    import.meta.env.VITE_ENVIRONMENT ===
+                                    'development' ? (
+                                      <Suspense fallback={<Loading />}>
+                                        <DeveloperPage />
+                                      </Suspense>
+                                    ) : (
+                                      <NotFound />
+                                    )
+                                  }
+                                />
+                                <Route
+                                  path="expeditions/modules/*"
+                                  element={<NotFound />}
+                                />
+                                <Route
+                                  path="expeditions/:moduleId/*"
+                                  element={<ModulePage />}
+                                />
+                                <Route path="*" element={<NotFound />} />
+                              </Route>
+                            </Routes>
+                          </AppRouteContent>
+                        </AppStartup>
+                      </MapInfoPanelProvider>
+                    </ErrorBoundary>
+                    <JournalModal />
+                  </MediaViewerProvider>
+                </AudioPlayerProvider>
+              </ModulePreloadProvider>
+            </IntroTutorialProvider>
+          </JournalProvider>
+        </AlbertaDiscoveriesProvider>
       </ExpeditionProgressProvider>
     </BrowserRouter>
   )

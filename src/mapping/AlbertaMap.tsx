@@ -20,6 +20,8 @@ import type { MapRef } from 'react-map-gl/maplibre'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { MapControlsContext } from './components/MapControlsContext'
 import { isBasePoiId } from '@/mapping/POIs/BasePOIList'
+import { useAlbertaDiscoveries } from '@/save-data/alberta-discoveries/useAlbertaDiscoveries'
+import { useJournal } from '@/journal/context/useJournal'
 import { POI_NAVIGATION_DURATION } from './map-settings/mapSettings'
 import {
   POI_CLUSTER_ZOOM_OVERSHOOT,
@@ -117,6 +119,19 @@ export function AlbertaMap({
   })
 
   const infoPoi = poiData.visiblePois.find((poi) => poi.id === infoPoiId)
+  const { isOpen: isJournalOpen } = useJournal()
+  const { onSetFlyoverPaused } = controls
+  useEffect(() => {
+    if (isJournalOpen && flyover.phase === 'flying' && !flyover.isPaused)
+      onSetFlyoverPaused(true)
+  }, [isJournalOpen, flyover.phase, flyover.isPaused, onSetFlyoverPaused])
+
+  const { recordVisit } = useAlbertaDiscoveries()
+  const visitPoiId = infoPoi?.id
+  useEffect(() => {
+    if (isInfoPanelOpen && visitPoiId && isBasePoiId(visitPoiId))
+      recordVisit(visitPoiId)
+  }, [isInfoPanelOpen, visitPoiId, recordVisit])
   useEffect(() => {
     if (!infoPoi) return
     updatePanel({
@@ -166,6 +181,7 @@ export function AlbertaMap({
     phase: flyover.phase,
     isPaused: flyover.isPaused,
     isBlocked:
+      isJournalOpen ||
       isResettingMap ||
       controls.isStyleLoading ||
       planeTutorial.isPlaneTutorialActive,
@@ -392,7 +408,11 @@ export function AlbertaMap({
         onClusterActivate={zoomToPoiCluster}
         pois={poiData.visiblePois}
         activePoiId={visibleActivePoiId}
-        onPoiSelect={navigateToPoi}
+        onPoiSelect={(poi) => {
+          isExplicitPoiNavigation.current = true
+          setActivePoiId(poi.id)
+        }}
+        onPoiLocate={navigateToPoi}
         isFlyoverActive={flyover.phase !== 'off'}
         isPreparingFlyover={isPreparingFlyover}
         isFreeLooking={flyover.isFreeLooking}

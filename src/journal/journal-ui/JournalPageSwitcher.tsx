@@ -1,16 +1,16 @@
 /**
   File: JournalPageSwitcher.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
-  - Navigate between the journal title page and started expedition pages.
+  - Navigate between the title, Alberta discoveries, and started expedition pages.
 
   Usage:
   - Rendered in the JournalModal dialog header.
 
   Notes:
-  - The title page is included as the first page, before started expeditions.
+  - Permanent title and Alberta pages precede started expeditions.
  */
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,11 +19,13 @@ import { ExpeditionStatusText } from '@/components/modules/ExpeditionPeak'
 import { ModuleTitle } from '@/components/modules/ModuleTitle'
 import { useJournal } from '@/journal/context/useJournal'
 import { useExpeditionProgress } from '@/save-data/expedition-progress'
-import type { LearningModule } from '@/modules/types'
+import type { JournalPage } from './journalPages'
+import { BASE_POI_LIST } from '@/mapping/POIs/BasePOIList'
+import { useAlbertaDiscoveries } from '@/save-data/alberta-discoveries/useAlbertaDiscoveries'
 
 type JournalPageSwitcherProps = {
-  pages: readonly (LearningModule | null)[]
-  activePage: LearningModule | null
+  pages: readonly JournalPage[]
+  activePage: JournalPage
   activeIndex: number
   entryCount: number
 }
@@ -38,7 +40,13 @@ export function JournalPageSwitcher({
   const { t } = useTranslation('journal')
   //
   const { getExpeditionProgress } = useExpeditionProgress()
-  const { selectExpedition } = useJournal()
+  const { selectPage } = useJournal()
+  const { discoveries } = useAlbertaDiscoveries()
+  const discoveryProgress = t('alberta.progress', {
+    completed: BASE_POI_LIST.filter((poi) => Object.hasOwn(discoveries, poi.id))
+      .length,
+    total: BASE_POI_LIST.length,
+  })
   const switcherRef = useRef<HTMLDivElement>(null)
   const switcherButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -59,15 +67,13 @@ export function JournalPageSwitcher({
       document.removeEventListener('pointerdown', closeOnOutsidePress)
   }, [isListOpen])
 
-  const goToPage = (page: LearningModule | null) => {
-    selectExpedition(page?.id ?? null)
+  const goToPage = (page: JournalPage) => {
+    selectPage(page.id)
     setIsListOpen(false)
   }
 
   const goByOffset = (offset: number) => {
-    goToPage(
-      pages[(activeIndex + offset + pages.length) % pages.length] ?? null,
-    )
+    goToPage(pages[(activeIndex + offset + pages.length) % pages.length])
   }
 
   return (
@@ -103,15 +109,23 @@ export function JournalPageSwitcher({
         >
           <span className="min-w-0">
             <span className="block text-xs font-semibold text-muted">
-              {activePage
+              {activePage.kind === 'expedition'
                 ? t('expeditionNumber', {
-                    number: activeIndex,
+                    number: activeIndex - 1,
                     total: entryCount,
                   })
-                : t('titlePage')}
+                : activePage.kind === 'alberta'
+                  ? discoveryProgress
+                  : t('titlePage')}
             </span>
             <span className="block truncate font-semibold">
-              {activePage ? <ModuleTitle module={activePage} /> : t('aboutNav')}
+              {activePage.kind === 'expedition' ? (
+                <ModuleTitle module={activePage.module} />
+              ) : activePage.kind === 'alberta' ? (
+                t('alberta.title')
+              ) : (
+                t('aboutNav')
+              )}
             </span>
           </span>
           <span aria-hidden="true">{isListOpen ? '▴' : '▾'}</span>
@@ -133,11 +147,15 @@ export function JournalPageSwitcher({
           className="absolute inset-x-4 top-full z-20 mt-1 max-h-[min(20rem,50dvh)] space-y-1 overflow-y-auto rounded-xl border border-line bg-surface p-2 shadow-xl md:inset-x-6"
         >
           {pages.map((page, index) => {
-            const progress = page ? getExpeditionProgress(page) : null
-            const ModuleIcon = page?.icon
+            const progress =
+              page.kind === 'expedition'
+                ? getExpeditionProgress(page.module)
+                : null
+            const ModuleIcon =
+              page.kind === 'expedition' ? page.module.icon : undefined
 
             return (
-              <li key={page?.id ?? 'title-page'}>
+              <li key={page.id ?? 'title-page'}>
                 <button
                   type="button"
                   aria-current={index === activeIndex ? 'true' : undefined}
@@ -151,17 +169,21 @@ export function JournalPageSwitcher({
                   )}
                   <span className="min-w-0 flex-1">
                     <span className="block truncate">
-                      {page ? (
+                      {page.kind === 'expedition' ? (
                         <>
-                          {index}. <ModuleTitle module={page} />
+                          {index - 1}. <ModuleTitle module={page.module} />
                         </>
+                      ) : page.kind === 'alberta' ? (
+                        t('alberta.title')
                       ) : (
                         t('titlePage')
                       )}
                     </span>
                     <span className="block text-xs text-muted">
-                      {page && progress ? (
+                      {progress ? (
                         <ExpeditionStatusText progress={progress} />
+                      ) : page.kind === 'alberta' ? (
+                        discoveryProgress
                       ) : (
                         t('aboutNav')
                       )}

@@ -1,7 +1,7 @@
 /**
   File: JournalModal.tsx | Author: Chace Nielson
   Date Created: Oct 29, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Show the journal overlay and coordinate its active page.
@@ -23,13 +23,15 @@ import { useModalFocusTrap } from '@/components/overlays/useModalFocusTrap'
 import { ExpeditionEntry } from '../expedition-entry/ExpeditionEntry'
 import { JournalPageSwitcher } from './JournalPageSwitcher'
 import { JournalTitlePage } from '@/journal/title-page/JournalTitlePage'
+import { AlbertaMapEntry } from '../alberta-entry/AlbertaMapEntry'
+import { ALBERTA_JOURNAL_PAGE_ID, type JournalPage } from './journalPages'
 
 export function JournalModal() {
   // translation hook
   const { t } = useTranslation('journal')
 
   // the opening and closing state of the journal modal
-  const { isOpen, closeJournal, activeModuleId } = useJournal()
+  const { isOpen, closeJournal, activePageId } = useJournal()
   const { isOpen: isMediaViewerOpen } = useMediaViewer()
   const { isFullscreen: isPlayerFullscreen } = useAudioPlayer()
   const isUnderlay = isMediaViewerOpen || isPlayerFullscreen
@@ -43,17 +45,25 @@ export function JournalModal() {
   const titleId = useId()
   const [isClosing, setIsClosing] = useState(false)
 
-  // Page 0 is the title page; the rest are started expeditions in registry order.
+  // Permanent title and Alberta pages precede started expeditions.
   const startedModules = visibleModules.filter(
     (entry) => getExpeditionProgress(entry).status !== 'notStarted',
   )
   // combine the title page and started modules into a single pages array
-  const pages = [null, ...startedModules]
+  const pages: JournalPage[] = [
+    { kind: 'title', id: null },
+    { kind: 'alberta', id: ALBERTA_JOURNAL_PAGE_ID },
+    ...startedModules.map((module): JournalPage => ({
+      kind: 'expedition',
+      id: module.id,
+      module,
+    })),
+  ]
   const activeIndex = Math.max(
     0,
-    pages.findIndex((page) => (page?.id ?? null) === activeModuleId),
+    pages.findIndex((page) => page.id === activePageId),
   )
-  const activePage = pages[activeIndex] ?? null
+  const activePage = pages[activeIndex]
   const entryCount = startedModules.length
 
   useModalFocusTrap(dialogRef, isOpen && !isUnderlay)
@@ -131,9 +141,7 @@ export function JournalModal() {
         <div className="flex h-full flex-col">
           <header className="flex shrink-0 items-center justify-between gap-4 border-b border-line p-4 md:px-6">
             <h2 id={titleId} className="text-xl">
-              {entryCount === 0
-                ? t('title')
-                : t('titleWithCount', { count: entryCount })}
+              {t('titleWithCount', { count: entryCount + 1 })}
             </h2>
             <button
               type="button"
@@ -164,12 +172,14 @@ export function JournalModal() {
                 {t('storageUnavailable')}
               </p>
             )}
-            {activePage ? (
+            {activePage.kind === 'expedition' ? (
               <ExpeditionEntry
                 key={activePage.id}
-                module={activePage}
+                module={activePage.module}
                 onNavigate={handleClose}
               />
+            ) : activePage.kind === 'alberta' ? (
+              <AlbertaMapEntry onNavigate={handleClose} />
             ) : (
               <JournalTitlePage
                 hasEntries={entryCount > 0}

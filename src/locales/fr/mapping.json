@@ -63,6 +63,10 @@
     "defaultPoiInfo": {
       "openImage": "Ouvrir l’image : {{title}}",
       "genericDescription": "Ce lieu d’intérêt de l’Alberta est indiqué sur la carte. Zoomez pour explorer les environs.",
+      "athabascaFalls": {
+        "description": "Aux chutes Athabasca, dans le parc national Jasper, la rivière Athabasca se précipite sur des gradins rocheux dans une gorge étroite, au milieu de la forêt et des Rocheuses canadiennes.",
+        "imageAlt": "L’eau turquoise dévale les gradins rocheux des chutes Athabasca, devant une forêt de conifères et une montagne sous un ciel nuageux."
+      },
       "banff": {
         "description": "Banff est une ville de montagne du parc national Banff, entourée des Rocheuses canadiennes et située dans la vallée de la Bow.",
         "imageAlt": "Illustration d’un lac de montagne et des Rocheuses canadiennes près de Banff; il ne s’agit pas d’une photographie documentaire."
@@ -159,8 +163,8 @@
     "listLabel": "Choisir un lieu d’intérêt visible",
     "select": "Choisir un lieu d’intérêt; lieu actuel : {{name}} ({{category}})",
     "goToActive": "Aller au lieu d’intérêt actif : {{name}} ({{category}})",
-    "previous": "Aller au lieu d’intérêt précédent à partir de {{name}}",
-    "next": "Aller au lieu d’intérêt suivant à partir de {{name}}"
+    "previous": "Sélectionner le lieu d’intérêt précédent à partir de {{name}}",
+    "next": "Sélectionner le lieu d’intérêt suivant à partir de {{name}}"
   },
   "poiCluster": {
     "select": "{{count}} lieux d’intérêt à proximité. Zoomez pour les séparer."

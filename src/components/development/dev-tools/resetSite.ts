@@ -1,10 +1,10 @@
 /**
   File: resetSite.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
-  - Clear tutorial flags, reset expedition progress, and reload as a first visit.
+  - Clear tutorials, expeditions, and Alberta discoveries before a first-visit reload.
 
   Usage:
   - Called by the development tools after the user confirms a site reset.
@@ -24,8 +24,13 @@ export function resetSiteTutorialFlags() {
   resetPlaneTutorial()
 }
 
-export async function resetSite(resetExpeditionProgress: () => Promise<void>) {
+export async function resetSite(
+  resetExpeditionProgress: () => Promise<void>,
+  resetDiscoveries: () => Promise<boolean>,
+) {
+  if (!(await resetDiscoveries())) return false
   await resetExpeditionProgress()
   resetSiteTutorialFlags()
   window.location.assign('/')
+  return true
 }

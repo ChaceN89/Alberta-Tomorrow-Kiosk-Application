@@ -1,10 +1,10 @@
 /**
   File: useJournal.ts | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
-  - Define the expedition journal context and consumer hook.
+  - Define navigation for title, Alberta discovery, and expedition journal pages.
 
   Usage:
   - Journal internals serve their providers or components; tutorials use their own providers.
@@ -16,11 +16,11 @@ import { createContext, useContext } from 'react'
 
 type JournalContextValue = {
   isOpen: boolean
-  activeModuleId: string | null
-  openJournal: (moduleId?: string) => void
+  activePageId: string | null
+  openJournal: (pageId?: string) => void
   closeJournal: () => void
   // Passing null selects the journal's title page.
-  selectExpedition: (moduleId: string | null) => void
+  selectPage: (pageId: string | null) => void
 }
 
 // the context for the expedition journal, providing state and actions to manage the journal's visibility and active module

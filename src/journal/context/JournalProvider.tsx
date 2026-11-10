@@ -1,7 +1,7 @@
 /**
   File: JournalProvider.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Control journal navigation and present notifications for progress changes.
@@ -31,6 +31,7 @@ import {
 import { visibleModules } from '@/modules/registry'
 import type { LearningModule } from '@/modules/types'
 import { JournalContext } from './useJournal'
+import { ALBERTA_JOURNAL_PAGE_ID } from '../journal-ui/journalPages'
 
 type JournalProviderProps = {
   children: ReactNode
@@ -46,8 +47,8 @@ export function JournalProvider({ children }: JournalProviderProps) {
   // Journal open state
   const [isOpen, setIsOpen] = useState(false)
 
-  // Active module ID
-  const [activeModuleId, setActiveModuleId] = useState<string | null>(null)
+  // Active journal destination; Alberta discoveries are not a module.
+  const [activePageId, setActivePageId] = useState<string | null>(null)
 
   // Journal toast sequence
   const journalToastSequence = useRef(0)
@@ -56,11 +57,13 @@ export function JournalProvider({ children }: JournalProviderProps) {
   const openJournal = useCallback(
     (moduleId?: string) => {
       if (moduleId !== undefined) {
-        setActiveModuleId(
-          visibleModules.some((entry) => entry.id === moduleId) &&
-            progress[moduleId]
-            ? moduleId
-            : null,
+        setActivePageId(
+          moduleId === ALBERTA_JOURNAL_PAGE_ID
+            ? ALBERTA_JOURNAL_PAGE_ID
+            : visibleModules.some((entry) => entry.id === moduleId) &&
+                progress[moduleId]
+              ? moduleId
+              : null,
         )
       }
 
@@ -126,11 +129,12 @@ export function JournalProvider({ children }: JournalProviderProps) {
     [showJournalToast, subscribeToChanges],
   )
 
-  // Select an expedition module to view in the journal
-  const selectExpedition = useCallback((moduleId: string | null) => {
-    setActiveModuleId(
-      moduleId !== null && visibleModules.some((entry) => entry.id === moduleId)
-        ? moduleId
+  // Select a permanent page or an expedition.
+  const selectPage = useCallback((pageId: string | null) => {
+    setActivePageId(
+      pageId === ALBERTA_JOURNAL_PAGE_ID ||
+        (pageId !== null && visibleModules.some((entry) => entry.id === pageId))
+        ? pageId
         : null,
     )
   }, [])
@@ -139,12 +143,12 @@ export function JournalProvider({ children }: JournalProviderProps) {
   const contextValue = useMemo(
     () => ({
       isOpen,
-      activeModuleId,
+      activePageId,
       openJournal,
       closeJournal,
-      selectExpedition,
+      selectPage,
     }),
-    [activeModuleId, closeJournal, isOpen, openJournal, selectExpedition],
+    [activePageId, closeJournal, isOpen, openJournal, selectPage],
   )
 
   // a wrapper around the children components providing the journal context

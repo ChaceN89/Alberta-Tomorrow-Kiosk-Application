@@ -48,7 +48,7 @@ src/
   app/          Entry point, translations setup, routing, and pages
   components/   Shared UI and reusable components used across modules
   journal/      Journal pages, navigation, entry rendering, and context
-  save-data/    Expedition progress repository, tutorial flags, and state hooks
+  save-data/    Expedition progress, Alberta discoveries, tutorial flags, and state hooks
   modules/      Typed registry, shared types, and individual module folders
   module-tools/ Reusable module tools (audio-player, quiz-system, media-viewer) shared by modules
   locales/      en/ and fr/ with global, home, journal, development, funfacts, moduleTools, and module.* JSON files
@@ -131,6 +131,32 @@ Developer-only reset, randomize, and progress simulation actions are isolated in
 `useExpeditionProgressDevTools`; normal app consumers use `useExpeditionProgress`.
 Tutorial completion flags are separate under `src/save-data/tutorial-progress/`.
 
+### Alberta discoveries
+
+The journal always contains a title page and an **Alberta Map** section before
+started expeditions. Alberta Map is a journal destination, not a learning module.
+Opening a base POI's information panel records a discovery, including when that
+place appears inside an expedition or is entered during flight. Selecting a
+flight destination alone does not count. Repeated visits preserve the first date.
+Opening the journal from a map pauses active flight. Closing it leaves flight
+paused until the player resumes.
+
+`src/save-data/alberta-discoveries/` owns the provider, learner hook, and asynchronous
+`AlbertaDiscoveryRepository`. Its browser adapter stores
+`{ version: 1, visitedPois: { [poiId]: { firstVisitedAt } } }` under
+`alberta-tomorrow:alberta-discoveries`. Stable IDs come from `BASE_POI_LIST`; translated
+titles, content, media, and totals come from current definitions rather than storage.
+Undiscovered journal places show their names and a locked hint; discovered places
+reveal their owned POI content and media. Base-map markers show discovery checkmarks;
+module markers retain their own checkpoint-based completion rules.
+
+Expedition progress resets leave discoveries intact. The developer **Reset whole
+site** action drains queued discovery writes and clears both progress stores.
+**Site flags → Reset base map progress** asks for confirmation and clears only
+Alberta discoveries and their first-visit dates, keeping expeditions and tutorial flags.
+Unavailable storage is reported in the Alberta journal page; discoveries still work
+in memory for the current session.
+
 ### Expedition journal
 
 Each module declares journal **checkpoints**: ids for things a learner
@@ -153,10 +179,11 @@ complete; **View journal** appears once an expedition is started.
 
 The **Journal** button in the navigation bar and the **View journal** buttons
 open the journal modal, which is always 90% of the viewport height. Its first
-page is a title page explaining the journal, followed by one page per started
+page is a title page explaining the journal, followed by the permanent **Alberta Map**
+discovery page and one page per started
 expedition ("Expedition 2 of 3"); the title shows the number of entries. The
 arrows and a floating dropdown switch pages. The development menu groups saved
-state controls under **Site flags**: **Reset whole site** clears the journal and
+state controls under **Site flags**: **Reset whole site** clears expeditions, Alberta discoveries, and
 both tutorial flags before reloading as a first visit, **Reset tutorial flags** clears
 both tutorial flags, **Reset journal progress** clears saved expedition progress,
 **Start all expeditions** adds every visible expedition to the journal without

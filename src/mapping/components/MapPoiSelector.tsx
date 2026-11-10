@@ -1,7 +1,7 @@
 /**
   File: MapPoiSelector.tsx | Author: Chace Nielson
   Date Created: Oct 30, 2026
-  Date Updated: Nov 5, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Select a visible point of interest or cycle to an adjacent location.
@@ -11,17 +11,20 @@
 
   Notes:
   - The parent supplies the POI list for the current map and layer settings.
+  - Selection never navigates; only the locate button invokes navigation.
  */
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { POI_CATEGORY_ICONS } from '@/components/icons/poi-icons'
 import type { MapPoi } from './MapPoiMarker'
+import { isFlightShortcutIgnored } from '../flyover/utils/flightKeyboard'
 
 type MapPoiSelectorProps = {
   pois: readonly MapPoi[]
   activePoiId: string | null
   onSelect: (poi: MapPoi) => void
+  onLocate: (poi: MapPoi) => void
 }
 
 type PoiArrowProps = {
@@ -49,6 +52,7 @@ export function MapPoiSelector({
   pois,
   activePoiId,
   onSelect,
+  onLocate,
 }: MapPoiSelectorProps) {
   const { t } = useTranslation('mapping')
   const [isListOpen, setIsListOpen] = useState(false)
@@ -64,6 +68,32 @@ export function MapPoiSelector({
   const activePoiCategory = activePoi
     ? t(`poiCategories.${activePoi.iconCategory}`)
     : ''
+
+  useEffect(() => {
+    const cycleTarget = (event: KeyboardEvent) => {
+      if (
+        (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') ||
+        event.defaultPrevented ||
+        event.shiftKey ||
+        isFlightShortcutIgnored(event) ||
+        pois.length === 0 ||
+        (event.target instanceof Element &&
+          event.target.closest(
+            'input, [role="slider"], [role="menu"], [role="listbox"], [role="tablist"]',
+          ))
+      )
+        return
+
+      event.preventDefault()
+      event.stopImmediatePropagation()
+      if (event.repeat) return
+      const offset = event.key === 'ArrowLeft' ? -1 : 1
+      onSelect(pois[(currentIndex + offset + pois.length) % pois.length])
+    }
+
+    window.addEventListener('keydown', cycleTarget, true)
+    return () => window.removeEventListener('keydown', cycleTarget, true)
+  }, [currentIndex, onSelect, pois])
 
   useEffect(() => {
     if (!isListOpen) return
@@ -103,6 +133,7 @@ export function MapPoiSelector({
       ref={rootRef}
       className="mapping-poi-selector"
       aria-label={t('poiCycle.label')}
+      aria-keyshortcuts="ArrowLeft ArrowRight"
     >
       <button
         type="button"
@@ -120,7 +151,7 @@ export function MapPoiSelector({
           category: activePoiCategory,
         })}
         onClick={() => {
-          onSelect(activePoi)
+          onLocate(activePoi)
           setIsListOpen(false)
         }}
       >

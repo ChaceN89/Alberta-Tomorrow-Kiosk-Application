@@ -16,6 +16,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import { BASE_POI_LIST } from '@/mapping/POIs/BasePOIList'
+import { useAlbertaDiscoveries } from '@/save-data/alberta-discoveries/useAlbertaDiscoveries'
 import type { BasePoiDefinition } from '@/mapping/POIs/BasePOIList'
 import type { MapPoi } from '../components/MapPoiMarker'
 import { clusterMapPois } from '../map-functions/clusterMapPois'
@@ -40,6 +41,7 @@ export function useMapPoiData({
   mapViewport,
 }: UseMapPoiDataOptions) {
   const { t } = useTranslation('mapping')
+  const { discoveries } = useAlbertaDiscoveries()
   const [areDefaultPoisVisible, setAreDefaultPoisVisible] =
     useState(defaultPoisVisible)
   const [areModulePoisVisible, setAreModulePoisVisible] =
@@ -56,6 +58,7 @@ export function useMapPoiData({
 
         return {
           id: poi.id,
+          isComplete: Object.hasOwn(discoveries, poi.id),
           coordinates: poi.coordinates,
           title,
           iconCategory: poi.iconCategory,
@@ -65,7 +68,7 @@ export function useMapPoiData({
           info: <PoiContent />,
         }
       }),
-    [t],
+    [discoveries, t],
   )
 
   const visiblePois = useMemo(() => {

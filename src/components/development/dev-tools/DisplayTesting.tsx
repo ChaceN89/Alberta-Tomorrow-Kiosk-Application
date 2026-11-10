@@ -1,7 +1,7 @@
 /**
   File: DisplayTesting.tsx | Author: Chace Nielson
   Date Created: Oct 23, 2026
-  Date Updated: Nov 6, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Provide the development menu and set the document title and language.
@@ -33,14 +33,17 @@ import { DarkModeTestingToggle } from './DarkModeTestingToggle'
 import { TailwindBreakPoints } from './TailwindBreakPoints'
 import { getCurrentBreakpoint, getTailwindBreakpoints } from './breakpoints'
 import { resetSite, resetSiteTutorialFlags } from './resetSite'
+import { useAlbertaDiscoveriesDevTools } from '@/save-data/alberta-discoveries/development/useAlbertaDiscoveriesDevTools'
 
 type ActivePanel = 'modules' | 'states' | 'tutorials' | 'site' | null
-type PendingReset = 'journal' | 'site' | null
+type PendingReset = 'journal' | 'baseMap' | 'site' | null
 type BreakpointMode = 'off' | 'guides' | 'indicator'
 
 export function DisplayTesting() {
   const isDevelopment = import.meta.env.VITE_ENVIRONMENT === 'development'
   const { t } = useTranslation('development')
+  const { t: tJournal } = useTranslation('journal')
+  const { resetDiscoveries } = useAlbertaDiscoveriesDevTools()
   const { t: tGlobal, i18n } = useTranslation('global')
   const { state: preloadState } = useModulePreload()
   const { finish: finishIntroTutorial } = useIntroTutorial()
@@ -148,8 +151,20 @@ export function DisplayTesting() {
       toast(t('journalReset'), {
         toasterId: NOTIFICATION_TOASTER_ID,
       })
+    } else if (pendingReset === 'baseMap') {
+      if (await resetDiscoveries()) {
+        toast(t('baseMapReset'), { toasterId: NOTIFICATION_TOASTER_ID })
+      } else {
+        toast.error(tJournal('storageUnavailable'), {
+          toasterId: NOTIFICATION_TOASTER_ID,
+        })
+      }
     } else if (pendingReset === 'site') {
-      await resetSite(resetExpeditionProgress)
+      if (!(await resetSite(resetExpeditionProgress, resetDiscoveries))) {
+        toast.error(tJournal('storageUnavailable'), {
+          toasterId: NOTIFICATION_TOASTER_ID,
+        })
+      }
     }
 
     setPendingReset(null)
@@ -352,6 +367,7 @@ export function DisplayTesting() {
               onClose={closePanel}
               onResetSite={() => askToReset('site')}
               onResetJournal={() => askToReset('journal')}
+              onResetBaseMap={() => askToReset('baseMap')}
               onStartAllExpeditions={handleStartAllExpeditions}
               onProgressAllNextCheckpoints={handleProgressAllNextCheckpoints}
               onCompleteAllModules={handleCompleteAllModules}
@@ -362,12 +378,16 @@ export function DisplayTesting() {
               title={t(
                 pendingReset === 'journal'
                   ? 'confirmResetJournalTitle'
-                  : 'confirmResetSiteTitle',
+                  : pendingReset === 'baseMap'
+                    ? 'confirmResetBaseMapTitle'
+                    : 'confirmResetSiteTitle',
               )}
               description={t(
                 pendingReset === 'journal'
                   ? 'confirmResetJournalDescription'
-                  : 'confirmResetSiteDescription',
+                  : pendingReset === 'baseMap'
+                    ? 'confirmResetBaseMapDescription'
+                    : 'confirmResetSiteDescription',
               )}
               onConfirm={confirmReset}
               onCancel={cancelReset}

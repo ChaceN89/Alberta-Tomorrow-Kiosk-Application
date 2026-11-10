@@ -9,16 +9,25 @@
   "viewJournalFor": "Voir le journal de {{title}}",
   "titlePage": "Page de titre",
   "aboutNav": "À propos de ce journal",
+  "alberta": {
+    "title": "Carte de l’Alberta",
+    "description": "Découvrez les lieux de l’Alberta sur toutes les cartes. Ouvrez les renseignements d’un lieu pour consigner votre première visite et débloquer ses notes de terrain ici.",
+    "progress": "{{completed}} sur {{total}} lieux découverts",
+    "locked": "Pas encore visité. Trouvez ce lieu sur la carte pour débloquer cette entrée.",
+    "visitedOn": "Première visite : {{date}}",
+    "explore": "Explorer l’Alberta"
+  },
   "about": {
     "heading": "Votre journal d’expédition",
-    "description": "Ce journal garde la trace des expéditions que vous avez commencées. Chaque expédition a sa propre page, et des notes de terrain s’y ajoutent au fil de votre exploration, pour que vous puissiez revoir ce que vous avez découvert.",
+    "description": "Ce journal rassemble vos découvertes de l’Alberta et vos notes d’expédition. La page Carte de l’Alberta est toujours disponible, et chaque expédition commencée reçoit sa propre page.",
     "stepsHeading": "Comment ça fonctionne",
     "steps": [
+      "Ouvrez les renseignements d’un lieu de la carte de base en explorant ou en volant pour débloquer son entrée dans la Carte de l’Alberta.",
       "Commencez une expédition pour ajouter sa page à ce journal.",
       "Franchissez des étapes pour consigner des notes de terrain sur ce que vous avez appris.",
       "Consignez toutes les notes pour atteindre le sommet et planter un drapeau sur votre montagne."
     ],
-    "saved": "Votre journal est enregistré dans ce navigateur.",
+    "saved": "Votre journal est enregistré dans ce navigateur. Les découvertes de l’Alberta sont sauvegardées séparément des étapes d’expédition.",
     "empty": "Vous n’avez encore commencé aucune expédition.",
     "browse": "Parcourir les expéditions"
   },
