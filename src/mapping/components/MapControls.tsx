@@ -38,6 +38,7 @@ export function MapControls() {
     basemapStyleId,
     isHillshadeEnabled,
     isAlbertaBoundaryEnabled,
+    isAlbertaBoundaryWallEnabled,
     defaultPoisVisible,
     modulePoisVisible,
     hasModulePois,
@@ -46,6 +47,7 @@ export function MapControls() {
     onBasemapStyleChange,
     onHillshadeChange,
     onAlbertaBoundaryChange,
+    onAlbertaBoundaryWallChange,
     onDefaultPoisChange,
     onModulePoisChange,
     onPoiClusterRadiusChange,
@@ -57,6 +59,7 @@ export function MapControls() {
   const exaggerationHelpId = useId()
   const hillshadeId = useId()
   const albertaBoundaryId = useId()
+  const albertaBoundaryWallId = useId()
   const defaultPoisId = useId()
   const modulePoisId = useId()
   const poiClusterRadiusId = useId()
@@ -136,6 +139,29 @@ export function MapControls() {
               </span>
               <span className="mapping-controls__help">
                 {t('view.albertaBoundaryHelp')}
+              </span>
+            </span>
+          </label>
+
+          <label
+            className="mapping-controls__check"
+            htmlFor={albertaBoundaryWallId}
+          >
+            <input
+              id={albertaBoundaryWallId}
+              type="checkbox"
+              checked={isAlbertaBoundaryWallEnabled}
+              disabled={isDisabled}
+              onChange={(event) =>
+                onAlbertaBoundaryWallChange(event.currentTarget.checked)
+              }
+            />
+            <span className="mapping-controls__check-copy">
+              <span className="mapping-controls__label">
+                {t('view.albertaBoundaryWallLabel')}
+              </span>
+              <span className="mapping-controls__help">
+                {t('view.albertaBoundaryWallHelp')}
               </span>
             </span>
           </label>

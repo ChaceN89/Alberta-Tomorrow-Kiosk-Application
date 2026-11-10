@@ -30,6 +30,7 @@ export type MapControlsProps = {
   basemapStyleId: BasemapStyleId
   isHillshadeEnabled: boolean
   isAlbertaBoundaryEnabled: boolean
+  isAlbertaBoundaryWallEnabled: boolean
   onResetMapView: () => void
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
@@ -39,6 +40,7 @@ export type MapControlsProps = {
   onBasemapStyleChange: (styleId: string) => void
   onHillshadeChange: (enabled: boolean) => void
   onAlbertaBoundaryChange: (enabled: boolean) => void
+  onAlbertaBoundaryWallChange: (enabled: boolean) => void
   onDefaultPoisChange?: (enabled: boolean) => void
   onModulePoisChange?: (enabled: boolean) => void
   onPoiClusterRadiusChange: (radius: number) => void

@@ -144,10 +144,13 @@ export function useAlbertaMapController(
     basemapStyleId: layerControls.basemapStyleId,
     isHillshadeEnabled: layerControls.isHillshadeEnabled,
     isAlbertaBoundaryEnabled: layerControls.isAlbertaBoundaryEnabled,
+    isAlbertaBoundaryWallEnabled: layerControls.isAlbertaBoundaryWallEnabled,
     onTerrainExaggerationChange: terrainControls.changeTerrainExaggeration,
     onBasemapStyleChange: layerControls.changeBasemapStyle,
     onHillshadeChange: layerControls.changeHillshade,
     onAlbertaBoundaryChange: layerControls.changeAlbertaBoundaryVisibility,
+    onAlbertaBoundaryWallChange:
+      layerControls.changeAlbertaBoundaryWallVisibility,
     onToggleTerrain: () => {
       initialSpawn.runTerrainToggle(terrainControls.toggleTerrain)
     },

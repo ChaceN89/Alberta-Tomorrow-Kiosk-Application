@@ -180,6 +180,11 @@
   perspective: 12rem;
 }
 
+.plane-hud__compass-reading {
+  display: grid;
+  white-space: nowrap;
+}
+
 .plane-hud__compass-arrow {
   transform: rotateX(50deg) rotateZ(var(--compass-bearing, 0deg));
   filter: drop-shadow(0 4px 1px rgb(23 46 41 / 30%));

@@ -35,9 +35,17 @@ export const POI_NAVIGATION_DURATION = 1800
 
 // settings related to the Alberta boundary layer
 export const ALBERTA_BOUNDARY_DEFAULT = true
+export const ALBERTA_BOUNDARY_WALL_DEFAULT = true
 export const ALBERTA_BOUNDARY_SOURCE_ID = 'alberta-boundary'
 export const ALBERTA_BOUNDARY_FILL_LAYER_ID = 'alberta-boundary-fill'
 export const ALBERTA_BOUNDARY_OUTLINE_LAYER_ID = 'alberta-boundary-outline'
+export const ALBERTA_BOUNDARY_WALL_LAYER_ID = 'alberta-boundary-wall'
+// Wall height above a smoothed terrain profile, independent of POI cylinders.
+// Set to 0 to keep only the original ground-level boundary.
+export const ALBERTA_BOUNDARY_WALL_HEIGHT_METERS = 400
+// Terrain samples every 1 km; blend elevations over 5 km along the boundary.
+export const ALBERTA_BOUNDARY_WALL_SAMPLE_METERS = 1000
+export const ALBERTA_BOUNDARY_WALL_SMOOTHING_METERS = 5000
 export const ALBERTA_BOUNDARY_COLOR = '#204a37'
 export const ALBERTA_BOUNDARY_FILL_OPACITY = 0 // Fully transparent by default.
 export const ALBERTA_BOUNDARY_LINE_OPACITY = 0.95 // Mostly opaque by default.

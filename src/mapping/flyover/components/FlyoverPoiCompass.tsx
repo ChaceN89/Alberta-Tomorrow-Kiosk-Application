@@ -124,7 +124,7 @@ export function FlyoverPoiCompass({
           <g ref={headingRef} className="plane-hud__mini-map-heading">
             <path d="M0 -12 6 -2 0 -4 -6 -2Z" />
           </g>
-          <circle className="plane-hud__mini-map-position" r="3" />
+          <circle className="plane-hud__mini-map-position" r="4" />
         </g>
       </svg>
       <div className="plane-hud__compass-details">
@@ -132,9 +132,8 @@ export function FlyoverPoiCompass({
           {poi.title}
         </strong>
         {reading && (
-          <p>
+          <p className="plane-hud__compass-reading">
             <span>{t(`flyover.compass.${reading.direction}`)}</span>
-            {' · '}
             <span>
               {new Intl.NumberFormat(i18n.resolvedLanguage, {
                 style: 'unit',

@@ -23,7 +23,10 @@ import {
   ALBERTA_BOUNDARY_OUTLINE_LAYER_ID,
   ALBERTA_BOUNDARY_SOURCE_ID,
   ALBERTA_BOUNDARY_URL,
+  ALBERTA_BOUNDARY_WALL_HEIGHT_METERS,
+  ALBERTA_BOUNDARY_WALL_LAYER_ID,
 } from '../map-settings/mapSettings'
+import { createAlbertaBoundaryWallLayer } from './createAlbertaBoundaryWallLayer'
 import {
   HILLSHADE_LAYER_ID,
   TERRAIN_SOURCE,
@@ -64,14 +67,17 @@ export function ensureHillshadeLayer(map: MapLibreMap) {
 }
 
 // Function: Add the Alberta boundary source, fill, and outline layers.
-function ensureAlbertaBoundaryLayers(map: MapLibreMap) {
+function ensureAlbertaBoundarySource(map: MapLibreMap) {
   if (!map.getSource(ALBERTA_BOUNDARY_SOURCE_ID)) {
     map.addSource(ALBERTA_BOUNDARY_SOURCE_ID, {
       type: 'geojson',
       data: ALBERTA_BOUNDARY_URL,
     })
   }
+}
 
+function ensureAlbertaBoundaryLayers(map: MapLibreMap) {
+  ensureAlbertaBoundarySource(map)
   if (!map.getLayer(ALBERTA_BOUNDARY_FILL_LAYER_ID)) {
     map.addLayer(
       {
@@ -101,6 +107,19 @@ function ensureAlbertaBoundaryLayers(map: MapLibreMap) {
       },
       getFirstSymbolLayerId(map),
     )
+  }
+}
+
+export function setAlbertaBoundaryWallVisibility(
+  map: MapLibreMap,
+  isVisible: boolean,
+) {
+  if (isVisible && ALBERTA_BOUNDARY_WALL_HEIGHT_METERS > 0) {
+    ensureAlbertaBoundarySource(map)
+    if (!map.getLayer(ALBERTA_BOUNDARY_WALL_LAYER_ID))
+      map.addLayer(createAlbertaBoundaryWallLayer())
+  } else if (map.getLayer(ALBERTA_BOUNDARY_WALL_LAYER_ID)) {
+    map.removeLayer(ALBERTA_BOUNDARY_WALL_LAYER_ID)
   }
 }
 

@@ -24,6 +24,7 @@ import {
 } from '../map-settings/baseMapSettings'
 import {
   ALBERTA_BOUNDARY_DEFAULT,
+  ALBERTA_BOUNDARY_WALL_DEFAULT,
   HILLSHADING_DEFAULT,
 } from '../map-settings/mapSettings'
 import {
@@ -35,6 +36,7 @@ import {
   ensureHillshadeLayer,
   ensureTerrainSource,
   setAlbertaBoundaryVisibility,
+  setAlbertaBoundaryWallVisibility,
   setBasemapPlacesVisibility,
 } from './mapLayerFunctions'
 
@@ -69,6 +71,8 @@ export function useMapLayerControls({
     ALBERTA_BOUNDARY_DEFAULT,
   )
   const cancelStyleChange = useRef<(() => void) | null>(null)
+  const [isAlbertaBoundaryWallEnabled, setIsAlbertaBoundaryWallEnabled] =
+    useState(ALBERTA_BOUNDARY_WALL_DEFAULT)
 
   useEffect(() => () => cancelStyleChange.current?.(), [])
 
@@ -82,6 +86,7 @@ export function useMapLayerControls({
       setBasemapPlacesVisibility(map, false)
     }
     setAlbertaBoundaryVisibility(map, ALBERTA_BOUNDARY_DEFAULT)
+    setAlbertaBoundaryWallVisibility(map, ALBERTA_BOUNDARY_WALL_DEFAULT)
   }
 
   // Function: Reapply custom layers and terrain after a basemap style is loaded.
@@ -101,6 +106,7 @@ export function useMapLayerControls({
       if (isAlbertaBoundaryEnabled) {
         setAlbertaBoundaryVisibility(map, isAlbertaBoundaryEnabled)
       }
+      setAlbertaBoundaryWallVisibility(map, isAlbertaBoundaryWallEnabled)
     }
     map.setTerrain(
       isTerrainEnabled
@@ -128,6 +134,7 @@ export function useMapLayerControls({
       if (resetDefaults) {
         setIsHillshadeEnabled(HILLSHADING_DEFAULT)
         setIsAlbertaBoundaryEnabled(ALBERTA_BOUNDARY_DEFAULT)
+        setIsAlbertaBoundaryWallEnabled(ALBERTA_BOUNDARY_WALL_DEFAULT)
       }
       if (style.id === basemapStyleId) {
         restoreMapLayers(map, style.id, resetDefaults)
@@ -215,14 +222,29 @@ export function useMapLayerControls({
     }
   }
 
+  const changeAlbertaBoundaryWallVisibility = (enabled: boolean) => {
+    const map = mapRef.current?.getMap()
+    if (!map || !isMapReady) return
+
+    try {
+      setAlbertaBoundaryWallVisibility(map, enabled)
+      setIsAlbertaBoundaryWallEnabled(enabled)
+      clearError()
+    } catch (error) {
+      reportError(error)
+    }
+  }
+
   return {
     basemapStyleId,
     isHillshadeEnabled,
     isAlbertaBoundaryEnabled,
+    isAlbertaBoundaryWallEnabled,
     initializeMapLayers,
     changeBasemapStyle,
     changeHillshade,
     changeAlbertaBoundaryVisibility,
+    changeAlbertaBoundaryWallVisibility,
     resetMapLayers,
   }
 }
