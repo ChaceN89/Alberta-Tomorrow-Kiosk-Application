@@ -16,6 +16,29 @@
   margin: 0;
 }
 
+.mapping-activity-reminder {
+  width: min(22rem, calc(100vw - 6rem));
+}
+
+.mapping-activity-return--pulse {
+  animation: mapping-activity-return-pulse 1s ease-in-out infinite;
+}
+
+@keyframes mapping-activity-return-pulse {
+  50% {
+    box-shadow: 0 0 0 0.5rem var(--color-line);
+    border-color: var(--color-pine);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapping-activity-return--pulse {
+    animation: none;
+    outline: 2px solid var(--color-pine);
+    outline-offset: 3px;
+  }
+}
+
 .mapping-controls--floating {
   position: absolute;
   top: 1rem;

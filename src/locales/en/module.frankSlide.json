@@ -6,6 +6,7 @@
   "launch": "Explore Frank Slide",
   "backToOverview": "Back to expedition details",
   "activity": {
+    "mapCompleteReminder": "You’ve explored every stop and completed all map discoveries. Return to the activity to finish the Frank Slide quiz.",
     "introduction": "Start with the map to find Frank Slide and explore Turtle Mountain. Opening Frank Slide records the checkpoint that unlocks the quiz; opening Turtle Mountain adds a separate journal discovery.",
     "mapFirst": {
       "heading": "Explore the map first",

@@ -188,6 +188,8 @@
     "select": "{{count}} lieux d’intérêt à proximité. Zoomez pour les séparer."
   },
   "navigation": {
+    "mapCompleteTitle": "Exploration de la carte terminée!",
+    "dismissReminder": "Fermer",
     "label": "Navigation de la carte",
     "open": "Ouvrir la navigation de la carte",
     "close": "Fermer la navigation de la carte",

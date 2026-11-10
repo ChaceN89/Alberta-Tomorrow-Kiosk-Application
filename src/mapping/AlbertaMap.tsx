@@ -418,6 +418,7 @@ function AlbertaMapScene({
 
   const mapControls = {
     ...controls,
+    isPreparingFlyover,
     isMapReady: controls.isMapReady && isInteractive,
     isFlyoverPaused: flyover.isPaused,
     onResetMapView,

@@ -188,6 +188,8 @@
     "select": "{{count}} nearby points of interest. Zoom in to separate them."
   },
   "navigation": {
+    "mapCompleteTitle": "Map exploration complete!",
+    "dismissReminder": "Dismiss",
     "label": "Map navigation",
     "open": "Open map navigation",
     "close": "Close map navigation",

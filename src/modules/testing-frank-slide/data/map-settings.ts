@@ -22,6 +22,7 @@ export const frankSlideMapSettings: ModuleMapSettings = {
   defaultPoisVisible: false,
   modulePoisVisible: true,
   activityMapLinkPlacement: 'insideActivity',
+  activityReminderKey: 'activity.mapCompleteReminder',
   startup: {
     view: {
       center: [-114.06, 49.58],

@@ -136,6 +136,7 @@ export type ModuleMapSettings = {
   defaultPoisVisible?: boolean
   modulePoisVisible?: boolean
   activityMapLinkPlacement?: 'outsideActivity' | 'insideActivity'
+  activityReminderKey?: ParseKeys<ModuleTranslationNamespace>
   startup?: ModuleMapStartup
 }
 

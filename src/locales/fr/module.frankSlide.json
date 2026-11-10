@@ -6,6 +6,7 @@
   "launch": "Explorer l’éboulement de Frank",
   "backToOverview": "Retour aux détails de l’expédition",
   "activity": {
+    "mapCompleteReminder": "Vous avez exploré tous les lieux et terminé toutes les découvertes de la carte. Retournez à l’activité pour terminer le questionnaire sur l’éboulement de Frank.",
     "introduction": "Commencez par la carte pour trouver l’éboulement de Frank et explorer le mont Turtle. L’ouverture de l’éboulement de Frank consigne l’étape qui déverrouille le questionnaire; ouvrir le mont Turtle ajoute une découverte distincte au journal.",
     "mapFirst": {
       "heading": "Explorez d’abord la carte",

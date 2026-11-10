@@ -26,6 +26,7 @@ export type MapControlsProps = {
   isFlyoverEnabled: boolean
   isFlyoverPaused: boolean
   isFlyoverTransitioning: boolean
+  isPreparingFlyover: boolean
   terrainExaggeration: number
   basemapStyleId: BasemapStyleId
   isHillshadeEnabled: boolean
@@ -67,6 +68,7 @@ export type MapControllerControlsProps = Omit<
   | 'isResettingMap'
   | 'isFlyoverPaused'
   | 'onSelectModuleEntry'
+  | 'isPreparingFlyover'
 >
 
 export const MapControlsContext = createContext<MapControlsProps | null>(null)

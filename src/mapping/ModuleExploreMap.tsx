@@ -31,8 +31,12 @@ type ModuleExploreMapProps = {
 export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
   const { t } = useTranslation('mapping')
   const { t: tModule, i18n } = useTranslation(module.translationNamespace)
-  const { startExpedition, completeCheckpoint, getCompletedCheckpoints } =
-    useExpeditionProgress()
+  const {
+    startExpedition,
+    completeCheckpoint,
+    getCompletedCheckpoints,
+    getExpeditionProgress,
+  } = useExpeditionProgress()
   const moduleName = tModule(module.titleKey)
   const moduleMap = module.map
   const completedCheckpoints = useMemo(
@@ -116,6 +120,7 @@ export function ModuleExploreMap({ module }: ModuleExploreMapProps) {
           key={module.id}
           title={moduleName}
           description={tModule('description')}
+          progress={getExpeditionProgress(module)}
         />
         <MapActionControls />
         <ExploreMapNavBar

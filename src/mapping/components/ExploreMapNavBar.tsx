@@ -28,6 +28,7 @@ import { useExpeditionProgress } from '@/save-data/expedition-progress'
 import { modules, visibleModules } from '@/modules/registry'
 import { getModuleExplorePath, getModuleOverviewPath } from '@/modules/routes'
 import { useMapControls } from './MapControlsContext'
+import { MapActivityReturn } from './MapActivityReturn'
 
 type ExploreMapNavigationProps = {
   moduleId?: string
@@ -165,15 +166,11 @@ export function ExploreMapNavBar({
           </button>
         </Tooltip>
         {activityPath && (
-          <Tooltip text={t('navigation.moduleActivity')} placement="right">
-            <Link
-              to={activityPath}
-              className="flex size-12 items-center justify-center rounded-full border border-line bg-surface text-pine shadow-lg hover:bg-canvas"
-              aria-label={t('navigation.moduleActivity')}
-            >
-              <ActivityIcon className="size-6" />
-            </Link>
-          </Tooltip>
+          <MapActivityReturn
+            module={currentModule}
+            activityPath={activityPath}
+            isNavigationOpen={isOpen}
+          />
         )}
       </div>
 

@@ -169,6 +169,19 @@ Tutorial completion flags are separate under `src/save-data/tutorial-progress/`.
 
 ### Alberta discoveries
 
+Mapped modules with remaining activity work can opt into a ten-second return
+prompt using `map.settings.activityReminderKey`, localized in their own namespace.
+Frank Slide enables this for its quiz. Map completion includes every POI selection,
+additional completion checkpoint, and `infoCheckpoints` interaction; all must be
+done while at least one non-map module checkpoint remains unfinished.
+The reminder waits for map readiness, initial camera/plane preparation and flight
+transitions to finish, and closed POI/journal/navigation panels,
+points to the activity button, and pulses it (static emphasis for reduced motion).
+It appears when map work finishes or on returning to an already-finished map,
+without adding saved flags. Map-only modules do not show it.
+Dismiss closes it early; its ten-second deadline starts on first display and
+does not restart if a panel or transition temporarily hides it.
+
 Map-enabled modules must provide `map.settings.baseMapEntry` with coordinates and
 optional flight radius, cylinder height, and lens overrides. The map generates
 entry POIs from visible registry modules with this metadata, independently of
