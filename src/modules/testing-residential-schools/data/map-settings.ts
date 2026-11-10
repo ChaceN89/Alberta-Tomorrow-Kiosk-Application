@@ -13,10 +13,11 @@
   - Coordinates use longitude, latitude order.
  */
 import type { ModuleMapSettings } from '../../types'
+import { residentialSchoolsExpeditionPoi } from '../data-pois/residentialSchoolsExpeditionPoiDefinition'
 
 export const residentialSchoolMapSettings: ModuleMapSettings = {
   baseMapEntry: {
-    coordinates: [-113.625, 53.63],
+    coordinates: residentialSchoolsExpeditionPoi.coordinates,
   },
   defaultPoisVisible: false,
   modulePoisVisible: true,

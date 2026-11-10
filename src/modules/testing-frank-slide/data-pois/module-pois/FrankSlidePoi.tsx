@@ -1,13 +1,13 @@
 /**
-  File: frankSlide.tsx | Author: Chace Nielson
+  File: FrankSlidePoi.tsx | Author: Chace Nielson
   Date Created: Nov 7, 2026
   Date Updated: Nov 9, 2026
 
   Description:
-  - Define the shared Frank Slide POI and its archival-photo information content.
+  - Present the expedition-only Frank Slide archival-photo content.
 
   Usage:
-  - Included in the base POI list and reused by the Frank Slide module.
+  - Rendered by the Frank Slide expedition's POI definition.
 
   Notes:
   - Checkpoint identifiers are supplied only by module POI definitions.
@@ -15,24 +15,9 @@
  */
 import { useTranslation } from 'react-i18next'
 import { useMediaViewer } from '@/module-tools/media-viewer/hooks/useMediaViewer'
-import type { MapPoiDefinition, MapPoiInfoContentProps } from '@/modules/types'
+import type { MapPoiInfoContentProps } from '@/modules/types'
 import frankSlideMountainArchive from '@/mapping/assets/frank-slide/frank-slide-mountain-archive.png'
 import frankSlideStreetArchive from '@/mapping/assets/frank-slide/frank-slide-street-archive.png'
-
-export const frankSlidePoi = {
-  id: 'frankSlide',
-  flyoverPoiFov: 50,
-  titleKey: 'view.defaultPois.frankSlide',
-  iconCategory: 'historicSite',
-  coordinates: [-114.392, 49.5965],
-  view: {
-    center: [-114.392, 49.5965],
-    zoom: 12,
-    pitch: 65,
-    bearing: -90,
-  },
-  infoContent: FrankSlideInfoContent,
-} as const satisfies MapPoiDefinition
 
 const archiveImages = [
   {
@@ -53,7 +38,9 @@ const archiveImages = [
   },
 ] as const
 
-function FrankSlideInfoContent({ onInteraction }: MapPoiInfoContentProps) {
+export function FrankSlideInfoContent({
+  onInteraction,
+}: MapPoiInfoContentProps) {
   const { t } = useTranslation('frankSlide')
   const { openImage } = useMediaViewer()
 

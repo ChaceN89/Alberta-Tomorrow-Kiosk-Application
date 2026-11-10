@@ -14,7 +14,7 @@
  */
 import type { ModuleMapPoi } from '@/modules/types'
 import { LesserSlaveLakeResidentialSchoolPoi } from './module-pois/LesserSlaveLakeResidentialSchoolPoi'
-import { StAlbertYouvillePoi } from './module-pois/StAlbertYouvillePoi'
+import { residentialSchoolsExpeditionPoi } from './residentialSchoolsExpeditionPoiDefinition'
 import { StMarysBloodPoi } from './module-pois/StMarysBloodPoi'
 import {
   lesserSlaveLakeAudioFinishedCheckpoint,
@@ -46,12 +46,7 @@ export const residentialSchoolMapPois = [
     },
   },
   {
-    id: 'st-albert-youville',
-    flyoverPoiFov: 37,
-    infoContent: StAlbertYouvillePoi,
-    coordinates: [-113.625, 53.63],
-    titleKey: 'activity.schools.st-albert-youville.name',
-    iconCategory: 'residentialSchool',
+    ...residentialSchoolsExpeditionPoi,
     poiSelectedCheckpointId: stAlbertYouvilleSchoolPoiSelectedCheckpoint,
     additionalCompletionCheckpoints: [
       stAlbertYouvilleVideoFinishedCheckpoint,

@@ -1,7 +1,7 @@
 /**
   File: BasePOIList.ts | Author: Chace Nielson
   Date Created: Nov 7, 2026
-  Date Updated: Nov 7, 2026
+  Date Updated: Nov 9, 2026
 
   Description:
   - Gather the individual shared base-map POI definitions.
@@ -24,7 +24,6 @@ import { drumhellerPoi } from './poi-points/drumheller'
 import { dunveganPoi } from './poi-points/dunvegan'
 import { edmontonPoi } from './poi-points/edmonton'
 import { elkIslandPoi } from './poi-points/elkIsland'
-import { frankSlidePoi } from './poi-points/frankSlide'
 import { headSmashedInPoi } from './poi-points/headSmashedIn'
 import { jasperPoi } from './poi-points/jasper'
 import { lakeLouisePoi } from './poi-points/lakeLouise'
@@ -52,7 +51,6 @@ export const BASE_POI_LIST = [
   dunveganPoi,
   edmontonPoi,
   elkIslandPoi,
-  frankSlidePoi,
   headSmashedInPoi,
   jasperPoi,
   lakeLouisePoi,

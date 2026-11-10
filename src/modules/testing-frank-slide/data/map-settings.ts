@@ -13,10 +13,11 @@
   - The map first flies to an east-of-site camera view, facing west.
  */
 import type { ModuleMapSettings } from '@/modules/types'
+import { frankSlidePoi } from '../data-pois/frankSlideExpeditionPoiDefinition'
 
 export const frankSlideMapSettings: ModuleMapSettings = {
   baseMapEntry: {
-    coordinates: [-113.85, 49.58],
+    coordinates: frankSlidePoi.coordinates,
   },
   defaultPoisVisible: false,
   modulePoisVisible: true,

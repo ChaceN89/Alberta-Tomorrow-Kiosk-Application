@@ -180,6 +180,11 @@ launches the plane rather than opening their information remotely.
 Their cylinders and labels use the same distance fading as every other flight
 POI: hidden at 500 km and beyond, fully visible within 200 km, controlled by
 `FLYOVER_POI_ENTRY_DISTANCE_METERS` and `FLYOVER_POI_FADE_DISTANCE_METERS`.
+Frank Slide's expedition entry shares the slide POI's coordinates. The slide's
+archival-photo POI belongs only to its expedition, not the shared base POI list.
+Both mapped expeditions keep their shared entry-location POI definition in
+`data-pois/*ExpeditionPoiDefinition.ts`, beside `pois.ts`. Residential schools
+uses the St. Albert-Youville POI location for its base-map entry.
 
 Entries use each module's icon, the shared flight `module` color, and the title
 “{{name}} Expedition” (“Expédition {{name}}” in French). Their map,

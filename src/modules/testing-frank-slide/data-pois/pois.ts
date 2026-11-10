@@ -10,9 +10,9 @@
   - Combined with map settings by the module definition.
 
   Notes:
-  - Frank Slide reuses its base-map definition; the other POIs are module-specific.
+  - All POIs belong to this expedition, independently of the base-map entry.
  */
-import { getBasePoi } from '@/mapping/POIs/BasePOIList'
+import { frankSlidePoi } from './frankSlideExpeditionPoiDefinition'
 import type { ModuleMapPoi } from '@/modules/types'
 import { TurtleMountainPoi } from './module-pois/TurtleMountainPoi'
 import { LundbreckFallsPoi } from './module-pois/LundbreckFallsPoi'
@@ -27,8 +27,6 @@ import {
   frankSlideTurtleMountainRockslidePhotoViewedCheckpoint,
 } from '../journal/checkpoints'
 
-const frankSlideBasePoi = getBasePoi('frankSlide')
-
 export const frankSlideMapPois = [
   {
     id: 'lundbreckFalls',
@@ -42,10 +40,9 @@ export const frankSlideMapPois = [
     poiSelectedCheckpointId: frankSlideLundbreckFallsPoiOpenedCheckpoint,
   },
   {
-    ...frankSlideBasePoi,
+    ...frankSlidePoi,
     flyoverPoiFov: 50,
     flyoverRadiusMultiplier: 0.5,
-    titleNamespace: 'mapping',
     poiSelectedCheckpointId: frankSlidePoiSelectedCheckpoint,
     additionalCompletionCheckpoints: [
       frankSlideMountainPhotoViewedCheckpoint,
